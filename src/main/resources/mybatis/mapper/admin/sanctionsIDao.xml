@@ -65,7 +65,22 @@
 
     <insert id="makeSanction">
         INSERT INTO sanctions(USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT)
-        VALUES()
+        VALUES(#params{1}, #params{2}, #params{3}, #params{4}, #params{5}, #params{6}, #params{7})
     </insert>
 
+    <update id="modifySanction">
+        UPDATE sanctions
+        SET
+        SANCTIONS_TYPES = #{param2},
+        SANCTIONS_START_DATE = #{param3},
+        SANCTIONS_END_DATE = #{param4},
+        SANCTIONS_REASON = #{param5},
+        ADMIN_ACCOUNT_ID = #{param6},
+        SANCTIONS_CREATED_AT = #{param7}
+        WHERE USER_ID = #{param1}
+    </update>
+
+    <delete id="deleteSanction">
+        DELETE FROM sanctions WHERE SANCTIONS_ID = #{param1}
+    </delete>
 </mapper>
