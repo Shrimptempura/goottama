@@ -46,3 +46,13 @@ CREATE TABLE review (
    target_id   int   NULL,
    target_type   enum('SHOP', 'COMMUNITY', 'INTERIOR')   NULL
 );
+
+-- 공통
+CREATE TABLE file (
+   file_id   int   NULL,
+   file_uploader   varchar(100)   NULL,
+   file_name   varchar(500)   NULL,
+   file_path   varchar(100)   NULL,
+   target_type   enum('SHOP', 'COMMUNITY', 'INTERIOR', 'MEMBER')   NULL,
+   target_id   bigint   NULL
+);
