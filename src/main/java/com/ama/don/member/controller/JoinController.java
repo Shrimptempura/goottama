@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class JoinController {
-	
+	//회원가입
 	MemberServiceInter memberServiceInter;
 	
 	@Autowired
