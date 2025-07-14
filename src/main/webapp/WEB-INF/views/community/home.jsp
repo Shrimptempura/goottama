@@ -12,7 +12,7 @@
 <body>
 
 	<!-- 배너 이미지 -->
-	<div class="container mt-4" width="1000" height="1000">
+	<div class="container mt-4">
 		<img
 			src="${pageContext.request.contextPath}/resources/images/banner.png"
 			class="img-fluid rounded" alt="메인 배너">
