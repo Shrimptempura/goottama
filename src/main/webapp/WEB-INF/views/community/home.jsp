@@ -44,18 +44,5 @@
 		</div>
 	</div>
 
-	<!-- 추천 집들이 -->
-	<div class="container mt-5">
-		<h4>오늘의 추천 집들이</h4>
-		<div class="row">
-			<c:forEach var="room" items="${recommendedRooms}">
-				<div class="col-md-3 room-card">
-					<img src="${room.imageUrl}" alt="추천 이미지">
-					<p class="mt-2">${room.title}</p>
-				</div>
-			</c:forEach>
-		</div>
-	</div>
-
 </body>
 </html>
