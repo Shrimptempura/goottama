@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.admin.dao.SanctionsIDao">
+    <select id="getAllSanctions">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+    </select>
+
+    <select id="getSanctionsById">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        WHERE SANCTIONS_ID = #{param1}
+    </select>
+
+    <select id="getSanctionsByUserId">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        WHERE USER_ID = #{param1}
+    </select>
+
+    <select id="getSanctionsByTypes">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        WHERE SANCTIONS_TYPES = #{param1}
+    </select>
+
+    <select id="getSanctionsByStartDateRange">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        WHERE SANCTIONS_START_DATE BETWEEN #{param1} AND #{param2}
+    </select>
+
+    <select id="getSanctionsByEndDateRange">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        WHERE SANCTIONS_END_DATE BETWEEN #{param1} AND #{param2}
+    </select>
+
+    <select id="getSanctionsByReason">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        WHERE SANCTIONS_REASON LIKE CONCAT('%', #{param1}, '%')
+    </select>
+
+    <select id="getSanctionsByAdmin">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        WHERE ADMIN_ACCOUNT_ID = #{param1}
+    </select>
+
+    <select id="getSanctionsByCreatedDateRange">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        WHERE SANCTIONS_CREATED_AT BETWEEN #{param1} AND #{param2}
+    </select>
+
+    <select id="getSanctionsByDuration">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        WHERE DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) BETWEEN #{param1} AND #{param2}
+    </select>
+
+    <insert id="makeSanction">
+        INSERT INTO sanctions(USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT)
+        VALUES()
+    </insert>
+
+</mapper>
