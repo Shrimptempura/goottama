@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class JoinController {
-	//회원가입
+	
 	MemberServiceInter memberServiceInter;
 	
 	@Autowired
@@ -22,6 +22,11 @@ public class JoinController {
 	@RequestMapping("join_view")
 	public String join_view() {
 		return "member/join_view";
+	}
+	
+	@RequestMapping("checkId")
+	public String checkId() {
+		return "redirect:member/join_view";
 	}
 	
 	@RequestMapping("join")

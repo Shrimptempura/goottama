@@ -5,4 +5,8 @@
 
 <mapper namespace="com.ama.don.member.dao.JoinDao">
 
+	<insert id="join">
+	
+	</insert>
+
 </mapper>

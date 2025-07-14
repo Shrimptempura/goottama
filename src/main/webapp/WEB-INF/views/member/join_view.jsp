@@ -8,9 +8,14 @@
 </head>
 <body>
 
+<form action="checkId">
+아이디: <input type="text" name="loginId" required />
+<input type="submit" value="아이디 중복 확인" />
+</form>
+
 <form action="join" method="post">
-아이디: <input type="text" name="loginId" /> <br />
 pw: <input type="text" name="pw" /> <br />
+pw2: <input type="text" name="pw2" /> <br />
 권한: <input type="radio" name="roles" value="1"  /> 관리자
 <input type="radio" name="roles" value="2"  /> 일반회원
 <input type="radio" name="roles" value="3"  /> 업체 <br />
