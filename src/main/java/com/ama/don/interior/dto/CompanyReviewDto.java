@@ -12,7 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 @Setter
-// 업체에 대한 리뷰 dto
+// 사용자가 쓰는 업체에 대한 리뷰 dto
 public class CompanyReviewDto {
 
     private Long reviewId;          // 리뷰 아이디
