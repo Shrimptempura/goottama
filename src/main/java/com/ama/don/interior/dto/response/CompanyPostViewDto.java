@@ -14,7 +14,7 @@ public class CompanyPostViewDto {
 
     private Long companyPostId;     // 업체 포스트(게시글) 아이디
     private Long companyId;     // 업체 아이디
-    private Long companyName;   // 업체 이름
+    private String companyName;   // 업체 이름
 
     private Integer reviewCount;        // 리뷰 수
     private int viewCount;              // 조회 수
