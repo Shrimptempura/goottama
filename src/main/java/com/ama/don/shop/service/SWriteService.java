@@ -1,6 +1,7 @@
 package com.ama.don.shop.service;
 
 import java.io.File;
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -54,7 +55,7 @@ public class SWriteService implements SServiceinter{
 		paramMap.put("category_id", Integer.parseInt(mtfRequest.getParameter("pcategory")));
 		paramMap.put("product_name", mtfRequest.getParameter("pname"));
 		paramMap.put("product_price", Integer.parseInt(mtfRequest.getParameter("pprice")));
-		paramMap.put("product_discountrate", Integer.parseInt(mtfRequest.getParameter("pdiscountrate")));
+		paramMap.put("product_discountrate", Float.parseFloat(mtfRequest.getParameter("pdiscountrate")));
 		paramMap.put("product_mall_name", mtfRequest.getParameter("pmall_name"));
 		paramMap.put("product_madein", mtfRequest.getParameter("pmadein"));
 	    paramMap.put("product_release", mtfRequest.getParameter("prelease"));
@@ -66,7 +67,8 @@ public class SWriteService implements SServiceinter{
 		//product insert
 	    iDao.write(paramMap);
 	    
-	    int pid=(int) paramMap.get("productId");
+	    int pid = ((BigInteger) paramMap.get("productId")).intValue();
+	    //int pid=(int) paramMap.get("productId");
 		
 		String workPath=System.getProperty("user.dir");
 		System.out.println(workPath);
