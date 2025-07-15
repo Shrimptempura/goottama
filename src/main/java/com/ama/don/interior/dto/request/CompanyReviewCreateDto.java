@@ -1,4 +1,4 @@
-package com.ama.don.interior.dto;
+package com.ama.don.interior.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 // 사용자가 쓰는 업체에 대한 리뷰 dto
-public class CompanyReviewDto {
+public class CompanyReviewCreateDto {
 
     private Long reviewId;          // 리뷰 아이디
     private Long userId;            // 유저 아이디

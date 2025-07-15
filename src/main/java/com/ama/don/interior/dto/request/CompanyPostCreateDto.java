@@ -1,4 +1,4 @@
-package com.ama.don.interior.dto;
+package com.ama.don.interior.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 // 업체가 작성한 포스터
-public class CompanyPostDto {
+public class CompanyPostCreateDto {
 
     private Long companyProjectId;      // 업체 프로젝트 아이디
     private Long companyId;             // 업체 아이디

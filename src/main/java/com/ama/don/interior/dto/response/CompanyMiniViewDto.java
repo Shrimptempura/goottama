@@ -1,4 +1,4 @@
-package com.ama.don.interior.dto;
+package com.ama.don.interior.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 // 업체 좌측 미니 박스에 담길 정보
-public class CompanyMiniInfoDto {
+public class CompanyMiniViewDto {
 
     private Long companyDetailId;       // 업체상세 아이디
     private String companyName;         // 업체 이름

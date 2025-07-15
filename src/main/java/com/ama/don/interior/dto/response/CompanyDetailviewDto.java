@@ -1,4 +1,4 @@
-package com.ama.don.interior.dto;
+package com.ama.don.interior.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 // 업체 상세페이지의 자세한 업체정보 탭
-public class CompanyDetailDto {
+public class CompanyDetailviewDto {
 
     private String companyAddr;     // 업체 주소
 
