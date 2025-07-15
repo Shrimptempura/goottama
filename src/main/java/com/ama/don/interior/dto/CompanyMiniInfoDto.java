@@ -25,7 +25,7 @@ public class CompanyMiniInfoDto {
     /**
      * 업체 소개말
      */
-    private String companyLetter;
+    private String companyIntro;
     private String companyAddr;         // 업체 주소
 
     /**
