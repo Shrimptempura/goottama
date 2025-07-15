@@ -6,9 +6,9 @@
 <mapper namespace="com.ama.don.admin.dao.ManageUserIDao">
     <select id="getAllUser">
         SELECT D.USER_ID, D.USER_NAME, D.USER_NICKNAME, D.USER_CREATED_AT, L.ROLES_ID, S.SANCTIONS_TYPES
-        FROM USER_DETAIL D
-        JOIN USER_LOGIN L ON D.USER_ID = L.USER_ID
-        LEFT JOIN SANCTIONS S ON D.USER_ID = S.USER_ID
+        FROM user_detail D
+        JOIN user_login L ON D.USER_ID = L.USER_ID
+        LEFT JOIN sanctions S ON D.USER_ID = S.USER_ID
     </select>
 
 </mapper>

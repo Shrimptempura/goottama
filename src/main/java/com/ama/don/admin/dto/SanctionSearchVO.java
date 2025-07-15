@@ -2,7 +2,6 @@ package com.ama.don.admin.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
@@ -10,14 +9,14 @@ import java.sql.Timestamp;
 @Setter
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor
-public class SanctionsDto {
-    private int sanctionsId;
+public class SanctionSearchVO {
     private long userId;
     private String sanctionsTypes;
-    private Timestamp sanctionsStartDate;
-    private Timestamp sanctionsEndDate;
+    private Timestamp searchStartDate;
+    private Timestamp searchEndDate;
     private String sanctionsReason;
     private int adminAccountId;
-    private Timestamp sanctionsCreatedAt;
+    private int durationMin;
+    private int durationMax;
 }
+

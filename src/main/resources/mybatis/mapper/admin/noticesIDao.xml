@@ -16,40 +16,22 @@
         FROM notices WHERE NOTICES_ID=#{param1}
     </select>
 
-
-    <!--  공지를 제목, 내용, 작성일로 검색  -->
-    <!--  param1:검색타입, param2:검색내용  -->
-    <sql id="searchCondition">
-        <choose>
-            <when test="param1==1">
-                WHERE NOTICES_TITLE LIKE CONCAT('%', #{param2}, '%')
-            </when>
-            <when test="param1==2">
-                WHERE NOTICES_CONTENT LIKE CONCAT('%', #{param2}, '%')
-            </when>
-            <when test="param1==3">
-                WHERE (NOTICES_TITLE LIKE CONCAT('%', #{param2}, '%')
-                OR NOTICES_CONTENT LIKE CONCAT('%', #{param2}, '%'))
-            </when>
-            <when test="param1==4">
-                WHERE NOTICES_CREATED_AT==#{param2}
-            </when>
-            <otherwise></otherwise>
-        </choose>
-    </sql>
-
     <select id="searchNotice">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
         FROM notices
-        <include refid="searchCondition" />
-        ORDER BY NOTICES_ID
-    </select>
-
-    <!--  날짜 기간으로 공지 검색 param1:시작날짜, param2:종료 날짜 -->
-    <select id="searchNoticesByDateRange">
-        SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
-        FROM notices
-        BETWEEN #{param1} AND #{param2}
+        <where>
+            <if test="noticeTitle != null">
+                AND NOTICES_TITLE = #{noticeTitle}
+            </if>
+            <if test="noticeContent != null">
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeTitle}, '%')
+            </if>
+            <if test="noticeDateStart != null">
+                AND NOTICES_CREATED_AT &gt; = #{noticeDateStart}
+            </if><if test="noticeDateEnd != null">
+            AND NOTICES_CREATED_AT &lt; = #{noticeDateEnd}
+        </if>
+        </where>
     </select>
 
     <!-- 공지 수정 -->

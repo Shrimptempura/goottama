@@ -9,63 +9,67 @@
         FROM sanctions
     </select>
 
-    <select id="getSanctionsById">
+    <select id="getSanctionsBySanctionId">
         SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
         FROM sanctions
         WHERE SANCTIONS_ID = #{param1}
     </select>
 
-    <select id="getSanctionsByUserId">
+    <select id="searchSanctions">
         SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
         FROM sanctions
-        WHERE USER_ID = #{param1}
-    </select>
+        <where>
+            <if test="userId != null">
+                AND USER_ID = #{userId}
+            </if>
+            <if test="sanctionsTypes != null and sanctionsTypes != ''">
+                AND SANCTIONS_TYPES = #{sanctionsTypes}
+            </if>
+            <if test="sanctionsReason != null and sanctionsReason != ''">
+                AND SANCTIONS_REASON LIKE CONCAT('%', #{sanctionsReason}, '%')
+            </if>
+            <if test="adminAccountId != null">
+                AND ADMIN_ACCOUNT_ID = #{adminAccountId}
+            </if>
 
-    <select id="getSanctionsByTypes">
-        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
-        FROM sanctions
-        WHERE SANCTIONS_TYPES = #{param1}
-    </select>
+            <if test="searchStartDate != null and searchEndDate != null">
+                AND (
+                (SANCTIONS_START_DATE BETWEEN #{searchStartDate} AND #{searchEndDate}) OR
+                (SANCTIONS_END_DATE BETWEEN #{searchStartDate} AND #{searchEndDate}) OR
+                (SANCTIONS_CREATED_AT BETWEEN #{searchStartDate} AND #{searchEndDate})
+                )
+            </if>
+            <if test="searchStartDate != null and searchEndDate == null">
+                AND (
+                SANCTIONS_START_DATE &gt;= #{searchStartDate} OR
+                SANCTIONS_END_DATE &gt;= #{searchStartDate} OR
+                SANCTIONS_CREATED_AT &gt;= #{searchStartDate}
+                )
+            </if>
+            <if test="searchStartDate == null and searchEndDate != null">
+                AND (
+                SANCTIONS_START_DATE &lt;= #{searchEndDate} OR
+                SANCTIONS_END_DATE &lt;= #{searchEndDate} OR
+                SANCTIONS_CREATED_AT &lt;= #{searchEndDate}
+                )
+            </if>
 
-    <select id="getSanctionsByStartDateRange">
-        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
-        FROM sanctions
-        WHERE SANCTIONS_START_DATE BETWEEN #{param1} AND #{param2}
-    </select>
+            <if test="durationMin != null and durationMax != null">
+                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) BETWEEN #{durationMin} AND #{durationMax}
+            </if>
+            <if test="durationMin != null and durationMax == null">
+                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) &gt;= #{durationMin}
+            </if>
+            <if test="durationMin == null and durationMax != null">
+                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) &lt;= #{durationMax}
+            </if>
 
-    <select id="getSanctionsByEndDateRange">
-        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
-        FROM sanctions
-        WHERE SANCTIONS_END_DATE BETWEEN #{param1} AND #{param2}
-    </select>
-
-    <select id="getSanctionsByReason">
-        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
-        FROM sanctions
-        WHERE SANCTIONS_REASON LIKE CONCAT('%', #{param1}, '%')
-    </select>
-
-    <select id="getSanctionsByAdmin">
-        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
-        FROM sanctions
-        WHERE ADMIN_ACCOUNT_ID = #{param1}
-    </select>
-
-    <select id="getSanctionsByCreatedDateRange">
-        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
-        FROM sanctions
-        WHERE SANCTIONS_CREATED_AT BETWEEN #{param1} AND #{param2}
-    </select>
-
-    <select id="getSanctionsByDuration">
-        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
-        FROM sanctions
-        WHERE DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) BETWEEN #{param1} AND #{param2}
+        </where>
     </select>
 
     <insert id="makeSanction">
         INSERT INTO sanctions(USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT)
-        VALUES(#params{1}, #params{2}, #params{3}, #params{4}, #params{5}, #params{6}, #params{7})
+        VALUES(#{params1}, #{params2}, #{params3}, #{params4}, #{params5}, #{params6}, #{params7})
     </insert>
 
     <update id="modifySanction">
