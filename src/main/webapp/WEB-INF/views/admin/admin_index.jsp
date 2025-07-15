@@ -10,7 +10,7 @@
 <body>
     <h1>Admin Dashboard</h1>
     <div class="main-content">
-        <jsp:include page="${left-navigation-bar}" />
+        <jsp:include page="${leftNavigationBar}" />
     </div>
 </body>
 </html>

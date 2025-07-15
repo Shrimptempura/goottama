@@ -9,7 +9,7 @@ public class AdminController {
 
     @RequestMapping("admin/admin_index")
     public String adminIndex(Model model){
-        model.addAttribute("left-navigation-bar", "left-navigation-bar.jsp");
+        model.addAttribute("leftNavigationBar", "leftNavigationBar.jsp");
         return "admin/admin_index";
     }
     @RequestMapping("admin/admin_dashboard")
