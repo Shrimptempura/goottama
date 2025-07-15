@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 // 업체 상세페이지의 자세한 업체정보 탭
-public class CompanyDetailviewDto {
+public class CompanyDetailViewDto {
 
     private String companyAddr;     // 업체 주소
 

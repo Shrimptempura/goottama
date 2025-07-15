@@ -5,29 +5,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-// 사용자가 쓰는 업체에 대한 리뷰 dto
+// 리뷰 작성시 사용 dto
 public class CompanyReviewCreateDto {
 
-    private Long reviewId;          // 리뷰 아이디
-    private Long userId;            // 유저 아이디
-    private String userNickName;    // 유저 닉네임
-    private String userProfileImg;         // 유저 프로필 사진
+    private Long companyId;     // 업체 아이디
 
-    private String reviewTitle;     // 리뷰 제목
-    private String reviewContent;      // 리뷰 내용
-    private int reviewCount;            // 리뷰 조회수
-    private Timestamp reviewDate;       // 리뷰 작성시간
-    private Timestamp reviewModify;     // 리뷰 수정시간
+    private int communicationRate;  // 소통 점수
+    private int priceRate;          // 가격 점수
+    private int resultRate;         // 결과 점수
+    private int scheduleRate;       // 일정 점수
+
+    private String reviewContent;       // 리뷰 내용
     private List<String> reviewImg;     // 리뷰 사진
 
-    private Integer targetId;       // 대상아이디
-    private String targetType;    // enum : "INTERIOR", "COMMUNITY", "SHOP"
-    private int reviewLikes;    // 좋아요 수(단순 클릭, 중복 제거)
+    private Long userId;                // 회원 아이디
+
+    private String structureType;       // 건물 유형
+    private String areaInPyeong;           // 평수
+    private String constructionField;       // 시공 분야
 }

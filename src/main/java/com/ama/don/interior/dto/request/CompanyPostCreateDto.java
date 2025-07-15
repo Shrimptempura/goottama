@@ -15,7 +15,7 @@ import java.util.List;
 // 업체가 작성한 포스터
 public class CompanyPostCreateDto {
 
-    private Long companyProjectId;      // 업체 프로젝트 아이디
+    private Long companyPostId;      // 업체 포스트(게시글) 아이디
     private Long companyId;             // 업체 아이디
     private String companyIntro;        // 업체 소개말
     private Boolean isFollowed;      // 업체 팔로우
@@ -26,7 +26,7 @@ public class CompanyPostCreateDto {
      * sql 추가 부분, 인테리어 설명
      */
     private String spaceType;       // 공간 종류
-    private int areaInPyeong;      // 평수
+    private String areaInPyeong;      // 평수
     private String location;        // 지역[location table 확인]
     private String style;           // 스타일
     private String constructionDetail;   // 세부 공사
