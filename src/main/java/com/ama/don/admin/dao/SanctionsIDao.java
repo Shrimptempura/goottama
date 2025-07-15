@@ -11,21 +11,38 @@ import java.util.List;
 public interface SanctionsIDao {
     /**
      * 모든 제재 내역 출력
+     * @see #countAllSanctions()
      * @author 정순석
      */
     List<SanctionsDto> getAllSanctions();
+    
+    /**
+     * 모든 제재 내역 개수 반환
+     * @see #getAllSanctions()
+     * @author 정순석
+     */
+    int countAllSanctions();
 
     /**
      * 제재 아이디를 통한 제재 내역 검색.
+     * @see #getAllSanctions()
      * @author 정순석
      */
     SanctionsDto getSanctionsById(String sanctionsId);
 
     /**
      * 제재 검색. 검색 조건은 유저 아이디, 제재 타입, 관리자 아이디, 제재 사유, 제재 시작 및 종료일, 제재 기간.
+     * @see #countSearchSanctions(SanctionSearchVO)
      * @author 정순석
      */
     List<SanctionsDto> searchSanctions(SanctionSearchVO sanctionSearchVO);
+
+    /**
+     * 제재 검색 개수 반환
+     * @see #searchSanctions(SanctionSearchVO)
+     * @author 정순석
+     */
+    int countSearchSanctions(SanctionSearchVO sanctionSearchVO);
 
     /**
      * 제재 생성. 성공 시 true 반환, 그 외 모든 경우에는 false 반환.

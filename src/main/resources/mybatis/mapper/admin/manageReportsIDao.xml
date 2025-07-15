@@ -9,6 +9,11 @@
         FROM report
     </select>
 
+    <select id="countAllReports">
+        SELECT COUNT(*)
+        FROM report
+    </select>
+
     <select id="getReportByReportId">
         SELECT REPORT_ID, USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID, REPORT_STATUS
         FROM report
@@ -17,6 +22,32 @@
 
     <select id="searchReports">
         SELECT REPORT_ID, USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID, REPORT_STATUS FROM report
+        <where>
+            <if test="userId != null">
+                AND USER_ID = #{userId}
+            </if>
+            <if test="reportContent != null">
+                AND REPORT_CONTENT LIKE CONCAT('%', #{reportContent}, '%')
+            </if>
+            <if test="targetType != null">
+                AND TARGET_TYPE = #{targetType}
+            </if>
+            <if test="targetId != null">
+                AND TARGET_ID = #{targetId}
+            </if>
+            <if test="reportStatus != null">
+                AND REPORT_STATUS = #{reportStatus}
+            </if>
+            <if test="reportDateStart != null">
+                AND REPORT_DATE &gt; = #{reportDateStart}
+            </if>
+            <if test="reportDateEnd != null">
+                AND REPORT_DATE &lt; = #{reportDateEnd}
+            </if>
+        </where>
+    </select>
+    <select id="countSearchReports">
+        SELECT COUNT(*)
         <where>
             <if test="userId != null">
                 AND USER_ID = #{userId}

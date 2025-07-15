@@ -10,6 +10,11 @@
         FROM notices ORDER BY NOTICES_ID
     </select>
 
+    <select id="countAllNotices">
+        SELECT COUNT(*)
+        FROM notices
+    </select>
+
     <!--  아이디로 공지 검색  -->
     <select id="getNoticeById">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
@@ -24,13 +29,32 @@
                 AND NOTICES_TITLE = #{noticeTitle}
             </if>
             <if test="noticeContent != null">
-                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeTitle}, '%')
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeContent}, '%')
             </if>
             <if test="noticeDateStart != null">
                 AND NOTICES_CREATED_AT &gt; = #{noticeDateStart}
-            </if><if test="noticeDateEnd != null">
-            AND NOTICES_CREATED_AT &lt; = #{noticeDateEnd}
-        </if>
+            </if>
+            <if test="noticeDateEnd != null">
+                AND NOTICES_CREATED_AT &lt; = #{noticeDateEnd}
+            </if>
+        </where>
+    </select>
+    <select id="countSearchNotice">
+        SELECT COUNT(*)
+        FROM notices
+        <where>
+            <if test="noticeTitle != null">
+                AND NOTICES_TITLE = #{noticeTitle}
+            </if>
+            <if test="noticeContent != null">
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeContent}, '%')
+            </if>
+            <if test="noticeDateStart != null">
+                AND NOTICES_CREATED_AT &gt; = #{noticeDateStart}
+            </if>
+            <if test="noticeDateEnd != null">
+                AND NOTICES_CREATED_AT &lt; = #{noticeDateEnd}
+            </if>
         </where>
     </select>
 

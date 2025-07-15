@@ -11,21 +11,38 @@ import java.util.List;
 public interface NoticesIDao {
     /**
      * 전체 공지 반환
+     * @see #countAllNotices()
      * @author 정순석
      */
     public List<NoticesDto> getAllNotices();
 
     /**
+     * 전체 공지 개수 반환
+     * @see #getAllNotices()
+     * @author 정순석
+     */
+    public int countAllNotices();
+
+    /**
      * notice_id에 해당하는 공지 반환
+     * @see #getAllNotices()
      * @author 정순석
      */
     public NoticesDto getNoticeById(String noticeId);
 
     /**
      * 공지 검색. 제목, 내용, 날짜범위로 검색 가능.
+     * @see #countSearchNotice(NoticeSearchVO)
      * @author 정순석
      */
     public List<NoticesDto> searchNotice(NoticeSearchVO noticeSearchVO);
+
+    /**
+     * 공지 검색 개수 반환
+     * @see #searchNotice(NoticeSearchVO)
+     * @author 정순석
+     */
+    public int countSearchNotice(NoticeSearchVO noticeSearchVO);
 
     /**
      * 공지 수정. 성공 시 true 반환, 그 외 모든 경우에는 false 반환.
