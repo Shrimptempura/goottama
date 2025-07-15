@@ -41,6 +41,7 @@ public class SController {
 	@RequestMapping("/shop/write")
 	public String write(HttpServletRequest request,Model model) {
 		
+		
 		model.addAttribute("request",request);
 		sServiceinter=new SWriteService(iDao);
 		sServiceinter.execute(model);

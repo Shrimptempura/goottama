@@ -26,10 +26,17 @@
 		     	</div>
 			
 		</div>
-		
-		<div class="product-list">
-			<img src="${product }" alt="" />
-			
+		<div class="main-container">
+			<div class="product-list">
+				<img src="${product.img }" alt="" />
+				<div class="list">
+					
+					<div class="card-title">${product.mall_name}제목</div>
+					<div class="card-title">${product.name}제목</div>
+			        <div class="card-price">${product.price}원</div>
+				</div>
+				
+			</div>
 		</div>
 
 </body>

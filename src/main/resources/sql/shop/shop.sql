@@ -88,3 +88,11 @@ CREATE TABLE orders_products (
    op_status   varchar(100)   NULL,
    op_totalprice   int   NULL
 );
+
+-- 쇼핑
+CREATE TABLE category (
+   category_id   int   NOT NULL,
+   category_main   varchar(100)   NULL,
+   category_sub   varchar(100)   NULL
+);
+

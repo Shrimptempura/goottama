@@ -1,0 +1,28 @@
+0714
+
+오늘할일
+
+1. 프로젝트 구조 개발
+1)controller,dto,dao,service,jsp
+2) 카테고리부분제작
+3) 상품 상세 만들기
+4) 
+
+아마에다가 push
+
+
+ec2 서버 테이블(db로 사용)
+
+144.24.71.50
+
+blue
+123456
+
+
+enum->varchar(100);
+
+timstamp ->comment
+
+orders
+
+상품이미지에 타입을 추가해야한다.

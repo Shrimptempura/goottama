@@ -11,6 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ProductDto {
 	int product_id; 
+	int category_id;
     String product_name;
 	int product_price;
     float product_discountrate;
@@ -23,11 +24,12 @@ public class ProductDto {
     String product_istoday;
     Timestamp product_date;
     
-	public ProductDto(int product_id, String product_name, int product_price, float product_discountrate,
+	public ProductDto(int product_id, int category_id,String product_name, int product_price, float product_discountrate,
 			String product_img, String product_mall_name, String product_madein, Timestamp product_release,
 			String product_as_manager_phone, String product_type, String product_color, String product_istoday,
 			Timestamp product_date) {
 		this.product_id = product_id;
+		this.category_id = category_id;
 		this.product_name = product_name;
 		this.product_price = product_price;
 		this.product_discountrate = product_discountrate;

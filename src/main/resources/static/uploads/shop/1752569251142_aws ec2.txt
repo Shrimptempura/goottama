@@ -1,0 +1,60 @@
+to do list
+1.
+
+
+
+
+AOP는 Aspect Oriented Programming 관점지향 프로그래밍
+--로깅
+어떠한 로직을 기준으로 핵심관점,부가적인관점으로 나누어서 본다.
+그 관점을 기준으로 모듈화한다.
+
+
+
+
+ubuntu
+
+t2medium
+
+
+key pair -rsa  .emp
+
+
+
+---
+ssh -i .\jenkins702.pem ubuntu@3.84.54.16
+ubuntu------------
+sudo apt install -y openjdk-17-jdk
+sudo apt install -y git
+ssh-keygen -t rsa
+sudo apt install -y maria
+sudo systemctl enable mariadb.service
+ sudo systemctl start mariadb.service
+sudo mysql_secure_installation
+
+mysql -u root -p111111
+select user.password,host from user;
+sudo ufw allow 3306/tcp -방화벽
+sudo ufw reload
+grant all privileges on *.* to 'root'@'%' identified by '111111' with grant option;
+
+workbench---------------------------
+
+ssh hostname
+3.84.54.16:22
+ssh username user
+
+
+mysqlport: 3306
+username: user1 ,root
+password store vault
+
+
+workbench---------------------------
+
+standard tcp/ip
+
+3.84.54.16	
+port 3306
+username: user1
+password: 123456
