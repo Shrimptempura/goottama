@@ -9,6 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
+// 업체 좌측 미니 박스에 담길 정보
 public class CompanyMiniInfoDto {
 
     Long company_detail_id;     // 업체상세 아이디
