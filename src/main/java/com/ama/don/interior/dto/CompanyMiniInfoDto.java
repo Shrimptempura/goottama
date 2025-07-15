@@ -18,20 +18,15 @@ public class CompanyMiniInfoDto {
     private Integer companyRate;        // 업체 평점(아직 평가하지 않음 -> Integer)
 
     /**
-     * 업체 AS
-     */
-    private String companyAs;
-
-    /**
      * 업체 소개말
      */
     private String companyIntro;
     private String companyAddr;         // 업체 주소
+    private String companyLicense;      // 업체 면허
 
     /**
      * 업체 분야
      */
     private String companyField;
-    private String companyLicense;      // 업체 면허
-    private String companyCareer;       // 업체 경력[사용 확인]
+
 }
