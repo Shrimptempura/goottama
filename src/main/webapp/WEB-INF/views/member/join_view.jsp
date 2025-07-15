@@ -6,24 +6,27 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<!-- 화원가입 아이디 중복확인 -->
 <script>
 function checkId(){
 	const loginId = document.getElementById("loginId").value;
 	if (!loginId) {
-        document.getElementById("result").innerText = "아이디를 입력하세요.";
+        document.getElementById("message").innerText = "아이디를 입력하세요.";
         return;
     }
 	fetch('/checkId?loginId=' + encodeURIComponent(loginId))
 	 .then(response => response.json())
                 .then(data => {
                     if (data.exists) {
-                        document.getElementById("result").innerText = "이미 사용 중인 아이디입니다.";
+                        document.getElementById("message").innerText = "이미 사용 중인 아이디입니다.";
                     } else {
-                        document.getElementById("result").innerText = "사용 가능한 아이디입니다.";
+                        document.getElementById("message").innerText = "사용 가능한 아이디입니다.";
                     }
                 })
 }
 </script>
+<!-- 이메일 선택 -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const domainSelect = document.querySelector("select[name='domainSelect']");
@@ -43,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+<!-- api 우편번호 찾기/자동입력 -->
 <script>
 function execDaumPostcode() {
     new daum.Postcode({
@@ -61,21 +65,21 @@ function execDaumPostcode() {
 	<form action="join" method="post">
 		아이디: <input type="text" name="loginId" id="loginId" placeholder="아이디를 입력하세요." />
 		<button type="button" onclick="checkId()">중복확인</button>
-		<p id="result"></p>
+		<p id="message"></p>
 		비밀번호: <input type="password" name="pw" /> <br /> 
 		비밀번호 확인: <input type="password" name="pw2" /> <br />
-		권한: <input type="radio" name="roles" value="1" checked/>일반회원
-		<input type="radio" name="roles" value="2" /> 업체 <br /> 
+		권한: <input type="radio" name="roles" value="100" checked/>일반회원
+		<input type="radio" name="roles" value="200" /> 업체 <br /> 
 		이름: <input type="text" name="name" /> <br /> 
 		닉네임: <input type="text" name="nickname" /> <br /> 
 		성별: <input type="radio" name="gender" value="M" checked />남 
 			<input type="radio" name="gender" value="F" />여 <br />
 		생년월일: <input type="date" name="birth" /> <br /> 
-		연락처: <input type="text" name="tel" id="phone" placeholder="전화번호 입력"/> <br /> 
+		연락처: <input type="text" name="tel"  placeholder="전화번호 입력"/> <br /> 
 		우편번호: <input type="text" id="zipcode" name="zipcode" readonly/>
 		<button type="button" onclick="execDaumPostcode()">우편번호 찾기</button> <br /> 
 		도로명주소:<input type="text" id="addr" name="addr" readonly />
-		상세주소: <input type="text"  name="addr2" /> <br />
+		상세주소: <input type="text"  name="detailAddr" /> <br />
 		이메일: <input type="text" name="emailId" /> @
 		<input type="text" name="emailDomain"  />
 		<select name="domainSelect" >
