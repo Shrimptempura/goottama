@@ -5,9 +5,30 @@
 	
 <mapper namespace="com.ama.don.shop.dao.IDao">
 
-	<select id="list" resultType="com.ama.don.shop.dto.ProductDto">
+			<!--id로 pk  -->
+	<resultMap type="com.ama.don.shop.dto.Product_imgDto" id="Product_imgDto">
 		
+		<result column="product_id" property="product_id"/>
+		<result column="product_imgurl" property="product_imgurl"/>
 		
+	</resultMap>   
+    <resultMap type="com.ama.don.shop.dto.ProductDto" id="ProductDto">
+		<result column="product_id" property="product_id"/>
+		<result column="product_name" property="product_name"/>
+		<result column="product_price" property="product_price"/>
+		<result column="product_discountrate" property="product_discountrate"/>
+		<result column="product_mall_name" property="product_mall_name"/>
+		<!-- collection은 단일 객체와 list 모두 가능하다. -->
+		<collection property="product_imgDto" resultMap="Product_imgDto"/>	<!-- resultMap이름과 위의 resultMap 아이디이름이 같아야한다. -->
+		
+	</resultMap>   
+
+	<select id="product_list" parameterType="com.ama.don.shop.dto.ProductDto" resultMap="ProductDto">
+		
+		SELECT P.PRODUCT_ID,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_DISCOUNTRATE, P.PRODUCT_MALL_NAME, PI.PRODUCT_IMGURL,PI.PRODUCT_IMG_TYPE
+		FROM PRODUCT P
+		JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID
+		WHERE PI.PRODUCT_IMG_TYPE='메인';
 	</select>
 								<!-- primary key를 가져온다. -->
 	<insert id="write" parameterType="map" useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id">

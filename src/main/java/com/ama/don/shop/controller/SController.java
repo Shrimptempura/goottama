@@ -53,9 +53,9 @@ public class SController {
 	public String category(HttpServletRequest request,Model model) {
 		
 		
-//		model.addAttribute("request",request);
-//		sServiceinter=new SListService(iDao);
-//		sServiceinter.execute(model);
+		model.addAttribute("request",request);
+		sServiceinter=new SListService(iDao);
+		sServiceinter.execute(model);
 		
 		return "shop/category";
 	}

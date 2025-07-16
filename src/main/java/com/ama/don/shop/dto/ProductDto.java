@@ -1,6 +1,7 @@
 package com.ama.don.shop.dto;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -43,5 +44,9 @@ public class ProductDto {
 		this.product_date = product_date;
 	}
     
+	//
+	// ✅ 이미지 여러 개 담는 리스트
+    //private List<Product_imgDto> product_imgDtoList;
+	private Product_imgDto product_imgDto;	//여기와 collection properties가 같은 이름이어야한다. 
    
 }

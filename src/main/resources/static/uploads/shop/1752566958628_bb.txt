@@ -1,6 +1,0 @@
-dbms
-
-
-blue접속- 
-id:blue
-pw:123456
