@@ -12,6 +12,12 @@ public class CommunityController {
 		return "community/community_home";
 	}
 
+	@RequestMapping("review_view")
+	public String review() {
+
+		return "community/review_view";
+	}
+
 	@RequestMapping("suggest_view")
 	public String suggest() {
 
@@ -24,16 +30,10 @@ public class CommunityController {
 		return "community/popularity_view";
 	}
 
-	@RequestMapping("review_view")
-	public String review() {
-
-		return "community/review_view";
-	}
-
 	@RequestMapping("house_photo_view")
 	public String house_photo() {
 
-		return "community/house_photo_view";
+		return "community/house_phosto_view";
 	}
 
 	@RequestMapping("house_decoration_view")
