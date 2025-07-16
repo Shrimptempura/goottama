@@ -9,8 +9,12 @@
 </head>
 <body>
     <h1>Admin Dashboard</h1>
-    <div class="main-content">
+    <div>
         <jsp:include page="${leftNavigationBar}" />
+        <hr />
+    </div>
+    <div class="main-content">
+        <jsp:include page="${./notices/notice_page}" />
     </div>
 </body>
 </html>
