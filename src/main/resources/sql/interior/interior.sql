@@ -58,7 +58,7 @@ CREATE TABLE company_like (
 CREATE TABLE company_detail (
     company_detail_id   bigint   NULL,
     company_addr   varchar(500)   NULL,
-    company_field   varchar(100)
+    company_field   varchar(100) NULL,
     company_license   varchar(100)   NULL,
     company_as   varchar(100)   NULL,
     company_career   varchar(100)   NULL,
@@ -88,6 +88,6 @@ CREATE TABLE company_score_avg (
     avg_communication float NOT NULL,
     avg_price float NOT NULL,
     avg_result float NOT NULL,
-    avg_schedult float NOT NULL,
+    avg_schedule float NOT NULL,
     avg_total_rate float NOT NULL
 );
