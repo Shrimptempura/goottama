@@ -9,15 +9,24 @@
 	<resultMap type="com.ama.don.shop.dto.Product_imgDto" id="Product_imgDto">
 		
 		<result column="product_id" property="product_id"/>
+		<result column="product_img_id" property="product_img_id"/>
 		<result column="product_imgurl" property="product_imgurl"/>
-		
+		<result column="product_img_type" property="product_img_type"></result>
 	</resultMap>   
     <resultMap type="com.ama.don.shop.dto.ProductDto" id="ProductDto">
 		<result column="product_id" property="product_id"/>
+		<result column="category_id" property="cateogory_id"/>
 		<result column="product_name" property="product_name"/>
 		<result column="product_price" property="product_price"/>
 		<result column="product_discountrate" property="product_discountrate"/>
 		<result column="product_mall_name" property="product_mall_name"/>
+		<result column="product_madein" property="product_madein"/>
+		<result column="product_release" property="product_as_manager_phone"/>
+		<result column="product_type" property="product_type"/>
+		<result column="product_color" property="product_color"/>
+		<result column="product_istoday" property="product_istoday"/>
+		<result column="product_date" property="product_date"/>
+		
 		<!-- collection은 단일 객체와 list 모두 가능하다. -->
 		<collection property="product_imgDto" resultMap="Product_imgDto"/>	<!-- resultMap이름과 위의 resultMap 아이디이름이 같아야한다. -->
 		
@@ -30,6 +39,14 @@
 		JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID
 		WHERE PI.PRODUCT_IMG_TYPE='메인';
 	</select>
+	
+	<select id="product" resultType="com.ama.don.shop.dto.ProductDto">
+		
+		SELECT * FROM PRODUCT 
+        WHERE PRODUCT_ID=#{param1};
+	
+	</select>
+	
 								<!-- primary key를 가져온다. -->
 	<insert id="write" parameterType="map" useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id">
 

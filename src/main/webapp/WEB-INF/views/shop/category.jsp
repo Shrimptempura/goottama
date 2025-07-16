@@ -39,6 +39,12 @@
   padding: 10px;
   box-sizing: border-box;
 }
+
+.img{
+	width: 150px;
+	height: 150px;
+}
+
 </style>
 
 
@@ -64,23 +70,18 @@
 			<a href="#">수납정리</a>
 			<a href="#">생활용품</a>
 		</div>
-		<img src="<c:url value='/uploads/shop/1752627941146_img.PNG' />" alt="상품 이미지" />
-		<img src="<c:url value='/uploads/shop/1752572314446_9%EC%A3%BC%EC%B0%A8%20%EC%8B%9C%ED%80%80%EC%8A%A4%20%EC%BF%BC%EB%A6%AC.PNG' />" />
-		<!-- ✅ 항상 웹 루트 기준 URL 사용 + contextPath 앞에 붙이기 -->
-		<img src="<c:url value='/uploads/shop/1752572314446_9주차 시퀀스 쿼리.PNG' />" />
-		<img src="src/main/resources/static/uploads/shop/1752572314446_9주차 시퀀스 쿼리.PNG" alt="" />
-		<img src="/uploads/shop/1752572314446_9주차 시퀀스 쿼리.PNG" alt="" />
 		
 		<div class="card-container">
 			<c:forEach items="${list }" var="product">
 				<div class="card">
-					<img src="/uploads/shop/${product.product_imgDto.product_imgurl}" alt="상품 이미지" style="width:150px;">
+					<div>${product.product_id }</div>
+					<a href="product_detail?product_id=${product.product_id }"><img class="img" src="/static/uploads/shop/${product.product_imgDto.product_imgurl}" alt="상품 이미지"></a>
 					<%--   <div>${product.product_imgurl }</div> --%>
 			        <%-- <img src="${product.product_image}" alt="${product.name}">
- --%>			        <div class="card-body">
-			          <div class="card-title">${product.product_name}제목</div>
-			          <div class="card-price">${product.product_price}원</div>
-			          <a href="#" class="card-button">장바구니</a>
+ --%>			    <div class="card-body">
+ 					<a href="product_detail?product_id=${product.product_id }">${product.product_name}</a> <br />	
+			        <a href="product_detail?product_id=${product.product_id }" class="card-price">${product.product_price}원</a> <br />
+					
 			        </div>
 		     	</div>
 			</c:forEach>
