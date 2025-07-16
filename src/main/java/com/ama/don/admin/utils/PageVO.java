@@ -1,5 +1,11 @@
 package com.ama.don.admin.utils;
 
+/**
+ * 동적 Pagination을 위한 코드를 제공한다.
+ * pageCalculate을 통해 페이지를 계산 하며, pageCalculate는 전체 데이터 개수를 받는다.
+ * displayRowCount는 화면에 출력 될 열의 수이다.
+ * pageGrpCnt는 페이지 번호의 수이다.
+ */
 public class PageVO {
     private Integer displayRowCount=10;  //출력할 데이터 갯수
     private Integer rowStart;  			//시작행 번호
@@ -11,7 +17,10 @@ public class PageVO {
     private Integer pageEnd; 			 //종료페이지
     private Integer pageGrpCnt=10; 			 //페이지그룹의 페이지갯수
 
-    //전체데이터 갯수를 이용해서 페이지 계산
+    /**
+     * 전체데이터 갯수를 이용해서 페이지를 동적으로 계산
+     * @param total 전체 데이터 개수. 각 DAO의 count 메서드로 계산한다.
+     */
     public void pageCalculate(Integer total) {
         getPage();
         totRow = total;
@@ -48,6 +57,10 @@ public class PageVO {
         }
     }
 
+    /**
+     * 현제 페이지 번호를 반환한다.
+     * @return 현재 페이지 번호
+     */
     public Integer getPage() {
         if (page==null || page==0) {
             page=1;

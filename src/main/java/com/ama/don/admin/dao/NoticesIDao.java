@@ -3,65 +3,85 @@ package com.ama.don.admin.dao;
 import com.ama.don.admin.dto.NoticeSearchVO;
 import com.ama.don.admin.dto.NoticesDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.util.List;
 
+/**
+ * 공지사항에 관련된 DB 접근을 정의한 MyBatis Mapper 인터페이스.
+ * - 공지 목록 조회, 검색, 등록, 수정, 삭제 기능 포함
+ *
+ * @author 정순석
+ */
+@Repository
 @Mapper
 public interface NoticesIDao {
     /**
-     * 전체 공지 반환
+     * 전체 공지사항 목록을 반환한다.
+     * @return 공지사항 목록 (List<NoticesDto>)
      * @see #countAllNotices()
-     * @author 정순석
      */
     public List<NoticesDto> getAllNotices();
 
     /**
-     * 전체 공지 개수 반환
+     * 전체 공지사항의 개수를 반환한다.
+     * @return 전체 공지 개수
      * @see #getAllNotices()
-     * @author 정순석
      */
     public int countAllNotices();
 
     /**
-     * notice_id에 해당하는 공지 반환
+     * 주어진 ID에 해당하는 공지사항을 반환한다.
+     * @param noticeId 조회할 공지의 ID
+     * @return 공지사항 DTO (존재하지 않으면 null)
      * @see #getAllNotices()
-     * @author 정순석
      */
     public NoticesDto getNoticeById(String noticeId);
 
     /**
-     * 공지 검색. 제목, 내용, 날짜범위로 검색 가능.
+     * 검색 조건(제목, 내용, 날짜 범위 등)에 따라 공지사항 목록을 반환한다.
+     * @param noticeSearchVO 검색 조건을 담은 VO
+     *        - title: 검색할 제목 키워드
+     *        - content: 검색할 내용 키워드
+     *        - dateStart, dateEnd: 검색할 날짜 범위
+     * @return 검색 결과 공지사항 목록
      * @see #countSearchNotice(NoticeSearchVO)
-     * @author 정순석
      */
     public List<NoticesDto> searchNotice(NoticeSearchVO noticeSearchVO);
 
     /**
-     * 공지 검색 개수 반환
+     * 검색 조건에 해당하는 공지사항 개수를 반환한다.
+     * @param noticeSearchVO 검색 조건 VO
+     * @return 검색 결과 개수
      * @see #searchNotice(NoticeSearchVO)
-     * @author 정순석
      */
     public int countSearchNotice(NoticeSearchVO noticeSearchVO);
 
     /**
-     * 공지 수정. 성공 시 true 반환, 그 외 모든 경우에는 false 반환.
-     * @return boolean
-     * @author 정순석
+     * 공지사항 내용을 수정한다.
+     * @param noticeId 수정할 공지 ID
+     * @param title 수정할 제목
+     * @param isPinned 상단 고정 여부
+     * @param filePath 첨부 파일 경로 (null 가능)
+     * @param content 공지 본문 내용
+     * @return 성공 시 true, 실패 시 false
      */
     public boolean modifyNotice(String noticeId, String title, boolean isPinned, String filePath, String content);
 
     /**
-     * 공지 작성. 성공 시 true 반환, 그 외 모든 경우에는 false 반환.
-     * @return boolean
-     * @author 정순석
+     * 새로운 공지사항을 작성한다.
+     * @param title 제목
+     * @param isPinned 상단 고정 여부
+     * @param filePath 첨부 파일 경로 (null 가능)
+     * @param content 본문 내용
+     * @return 성공 시 true, 실패 시 false
      */
     public boolean writeNotice(String title, boolean isPinned, String filePath, String content);
 
     /**
-     * 공지 삭제. 성공 시 true 반환, 그 외 모든 경우에는 false 반환.
-     * @return boolean
-     * @author 정순석
+     * 주어진 ID의 공지사항을 삭제한다.
+     * @param noticeId 삭제할 공지의 ID
+     * @return 성공 시 true, 실패 시 false
      */
     public boolean deleteNotice(String noticeId);
 }
