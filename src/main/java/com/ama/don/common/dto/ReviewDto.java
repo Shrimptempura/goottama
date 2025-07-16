@@ -21,6 +21,6 @@ public class ReviewDto {
     private Timestamp reviewModify;     // 리뷰 수정 일지
     private String reviewImg;           // 리뷰 사진
 
-    private Integer targetId;       // 대상 아이디
+    private Long targetId;       // 대상 아이디
     private String targetType;      //  enum: INTERIOR, COMMUNITY, SHOP
 }
