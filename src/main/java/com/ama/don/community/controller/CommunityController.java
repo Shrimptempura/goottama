@@ -33,7 +33,7 @@ public class CommunityController {
 	@RequestMapping("house_photo_view")
 	public String house_photo() {
 
-		return "community/house_phosto_view";
+		return "community/house_photo_view";
 	}
 
 	@RequestMapping("house_decoration_view")
