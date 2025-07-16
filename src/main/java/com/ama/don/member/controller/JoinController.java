@@ -25,6 +25,11 @@ public class JoinController {
 	@Autowired
 	private JoinDao joinDao;
 	
+	@RequestMapping("/")
+	public String index() {
+		return "list";
+	}
+	
 	@RequestMapping("join_view")
 	public String join_view() {
 		return "member/join_view";
@@ -55,7 +60,12 @@ public class JoinController {
 		memberServiceInter = new JoinService(joinDao);
 		memberServiceInter.execute(model);
 		
+		return "redirect:login_view";
+	}
+	@RequestMapping("login_view")
+	public String login_view() {
 		return "member/login_view";
 	}
+
 
 }

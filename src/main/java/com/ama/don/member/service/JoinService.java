@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.ui.Model;
 
 import com.ama.don.member.dao.JoinDao;
+import com.ama.don.member.dto.UserDtailDto;
 import com.ama.don.member.dto.UserDtailDto.Gender;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -43,8 +44,20 @@ public class JoinService implements MemberServiceInter {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String encodedPw = encoder.encode(pw);
 		
-		joinDao.insertUserDtail(name,nickname,gender,birth,tel,zipcode,addr,email);
-		long user_id = joinDao.selectMaxUserId();
+		UserDtailDto dto = new UserDtailDto();
+		dto.setUser_name(name);
+		dto.setUser_nickname(nickname);
+		dto.setUser_gender(gender);
+		dto.setUser_birth(birth);
+		dto.setUser_tel(tel);
+		dto.setUser_zipcode(zipcode);
+		dto.setUser_addr(addr);
+		dto.setUser_email(email);
+		
+		joinDao.insertUserDtail(dto);
+		
+		long user_id = dto.getUser_id();
+		
 		joinDao.insertUserLogin(user_id,loginId,encodedPw,roles);
 		
 

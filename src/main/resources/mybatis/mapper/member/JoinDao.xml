@@ -9,17 +9,14 @@
 	SELECT COUNT(*) FROM user_login WHERE LOGIN_ID=#{param1}
 	</select> 
 	
-	<insert id="insertUserDtail">
+	<insert id="insertUserDtail" parameterType="com.ama.don.member.dto.UserDtailDto" useGeneratedKeys="true" keyProperty="user_id">
 	INSERT INTO user_detail(USER_NAME,USER_NICKNAME,USER_GENDER,USER_BIRTH,USER_TEL,USER_ZIPCODE,USER_ADDR,USER_EMAIL)
-	VALUES(#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7},#{param8})
+	VALUES(#{user_name},#{user_nickname},#{user_gender},#{user_birth},#{user_tel},#{user_zipcode},#{user_addr},#{user_email})
 	</insert>
-	
-	<select id="selectMaxUserId" resultType="long">
-	SELECT MAX(USER_ID) FROM user_detail
-	</select> 
 	
 	<insert id="insertUserLogin">
 	INSERT INTO user_login(LOGIN_ID,USER_ID,ROLES_ID,USER_PASSWORD) VALUES(#{param2},#{param1},#{param4},#{param3})
 	</insert>
+
 
 </mapper>
