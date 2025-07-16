@@ -36,7 +36,7 @@ public interface ManageUserIDao {
     int countAllUsers();
 
     /**
-     * 전체 유저의 최소 정보만 반환한다.
+     * 전체 유저의 최소 정보만 반환한다.  <br>
      * 예: 이름, 닉네임, 아이디 등 일부 필드만 포함.
      *
      * @return 유저 최소 정보 목록 (List of {@link UserDtailDto})
@@ -56,9 +56,9 @@ public interface ManageUserIDao {
     /**
      * 다양한 조건으로 유저를 검색한다.
      * <p>
-     * 검색 조건:
-     * - 이름, 닉네임, 성별
-     * - 생일 및 가입일 범위
+     * 검색 조건: <br>
+     * - 이름, 닉네임, 성별 <br>
+     * - 생일 및 가입일 범위 <br>
      * - 전화번호, 우편번호, 주소, 이메일
      * </p>
      * 모든 필드는 부분 일치 혹은 범위 비교로 검색됨.

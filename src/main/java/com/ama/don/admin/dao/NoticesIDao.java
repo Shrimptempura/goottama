@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 공지사항에 관련된 DB 접근을 정의한 MyBatis Mapper 인터페이스.
+ * 공지사항에 관련된 DB 접근을 정의한 MyBatis Mapper 인터페이스. <br>
  * - 공지 목록 조회, 검색, 등록, 수정, 삭제 기능 포함
  *
  * @author 정순석
@@ -40,9 +40,9 @@ public interface NoticesIDao {
 
     /**
      * 검색 조건(제목, 내용, 날짜 범위 등)에 따라 공지사항 목록을 반환한다.
-     * @param noticeSearchVO 검색 조건을 담은 VO
-     *        - title: 검색할 제목 키워드
-     *        - content: 검색할 내용 키워드
+     * @param noticeSearchVO 검색 조건을 담은 VO <br>
+     *        - title: 검색할 제목 키워드 <br>
+     *        - content: 검색할 내용 키워드 <br>
      *        - dateStart, dateEnd: 검색할 날짜 범위
      * @return 검색 결과 공지사항 목록
      * @see #countSearchNotice(NoticeSearchVO)

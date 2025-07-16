@@ -6,6 +6,10 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 
+/**
+ * 공지 검색 전용 VO  <br>
+ * 검색을 위한 날짜 범위를 noticeDateStart와 noticeDateEnd로 받음
+ */
 @Setter
 @Getter
 @AllArgsConstructor

@@ -10,10 +10,10 @@ import java.util.List;
 /**
  * 제재(Sanctions) 관련 데이터베이스 접근을 정의한 MyBatis Mapper 인터페이스.
  * <p>
- * 기능:
- * - 전체 제재 내역 조회 및 개수
- * - ID 기반 단일 조회
- * - 조건 기반 검색 및 검색 결과 개수
+ * 기능: <br>
+ * - 전체 제재 내역 조회 및 개수 <br>
+ * - ID 기반 단일 조회 <br>
+ * - 조건 기반 검색 및 검색 결과 개수 <br>
  * - 제재 생성, 수정, 삭제
  * </p>
  *
@@ -50,11 +50,11 @@ public interface SanctionsIDao {
     /**
      * 조건에 따라 제재 내역을 검색한다.
      *
-     * @param sanctionSearchVO 검색 조건이 담긴 객체
-     *                         - userId: 대상 사용자 ID
-     *                         - sanctionType: 제재 유형
-     *                         - adminId: 제재한 관리자 ID
-     *                         - reason: 사유 키워드
+     * @param sanctionSearchVO 검색 조건이 담긴 객체 <br>
+     *                         - userId: 대상 사용자 ID <br>
+     *                         - sanctionType: 제재 유형 <br>
+     *                         - adminId: 제재한 관리자 ID <br>
+     *                         - reason: 사유 키워드 <br>
      *                         - startDate ~ endDate: 제재 시작/종료일
      * @return 검색 결과 목록
      * @see #countSearchSanctions(SanctionSearchVO)
