@@ -47,6 +47,8 @@ public class JoinController {
 			return "member/join_view";
 		}
 		
+		//여기 할차례
+		
 		//회워정보 db저장,회원가입완료
 		joinService.execute(model);		
 		return "redirect:login_view";
