@@ -2,7 +2,9 @@ package com.ama.don.admin.dao;
 
 import com.ama.don.admin.dto.NoticeSearchVO;
 import com.ama.don.admin.dto.NoticesDto;
+import com.ama.don.admin.utils.SearchVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,6 +32,8 @@ public interface NoticesIDao {
      */
     public int countAllNotices();
 
+    public List<NoticesDto> getAllNoticesPaginated(int offset, int limit);
+
     /**
      * 주어진 ID에 해당하는 공지사항을 반환한다.
      * @param noticeId 조회할 공지의 ID
@@ -45,17 +49,20 @@ public interface NoticesIDao {
      *        - content: 검색할 내용 키워드 <br>
      *        - dateStart, dateEnd: 검색할 날짜 범위
      * @return 검색 결과 공지사항 목록
-     * @see #countSearchNotice(NoticeSearchVO)
+     * @see #countSearchNotice(NoticeSearchVO, SearchVO)
      */
-    public List<NoticesDto> searchNotice(NoticeSearchVO noticeSearchVO);
+    List<NoticesDto> searchNotice(@Param("noticeSearchVO") NoticeSearchVO noticeSearchVO,
+                                  @Param("searchVO") SearchVO searchVO);
+
 
     /**
      * 검색 조건에 해당하는 공지사항 개수를 반환한다.
      * @param noticeSearchVO 검색 조건 VO
      * @return 검색 결과 개수
-     * @see #searchNotice(NoticeSearchVO)
+     * @see #searchNotice(NoticeSearchVO, SearchVO)
      */
-    public int countSearchNotice(NoticeSearchVO noticeSearchVO);
+    public int countSearchNotice(@Param("noticeSearchVO") NoticeSearchVO noticeSearchVO,
+                                 @Param("searchVO") SearchVO searchVO);
 
     /**
      * 공지사항 내용을 수정한다.

@@ -2,6 +2,7 @@ package com.ama.don.admin.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
@@ -13,6 +14,7 @@ import java.sql.Timestamp;
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class NoticeSearchVO {
     private String noticeTitle;
     private String noticeContent;

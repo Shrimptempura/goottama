@@ -21,41 +21,52 @@
         FROM notices WHERE NOTICES_ID=#{param1}
     </select>
 
-    <select id="searchNotice">
+    <select id="searchNotice" resultType="NoticesDto">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
         FROM notices
         <where>
-            <if test="noticeTitle != null">
-                AND NOTICES_TITLE = #{noticeTitle}
+            <if test="noticeSearchVO.noticeTitle != null and noticeSearchVO.noticeTitle != ''">
+                AND NOTICES_TITLE LIKE CONCAT('%', #{noticeSearchVO.noticeTitle}, '%')
             </if>
-            <if test="noticeContent != null">
-                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeContent}, '%')
+            <if test="noticeSearchVO.noticeContent != null and noticeSearchVO.noticeContent != ''">
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchVO.noticeContent}, '%')
             </if>
-            <if test="noticeDateStart != null">
-                AND NOTICES_CREATED_AT &gt; = #{noticeDateStart}
+            <if test="noticeSearchVO.noticeDateStart != null">
+                AND NOTICES_CREATED_AT &gt;= #{noticeSearchVO.noticeDateStart}
             </if>
-            <if test="noticeDateEnd != null">
-                AND NOTICES_CREATED_AT &lt; = #{noticeDateEnd}
+            <if test="noticeSearchVO.noticeDateEnd != null">
+                AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
             </if>
         </where>
+        ORDER BY NOTICES_ID DESC
+        LIMIT #{searchVO.rowStart - 1}, #{searchVO.displayRowCount}
     </select>
     <select id="countSearchNotice">
         SELECT COUNT(*)
         FROM notices
         <where>
-            <if test="noticeTitle != null">
-                AND NOTICES_TITLE = #{noticeTitle}
+            <if test="noticeSearchVO.noticeTitle != null and noticeSearchVO.noticeTitle != ''">
+                AND NOTICES_TITLE LIKE CONCAT('%', #{noticeSearchVO.noticeTitle}, '%')
             </if>
-            <if test="noticeContent != null">
-                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeContent}, '%')
+            <if test="noticeSearchVO.noticeContent != null and noticeSearchVO.noticeContent != ''">
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchVO.noticeContent}, '%')
             </if>
-            <if test="noticeDateStart != null">
-                AND NOTICES_CREATED_AT &gt; = #{noticeDateStart}
+            <if test="noticeSearchVO.noticeDateStart != null">
+                AND NOTICES_CREATED_AT &gt;= #{noticeSearchVO.noticeDateStart}
             </if>
-            <if test="noticeDateEnd != null">
-                AND NOTICES_CREATED_AT &lt; = #{noticeDateEnd}
+            <if test="noticeSearchVO.noticeDateEnd != null">
+                AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
             </if>
         </where>
+        ORDER BY NOTICES_ID DESC
+        LIMIT #{searchVO.rowStart - 1}, #{searchVO.displayRowCount}
+    </select>
+
+    <select id="getAllNoticesPaginated" parameterType="map" >
+        SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
+        FROM notices
+        ORDER BY NOTICES_CREATED_AT DESC
+        LIMIT #{offset}, #{limit}
     </select>
 
     <!-- 공지 수정 -->

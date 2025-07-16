@@ -7,87 +7,75 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-<script src="static/js/admin/toast.js"></script>
-<link rel="stylesheet" href="static/css/admin/toast.css">
-<title>Notice</title>
+<!-- <script src="static/js/admin/toast.js"></script> -->
+<!-- <link rel="stylesheet" href="static/css/admin/toast.css"> -->
+<title>Notice_page</title>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("noticeSearchForm");
+    const container = document.getElementById("noticeListContainer");
+
+    // 검색 폼 제출
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const formData = new FormData(form);
+        formData.set("page", 1); // 검색 시 1페이지로
+
+        const response = await fetch("/admin/notices/notice_list", {
+            method: "POST",
+            body: formData,
+        });
+        const html = await response.text();
+        container.innerHTML = html;
+
+        bindPageButtons(); // 페이지 버튼에 이벤트 다시 연결
+    });
+
+    // 페이지 버튼 클릭 핸들러 연결 함수
+    function bindPageButtons() {
+        const buttons = container.querySelectorAll(".page-btn");
+        buttons.forEach((btn) => {
+            btn.addEventListener("click", async function () {
+                const page = btn.dataset.page;
+                const formData = new FormData(form);
+                formData.set("page", page);
+
+                const response = await fetch("/admin/notices/notice_list", {
+                    method: "POST",
+                    body: formData,
+                });
+                const html = await response.text();
+                container.innerHTML = html;
+
+                bindPageButtons(); // 다시 바인딩 필요
+            });
+        });
+    }
+
+    bindPageButtons(); // 초기 바인딩
+});
+</script>
 </head>
 <body>
     <div id="toast"></div>
 
-    <%-- 페이지 이름 + 기본정보 --%>
-    <div class="page-info-bar">
-        <h1>Notice</h1>
-        <div class="info">
-            전체 글 : ${totRowCnt} <br>
-            현재 페이지 / 전체 페이지 : ${searchVO.page } / ${searchVO.totPage }
-        </div>
-    </div>
+    <h1>Notice</h1>
 
     <%-- 검색바 --%>
-    <form action="admin/notice_list" method="post">
+    <form action="admin/notice_list" method="post" id="noticeSearchForm" >
         <div class="search-form">
-            <label>제목 <input type="text" name="noticeTitle" value="${noticeTitle}" /></label>
-            <label>내용 <input type="text" name="noticeContent" value="${noticeContent}" /></label>
-            <label>시작일 <input type="date" name="noticeDateStart" value="${noticeDateStart}" /></label>
-            <label>종료일 <input type="date" name="noticeDateEnd" value="${noticeDateEnd}" /></label>
+            <label>제목 <input type="text" name="noticeTitle" placeholder="제목"></label>
+            <label>내용 <input type="text" name="noticeContent" placeholder="내용"></label>
+            <label>시작일 <input type="date" name="noticeDateStart"></label>
+            <label>종료일 <input type="date" name="noticeDateEnd"></label>
             <input type="submit" value="검색" />
         </div>
     </form>
 
-    <%-- Pagination UI --%>
-    <div class="pagination-wrapper">
-    	<div class="pagination-controls">
-    		<!-- 처음 / 이전 -->
-    		<c:set var="prevPage" value="${searchVO.page - 1}" />
-    		<c:if test="${prevPage < 1}">
-    		    <c:set var="prevPage" value="1" />
-    		</c:if>
-    		<a class="nav <c:if test='${searchVO.page == 1}'>disabled</c:if>'" href="list?page=1">처음</a>
-    		<a class="nav <c:if test='${searchVO.page == 1}'>disabled</c:if>'" href="list?page=${prevPage}">이전</a>
-
-    		<!-- 구분 공간 -->
-    		<span class="spacer"></span>
-
-    		<!-- 숫자 버튼 -->
-    		<c:forEach begin="${searchVO.pageStart}" end="${searchVO.pageEnd}" var="i">
-    			<c:choose>
-    				<c:when test="${i eq searchVO.page}">
-    					<span class="current">${i}</span>
-    				</c:when>
-    				<c:otherwise>
-    					<a href="list?page=${i}" class="otherpages">${i}</a>
-    				</c:otherwise>
-    			</c:choose>
-    		</c:forEach>
-
-    		<!-- 구분 공간 -->
-    		<span class="spacer"></span>
-
-    		<!-- 다음 / 맨끝 -->
-    		<c:set var="nextPage" value="${searchVO.page + 1}" />
-    		<c:if test="${nextPage > searchVO.totPage}">
-    		    <c:set var="nextPage" value="${searchVO.totPage}" />
-    		</c:if>
-    		<a class="nav <c:if test='${searchVO.page == searchVO.totPage}'>disabled</c:if>'" href="list?page=${nextPage}">다음</a>
-    		<a class="nav <c:if test='${searchVO.page == searchVO.totPage}'>disabled</c:if>'" href="list?page=${searchVO.totPage}">맨끝</a>
-    	</div>
+    <%-- 페이징 --%>
+    <div id="noticeListContainer">
+        <jsp:include page="notice_list.jsp" />
     </div>
-
-    <%-- 공지 출력 --%>
-    <table class="notice-table">
-        <c:forEach items="${notices}" var="notice">
-        <tr>
-            <a href="">
-                <td>${notice.noticesTitle}
-                    <c:if test="${notice.noticesFilePath ne null}">
-                        <i title="${notice.noticesFilePath }" class="fa-regular fa-floppy-disk"></i>
-                    </c:if>
-                </td>
-            </a>
-            <td>${notice.noticesCreatedAt}</td>
-        </tr>
-        </c:forEach>
-    </table>
 
     <%-- 글쓰기 버튼 --%>
     <button type="button" onclick="location.href='admin/notices/notice_write'">공지 작성</button>
