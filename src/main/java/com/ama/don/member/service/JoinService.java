@@ -32,15 +32,20 @@ public class JoinService implements MemberServiceInter {
 		String birth = request.getParameter("birth");
 		String tel = request.getParameter("tel");
 		String zipcode = request.getParameter("zipcode");
-		String addr = request.getParameter("addr");
-		String email = request.getParameter("email");
+		String addr1 = request.getParameter("addr");
+		String detailAddr = request.getParameter("detailAddr");
+		String emailId = request.getParameter("emailId");
+		String emailDomain = request.getParameter("emailDomain");
+		String email = emailId+"@"+emailDomain;
+		String addr = addr1+detailAddr;
 		
 		//비밀번호 암호화
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String encodedPw = encoder.encode(pw);
 		
-		joinDao.join(loginId,encodedPw,roles,name,nickname,gender,birth,tel,zipcode,addr,email);
-		
+		joinDao.insertUserDtail(name,nickname,gender,birth,tel,zipcode,addr,email);
+		long user_id = joinDao.selectMaxUserId();
+		joinDao.insertUserLogin(user_id,loginId,encodedPw,roles);
 		
 
 	}
