@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 	<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <!DOCTYPE html>
 <html>
@@ -7,25 +8,6 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<!-- 화원가입 아이디 중복확인 -->
-<script>
-function checkId(){
-	const loginId = document.getElementById("loginId").value;
-	if (!loginId) {
-        document.getElementById("message").innerText = "아이디를 입력하세요.";
-        return;
-    }
-	fetch('/checkId?loginId=' + encodeURIComponent(loginId))
-	 .then(response => response.json())
-                .then(data => {
-                    if (data.exists) {
-                        document.getElementById("message").innerText = "이미 사용 중인 아이디입니다.";
-                    } else {
-                        document.getElementById("message").innerText = "사용 가능한 아이디입니다.";
-                    }
-                })
-}
-</script>
 <!-- 이메일 선택 -->
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -64,12 +46,12 @@ function execDaumPostcode() {
 
 	<form action="join" method="post">
 		아이디: <input type="text" name="loginId" id="loginId" placeholder="아이디를 입력하세요." />
-		<button type="button" onclick="checkId()">중복확인</button>
-		<p id="message"></p>
+		<c:if test="${not empty id_error }">
+			<p style="color:red">${id_error }</p>
+		</c:if>
 		비밀번호: <input type="password" name="pw" /> <br /> 
 		비밀번호 확인: <input type="password" name="pw2" /> <br />
-		권한: <input type="radio" name="roles" value="100" checked/>일반회원
-		<input type="radio" name="roles" value="200" /> 업체 <br /> 
+		<input type="hidden" name="roles" value="100" />
 		이름: <input type="text" name="name" /> <br /> 
 		닉네임: <input type="text" name="nickname" /> <br /> 
 		성별: <input type="radio" name="gender" value="M" checked />남 

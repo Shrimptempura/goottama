@@ -2,7 +2,10 @@ package com.ama.don.member.service;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.ama.don.member.dao.JoinDao;
@@ -11,12 +14,12 @@ import com.ama.don.member.dto.UserDtailDto.Gender;
 
 import jakarta.servlet.http.HttpServletRequest;
 
+@Service
+@Transactional
 public class JoinService implements MemberServiceInter {
 
+	@Autowired
 	private JoinDao joinDao;
-	public JoinService(JoinDao joinDao) {
-		this.joinDao=joinDao;
-	}
 
 	@Override
 	public void execute(Model model) {
@@ -44,6 +47,7 @@ public class JoinService implements MemberServiceInter {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String encodedPw = encoder.encode(pw);
 		
+				
 		UserDtailDto dto = new UserDtailDto();
 		dto.setUser_name(name);
 		dto.setUser_nickname(nickname);
@@ -54,10 +58,12 @@ public class JoinService implements MemberServiceInter {
 		dto.setUser_addr(addr);
 		dto.setUser_email(email);
 		
+		//user_detail 테이블 정보입력
 		joinDao.insertUserDtail(dto);
 		
 		long user_id = dto.getUser_id();
 		
+		//user_login 테이블 정보입력
 		joinDao.insertUserLogin(user_id,loginId,encodedPw,roles);
 		
 

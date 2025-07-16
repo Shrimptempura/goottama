@@ -16,14 +16,14 @@ import com.ama.don.member.service.MemberServiceInter;
 import com.ama.don.member.service.checkIdService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class JoinController {
-	
-	MemberServiceInter memberServiceInter;
-	
-	@Autowired
-	private JoinDao joinDao;
+
+	private final JoinService joinService;
+	private final checkIdService checkIdService;
 	
 	@RequestMapping("/")
 	public String index() {
@@ -35,37 +35,22 @@ public class JoinController {
 		return "member/join_view";
 	}
 	
-	//아이디 중복확인
-	@RequestMapping("checkId")
-	@ResponseBody
-	public Map<String, Boolean> checkId(@RequestParam String loginId,Model model) {	
-		
-		model.addAttribute("loginId",loginId);
-		memberServiceInter = new checkIdService(joinDao);
-		memberServiceInter.execute(model);
-		
-		Map<String, Object> map = model.asMap();
-	    Boolean exists = (Boolean) map.get("exists");
-	    
-	    Map<String, Boolean> result = new HashMap<>();
-	    result.put("exists", exists);
-		
-		return result;
-	}
-	
+	//회원가입
 	@RequestMapping("join")
 	public String join(HttpServletRequest request,Model model) {
 		
 		model.addAttribute("request",request);
-		memberServiceInter = new JoinService(joinDao);
-		memberServiceInter.execute(model);
 		
+		//아이디 중복검사,에러 메세지리턴
+		checkIdService.execute(model);		
+		if (model.containsAttribute("id_error")) {
+			return "member/join_view";
+		}
+		
+		//회워정보 db저장,회원가입완료
+		joinService.execute(model);		
 		return "redirect:login_view";
 	}
-	@RequestMapping("login_view")
-	public String login_view() {
-		return "member/login_view";
-	}
-
+	
 
 }
