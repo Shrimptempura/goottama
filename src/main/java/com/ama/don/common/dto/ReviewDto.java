@@ -1,5 +1,6 @@
 package com.ama.don.common.dto;
 
+import com.ama.don.common.enums.TargetType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,5 +23,5 @@ public class ReviewDto {
     private String reviewImg;           // 리뷰 사진
 
     private Long targetId;       // 대상 아이디
-    private String targetType;      //  enum: INTERIOR, COMMUNITY, SHOP
+    private TargetType targetType;      //  enum: INTERIOR, COMMUNITY, SHOP
 }
