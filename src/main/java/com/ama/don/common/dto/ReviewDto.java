@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 
-// 공통 테이블에 대한 dto
+// 공통 리뷰 테이블에 대한 dto
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
