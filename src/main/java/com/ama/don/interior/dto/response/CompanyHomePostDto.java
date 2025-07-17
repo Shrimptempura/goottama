@@ -1,0 +1,24 @@
+package com.ama.don.interior.dto.response;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+// 홈에서 보는 사용자가 작성한 업체에 대한 리뷰 dto
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class CompanyHomePostDto {
+
+    private Long companyId;
+    private Long postId;
+
+    private String postImg;         // 사진, 썸네일용
+    private String postTitle;       // 게시글 제목
+    private String areaInPyeong;    // 평수
+    private String style;           // 스타일(모던, 내추럴..), enum 확장 필요?
+
+    private String location;        // 위치
+}

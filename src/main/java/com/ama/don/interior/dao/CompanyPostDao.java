@@ -5,10 +5,10 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
 
-@Mapper
 // 업체가 작성한 게시글
+@Mapper
 public interface CompanyPostDao {
-    // 게시글 목록보기
+    //
     ArrayList<CompanyPostCreateDto> list(Long companyId);
 
     // 게시글 작성하기
