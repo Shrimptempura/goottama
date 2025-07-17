@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// 홈에서 보는 사용자가 작성한 업체에 대한 리뷰 dto
+// 홈에서 보는 업체의 게시글 목록 dto
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
