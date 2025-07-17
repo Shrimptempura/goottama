@@ -1,6 +1,7 @@
 package com.ama.don.shop.dao;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -14,6 +15,5 @@ public interface IDao {
 	public int write(Map<String, Object> map);
 	public ArrayList<ProductDto> product_list();
 	public ProductDto product(String product_id);
-	
 	
 }
