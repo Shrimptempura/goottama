@@ -51,17 +51,11 @@
 	<form action="join" method="post">
 		아이디: <input type="text" name="loginId" />
 		<button>중복확인</button> <br />
-		<c:if test="${not empty id_error }">
-			<p style="color: red">${id_error }</p>
-		</c:if>
 		
 		비밀번호: <input type="password" name="pw" /> 비밀번호는 8~20자리, 영문/숫자/특수문자를 포함해야 합니다. <br /> 
 		비밀번호 확인: <input type="password" name="pw2" /> <br />
-		<c:if test="${not empty pw_error }">
-			<p style="color: red">${pw_error }</p>
-		</c:if>
 		
-		<input type="hidden" name="roles" value="100" /> 
+		<input type="hidden" name="rolesId" value="100" /> 
 		
 		이름: <input type="text" name="name" /> <br />
 		
