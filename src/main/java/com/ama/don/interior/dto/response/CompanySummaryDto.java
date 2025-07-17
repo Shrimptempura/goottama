@@ -5,14 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// 업체 좌측 미니 박스에 담길 정보
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-// 업체 좌측 미니 박스에 담길 정보
-public class CompanyMiniViewDto {
+public class CompanySummaryDto {
 
-    private Long companyDetailId;       // 업체상세 아이디
+    private Long companyId;
+
     private String companyName;         // 업체 이름
     private Boolean companyFollow;      // 팔로우 여부
     private Integer companyRate;        // 업체 평점(아직 평가하지 않음 -> Integer)
