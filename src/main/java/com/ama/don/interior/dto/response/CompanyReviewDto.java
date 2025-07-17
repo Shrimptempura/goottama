@@ -1,5 +1,6 @@
 package com.ama.don.interior.dto.response;
 
+import com.ama.don.common.enums.TargetType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,6 @@ public class CompanyReviewDto {
     private List<String> reviewImg;     // 리뷰 사진
 
     private Integer targetId;       // 대상아이디
-    private String targetType;    // enum : "INTERIOR", "COMMUNITY", "SHOP"
+    private TargetType targetType;    // enum : "INTERIOR", "COMMUNITY", "SHOP"
     private int reviewLikes;    // 좋아요 수(단순 클릭, 중복 제거)
 }
