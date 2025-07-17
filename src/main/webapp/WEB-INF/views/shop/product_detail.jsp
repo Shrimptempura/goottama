@@ -6,31 +6,59 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
+
+<style>
+
+.container{
+	width: 200px;
+	margin: 0px auto;
+	position: absolute;
+	right: 20%;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	
+	border-style: solid;
+	border-width: medium;
+	border-color: pink;
+}
+
+
+.title{
+	font-size: 20px; 
+}
+
+.discountrate{
+	color: red;
+}
+
+</style>
+
 <body>
 
 <h2>subheader</h2>
 	
 
-		<div class="card-container">
+		<div class="container">
 			
-				<div class="card">
-			        <img src="${product.image}" alt="${product.name}">
-			        <div class="card-body">
-			          <div class="card-title">${product.name}제목</div>
-			          <div class="card-price">${product.price}원</div>
-			          
-			          
-			          
-			          <a href="#" class="card-button">장바구니</a>
-			        </div>
-		     	</div>
-			
-		</div>
+			<img src="/uploads/shop/${product.product_mall_name }" alt="" />
+			<p class="mallname">${product.product_mall_name }</p>
+			<p class="title">${product.product_name }</p>
 		
-		<div class="product-list">
-			<img src="${product }" alt="" />
+			<p class="discountrate">${product.product_discountrate*100 }%</p>
+			<p class="saleprice">${product.product_price*product.product_discountrate }</p>
+			<p class="price">${product.product_price }</p>
 			
 		</div>
+
+		
+		
+		
+		<div>${product.product_madein }</div>
+		<div>${product.product_release }</div>
+		<div>${product.product_as_manager_phone }</div>
+		<div>${product.product_type}</div>
+		<div>${product.product_color}</div>
+		<div>${product.product_istoday}</div>
+		
 
 </body>
 </html>

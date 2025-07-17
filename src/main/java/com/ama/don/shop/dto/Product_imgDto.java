@@ -20,6 +20,5 @@ public class Product_imgDto {
 		this.product_imgurl = product_imgurl;
 		this.product_img_type = product_img_type;
 	}
-	
-	
+
 }

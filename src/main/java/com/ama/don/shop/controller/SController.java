@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.ama.don.shop.dao.IDao;
 import com.ama.don.shop.service.SExhibitionService;
 import com.ama.don.shop.service.SListService;
+import com.ama.don.shop.service.SProductdetailService;
 import com.ama.don.shop.service.SServiceinter;
 import com.ama.don.shop.service.SWriteService;
 
@@ -41,6 +42,7 @@ public class SController {
 	@RequestMapping("/shop/write")
 	public String write(HttpServletRequest request,Model model) {
 		
+		
 		model.addAttribute("request",request);
 		sServiceinter=new SWriteService(iDao);
 		sServiceinter.execute(model);
@@ -52,11 +54,22 @@ public class SController {
 	public String category(HttpServletRequest request,Model model) {
 		
 		
-//		model.addAttribute("request",request);
-//		sServiceinter=new SListService(iDao);
-//		sServiceinter.execute(model);
+		model.addAttribute("request",request);
+		sServiceinter=new SListService(iDao);
+		sServiceinter.execute(model);
 		
 		return "shop/category";
+	}
+	
+	@RequestMapping("/shop/product_detail")
+	public String product_detail(HttpServletRequest request, Model model) {
+		
+		
+		model.addAttribute("request",request);
+		sServiceinter=new SProductdetailService(iDao);
+		sServiceinter.execute(model);
+		
+		return "shop/product_detail";
 	}
 
 	@RequestMapping("/shop/exhibition")
