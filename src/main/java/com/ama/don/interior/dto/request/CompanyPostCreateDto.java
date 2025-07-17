@@ -15,9 +15,6 @@ import java.util.List;
 @Setter
 public class CompanyPostCreateDto {
 
-    private Long postId;            // 업체 포스트(게시글) 아이디
-    private Long companyId;         // 업체 아이디
-
     private List<String> companyImgList;    // 업체가 올린 사진
     private String postTitle;       // 게시글 제목
 
