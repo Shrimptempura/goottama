@@ -38,7 +38,8 @@
 	
 
 		<div class="container">
-		
+			
+			<img src="/uploads/shop/${product.product_mall_name }" alt="" />
 			<p class="mallname">${product.product_mall_name }</p>
 			<p class="title">${product.product_name }</p>
 		

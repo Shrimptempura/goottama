@@ -71,11 +71,20 @@
 			<a href="#">생활용품</a>
 		</div>
 		
+	
 		<div class="card-container">
 			<c:forEach items="${list }" var="product">
 				<div class="card">
 					<div>${product.product_id }</div>
-					<a href="product_detail?product_id=${product.product_id }"><img class="img" src="/static/uploads/shop/${product.product_imgDto.product_imgurl}" alt="상품 이미지"></a>
+					
+					<c:choose>
+						<c:when test="${empty product.product_imgDto or empty product.product_imgDto.product_imgurl}">
+							<img class="img" src="/static/uploads/shop/noimages.png" alt="기본 이미지" style="width:150px;">
+						</c:when>
+						<c:otherwise>
+      						<img class="img" src="/static/uploads/shop/${product.product_imgDto.product_imgurl}" alt="상품 이미지" style="width:150px;">
+    					</c:otherwise>
+					</c:choose>
 					<%--   <div>${product.product_imgurl }</div> --%>
 			        <%-- <img src="${product.product_image}" alt="${product.name}">
  --%>			    <div class="card-body">

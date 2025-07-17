@@ -69,7 +69,7 @@ public class SWriteService implements SServiceinter{
 	    
 	    int pid = ((BigInteger) paramMap.get("productId")).intValue();
 	    //int pid=(int) paramMap.get("productId");
-		
+	    
 		String workPath=System.getProperty("user.dir");
 		System.out.println(workPath);
 		
