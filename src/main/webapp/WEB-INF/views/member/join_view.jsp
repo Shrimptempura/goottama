@@ -45,7 +45,8 @@ function execDaumPostcode() {
 <body>
 
 	<form action="join" method="post">
-		아이디: <input type="text" name="loginId" id="loginId" placeholder="아이디를 입력하세요." />
+		아이디: <input type="text" name="loginId" id="loginId" placeholder="아이디를 입력하세요." /> 
+		<button>중복확인</button> <br />
 		<c:if test="${not empty id_error }">
 			<p style="color:red">${id_error }</p>
 		</c:if>
@@ -53,7 +54,8 @@ function execDaumPostcode() {
 		비밀번호 확인: <input type="password" name="pw2" /> <br />
 		<input type="hidden" name="roles" value="100" />
 		이름: <input type="text" name="name" /> <br /> 
-		닉네임: <input type="text" name="nickname" /> <br /> 
+		닉네임: <input type="text" name="nickname" /> 
+		<button>중복확인</button> <br /> 
 		성별: <input type="radio" name="gender" value="M" checked />남 
 			<input type="radio" name="gender" value="F" />여 <br />
 		생년월일: <input type="date" name="birth" /> <br /> 
