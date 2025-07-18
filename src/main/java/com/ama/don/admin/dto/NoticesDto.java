@@ -12,10 +12,10 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class NoticesDto {
-    private int notices_id;
-    private String notices_title;
-    private boolean notices_is_pinned;
-    private Timestamp notices_created_at;
-    private String notices_file_path;
-    private String notices_content;
+    private int noticesId;
+    private String noticesTitle;
+    private boolean noticesIsPinned;
+    private Timestamp noticesCreatedAt;
+    private String noticesFilePath;
+    private String noticesContent;
 }
