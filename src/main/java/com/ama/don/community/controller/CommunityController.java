@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class CommunityController {
+	// 컨트롤러
 
 	@RequestMapping("community_home")
 	public String home() {
