@@ -4,12 +4,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class HomeController {
+public class CommunityController {
 
 	@RequestMapping("community_home")
 	public String home() {
 
 		return "community/community_home";
+	}
+
+	@RequestMapping("review_view")
+	public String review() {
+
+		return "community/review_view";
 	}
 
 	@RequestMapping("suggest_view")
@@ -22,12 +28,6 @@ public class HomeController {
 	public String popularity() {
 
 		return "community/popularity_view";
-	}
-
-	@RequestMapping("review_view")
-	public String review() {
-
-		return "community/review_view";
 	}
 
 	@RequestMapping("house_photo_view")
