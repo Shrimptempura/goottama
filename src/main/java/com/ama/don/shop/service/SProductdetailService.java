@@ -1,6 +1,7 @@
 package com.ama.don.shop.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.ui.Model;
@@ -29,9 +30,9 @@ public class SProductdetailService implements SServiceinter{
 		System.out.println(product_id);
 		//iDao.product(product_id);
 		
-		iDao.product(product_id);
+		ProductDto productDto=iDao.product(product_id);
 		
-		model.addAttribute("product",iDao.product(product_id));
+		model.addAttribute("product",productDto);
 		
 		//model.addAttribute("list",iDao.product_list());
 		
