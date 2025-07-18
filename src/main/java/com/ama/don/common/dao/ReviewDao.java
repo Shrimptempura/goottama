@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.ArrayList;
 
 // 공통 리뷰 테이블에 대한 dao
+// 주로 관리자만 사용
 @Mapper
 public interface ReviewDao {
     // targetType과 targetId를 이용한 리뷰 목록 조회
