@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ama.don.shop.dao.IDao">
+
+			<!--id로 pk  -->
+	<resultMap type="com.ama.don.shop.dto.Product_imgDto" id="Product_imgDto">
+		
+		<result column="product_id" property="product_id"/>
+		<result column="product_img_id" property="product_img_id"/>
+		<result column="product_imgurl" property="product_imgurl"/>
+		<result column="product_img_type" property="product_img_type"></result>
+	</resultMap>   
+    <resultMap type="com.ama.don.shop.dto.ProductDto" id="ProductDto">
+		<result column="product_id" property="product_id"/>
+		<result column="category_id" property="category_id"/>
+		<result column="product_name" property="product_name"/>
+		<result column="product_price" property="product_price"/>
+		<result column="product_discountrate" property="product_discountrate"/>
+		<result column="product_mall_name" property="product_mall_name"/>
+		<result column="product_madein" property="product_madein"/>
+		<result column="product_release" property="product_release"/>
+		<result column="product_as_manager_phone" property="product_as_manager_phone"/>
+		<result column="product_type" property="product_type"/>
+		<result column="product_color" property="product_color"/>
+		<result column="product_istoday" property="product_istoday"/>
+		<result column="product_date" property="product_date"/>
+		
+		<!-- collection은 단일 객체와 list 모두 가능하다. -->
+		<collection property="product_imgDto" resultMap="Product_imgDto"/>	<!-- resultMap이름과 위의 resultMap 아이디이름이 같아야한다. -->
+		<collection property="product_imgDtoList" ofType="com.ama.don.shop.dto.Product_imgDto">
+   			 <id column="product_img_id" property="product_img_id"/>
+    	     <result column="product_imgurl" property="product_imgurl"/>
+   			 <result column="product_img_type" property="product_img_type"/>
+		</collection>
+	</resultMap>   
+
+	<select id="product_list" parameterType="com.ama.don.shop.dto.ProductDto" resultMap="ProductDto">
+		
+		SELECT P.PRODUCT_ID,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_DISCOUNTRATE, P.PRODUCT_MALL_NAME, PI.PRODUCT_IMGURL,PI.PRODUCT_IMG_TYPE
+		FROM PRODUCT P
+		LEFT OUTER JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID
+		AND PI.PRODUCT_IMG_TYPE='메인';
+	</select>
+	
+	<select id="product" resultMap="ProductDto">
+	
+		SELECT P.PRODUCT_ID,P.CATEGORY_ID,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_DISCOUNTRATE,P.PRODUCT_MALL_NAME,
+		P.PRODUCT_MADEIN,P.PRODUCT_RELEASE,P.PRODUCT_AS_MANAGER_PHONE,P.PRODUCT_TYPE,P.PRODUCT_COLOR,
+		P.PRODUCT_ISTODAY,P.PRODUCT_DATE,
+		PI.PRODUCT_IMG_ID,PI.PRODUCT_IMGURL,PI.PRODUCT_IMG_TYPE
+		FROM PRODUCT P
+		LEFT OUTER JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID
+		WHERE P.PRODUCT_ID=#{param1};
+	</select>
+	
+								<!-- primary key를 가져온다. -->
+	<insert id="write" parameterType="map" useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id">
+
+		
+		INSERT INTO PRODUCT(CATEGORY_ID,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DISCOUNTRATE,PRODUCT_MALL_NAME,
+		PRODUCT_MADEIN,PRODUCT_RELEASE,PRODUCT_AS_MANAGER_PHONE,PRODUCT_TYPE
+		,PRODUCT_COLOR,PRODUCT_ISTODAY,PRODUCT_DATE) VALUES(
+		#{category_id},#{product_name},#{product_price},#{product_discountrate}
+		,#{product_mall_name},#{product_madein},#{product_release},#{product_as_manager_phone}
+		,#{product_type},#{product_color},#{product_istoday},NOW())
+		
+	</insert>
+	
+	<insert id="imgwritemain">
+	INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
+	VALUES(#{param1},#{param2},'메인');
+	
+	</insert>
+	
+	<insert id="imgwrite">
+	INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
+	VALUES(#{param1},#{param2},'서브');
+	
+	</insert>
+
+</mapper>	
