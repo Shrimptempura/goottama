@@ -15,5 +15,6 @@ public interface IDao {
 	public int write(Map<String, Object> map);
 	public ArrayList<ProductDto> product_list();
 	public ProductDto product(String product_id);
+	public void intocart(String product_id);
 	
 }

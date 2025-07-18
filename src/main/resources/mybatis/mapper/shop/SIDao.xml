@@ -80,5 +80,19 @@
 	VALUES(#{param1},#{param2},'서브');
 	
 	</insert>
+	
+	
+	<insert id="intocart">
+		INSERT INTO CART(USER_ID,PRODUCT_ID,CART_QUANTITY,CART_DATE) 
+		VALUES('유저아이디',#{PARAM1},1,NOW());
+	
+	</insert>
+	
+	<select id="selcart">
+		SELECT C.CART_ID,C.PRODUCT_ID,C.CART_QUANTITY,C.CART_DATE,P.PRODUCT_PRICE
+		FROM CART C
+		JOIN PRODUCT P ON C.PRODUCT_ID=P.PRODUCT_ID
+		WHERE PRODUCT_ID=#{param1};	
+	</select>
 
 </mapper>	

@@ -205,7 +205,7 @@
 				
 				<div class="buttons">
 				
-					<a href="cart"><input type="submit" value="장바구니 담기" /></a>
+					<a href="cart?pr"><input type="submit" value="장바구니 담기" /></a>
 					<a href="order"><input type="submit" value="주문하기" /></a>
 				</div>
 			</div>
