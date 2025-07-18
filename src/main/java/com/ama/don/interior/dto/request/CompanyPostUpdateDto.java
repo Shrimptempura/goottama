@@ -15,6 +15,8 @@ import java.util.List;
 @Setter
 public class CompanyPostUpdateDto {
 
+    private Long postId;
+
     private List<String> companyImgList;    // 게시글 사진들
     private String postTitle;               // 게시글 제목
 
