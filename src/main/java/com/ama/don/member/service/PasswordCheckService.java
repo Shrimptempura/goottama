@@ -12,7 +12,7 @@ import com.ama.don.member.dto.JoinformDto;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Service
-public class LoginIdCheckService implements MemberServiceInter {
+public class PasswordCheckService implements MemberServiceInter{
 	
 	@Autowired
 	private JoinDao joinDao;
@@ -20,14 +20,12 @@ public class LoginIdCheckService implements MemberServiceInter {
 	@Override
 	public void execute(JoinformDto joinformDto, Model model) {
 		
-		String loginId = joinformDto.getLoginId();
-		
-		if (joinDao.checkId(loginId)>0) {
-			model.addAttribute("id_error","이미 사용중인 아이디입니다.");
+		if (!joinformDto.getPw().equals(joinformDto.getPw2())) {
+			model.addAttribute("pw_error","비밀번호가 일치하지 않습니다.");
 			return;
 		}
 		
-	}
-
+		
+	}	
 
 }
