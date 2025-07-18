@@ -17,7 +17,7 @@ public interface CompanyPostDao {
     /**
      * 홈에서 보는 업체 게시글 목록 뷰, enum(LASTEST, RANDOM, POPULAR)
      */
-    List<CompanyHomePostDto> findAllCompanyPost(CompanySortType sortType);
+    List<CompanyHomePostDto> findAllCompanyPosts(CompanySortType sortType);
 
     /**
      * 업체 상세페이지에서 보는 업체게시글 목록 뷰
