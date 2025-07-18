@@ -18,6 +18,6 @@ import java.sql.Timestamp;
 public class NoticeSearchVO {
     private String noticeTitle;
     private String noticeContent;
-    private Timestamp noticeDateStart;
-    private Timestamp noticeDateEnd;
+    private String noticeDateStart;
+    private String noticeDateEnd;
 }
