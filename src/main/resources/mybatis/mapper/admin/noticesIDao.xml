@@ -10,46 +10,63 @@
         FROM notices ORDER BY NOTICES_ID
     </select>
 
+    <select id="countAllNotices">
+        SELECT COUNT(*)
+        FROM notices
+    </select>
+
     <!--  아이디로 공지 검색  -->
     <select id="getNoticeById">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
         FROM notices WHERE NOTICES_ID=#{param1}
     </select>
 
-
-    <!--  공지를 제목, 내용, 작성일로 검색  -->
-    <!--  param1:검색타입, param2:검색내용  -->
-    <sql id="searchCondition">
-        <choose>
-            <when test="param1==1">
-                WHERE NOTICES_TITLE LIKE CONCAT('%', #{param2}, '%')
-            </when>
-            <when test="param1==2">
-                WHERE NOTICES_CONTENT LIKE CONCAT('%', #{param2}, '%')
-            </when>
-            <when test="param1==3">
-                WHERE (NOTICES_TITLE LIKE CONCAT('%', #{param2}, '%')
-                OR NOTICES_CONTENT LIKE CONCAT('%', #{param2}, '%'))
-            </when>
-            <when test="param1==4">
-                WHERE NOTICES_CREATED_AT==#{param2}
-            </when>
-            <otherwise></otherwise>
-        </choose>
-    </sql>
-
-    <select id="searchNotice">
+    <select id="searchNotice" resultType="NoticesDto">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
         FROM notices
-        <include refid="searchCondition" />
-        ORDER BY NOTICES_ID
+        <where>
+            <if test="noticeSearchVO.noticeTitle != null and noticeSearchVO.noticeTitle != ''">
+                AND NOTICES_TITLE LIKE CONCAT('%', #{noticeSearchVO.noticeTitle}, '%')
+            </if>
+            <if test="noticeSearchVO.noticeContent != null and noticeSearchVO.noticeContent != ''">
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchVO.noticeContent}, '%')
+            </if>
+            <if test="noticeSearchVO.noticeDateStart != null">
+                AND NOTICES_CREATED_AT &gt;= #{noticeSearchVO.noticeDateStart}
+            </if>
+            <if test="noticeSearchVO.noticeDateEnd != null">
+                AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
+            </if>
+        </where>
+        ORDER BY NOTICES_ID DESC
+        LIMIT #{searchVO.rowStart - 1}, #{searchVO.displayRowCount}
+    </select>
+    <select id="countSearchNotice">
+        SELECT COUNT(*)
+        FROM notices
+        <where>
+            <if test="noticeSearchVO.noticeTitle != null and noticeSearchVO.noticeTitle != ''">
+                AND NOTICES_TITLE LIKE CONCAT('%', #{noticeSearchVO.noticeTitle}, '%')
+            </if>
+            <if test="noticeSearchVO.noticeContent != null and noticeSearchVO.noticeContent != ''">
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchVO.noticeContent}, '%')
+            </if>
+            <if test="noticeSearchVO.noticeDateStart != null">
+                AND NOTICES_CREATED_AT &gt;= #{noticeSearchVO.noticeDateStart}
+            </if>
+            <if test="noticeSearchVO.noticeDateEnd != null">
+                AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
+            </if>
+        </where>
+        ORDER BY NOTICES_ID DESC
+        LIMIT #{searchVO.rowStart - 1}, #{searchVO.displayRowCount}
     </select>
 
-    <!--  날짜 기간으로 공지 검색 param1:시작날짜, param2:종료 날짜 -->
-    <select id="searchNoticesByDateRange">
+    <select id="getAllNoticesPaginated" parameterType="map" >
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
         FROM notices
-        BETWEEN #{param1} AND #{param2}
+        ORDER BY NOTICES_CREATED_AT DESC
+        LIMIT #{offset}, #{limit}
     </select>
 
     <!-- 공지 수정 -->

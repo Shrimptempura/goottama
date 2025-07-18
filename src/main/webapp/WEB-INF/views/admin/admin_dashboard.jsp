@@ -12,7 +12,7 @@
     <button onclick="location.href='/admin/access_control'">access_control</button>
     <button onclick="location.href='/admin/advanced_search'">advanced_search</button>
     <button onclick="location.href='/admin/log_viewer'">log_viewer</button>
-    <button onclick="location.href='/admin/notice_list'">notice_list</button>
+    <button onclick="location.href='/admin/notice_page'">notice_page</button>
     <button onclick="location.href='/admin/notice_detail'">notice_detail</button>
     <button onclick="location.href='/admin/notice_modify'">notice_modify</button>
     <button onclick="location.href='/admin/notice_write'">notice_write</button>
