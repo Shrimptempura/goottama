@@ -1,7 +1,7 @@
 package com.ama.don.admin.dao;
 
 import com.ama.don.admin.dto.UserSearchVO;
-import com.ama.don.member.dto.UserDtailDto;
+import com.ama.don.member.dto.UserDetailDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -22,10 +22,10 @@ public interface ManageUserIDao {
     /**
      * 전체 유저의 상세 정보를 반환한다.
      *
-     * @return 유저 상세 정보 목록 (List of {@link UserDtailDto})
+     * @return 유저 상세 정보 목록 (List of {@link UserDetailDto})
      * @see #countAllUsers()
      */
-    List<UserDtailDto> getAllUsers();
+    List<UserDetailDto> getAllUsers();
 
     /**
      * 전체 유저 수를 반환한다.
@@ -39,10 +39,10 @@ public interface ManageUserIDao {
      * 전체 유저의 최소 정보만 반환한다.  <br>
      * 예: 이름, 닉네임, 아이디 등 일부 필드만 포함.
      *
-     * @return 유저 최소 정보 목록 (List of {@link UserDtailDto})
+     * @return 유저 최소 정보 목록 (List of {@link UserDetailDto})
      * @see #getAllUsers()
      */
-    List<UserDtailDto> getUserMin();
+    List<UserDetailDto> getUserMin();
 
     /**
      * 사용자 ID로 유저 상세 정보를 조회한다.
@@ -51,7 +51,7 @@ public interface ManageUserIDao {
      * @return 해당 유저의 상세 정보 (없으면 null)
      * @see #getAllUsers()
      */
-    UserDtailDto getUserByUserId(long user_id);
+    UserDetailDto getUserByUserId(long user_id);
 
     /**
      * 다양한 조건으로 유저를 검색한다.
@@ -67,7 +67,7 @@ public interface ManageUserIDao {
      * @return 조건에 맞는 유저 목록
      * @see #countSearchUsers(UserSearchVO)
      */
-    List<UserDtailDto> searchUsers(UserSearchVO userSearchVO);
+    List<UserDetailDto> searchUsers(UserSearchVO userSearchVO);
 
     /**
      * 검색 조건에 해당하는 유저 수를 반환한다.

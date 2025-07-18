@@ -36,9 +36,11 @@ public class JoinformDto {
 	private Gender gender;
 	
 	@NotBlank(message = "생년월일을 선택하세요.")
+	@Pattern(regexp = "^(19|20)\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$", message = "생년월일 형식이 올바르지 않습니다. (예: 19900715)")
 	private String birth;
 	
 	@NotBlank(message = "연락처를 입력하세요.")
+	@Pattern(regexp = "^01[016789]-?\\d{3,4}-?\\d{4}$", message = "올바른 연락처 형식이 아닙니다.")
 	private String tel;
 	
 	@NotBlank(message = "우편번호를 입력하세요.")
@@ -47,10 +49,22 @@ public class JoinformDto {
 	@NotBlank(message = "주소를 입력하세요.")
 	private String addr;
 	
-	@NotBlank(message = "이메일을 입력하세요.")
-	@Email(message = "올바른 이메일 형식이 아닙니다.")
-	private String email;
+	private String detailAddr;
 	
+	//addr+detailAddr 컨트롤러에서 주입
+	@NotBlank(message = "주소를 입력하세요.")
+	private String fullAddr;
+	
+	@NotBlank(message = "이메일을 입력하세요.")
+	private String emailId;
+	
+	@NotBlank(message = "이메일을 입력하세요.")
+	private String emailDomain;
+	
+	//emailId+@+emailDomain 컨트롤러에서 주입
+	@Email(message = "올바를 이메일 형식이 아닙니다.")
+	private String email;
+
 	
 	public enum Gender {
         M,

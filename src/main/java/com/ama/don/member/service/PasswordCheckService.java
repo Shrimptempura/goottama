@@ -20,6 +20,7 @@ public class PasswordCheckService implements MemberServiceInter{
 	@Override
 	public void execute(JoinformDto joinformDto, Model model) {
 		
+		//비밀번화 일치 확인
 		if (!joinformDto.getPw().equals(joinformDto.getPw2())) {
 			model.addAttribute("pw_error","비밀번호가 일치하지 않습니다.");
 			return;

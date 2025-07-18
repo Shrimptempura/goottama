@@ -52,7 +52,7 @@
 		아이디: <input type="text" name="loginId" />
 		<button>중복확인</button> <br />
 		
-		비밀번호: <input type="password" name="pw" /> 비밀번호는 8~20자리, 영문/숫자/특수문자를 포함해야 합니다. <br /> 
+		비밀번호: <input type="password" name="pw" placeholder="8~20자리,영문/숫자/특수문자 포함" /> <br /> 
 		비밀번호 확인: <input type="password" name="pw2" /> <br />
 		
 		<input type="hidden" name="rolesId" value="100" /> 
