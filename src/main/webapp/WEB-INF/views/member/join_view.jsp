@@ -65,7 +65,7 @@
 		성별: <input type="radio" name="gender" value="M" checked />남 
 			<input type="radio" name="gender" value="F" />여 <br /> 
 		
-		생년월일: <input type="date" name="birth" /> <br /> 
+		생년월일: <input type="date" name="birth" min="1900-01-01" max="2099-12-31" /> <br /> 
 		연락처: <input type="text" name="tel" placeholder="전화번호 입력" /> <br /> 
 		우편번호: <input type="text" id="zipcode" name="zipcode" readonly />
 		<button type="button" onclick="execDaumPostcode()">우편번호 찾기</button> <br /> 
