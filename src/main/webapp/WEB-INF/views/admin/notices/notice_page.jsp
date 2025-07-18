@@ -51,8 +51,21 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         });
     }
-
     bindPageButtons(); // 초기 바인딩
+
+    document.querySelectorAll('.pagination-controls a').forEach(link =>{
+        link.addEventListener('click', function(e){
+            e.preventDefault();
+            const page = this.dataset.page;
+            if (!page) return;
+
+            const form = document.querySelector('#noticeSearchForm');
+            const pageInput = form.querySelector("input[name='page']");
+            pageInput.value = page;
+
+            form.submit();
+        });
+    });
 });
 </script>
 </head>
@@ -68,11 +81,12 @@ document.addEventListener("DOMContentLoaded", () => {
             <label>내용 <input type="text" name="noticeContent" placeholder="내용"></label>
             <label>시작일 <input type="date" name="noticeDateStart"></label>
             <label>종료일 <input type="date" name="noticeDateEnd"></label>
+            <input type="hidden" name="page" value="${searchVO.page}">
             <input type="submit" value="검색" />
         </div>
     </form>
 
-    <%-- 페이징 --%>
+    <%-- 페이징 및 공지 출력 --%>
     <div id="noticeListContainer">
         <jsp:include page="notice_list.jsp" />
     </div>

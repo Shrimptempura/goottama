@@ -22,12 +22,12 @@ public interface NoticesIDao {
      * @return 공지사항 목록 (List<NoticesDto>)
      * @see #countAllNotices()
      */
-    public List<NoticesDto> getAllNotices();
+    public List<NoticesDto> getAllNotices(@Param("searchVO") SearchVO searchVO);
 
     /**
      * 전체 공지사항의 개수를 반환한다.
      * @return 전체 공지 개수
-     * @see #getAllNotices()
+     * @see #getAllNotices(SearchVO)
      */
     public int countAllNotices();
 
@@ -37,7 +37,7 @@ public interface NoticesIDao {
      * 주어진 ID에 해당하는 공지사항을 반환한다.
      * @param noticeId 조회할 공지의 ID
      * @return 공지사항 DTO (존재하지 않으면 null)
-     * @see #getAllNotices()
+     * @see #getAllNotices(SearchVO)
      */
     public NoticesDto getNoticeById(String noticeId);
 
@@ -50,13 +50,14 @@ public interface NoticesIDao {
      * @return 검색 결과 공지사항 목록
      * @see #countSearchNotice(NoticeSearchVO)
      */
-    List<NoticesDto> searchNotice(@Param("noticeSearchVO") NoticeSearchVO noticeSearchVO);
+    List<NoticesDto> searchNotice(@Param("noticeSearchVO") NoticeSearchVO noticeSearchVO
+                                , @Param("searchVO") SearchVO searchVO);
 
     /**
      * 검색 조건에 해당하는 공지사항 개수를 반환한다.
      * @param noticeSearchVO 검색 조건 VO
      * @return 검색 결과 개수
-     * @see #searchNotice(NoticeSearchVO)
+     * @see #searchNotice(NoticeSearchVO, SearchVO)
      */
     public int countSearchNotice(@Param("noticeSearchVO") NoticeSearchVO noticeSearchVO);
 

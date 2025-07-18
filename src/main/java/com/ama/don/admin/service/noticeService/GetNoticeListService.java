@@ -20,15 +20,6 @@ public class GetNoticeListService implements NoticeServiceInterface{
     @Autowired
     private NoticesIDao noticesIDao;
 
-    public void allNotices(Model model){
-        System.out.println(22222);
-        Map<String, Object> map = model.asMap();
-        SearchVO searchVO = (SearchVO) map.get("searchVO");
-        List<NoticesDto> list = noticesIDao.getAllNotices();
-        model.addAttribute("list", list);
-        model.addAttribute("searchVO", searchVO);
-    }
-
     @Override
     public void execute(Model model) {
         Map<String, Object> map = model.asMap();
@@ -36,7 +27,8 @@ public class GetNoticeListService implements NoticeServiceInterface{
         SearchVO searchVO = (SearchVO) map.get("searchVO");
         List<Map<String, Object>> mapList = new ArrayList<>();
         List<NoticesDto> dtoList;
-        int total = 0;
+        int total = noticesIDao.countAllNotices();
+        searchVO.pageCalculate(total);
 
         // 검색 조건이 없거나 비어있으므로 전체 공지사항을 가져옴
         if (noticeSearchVO == null ||
@@ -44,9 +36,8 @@ public class GetNoticeListService implements NoticeServiceInterface{
                 (noticeSearchVO.getNoticeContent() == null || noticeSearchVO.getNoticeContent().isEmpty()) &&
                 (noticeSearchVO.getNoticeDateStart() == null || noticeSearchVO.getNoticeDateStart().isEmpty()) &&
                 (noticeSearchVO.getNoticeDateEnd() == null || noticeSearchVO.getNoticeDateEnd().isEmpty())) {
-            dtoList = noticesIDao.getAllNotices();
+            dtoList = noticesIDao.getAllNotices(searchVO);
 
-            total = noticesIDao.countAllNotices();
         // 검색 조건이 있으면 검색 된 공지사항을 가져옴
         } else {
             System.out.println("제목: " + noticeSearchVO.getNoticeTitle());
@@ -54,7 +45,7 @@ public class GetNoticeListService implements NoticeServiceInterface{
             System.out.println("시작일: " + noticeSearchVO.getNoticeDateStart());
             System.out.println("종료일: " + noticeSearchVO.getNoticeDateEnd());
             total = noticesIDao.countSearchNotice(noticeSearchVO);
-            dtoList = noticesIDao.searchNotice(noticeSearchVO);
+            dtoList = noticesIDao.searchNotice(noticeSearchVO, searchVO);
         }
         for (NoticesDto dto : dtoList) {
             Map<String, Object> row = new HashMap<>();
@@ -67,7 +58,7 @@ public class GetNoticeListService implements NoticeServiceInterface{
             mapList.add(row);
         }
         // Pagination
-        searchVO.pageCalculate(total);
+
 
         model.addAttribute("list", mapList);
         model.addAttribute("searchVO", searchVO);

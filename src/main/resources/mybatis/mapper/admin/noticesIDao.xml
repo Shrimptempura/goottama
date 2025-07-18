@@ -9,6 +9,7 @@
     <select id="getAllNotices" resultType="com.ama.don.admin.dto.NoticesDto">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
         FROM notices ORDER BY NOTICES_ID
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 
     <select id="countAllNotices" resultType="int">
@@ -40,6 +41,7 @@
             </if>
         </where>
         ORDER BY NOTICES_ID DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
     <select id="countSearchNotice" resultType="int">
         SELECT COUNT(*)
