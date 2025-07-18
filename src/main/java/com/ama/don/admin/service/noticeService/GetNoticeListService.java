@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,34 +20,56 @@ public class GetNoticeListService implements NoticeServiceInterface{
     @Autowired
     private NoticesIDao noticesIDao;
 
+    public void allNotices(Model model){
+        System.out.println(22222);
+        Map<String, Object> map = model.asMap();
+        SearchVO searchVO = (SearchVO) map.get("searchVO");
+        List<NoticesDto> list = noticesIDao.getAllNotices();
+        model.addAttribute("list", list);
+        model.addAttribute("searchVO", searchVO);
+    }
+
     @Override
     public void execute(Model model) {
         Map<String, Object> map = model.asMap();
         NoticeSearchVO noticeSearchVO = (NoticeSearchVO) map.get("noticeSearchVO");
         SearchVO searchVO = (SearchVO) map.get("searchVO");
+        List<Map<String, Object>> mapList = new ArrayList<>();
+        List<NoticesDto> dtoList;
+        int total = 0;
 
-        int totalCount;
-        List<NoticesDto> list;
+        // 검색 조건이 없거나 비어있으므로 전체 공지사항을 가져옴
+        if (noticeSearchVO == null ||
+                (noticeSearchVO.getNoticeTitle() == null || noticeSearchVO.getNoticeTitle().isEmpty()) &&
+                (noticeSearchVO.getNoticeContent() == null || noticeSearchVO.getNoticeContent().isEmpty()) &&
+                (noticeSearchVO.getNoticeDateStart() == null || noticeSearchVO.getNoticeDateStart().isEmpty()) &&
+                (noticeSearchVO.getNoticeDateEnd() == null || noticeSearchVO.getNoticeDateEnd().isEmpty())) {
+            dtoList = noticesIDao.getAllNotices();
 
-        // 공지 검색 조건이 하나도 없으면 전체 공지 불러오기
-        boolean isEmptySearch = (noticeSearchVO.getNoticeTitle() == null || noticeSearchVO.getNoticeTitle().isEmpty())
-                && (noticeSearchVO.getNoticeContent() == null || noticeSearchVO.getNoticeContent().isEmpty())
-                && noticeSearchVO.getNoticeDateStart() == null
-                && noticeSearchVO.getNoticeDateEnd() == null;
-
-        if (isEmptySearch) {
-            totalCount = noticesIDao.countAllNotices();
-            searchVO.pageCalculate(totalCount);
-            System.out.println("totalCount : " + totalCount);
-            // 페이징 계산에 맞춰 공지 리스트 가져오기
-            list = noticesIDao.getAllNoticesPaginated(searchVO.getRowStart() - 1, searchVO.getDisplayRowCount());
+            total = noticesIDao.countAllNotices();
+        // 검색 조건이 있으면 검색 된 공지사항을 가져옴
         } else {
-            totalCount = noticesIDao.countSearchNotice(noticeSearchVO, searchVO);
-            searchVO.pageCalculate(totalCount);
-            list = noticesIDao.searchNotice(noticeSearchVO, searchVO);
+            System.out.println("제목: " + noticeSearchVO.getNoticeTitle());
+            System.out.println("내용: " + noticeSearchVO.getNoticeContent());
+            System.out.println("시작일: " + noticeSearchVO.getNoticeDateStart());
+            System.out.println("종료일: " + noticeSearchVO.getNoticeDateEnd());
+            total = noticesIDao.countSearchNotice(noticeSearchVO);
+            dtoList = noticesIDao.searchNotice(noticeSearchVO);
         }
+        for (NoticesDto dto : dtoList) {
+            Map<String, Object> row = new HashMap<>();
+            row.put("noticesId", dto.getNotices_id());
+            row.put("noticesTitle", dto.getNotices_title());
+            row.put("noticesIsPinned", dto.isNotices_is_pinned());
+            row.put("noticesCreatedAt", dto.getNotices_created_at());
+            row.put("noticesFilePath", dto.getNotices_file_path());
+            row.put("noticesContent", dto.getNotices_content());
+            mapList.add(row);
+        }
+        // Pagination
+        searchVO.pageCalculate(total);
 
-        model.addAttribute("notices", list);
+        model.addAttribute("list", mapList);
         model.addAttribute("searchVO", searchVO);
     }
 }

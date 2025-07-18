@@ -3,8 +3,7 @@ package com.ama.don.admin.dao;
 import com.ama.don.admin.dto.NoticeSearchVO;
 import com.ama.don.admin.dto.NoticesDto;
 import com.ama.don.admin.utils.SearchVO;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -49,20 +48,17 @@ public interface NoticesIDao {
      *        - content: 검색할 내용 키워드 <br>
      *        - dateStart, dateEnd: 검색할 날짜 범위
      * @return 검색 결과 공지사항 목록
-     * @see #countSearchNotice(NoticeSearchVO, SearchVO)
+     * @see #countSearchNotice(NoticeSearchVO)
      */
-    List<NoticesDto> searchNotice(@Param("noticeSearchVO") NoticeSearchVO noticeSearchVO,
-                                  @Param("searchVO") SearchVO searchVO);
-
+    List<NoticesDto> searchNotice(@Param("noticeSearchVO") NoticeSearchVO noticeSearchVO);
 
     /**
      * 검색 조건에 해당하는 공지사항 개수를 반환한다.
      * @param noticeSearchVO 검색 조건 VO
      * @return 검색 결과 개수
-     * @see #searchNotice(NoticeSearchVO, SearchVO)
+     * @see #searchNotice(NoticeSearchVO)
      */
-    public int countSearchNotice(@Param("noticeSearchVO") NoticeSearchVO noticeSearchVO,
-                                 @Param("searchVO") SearchVO searchVO);
+    public int countSearchNotice(@Param("noticeSearchVO") NoticeSearchVO noticeSearchVO);
 
     /**
      * 공지사항 내용을 수정한다.

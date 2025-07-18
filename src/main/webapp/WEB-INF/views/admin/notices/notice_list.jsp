@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <div class="info">
     전체 글 : ${searchVO.totRow} <br>
     현재 페이지 / 전체 페이지 : ${searchVO.page } / ${searchVO.totPage }
@@ -44,17 +46,20 @@
 
 <!-- 공지 목록 출력 -->
 <table class="notice-table">
+    <tr>
+		<td>제목</td>
+		<td>날자</td>
+	</tr>
     <c:forEach items="${list}" var="notice">
         <tr>
             <td>
                 <a href="#">
                     ${notice.noticesTitle}
-                    <c:if test="${notice.noticesFilePath != null}">
-                        <i title="${notice.noticesFilePath}" class="fa-regular fa-floppy-disk"></i>
-                    </c:if>
                 </a>
             </td>
-            <td>${notice.noticesCreatedAt}</td>
+            <td>
+            <fmt:formatDate value="${notice.noticesCreatedAt}" pattern="yyyy-MM-dd"/>
+            </td>
         </tr>
     </c:forEach>
 </table>
