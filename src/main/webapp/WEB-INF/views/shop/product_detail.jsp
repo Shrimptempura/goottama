@@ -32,10 +32,21 @@
 }
 
 
+.productcontainer{
+	position: absolute;
+	
+	top:50%;
+	
+	left: 30%;
+
+}
+
 .main-img{
 	width: 300px;
 	height: 300px;
 }
+
+
 
 .imgcontainer {
     position: absolute;  
@@ -110,18 +121,25 @@
 	
 }
 
-.bottombar{
-	width: 600px;
-	position: relative;
-	top: 100%;
-	left: 100%;
 
-	background-color: #fff; /* 배경색 (흰색 권장) */
-    border: 2px solid #ccc; /* 테두리 */
-    border-radius: 10px;  /* 모서리 둥글게 */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 */
-    box-sizing: border-box; /* 패딩이 박스 크기에 포함되도록 */
-	
+
+.bottombar {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+    text-align: center;
+    padding: 10px 0;
+}
+
+.bottombar a {
+    margin: 0 20px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
 }
 
 .bottombar a{
@@ -139,7 +157,7 @@
 		<div class="main-container">
 		
 		
-			<div class="productcontatner"> 
+			<div class="productcontainer"> 
 				<div class="imgcontainer">
 				
 				
@@ -156,6 +174,8 @@
 					    </c:forEach>
 					</div>
 			
+			
+					
 				</div>
 			
 			
