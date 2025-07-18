@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +20,26 @@
 			onmouseout="this.style.backgroundColor='white'">글쓰기</a>
 
 	</div>
+
+	<table width="500" border="1">
+		<tr>
+			<td>제목</td>
+			<td>내용</td>
+			<td>프로필</td>
+			<td>작성자</td>
+			<td>조회수</td>
+			<td>댓글 수</td>
+			<td>좋아요 수</td>
+			<td>사진</td>
+		</tr>
+		<c:forEach items="${review_view }" var="dto">
+			<tr>
+				<td>${dto.title }</td>
+
+			</tr>
+		</c:forEach>
+
+	</table>
 
 </body>
 </html>
