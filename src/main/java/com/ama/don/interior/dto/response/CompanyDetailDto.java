@@ -5,12 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// 업체 상세페이지의 자세한 업체정보 탭
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-// 업체 상세페이지의 자세한 업체정보 탭
-public class CompanyDetailViewDto {
+public class CompanyDetailDto {
+
+    private Long companyId;
 
     private String companyAddr;     // 업체 주소
 

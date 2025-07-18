@@ -12,6 +12,7 @@
 
 	<h4>리뷰</h4>
 
+	<!-- 글쓰기 view단 -->
 	<div class="container mt-3 d-flex justify-content-end">
 		<a href="write_view" class="btn fw-bold"
 			onmouseover="this.style.backgroundColor='#f0f0f0'"

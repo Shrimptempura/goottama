@@ -14,8 +14,6 @@ import java.util.List;
 // 리뷰 작성시 사용 dto
 public class CompanyReviewCreateDto {
 
-    private Long companyId;     // 업체 아이디
-
     private int communicationRate;  // 소통 점수
     private int priceRate;          // 가격 점수
     private int resultRate;         // 결과 점수
@@ -23,8 +21,6 @@ public class CompanyReviewCreateDto {
 
     private String reviewContent;       // 리뷰 내용
     private List<String> reviewImg;     // 리뷰 사진
-
-    private Long userId;                // 회원 아이디
 
     private String structureType;       // 건물 유형
     private String areaInPyeong;           // 평수

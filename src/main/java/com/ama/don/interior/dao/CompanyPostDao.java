@@ -5,30 +5,30 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.ArrayList;
 
-@Mapper
 // 업체가 작성한 게시글
+@Mapper
 public interface CompanyPostDao {
-    // 게시글 목록보기
-    ArrayList<CompanyPostCreateDto> list();
+    //
+    ArrayList<CompanyPostCreateDto> list(Long companyId);
 
     // 게시글 작성하기
     void create(CompanyPostCreateDto dto);
 
     // 게시글 상세보기
-    CompanyPostCreateDto detail(int postId);
+    CompanyPostCreateDto detail(Long companyPostId);
 
     // 게시글 수정
     void update(CompanyPostCreateDto dto);
 
     // 게시글 수정 뷰
-    CompanyPostCreateDto updateView(int postId);
+    CompanyPostCreateDto getEditView(Long companyPostId);
 
     // 게시글 삭제
-    void delete(int postId);
+    void delete(Long companyPostId);
 
     // 조회수 증가
-    void increaseHit(int postId);
+    void increaseHit(Long companyPostId);
 
     // 좋아요 수
-    int getLikeCount(int postId);
+    int getLikeCount(Long companyPostId);
 }
