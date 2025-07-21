@@ -31,8 +31,6 @@ public interface NoticesIDao {
      */
     public int countAllNotices();
 
-    public List<NoticesDto> getAllNoticesPaginated(int offset, int limit);
-
     /**
      * 주어진 ID에 해당하는 공지사항을 반환한다.
      * @param noticeId 조회할 공지의 ID

@@ -1,21 +1,26 @@
 package com.ama.don.admin.controller;
 
-import com.ama.don.admin.dao.NoticesIDao;
 import com.ama.don.admin.dto.NoticeSearchVO;
+import com.ama.don.admin.service.noticeService.GetNoticeDetail;
 import com.ama.don.admin.service.noticeService.GetNoticeListService;
 import com.ama.don.admin.utils.SearchVO;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AdminNoticeController {
 
-    @Autowired
-    private GetNoticeListService getNoticeListService;
+    private final GetNoticeListService getNoticeListService;
+    private final GetNoticeDetail getNoticeDetail;
+    public AdminNoticeController(GetNoticeListService getNoticeListService, GetNoticeDetail getNoticeDetail) {
+        this.getNoticeListService = getNoticeListService;
+        this.getNoticeDetail = getNoticeDetail;
+    }
 
     /**
      * 공지 검색을 위한 POST 요청 처리
@@ -59,5 +64,12 @@ public class AdminNoticeController {
 
         getNoticeListService.execute(model);
         return "admin/notices/notice_page";
+    }
+
+    @RequestMapping("/admin/notices/notice_detail")
+    public String noticeDetail(Model model, HttpServletRequest request){
+        model.addAttribute("request", request);
+        getNoticeDetail.execute(model);
+        return "admin/notices/notice_detail";
     }
 }

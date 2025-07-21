@@ -15,57 +15,62 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("noticeSearchForm");
     const container = document.getElementById("noticeListContainer");
 
-    // 검색 폼 제출
+    // 초기 로드 시점에도 페이지 버튼에 이벤트 바인딩
+    bindPageButtons();
+
+    // 검색 폼 제출 (AJAX)
     form.addEventListener("submit", async function (e) {
         e.preventDefault();
+
         const formData = new FormData(form);
-        formData.set("page", 1); // 검색 시 1페이지로
+        formData.set("page", 1); // 검색 시 항상 1페이지로
 
-        const response = await fetch("/admin/notices/notice_list", {
-            method: "POST",
-            body: formData,
-        });
-        const html = await response.text();
-        container.innerHTML = html;
-
-        bindPageButtons(); // 페이지 버튼에 이벤트 다시 연결
+        await fetchNoticeList(formData);
     });
+
+    // 공지 목록을 비동기적으로 가져오는 함수
+    async function fetchNoticeList(formData) {
+        try {
+            const response = await fetch("/admin/notices/notice_list", {
+                method: "POST",
+                body: formData,
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const html = await response.text();
+            container.innerHTML = html;
+
+            bindPageButtons(); // 새롭게 로드된 HTML의 페이지 버튼에 이벤트 다시 연결
+        } catch (error) {
+            console.error("공지 목록을 불러오는 중 오류 발생:", error);
+            alert("공지 목록을 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요.");
+        }
+    }
 
     // 페이지 버튼 클릭 핸들러 연결 함수
     function bindPageButtons() {
-        const buttons = container.querySelectorAll(".page-btn");
+        // .pagination-controls 내의 모든 <a> 태그에 이벤트를 연결
+        const buttons = container.querySelectorAll(".pagination-controls a");
         buttons.forEach((btn) => {
-            btn.addEventListener("click", async function () {
-                const page = btn.dataset.page;
-                const formData = new FormData(form);
-                formData.set("page", page);
+            // 이미 이벤트 리스너가 추가되어 있지 않은 경우에만 추가 (중복 방지)
+            // (권장: 이벤트 위임을 사용하거나, `removeEventListener` 후 `addEventListener`를 사용)
+            // 여기서는 간단하게 `disabled` 클래스 확인으로 중복 호출 방지
+            if (!btn.classList.contains('disabled')) { // 비활성화된 버튼은 클릭 방지
+                btn.onclick = async function (e) { // 기존 addEventListener 대신 onclick 사용으로 중복 방지 (간단한 예시)
+                    e.preventDefault();
+                    const page = btn.dataset.page;
+                    if (!page) return; // data-page가 없는 경우 방지
 
-                const response = await fetch("/admin/notices/notice_list", {
-                    method: "POST",
-                    body: formData,
-                });
-                const html = await response.text();
-                container.innerHTML = html;
+                    const formData = new FormData(form);
+                    formData.set("page", page); // 숨겨진 페이지 input 값을 직접 업데이트하는 대신 formData에 설정
 
-                bindPageButtons(); // 다시 바인딩 필요
-            });
+                    // console.log("페이지 버튼 클릭 - 페이지:", page); // 디버깅용
+                    await fetchNoticeList(formData);
+                };
+            }
         });
     }
-    bindPageButtons(); // 초기 바인딩
-
-    document.querySelectorAll('.pagination-controls a').forEach(link =>{
-        link.addEventListener('click', function(e){
-            e.preventDefault();
-            const page = this.dataset.page;
-            if (!page) return;
-
-            const form = document.querySelector('#noticeSearchForm');
-            const pageInput = form.querySelector("input[name='page']");
-            pageInput.value = page;
-
-            form.submit();
-        });
-    });
 });
 </script>
 </head>
@@ -75,12 +80,12 @@ document.addEventListener("DOMContentLoaded", () => {
     <h1>Notice</h1>
 
     <%-- 검색바 --%>
-    <form action="admin/notice_list" method="post" id="noticeSearchForm" >
+    <form action="/admin/notices/notice_list" method="post" id="noticeSearchForm" >
         <div class="search-form">
-            <label>제목 <input type="text" name="noticeTitle" placeholder="제목"></label>
-            <label>내용 <input type="text" name="noticeContent" placeholder="내용"></label>
-            <label>시작일 <input type="date" name="noticeDateStart"></label>
-            <label>종료일 <input type="date" name="noticeDateEnd"></label>
+            <label>제목 <input type="text" name="noticeTitle" placeholder="제목" value="${noticeSearchVO.noticeTitle}"></label>
+            <label>내용 <input type="text" name="noticeContent" placeholder="내용" value="${noticeSearchVO.noticeContent}"></label>
+            <label>시작일 <input type="date" name="noticeDateStart" value="${noticeSearchVO.noticeDateStart}"></label>
+            <label>종료일 <input type="date" name="noticeDateEnd" value="${noticeSearchVO.noticeDateEnd}"></label>
             <input type="hidden" name="page" value="${searchVO.page}">
             <input type="submit" value="검색" />
         </div>

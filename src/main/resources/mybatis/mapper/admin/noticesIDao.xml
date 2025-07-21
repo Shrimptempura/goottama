@@ -62,13 +62,6 @@
         </where>
     </select>
 
-    <select id="getAllNoticesPaginated" parameterType="map" >
-        SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
-        FROM notices
-        ORDER BY NOTICES_CREATED_AT DESC
-        LIMIT #{offset}, #{limit}
-    </select>
-
     <!-- 공지 수정 -->
     <update id="modifyNotice">
         UPDATE notices
