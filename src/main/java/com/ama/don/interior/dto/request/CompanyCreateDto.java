@@ -12,6 +12,26 @@ import lombok.Setter;
 @Setter
 public class CompanyCreateDto {
 
+//    private Long userId; (controller에서 확인)
 
+    private String companyName;
+    private String companyImg;
+    private String companyAddr;
 
+    /**
+     * 업체 분야
+     */
+    private String companyField;
+    private String companyLicense;      // 업체 면허
+
+    /**
+     * 업체 AS
+     */
+    private String companyAs;
+    private String companyCareer;       // 업체 경력
+
+    /**
+     * 업체 소개말
+     */
+    private String companyIntro;
 }

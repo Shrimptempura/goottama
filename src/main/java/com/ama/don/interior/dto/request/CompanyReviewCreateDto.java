@@ -7,11 +7,11 @@ import lombok.Setter;
 
 import java.util.List;
 
+// 리뷰 작성시 사용 dto
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-// 리뷰 작성시 사용 dto
 public class CompanyReviewCreateDto {
 
     private int communicationRate;  // 소통 점수
