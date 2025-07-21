@@ -1,25 +1,54 @@
 -- 인테리어
 -- 맞춤 시공 요청 테이블
 CREATE TABLE partial_request (
-    pr_id   bigint   NULL,
+    pr_id   bigint   PRIMARY KEY AUTO_INCREMENT,
     location_id   varchar(500)   NOT NULL,
-    user_id   bigint   NULL,
-    partial_type   varchar(100)   NULL,
-    partial_kind   varchar(100)   NULL,
-    partial_area   varchar(100)   NULL,
-    partial_addr   varchar(100)   NULL,
-    partial_friend   varchar(100)   NULL
+    user_id   bigint   NOT NULL,
+    partial_type   varchar(100)   NOT NULL,
+    partial_kind   varchar(100)   NOT NULL,
+    partial_area   varchar(100)   NOT NULL,
+    partial_addr   varchar(100)   NOT NULL,
+    partial_friend   varchar(100)   NOT NULL,
+
+    CONSTRAINT fk_partial_request_location
+        FOREIGN KEY (location_id) REFERENCES location(location_id),
+
+    CONSTRAINT fk_partial_request_user
+        FOREIGN KEY (user_id) REFERENCES user_detail(user_id)
 );
 
 -- 인테리어
 -- 업체 팔로우 테이블
+-- pk: company_follow_id, fk: company_id, user_id
 CREATE TABLE company_follow (
-    company_follow_id   int   NULL,
-    company_detail_id   bigint   NULL,
-    user_id   bigint   NULL,
-    company_follow_at   varchar(100)   NULL,
-    company_share_at   varchar(100)   NULL
+    company_follow_id   BIGINT PRIMARY KEY AUTO_INCREMENT,
+    company_id   bigint   NOT NULL,
+    user_id   bigint   NOT NULL,
+    follow_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_company_follow_user
+        FOREIGN KEY (user_id) REFERENCES user_detail(user_id),
+
+    CONSTRAINT fk_company_follow_company
+        FOREIGN KEY (company_id) REFERENCES company(company_id),
+
+    UNIQUE KEY unique_follow(user_id, company_id)
 );
+
+-- 인테리어
+-- 업체 좋아요 테이블
+CREATE TABLE company_like (
+    company_like_id   bigint   PRIMARY KEY AUTO_INCREMENT,
+    company_project_id   bigint   NOT NULL,
+    user_id   bigint   NOT NULL,
+
+    CONSTRAINT fk_company_like_project
+        FOREIGN KEY (company_project_id) REFERENCES  company_project(company_project_id),
+
+    CONSTRAINT fk_company_like_user
+        FOREIGN KEY (user_id) REFERENCES user_detail(user_id)
+);
+
 -- 회원
 -- pk: user_id
 -- 인테리어에서 가져다 쓸 fk, 참고용
@@ -41,6 +70,7 @@ CREATE TABLE user_detail (
 -- 공통
 -- pk: post_id, fk: user_id
 -- enum: COMMUNITY, INTERIOR
+-- post_img: 1장이면 ok, 여러장이면 file 테이블의 target_id,type으로 처리
 CREATE TABLE post (
     post_id   BIGINT   PRIMARY KEY AUTO_INCREMENT,
     user_id   BIGINT   NOT NULL ,
@@ -81,7 +111,7 @@ CREATE TABLE company_project (
 -- 인테리어
 -- 위치 테이블
 CREATE TABLE location (
-    location_id   varchar(500)   NOT NULL,
+    location_id   BIGINT   PRIMARY KEY AUTO_INCREMENT,
     location_lat   decimal(9, 5)   NULL,
     location_lng   decimal(9, 5)   NULL,
     location_ac   varchar(100)   NULL,
@@ -110,14 +140,6 @@ CREATE TABLE company (
 
     CONSTRAINT fk_company_location
         FOREIGN KEY (location_id) REFERENCES location(location_id)
-);
-
--- 인테리어
--- 업체 좋아요 테이블
-CREATE TABLE company_like (
-    company_like_id   bigint   NOT NULL,
-    company_project_id   bigint   NOT NULL,
-    user_id   bigint   NULL
 );
 
 -- 인테리어
