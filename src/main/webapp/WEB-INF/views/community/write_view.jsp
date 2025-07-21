@@ -32,8 +32,9 @@
 			<div class="container mt-3 d-flex justify-content-end">
 				<a href="write_view" class="btn fw-bold"
 					onmouseover="this.style.backgroundColor='#f0f0f0'"
-					onmouseout="this.style.backgroundColor='white'">글작성</a>
-
+					onmouseout="this.style.backgroundColor='white'"> <input
+					type="submit" value="글작성">글작성
+				</a>
 			</div>
 		</table>
 	</form>

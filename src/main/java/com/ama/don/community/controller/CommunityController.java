@@ -3,20 +3,18 @@ package com.ama.don.community.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ama.don.community.Command.Review_viewCommand;
+
 @Controller
 public class CommunityController {
+
+	Review_viewCommand command;
 	// 컨트롤러
 
 	@RequestMapping("community_home")
 	public String home() {
 
 		return "community/community_home";
-	}
-
-	@RequestMapping("review_view")
-	public String review() {
-
-		return "community/review_view";
 	}
 
 	@RequestMapping("suggest_view")
