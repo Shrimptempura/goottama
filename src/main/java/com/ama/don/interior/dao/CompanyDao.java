@@ -15,7 +15,7 @@ public interface CompanyDao {
     void insertCompanyInfo(CompanyCreateDto dto);
 
     // 업체 이름 중복 검사, insertCompanyInfo에서 확인해야함
-    Boolean isCompanyNameDuplicate(String companyName);
+    Boolean isDuplicateCompanyName(String companyName);
 
     // 업체 상세 정보 조회
     CompanyDetailDto selectDetailCompany(Long companyId);
