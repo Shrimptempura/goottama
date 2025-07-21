@@ -4,7 +4,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ama.don.member.dto.JoinformDto;
@@ -28,26 +30,20 @@ public class JoinController {
 	private final NicknameCheckService nicknameCheckService;
 	private final EmailCheckService emailCheckService;
 	
-	@RequestMapping("/")
-	public String index() {
-		return "list";
-	}
 	
-	@RequestMapping("join_view")
+	@GetMapping("join_view")
 	public String join_view() {
 		return "member/join_view";
 	}
 	
 	//회원가입
-	@RequestMapping("join")
+	@PostMapping("join")
 	public String join(@Valid @ModelAttribute JoinformDto joinformDto, BindingResult bindingResult, Model model,
 							HttpServletRequest request) {
 		
-		//join_view에 여러개 input으로 구성, 여기서 하나로 합쳐서 joinformdto에 주입
-		String email = request.getParameter("emailId")+"@"+request.getParameter("emailDomain");
-		String fullAddr = request.getParameter("addr")+request.getParameter("detailAddr");
-		joinformDto.setEmail(email);
-		joinformDto.setFullAddr(fullAddr);
+		//폼에 입력된 값 하나로 dto에 주입
+		joinformDto.combineAddress();
+		joinformDto.combineEmail();
 		
 		//입력값 검증 실패 시 메시지를 model에 담아 회원가입페이지로 
 		if (bindingResult.hasErrors()) {
@@ -86,7 +82,7 @@ public class JoinController {
 		
 		//비밀번호 암호화,회원정보 db저장,회원가입완료
 		joinService.execute(joinformDto, model);
-		return "redirect:login_view";
+		return "redirect:/login_view";
 		
 		
 		

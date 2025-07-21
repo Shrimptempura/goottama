@@ -36,7 +36,7 @@ public class JoinformDto {
 	private Gender gender;
 	
 	@NotBlank(message = "생년월일을 선택하세요.")
-	@Pattern(regexp = "^(19|20)\\d{2}(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$", message = "생년월일 형식이 올바르지 않습니다. (예: 19900715)")
+	@Pattern(regexp = "^(19|20)\\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$", message = "생년월일 형식이 올바르지 않습니다. (예: 19900715)")
 	private String birth;
 	
 	@NotBlank(message = "연락처를 입력하세요.")
@@ -51,8 +51,7 @@ public class JoinformDto {
 	
 	private String detailAddr;
 	
-	//addr+detailAddr 컨트롤러에서 주입
-	@NotBlank(message = "주소를 입력하세요.")
+	//컨트롤러에서 combineAddress호출하여 이메일
 	private String fullAddr;
 	
 	@NotBlank(message = "이메일을 입력하세요.")
@@ -61,9 +60,21 @@ public class JoinformDto {
 	@NotBlank(message = "이메일을 입력하세요.")
 	private String emailDomain;
 	
-	//emailId+@+emailDomain 컨트롤러에서 주입
+	//컨트롤러에서 combineEmail호출하여 이메일
 	@Email(message = "올바를 이메일 형식이 아닙니다.")
 	private String email;
+	
+	public void combineEmail() {
+		if (emailId != null && emailDomain != null) {
+			this.email = emailId + "@" + emailDomain;
+		}
+	}
+	
+	public void combineAddress() {
+		if (addr != null) {
+			this.fullAddr = addr + (detailAddr != null ? " " + detailAddr : "");
+		}
+	}
 
 	
 	public enum Gender {
