@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 @Controller
 public class AdminNoticeController {
@@ -82,8 +83,8 @@ public class AdminNoticeController {
     }
 
     @PostMapping("/admin/notices/notice_write")
-    public String noticeWrite(Model model, HttpServletRequest request){
-        model.addAttribute("request", request);
+    public String noticeWrite(Model model, MultipartHttpServletRequest mtfRequest){
+        model.addAttribute("request", mtfRequest);
         writeNotice.execute(model);
         return "redirect:noticePage";
     }
