@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.ui.Model;
 
 import com.ama.don.shop.dao.IDao;
+import com.ama.don.shop.dto.ProductDto;
 import com.ama.don.shop.dto.Product_imgDto;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,13 +24,12 @@ public class SListService implements SServiceinter{
 		HttpServletRequest request=
 				(HttpServletRequest) map.get("request");
 		
-		//String product_id=request.getParameter("product_id");
+		String product_id=request.getParameter("product_id");
 		
-		iDao.product_list();
-		
-		
-		
+		//iDao.intocart(product_id);
 		model.addAttribute("list",iDao.product_list());
+		
+		//
 		
 //		ArrayList<Product_imgDto> imgList=
 //				iDao.selectImg(bid);
