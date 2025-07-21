@@ -4,24 +4,26 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ama.don.admin.dao.NoticesIDao">
+
     <!--  공지 모든 공지 추출  -->
-    <select id="getAllNotices">
+    <select id="getAllNotices" resultType="com.ama.don.admin.dto.NoticesDto">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
         FROM notices ORDER BY NOTICES_ID
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 
-    <select id="countAllNotices">
+    <select id="countAllNotices" resultType="int">
         SELECT COUNT(*)
         FROM notices
     </select>
 
     <!--  아이디로 공지 검색  -->
-    <select id="getNoticeById">
+    <select id="getNoticeById" resultType="com.ama.don.admin.dto.NoticesDto">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
         FROM notices WHERE NOTICES_ID=#{param1}
     </select>
 
-    <select id="searchNotice" resultType="NoticesDto">
+    <select id="searchNotice" resultType="com.ama.don.admin.dto.NoticesDto" >
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
         FROM notices
         <where>
@@ -31,17 +33,17 @@
             <if test="noticeSearchVO.noticeContent != null and noticeSearchVO.noticeContent != ''">
                 AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchVO.noticeContent}, '%')
             </if>
-            <if test="noticeSearchVO.noticeDateStart != null">
+            <if test="noticeSearchVO.noticeDateStart != null and noticeSearchVO.noticeDateStart != ''">
                 AND NOTICES_CREATED_AT &gt;= #{noticeSearchVO.noticeDateStart}
             </if>
-            <if test="noticeSearchVO.noticeDateEnd != null">
+            <if test="noticeSearchVO.noticeDateEnd != null and noticeSearchVO.noticeDateEnd != ''">
                 AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
             </if>
         </where>
         ORDER BY NOTICES_ID DESC
-        LIMIT #{searchVO.rowStart - 1}, #{searchVO.displayRowCount}
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
-    <select id="countSearchNotice">
+    <select id="countSearchNotice" resultType="int">
         SELECT COUNT(*)
         FROM notices
         <where>
@@ -51,22 +53,13 @@
             <if test="noticeSearchVO.noticeContent != null and noticeSearchVO.noticeContent != ''">
                 AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchVO.noticeContent}, '%')
             </if>
-            <if test="noticeSearchVO.noticeDateStart != null">
+            <if test="noticeSearchVO.noticeDateStart != null and noticeSearchVO.noticeDateStart != ''">
                 AND NOTICES_CREATED_AT &gt;= #{noticeSearchVO.noticeDateStart}
             </if>
-            <if test="noticeSearchVO.noticeDateEnd != null">
+            <if test="noticeSearchVO.noticeDateEnd != null and noticeSearchVO.noticeDateEnd != ''">
                 AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
             </if>
         </where>
-        ORDER BY NOTICES_ID DESC
-        LIMIT #{searchVO.rowStart - 1}, #{searchVO.displayRowCount}
-    </select>
-
-    <select id="getAllNoticesPaginated" parameterType="map" >
-        SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
-        FROM notices
-        ORDER BY NOTICES_CREATED_AT DESC
-        LIMIT #{offset}, #{limit}
     </select>
 
     <!-- 공지 수정 -->

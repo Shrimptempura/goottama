@@ -35,11 +35,11 @@ public class PageVO {
         }
 
         // 현재 페이지에 따른 시작/끝 row 번호
-        rowStart = ((page - 1) * displayRowCount) + 1;
+        rowStart = ((page - 1) * displayRowCount);
         rowEnd = rowStart + displayRowCount - 1;
         setRowStart(rowStart);
         setRowEnd(rowEnd);
-        // ★ 동적 페이지네이션 시작
+        // 동적 페이지네이션 시작
         int pageCount = pageGrpCnt; // 보여줄 최대 페이지 번호 개수 (예: 10)
         int half = pageCount / 2;
 
@@ -84,12 +84,17 @@ public class PageVO {
     }
 
     public Integer getRowStart() {
+        // 이 메서드가 호출될 때 rowStart가 null이라면 문제가 있는 것.
+        // pageCalculate가 실행되지 않았거나, 실행되었어도 뭔가 잘못된 것.
+        if (rowStart == null) {
+            System.err.println("CRITICAL ERROR: getRowStart() called but rowStart is null. This indicates pageCalculate was not run or failed.");
+            // 임시 방편으로 재계산하거나 기본값 반환 (근본적인 해결책은 아님)
+            return (getPage() - 1) * displayRowCount; // page가 1 이상이라고 가정
+        }
         return rowStart;
     }
 
-    public void setRowStart(Integer rowStart) {
-        this.rowStart = rowStart;
-    }
+    public void setRowStart(Integer rowStart) { this.rowStart = rowStart; }
 
     public Integer getRowEnd() {
         return rowEnd;
