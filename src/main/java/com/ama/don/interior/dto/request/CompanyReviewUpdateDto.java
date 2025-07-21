@@ -7,12 +7,14 @@ import lombok.Setter;
 
 import java.util.List;
 
-// 리뷰 작성시 사용 dto
+// 회원이 업체에 쓴 리뷰 수정 dto
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class CompanyReviewCreateDto {
+public class CompanyReviewUpdateDto {
+
+    private Long reviewId;
 
     private int communicationRate;  // 소통 점수
     private int priceRate;          // 가격 점수
