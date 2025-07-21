@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.sql.Timestamp;
 import java.util.List;
 
-// 업체가 작성한 게시글을 보는 dto
+// 업체가 작성한 게시글을 상세보는 dto
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
