@@ -5,10 +5,17 @@
 
 <mapper namespace="com.ama.don.interior.dao.CompanyDao">
 
-
-    <insert id="insertCompanyInfo">
+    <insert id="insertCompanyDetail"
+            parameterType="com.ama.don.interior.dto.request.CompanyCreateDto"
+            useGeneratedKeys="true"
+            keyProperty="companyDetailId">
 
     </insert>
+
+    <insert id="insertCompany">
+
+    </insert>
+
 
     <update id="updateCompany">
 

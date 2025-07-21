@@ -1,6 +1,7 @@
 package com.ama.don.interior.dao;
 
 import com.ama.don.interior.dto.request.CompanyCreateDto;
+import com.ama.don.interior.dto.request.CompanyInsertDto;
 import com.ama.don.interior.dto.request.CompanyUpdateDto;
 import com.ama.don.interior.dto.response.CompanyDetailDto;
 import com.ama.don.interior.dto.response.CompanySummaryDto;
@@ -12,7 +13,9 @@ import java.util.Optional;
 @Mapper
 public interface CompanyDao {
     // 업체 정보 등록 + 내부적으로 정보 등록하면서 권한등급(번호)를 회원->업체 변경
-    void insertCompanyInfo(CompanyCreateDto dto);
+    void insertCompanyDetail(CompanyCreateDto dto);
+
+    void insertCompany(CompanyInsertDto dto);
 
     // 업체 이름 중복 검사, insertCompanyInfo에서 확인해야함
     Boolean isDuplicateCompanyName(String companyName);
