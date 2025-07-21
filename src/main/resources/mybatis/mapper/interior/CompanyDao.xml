@@ -6,5 +6,31 @@
 <mapper namespace="com.ama.don.interior.dao.CompanyDao">
 
 
+    <insert id="insertCompanyInfo">
 
+    </insert>
+
+    <update id="updateCompany">
+
+    </update>
+
+    <delete id="deleteCompany">
+
+    </delete>
+
+    <select id="isDuplicateCompanyName" resultType="java.lang.Boolean">
+
+    </select>
+
+    <select id="selectDetailCompany" resultType="com.ama.don.interior.dto.response.CompanyDetailDto">
+
+    </select>
+
+    <select id="selectSummaryCompany" resultType="com.ama.don.interior.dto.response.CompanySummaryDto">
+
+    </select>
+
+    <select id="findCompanyIdByUserId" resultType="java.lang.Long">
+
+    </select>
 </mapper>
