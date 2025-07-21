@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ama.don.member.dao.LoginDao;
-import com.ama.don.member.service.MemberServiceInter;
+import com.ama.don.member.service.JoinServiceInter;
 
 @Controller
 public class LoginController {
 	
-	MemberServiceInter memberServiceInter;
+	JoinServiceInter memberServiceInter;
 	
 	@Autowired
 	private LoginDao loginDao;

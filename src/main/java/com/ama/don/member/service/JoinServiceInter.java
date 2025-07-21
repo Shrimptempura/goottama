@@ -4,8 +4,8 @@ import org.springframework.ui.Model;
 
 import com.ama.don.member.dto.JoinformDto;
 
-public interface MemberServiceInter {
+public interface JoinServiceInter {
 	
-	public void execute(JoinformDto joinformDto,Model model);
+	public void join(JoinformDto joinformDto,Model model);
 
 }

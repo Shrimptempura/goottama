@@ -7,10 +7,11 @@ import com.ama.don.member.dto.UserDetailDto;
 import com.ama.don.member.dto.UserDetailDto.Gender;
 
 @Mapper
-public interface JoinDao {
+public interface ValidationDao {
 	
-	void insertUserDetail(JoinformDto joinformDto);
-	void insertUserLogin(JoinformDto joinformDto);
+	int checkId(JoinformDto joinformDto);
+	int checkNickname(JoinformDto joinformDto);
+	int checkEmail(JoinformDto joinformDto);
 	
 	
 }

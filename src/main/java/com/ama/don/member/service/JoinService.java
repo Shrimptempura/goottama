@@ -15,29 +15,42 @@ import com.ama.don.member.dto.UserDetailDto;
 import com.ama.don.member.dto.UserDetailDto.Gender;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 @Transactional
-public class JoinService implements MemberServiceInter {
+public class JoinService implements JoinServiceInter {
 
-	@Autowired
-	private JoinDao joinDao;
-	@Autowired
-	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final JoinDao joinDao;
+	private final BCryptPasswordEncoder bCryptPasswordEncoder;
+	private final ValidationServiceInter validationServiceInter;
 
 	@Override
-	public void execute(JoinformDto joinformDto, Model model) {
-
-		//비밀번호 암호화
+	public void join(JoinformDto joinformDto, Model model) {
+		
+		validationServiceInter.emailCheck(joinformDto, model);
+		validationServiceInter.loginIdCheck(joinformDto, model);
+		validationServiceInter.nicknameCheck(joinformDto, model);
+		validationServiceInter.passwordCheck(joinformDto, model);
+		
+		if (model.containsAttribute("email_error") ||
+			model.containsAttribute("id_error") ||
+			model.containsAttribute("nickname_error") ||
+			model.containsAttribute("pw_error")) {
+			return;
+		}
+		
+		// 비밀번호 암호화
 		String encodedPw = bCryptPasswordEncoder.encode(joinformDto.getPw());
 		joinformDto.setPw(encodedPw);
-		
-		//user_detail 테이블 insert
-		joinDao.insertUserDtail(joinformDto);
-		
-		//user_login 테이블 정보입력
+
+		// user_detail 테이블 insert
+		joinDao.insertUserDetail(joinformDto);
+
+		// user_login 테이블 정보입력
 		joinDao.insertUserLogin(joinformDto);
-		
+
 	}
 
 }
