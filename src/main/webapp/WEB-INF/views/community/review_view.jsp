@@ -22,32 +22,34 @@
 	</div>
 
 	<table class="table table-bordered" style="width: 100%;">
-		<thead>
-			<tr>
-				<th>제목</th>
-				<th>내용</th>
-				<th>작성일</th>
-				<th>조회수</th>
-				<th>좋아요 수</th>
-				<th>사진</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach items="${review_view}" var="dto">
-				<tr>
-					<td>${dto.post_title}</td>
-					<td>${dto.post_content}</td>
-					<td>${dto.post_date}</td>
-					<td>${dto.post_count}</td>
-					<td>${dto.post_like_count}</td>
-					<td><c:if test="${not empty dto.post_img}">
-							<img src="upload/${dto.post_img}" alt="사진"
-								style="width: 100px; height: auto;">
-						</c:if></td>
-				</tr>
-			</c:forEach>
-		</tbody>
+		<tr>
+			<th>제목</th>
+			<td>${review_view.post_title}</td>
+		</tr>
+		<tr>
+			<th>내용</th>
+			<td>${review_view.post_content}</td>
+		</tr>
+		<tr>
+			<th>작성일</th>
+			<td>${review_view.post_date}</td>
+		</tr>
+		<tr>
+			<th>조회수</th>
+			<td>${review_view.post_count}</td>
+		</tr>
+		<tr>
+			<th>좋아요 수</th>
+			<td>${review_view.post_like_count}</td>
+		</tr>
+		<tr>
+			<th>사진</th>
+			<td><c:if test="${not empty review_view.post_img}">
+					<img src="${review_view.post_img}" width="100">
+				</c:if></td>
+		</tr>
 	</table>
+
 
 
 </body>

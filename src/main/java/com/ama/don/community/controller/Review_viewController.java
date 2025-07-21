@@ -17,10 +17,17 @@ public class Review_viewController {
 
 	@RequestMapping("review_view")
 	public String review(HttpServletRequest request, Model model) {
-		System.out.println("review_view");
+		String param = request.getParameter("post_id");
+		if (param == null || param.isEmpty()) {
+			System.out.println("post_id 없음");
+			return "redirect:review_view";
+		}
+
+		int post_id = Integer.parseInt(param);
 		model.addAttribute("request", request);
 		command.execute(model);
 
 		return "community/review_view";
 	}
+
 }
