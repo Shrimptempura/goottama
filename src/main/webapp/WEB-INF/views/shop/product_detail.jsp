@@ -23,7 +23,7 @@
 	width: 300px;
 	margin: 0px auto;
 	position: absolute;
-	right: 20%;
+	left: 70%;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 	
 	border-style: solid;
@@ -106,9 +106,9 @@
 
 
 .bottombar{
-	position: relative;
-	left: 110%;
-	top:800%;
+	position: absolute;
+	left: 30%;
+	top:60%;
  	
     border: 2px solid #ccc; /* 테두리 */
     border-radius: 10px;  /* 모서리 둥글게 */
@@ -148,6 +148,24 @@
 	
 }
 
+.productinfo2{
+	width: 600px;
+	position: absolute;
+	top:100%;
+	left:30%;
+	
+	margin: 0 auto;
+	
+	padding: 50px;       /* 내부 여백 */
+	background-color: #fff; /* 배경색 (흰색 권장) */
+    border: 2px solid #ccc; /* 테두리 */
+    border-radius: 10px;  /* 모서리 둥글게 */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 */
+    box-sizing: border-box; /* 패딩이 박스 크기에 포함되도록 */
+	
+	
+}
+
 
 
 
@@ -156,6 +174,8 @@
 <body>
 
 <h2>product_detail</h2>
+<p>user_id: user1</p>
+
 	
 		<div class="main-container">
 		
@@ -194,7 +214,7 @@
 				
 			
 			<div class="container">
-							
+										
 				<p class="mallname">${product.product_mall_name }</p>
 				<p class="title">${product.product_name }</p>
 			
@@ -205,7 +225,7 @@
 				
 				<div class="buttons">
 				
-					<a href="cart?pr"><input type="submit" value="장바구니 담기" /></a>
+					<a href="cart?user_id=user1?product_id=${product.product_id }"><input type="submit" value="장바구니 담기" /></a>
 					<a href="order"><input type="submit" value="주문하기" /></a>
 				</div>
 			</div>
@@ -215,6 +235,19 @@
 		
 	
 		<div class="productinfo">
+			<p>상품 정보제공고시</p>
+			<div>제조국: ${product.product_madein }</div>
+			<div>출시 일자: ${product.product_release }</div>
+			<div>AS책임자 전화번호: ${product.product_as_manager_phone }</div>
+			<div>제품 종류: ${product.product_type}</div>
+			<div>제품 색상: ${product.product_color}</div>
+		</div>
+		
+		
+		
+		
+		
+		<div class="productinfo2">
 			<p>상품 정보제공고시</p>
 			<div>제조국: ${product.product_madein }</div>
 			<div>출시 일자: ${product.product_release }</div>

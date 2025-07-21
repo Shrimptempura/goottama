@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.ama.don.shop.dto.CartDto;
 import com.ama.don.shop.dto.ProductDto;
 
 @Mapper
@@ -15,6 +16,5 @@ public interface IDao {
 	public int write(Map<String, Object> map);
 	public ArrayList<ProductDto> product_list();
 	public ProductDto product(String product_id);
-	public void intocart(String product_id);
 	
 }

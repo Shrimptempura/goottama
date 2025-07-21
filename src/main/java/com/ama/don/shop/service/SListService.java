@@ -26,8 +26,8 @@ public class SListService implements SServiceinter{
 		
 		String product_id=request.getParameter("product_id");
 		
-		iDao.intocart(product_id);
-		
+		//iDao.intocart(product_id);
+		model.addAttribute("list",iDao.product_list());
 		
 		//
 		

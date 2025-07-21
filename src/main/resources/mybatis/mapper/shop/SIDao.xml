@@ -35,7 +35,9 @@
     	     <result column="product_imgurl" property="product_imgurl"/>
    			 <result column="product_img_type" property="product_img_type"/>
 		</collection>
-	</resultMap>   
+	</resultMap>  
+	
+	
 
 	<select id="product_list" parameterType="com.ama.don.shop.dto.ProductDto" resultMap="ProductDto">
 		
@@ -82,17 +84,5 @@
 	</insert>
 	
 	
-	<insert id="intocart">
-		INSERT INTO CART(USER_ID,PRODUCT_ID,CART_QUANTITY,CART_DATE) 
-		VALUES('유저아이디',#{PARAM1},1,NOW());
-	
-	</insert>
-	
-	<select id="selcart">
-		SELECT C.CART_ID,C.PRODUCT_ID,C.CART_QUANTITY,C.CART_DATE,P.PRODUCT_PRICE
-		FROM CART C
-		JOIN PRODUCT P ON C.PRODUCT_ID=P.PRODUCT_ID
-		WHERE PRODUCT_ID=#{param1};	
-	</select>
 
 </mapper>	
