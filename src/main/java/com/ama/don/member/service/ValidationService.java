@@ -14,7 +14,7 @@ public class ValidationService implements ValidationServiceInter {
 	@Autowired
 	private ValidationDao validationDao;
 
-	@Override
+	@Override //이메일 중복확인
 	public void emailCheck(JoinformDto joinformDto, Model model) {
 		if (validationDao.checkEmail(joinformDto) > 0) {
 			model.addAttribute("email_error", "이미 사용중인 이메일입니다.");

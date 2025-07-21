@@ -9,9 +9,9 @@ import com.ama.don.member.dto.UserDetailDto.Gender;
 @Mapper
 public interface ValidationDao {
 	
-	int checkId(JoinformDto joinformDto);
-	int checkNickname(JoinformDto joinformDto);
-	int checkEmail(JoinformDto joinformDto);
+	int checkId(JoinformDto joinformDto);  //아이디 중복 검증
+	int checkNickname(JoinformDto joinformDto);  //닉네임 중복 검증
+	int checkEmail(JoinformDto joinformDto);  //이메일 중복 검증
 	
 	
 }

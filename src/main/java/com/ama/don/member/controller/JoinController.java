@@ -45,15 +45,15 @@ public class JoinController {
 			return "member/join_view";
 		}
 
-		// 비밀번호 암호화,회원정보 db저장,회원가입완료
+		// 중복검증 확인 후 비밀번호 암호화,회원정보 db저장,회원가입완료
 		joinService.join(joinformDto, model);
-
+		//검증실패 시
 		if (model.containsAttribute("emailError") || model.containsAttribute("loginIdError")
 				|| model.containsAttribute("nicknameError") || model.containsAttribute("passwordError")) {
 			model.addAttribute("joinformDto", joinformDto);
 			return "member/join_view";
 		}
-
+		//검증 성공
 		return "redirect:/login_view";
 
 	}

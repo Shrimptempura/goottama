@@ -45,11 +45,9 @@ public class JoinService implements JoinServiceInter {
 		String encodedPw = bCryptPasswordEncoder.encode(joinformDto.getPw());
 		joinformDto.setPw(encodedPw);
 
-		// user_detail 테이블 insert
-		joinDao.insertUserDetail(joinformDto);
+		joinDao.insertUserDetail(joinformDto);  // user_detail 테이블 insert
 
-		// user_login 테이블 정보입력
-		joinDao.insertUserLogin(joinformDto);
+		joinDao.insertUserLogin(joinformDto);  // user_login 테이블 정보입력
 
 	}
 

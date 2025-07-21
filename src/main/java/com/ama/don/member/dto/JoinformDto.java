@@ -51,8 +51,7 @@ public class JoinformDto {
 	
 	private String detailAddr;
 	
-	//컨트롤러에서 combineAddress호출하여 이메일
-	private String fullAddr;
+	private String fullAddr;  //컨트롤러에서 combineAddress호출하여 주소 조합
 	
 	@NotBlank(message = "이메일을 입력하세요.")
 	private String emailId;
@@ -60,16 +59,18 @@ public class JoinformDto {
 	@NotBlank(message = "이메일을 입력하세요.")
 	private String emailDomain;
 	
-	//컨트롤러에서 combineEmail호출하여 이메일
-	@Email(message = "올바를 이메일 형식이 아닙니다.")
+	@Email(message = "올바를 이메일 형식이 아닙니다.")  //컨트롤러에서 combineEmail호출하여 이메일 조합
 	private String email;
 	
+	
+	//테이블 insert를 위한 이메일 병합 
 	public void combineEmail() {
 		if (emailId != null && emailDomain != null) {
 			this.email = emailId + "@" + emailDomain;
 		}
 	}
 	
+	//테이블 insert를 위한 이메일 병합 
 	public void combineAddress() {
 		if (addr != null) {
 			this.fullAddr = addr + (detailAddr != null ? " " + detailAddr : "");
