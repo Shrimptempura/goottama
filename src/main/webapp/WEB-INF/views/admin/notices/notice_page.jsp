@@ -53,11 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // .pagination-controls 내의 모든 <a> 태그에 이벤트를 연결
         const buttons = container.querySelectorAll(".pagination-controls a");
         buttons.forEach((btn) => {
-            // 이미 이벤트 리스너가 추가되어 있지 않은 경우에만 추가 (중복 방지)
-            // (권장: 이벤트 위임을 사용하거나, `removeEventListener` 후 `addEventListener`를 사용)
-            // 여기서는 간단하게 `disabled` 클래스 확인으로 중복 호출 방지
             if (!btn.classList.contains('disabled')) { // 비활성화된 버튼은 클릭 방지
-                btn.onclick = async function (e) { // 기존 addEventListener 대신 onclick 사용으로 중복 방지 (간단한 예시)
+                btn.onclick = async function (e) {
                     e.preventDefault();
                     const page = btn.dataset.page;
                     if (!page) return; // data-page가 없는 경우 방지
@@ -65,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
                     const formData = new FormData(form);
                     formData.set("page", page); // 숨겨진 페이지 input 값을 직접 업데이트하는 대신 formData에 설정
 
-                    // console.log("페이지 버튼 클릭 - 페이지:", page); // 디버깅용
                     await fetchNoticeList(formData);
                 };
             }
@@ -97,6 +93,6 @@ document.addEventListener("DOMContentLoaded", () => {
     </div>
 
     <%-- 글쓰기 버튼 --%>
-    <button type="button" onclick="location.href='admin/notices/notice_write'">공지 작성</button>
+    <button type="button" onclick="location.href='./notice_write_view'">공지 작성</button>
 </body>
 </html>

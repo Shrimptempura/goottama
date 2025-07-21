@@ -3,6 +3,7 @@ package com.ama.don.admin.controller;
 import com.ama.don.admin.dto.NoticeSearchVO;
 import com.ama.don.admin.service.noticeService.GetNoticeDetail;
 import com.ama.don.admin.service.noticeService.GetNoticeListService;
+import com.ama.don.admin.service.noticeService.WriteNotice;
 import com.ama.don.admin.utils.SearchVO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
@@ -17,9 +18,11 @@ public class AdminNoticeController {
 
     private final GetNoticeListService getNoticeListService;
     private final GetNoticeDetail getNoticeDetail;
-    public AdminNoticeController(GetNoticeListService getNoticeListService, GetNoticeDetail getNoticeDetail) {
+    private final WriteNotice writeNotice;
+    public AdminNoticeController(GetNoticeListService getNoticeListService, GetNoticeDetail getNoticeDetail, WriteNotice writeNotice) {
         this.getNoticeListService = getNoticeListService;
         this.getNoticeDetail = getNoticeDetail;
+        this.writeNotice = writeNotice;
     }
 
     /**
@@ -71,5 +74,17 @@ public class AdminNoticeController {
         model.addAttribute("request", request);
         getNoticeDetail.execute(model);
         return "admin/notices/notice_detail";
+    }
+
+    @RequestMapping("/admin/notices/notice_write_view")
+    public String writeView(){
+        return "admin/notices/notice_write_view";
+    }
+
+    @PostMapping("/admin/notices/notice_write")
+    public String noticeWrite(Model model, HttpServletRequest request){
+        model.addAttribute("request", request);
+        writeNotice.execute(model);
+        return "redirect:noticePage";
     }
 }

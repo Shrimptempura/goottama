@@ -33,10 +33,10 @@
             <if test="noticeSearchVO.noticeContent != null and noticeSearchVO.noticeContent != ''">
                 AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchVO.noticeContent}, '%')
             </if>
-            <if test="noticeSearchVO.noticeDateStart != null">
+            <if test="noticeSearchVO.noticeDateStart != null and noticeSearchVO.noticeDateStart != ''">
                 AND NOTICES_CREATED_AT &gt;= #{noticeSearchVO.noticeDateStart}
             </if>
-            <if test="noticeSearchVO.noticeDateEnd != null">
+            <if test="noticeSearchVO.noticeDateEnd != null and noticeSearchVO.noticeDateEnd != ''">
                 AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
             </if>
         </where>
@@ -53,10 +53,10 @@
             <if test="noticeSearchVO.noticeContent != null and noticeSearchVO.noticeContent != ''">
                 AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchVO.noticeContent}, '%')
             </if>
-            <if test="noticeSearchVO.noticeDateStart != null">
+            <if test="noticeSearchVO.noticeDateStart != null and noticeSearchVO.noticeDateStart != ''">
                 AND NOTICES_CREATED_AT &gt;= #{noticeSearchVO.noticeDateStart}
             </if>
-            <if test="noticeSearchVO.noticeDateEnd != null">
+            <if test="noticeSearchVO.noticeDateEnd != null and noticeSearchVO.noticeDateEnd != ''">
                 AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
             </if>
         </where>

@@ -1,6 +1,7 @@
 package com.ama.don.admin.service.noticeService;
 
 import com.ama.don.admin.dao.NoticesIDao;
+import com.ama.don.admin.dto.NoticesDto;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -21,5 +22,7 @@ public class GetNoticeDetail implements NoticeServiceInterface{
         HttpServletRequest request = (HttpServletRequest) map.get("request");
         String noticeId = request.getParameter("notices_id");
         System.out.println(noticeId);
+        NoticesDto notice = noticesIDao.getNoticeById(noticeId);
+        model.addAttribute("notice", notice);
     }
 }

@@ -1,12 +1,14 @@
 -- 공통
 CREATE TABLE report (
-   report_id   bigint   NULL,
-   user_id   bigint   NULL,
-   report_date   timestamp   NULL,
-   report_content   varchar(2000)   NULL,
-   target_type   int   NULL,
-   target_id   bigint   NOT NULL,
-   report_status   enum('SHOP', 'COMMUNITY', 'INTERIOR', 'ADMIN')   NULL
+  report_id bigint(20) DEFAULT NULL,
+  user_id bigint(20) DEFAULT NULL,
+  report_date timestamp NULL DEFAULT NULL,
+  report_content varchar(2000) DEFAULT NULL,
+  target_type int(11) DEFAULT NULL,
+  target_id bigint(20) DEFAULT NULL,
+  report_status enum('PENDING','REVIEWING','APPROVED','REJECTED', 'CLOSED') DEFAULT 'PENDING' NOT NULL
+
+  CONSTRAINT fk_reporter FOREIGN key (user_id) REFERENCES user_detail(user_id)
 );
 
 -- 공통
