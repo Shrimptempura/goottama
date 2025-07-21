@@ -52,7 +52,7 @@
 		아이디: <input type="text" name="loginId" />
 		<button>중복확인</button> <br />
 		
-		비밀번호: <input type="password" name="pw" /> 비밀번호는 8~20자리, 영문/숫자/특수문자를 포함해야 합니다. <br /> 
+		비밀번호: <input type="password" name="pw" placeholder="8~20자리,영문/숫자/특수문자 포함" /> <br /> 
 		비밀번호 확인: <input type="password" name="pw2" /> <br />
 		
 		<input type="hidden" name="rolesId" value="100" /> 
@@ -65,7 +65,7 @@
 		성별: <input type="radio" name="gender" value="M" checked />남 
 			<input type="radio" name="gender" value="F" />여 <br /> 
 		
-		생년월일: <input type="date" name="birth" /> <br /> 
+		생년월일: <input type="date" name="birth" min="1900-01-01" max="2099-12-31" /> <br /> 
 		연락처: <input type="text" name="tel" placeholder="전화번호 입력" /> <br /> 
 		우편번호: <input type="text" id="zipcode" name="zipcode" readonly />
 		<button type="button" onclick="execDaumPostcode()">우편번호 찾기</button> <br /> 
