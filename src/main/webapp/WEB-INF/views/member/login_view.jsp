@@ -8,5 +8,12 @@
 </head>
 <body>
 <h3>login view</h3>
+
+<form action="/login" method="post">
+    ID : <input type="text" name="loginId" /><br />
+    PW : <input type="password" name="pw" /><br />
+    <input type="submit" value="로그인" />
+</form>
+
 </body>
 </html>

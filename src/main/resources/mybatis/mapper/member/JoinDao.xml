@@ -4,14 +4,10 @@
     "https://.org/dtdmybatis/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ama.don.member.dao.JoinDao">
-
-	<select id="checkId">
-	SELECT COUNT(*) FROM user_login WHERE LOGIN_ID=#{param1}
-	</select> 
 	
-	<insert id="insertUserDtail" parameterType="com.ama.don.member.dto.JoinformDto" useGeneratedKeys="true" keyProperty="userId">
+	<insert id="insertUserDetail" parameterType="com.ama.don.member.dto.JoinformDto" useGeneratedKeys="true" keyProperty="userId">
 	INSERT INTO user_detail(USER_NAME,USER_NICKNAME,USER_GENDER,USER_BIRTH,USER_TEL,USER_ZIPCODE,USER_ADDR,USER_EMAIL)
-	VALUES(#{name},#{nickname},#{gender},#{birth},#{tel},#{zipcode},#{addr},#{email})
+	VALUES(#{name},#{nickname},#{gender},#{birth},#{tel},#{zipcode},#{fullAddr},#{email})
 	</insert>
 	
 	<insert id="insertUserLogin">

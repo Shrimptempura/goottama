@@ -35,7 +35,9 @@
     	     <result column="product_imgurl" property="product_imgurl"/>
    			 <result column="product_img_type" property="product_img_type"/>
 		</collection>
-	</resultMap>   
+	</resultMap>  
+	
+	
 
 	<select id="product_list" parameterType="com.ama.don.shop.dto.ProductDto" resultMap="ProductDto">
 		
@@ -80,5 +82,7 @@
 	VALUES(#{param1},#{param2},'서브');
 	
 	</insert>
+	
+	
 
 </mapper>	

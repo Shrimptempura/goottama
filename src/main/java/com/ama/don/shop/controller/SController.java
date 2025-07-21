@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ama.don.shop.dao.IDao;
+import com.ama.don.shop.service.SCartService;
 import com.ama.don.shop.service.SExhibitionService;
 import com.ama.don.shop.service.SListService;
 import com.ama.don.shop.service.SProductdetailService;
@@ -93,7 +94,12 @@ public class SController {
 	}
 	
 	@RequestMapping("/shop/cart")
-	public String cart() {
+	public String cart(HttpServletRequest request,Model model) {
+		
+		model.addAttribute(model);
+		sServiceinter=new SCartService(iDao);
+		sServiceinter.execute(model);
+		
 		return "shop/cart";
 	}
 	

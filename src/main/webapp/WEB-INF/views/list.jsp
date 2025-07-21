@@ -8,6 +8,5 @@
 </head>
 <body>
 	<h3>list</h3>
-<a href="join_view">회원가입</a>
 </body>
 </html>

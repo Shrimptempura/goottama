@@ -3,15 +3,14 @@ package com.ama.don.member.dao;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ama.don.member.dto.JoinformDto;
-import com.ama.don.member.dto.UserDtailDto;
-import com.ama.don.member.dto.UserDtailDto.Gender;
+import com.ama.don.member.dto.UserDetailDto;
+import com.ama.don.member.dto.UserDetailDto.Gender;
 
 @Mapper
 public interface JoinDao {
 	
-	int checkId(String loginId);
-	void insertUserDtail(JoinformDto joinformDto);
-	void insertUserLogin(JoinformDto joinformDto);
+	void insertUserDetail(JoinformDto joinformDto);  //user_detail 테이블 insert
+	void insertUserLogin(JoinformDto joinformDto);  //user_login 테이블 insert
 	
 	
 }
