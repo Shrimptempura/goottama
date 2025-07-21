@@ -7,12 +7,10 @@ CREATE TABLE report (
     target_id bigint(20) DEFAULT NULL,
     report_status enum('PENDING','REVIEWING','APPROVED','REJECTED', 'CLOSED') DEFAULT 'PENDING' NOT NULL,
     CONSTRAINT fk_reporter FOREIGN key (user_id) REFERENCES user_detail(user_id)
-)
+);
 
 -- 공통
-
--- foregin key: user_id(회원상세정보)
--- user_id: not null 로 수정하였음
+-- pk: comment_id, fk: user_id
 CREATE TABLE comments (
     comment_id   bigint  PRIMARY KEY AUTO_INCREMENT,
     user_id   bigint   NOT NULL,
