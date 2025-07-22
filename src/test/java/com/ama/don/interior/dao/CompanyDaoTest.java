@@ -3,6 +3,7 @@ package com.ama.don.interior.dao;
 import com.ama.don.interior.dto.request.CompanyCreateDto;
 import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
 import com.ama.don.interior.dto.request.CompanyInsertDto;
+import com.ama.don.interior.dto.response.CompanyDetailDto;
 import com.ama.don.member.dao.JoinDao;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
@@ -117,6 +118,37 @@ class CompanyDaoTest {
         Optional<Long> companyId = companyDao.findCompanyIdByUserId(user.getUserId());
 
         assertThat(companyId).isEmpty();
+    }
+
+    @DisplayName("업체 상세정보의 CompanyDetailDto 보기")
+    @Test
+    void selectDetailCompany() {
+        // given, 업체 등록 후 company_id 확보
+        JoinformDto user = createTestUser();
+        CompanyCreateDto detail = createTestCompanyDetail();
+        CompanyCreateLocationDto location = createTestLocation();
+        CompanyInsertDto dto = new CompanyInsertDto();
+
+        dto.setUserId(user.getUserId());
+        dto.setCompanyDetailId(detail.getCompanyDetailId());
+        dto.setLocationId(location.getLocationId());
+        dto.setCompanyImg("images/interior/test.img");
+
+        companyDao.insertCompany(dto);
+        Long companyId = dto.getCompanyId();
+
+        // when, CompanyDetail에 company_id로 값 등록
+        CompanyDetailDto result = companyDao.selectDetailCompany(companyId);
+
+        // then
+        assertThat(result).isNotNull();
+        assertThat(result.getCompanyId()).isEqualTo(companyId);
+        assertThat(result.getCompanyAddr()).isEqualTo(detail.getCompanyAddr());
+        assertThat(result.getCompanyField()).isEqualTo(detail.getCompanyField());
+        assertThat(result.getCompanyLicense()).isEqualTo(detail.getCompanyLicense());
+        assertThat(result.getCompanyAs()).isEqualTo(detail.getCompanyAs());
+        assertThat(result.getCompanyCareer()).isEqualTo(detail.getCompanyCareer());
+
     }
 
     private JoinformDto createTestUser() {
