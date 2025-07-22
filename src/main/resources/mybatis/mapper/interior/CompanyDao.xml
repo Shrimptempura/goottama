@@ -12,6 +12,14 @@
     </insert>
 
 
+
+    <!-- 시작전에 세션아이디(user_id)로 company_id 찾기 -->
+    <select id="findCompanyIdByUserId" resultType="java.lang.Long">
+        select company_id
+        from company
+        where user_id = #{userId}
+    </select>
+
     <!--  company_detail 생성  -->
     <insert id="insertCompanyDetail"
             parameterType="com.ama.don.interior.dto.request.CompanyCreateDto"
@@ -74,7 +82,4 @@
 
     </select>
 
-    <select id="findCompanyIdByUserId" resultType="java.lang.Long">
-
-    </select>
 </mapper>
