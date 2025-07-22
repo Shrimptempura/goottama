@@ -11,7 +11,7 @@ public interface LoginDao {
 
 	MemberDto findByMember(LoginformDto loginformDto); //회원정보 조회
 
-	String findByLoginId(FindLoginIdDto findLoginIdDto);
+	String findByLoginId(FindLoginIdDto findLoginIdDto); //아이디 검색
 
 
 }
