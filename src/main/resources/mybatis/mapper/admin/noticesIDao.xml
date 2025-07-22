@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.admin.dao.NoticesIDao">
+
+    <!--  공지 모든 공지 추출  -->
+    <select id="getAllNotices" resultType="com.ama.don.admin.dto.NoticesDto">
+        SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
+        FROM notices ORDER BY NOTICES_ID
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+
+    <select id="countAllNotices" resultType="int">
+        SELECT COUNT(*)
+        FROM notices
+    </select>
+
+    <!--  아이디로 공지 검색  -->
+    <select id="getNoticeById" resultType="com.ama.don.admin.dto.NoticesDto">
+        SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
+        FROM notices WHERE NOTICES_ID=#{param1}
+    </select>
+
+    <select id="searchNotice" resultType="com.ama.don.admin.dto.NoticesDto" >
+        SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
+        FROM notices
+        <where>
+            <if test="noticeSearchVO.noticeTitle != null and noticeSearchVO.noticeTitle != ''">
+                AND NOTICES_TITLE LIKE CONCAT('%', #{noticeSearchVO.noticeTitle}, '%')
+            </if>
+            <if test="noticeSearchVO.noticeContent != null and noticeSearchVO.noticeContent != ''">
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchVO.noticeContent}, '%')
+            </if>
+            <if test="noticeSearchVO.noticeDateStart != null and noticeSearchVO.noticeDateStart != ''">
+                AND NOTICES_CREATED_AT &gt;= #{noticeSearchVO.noticeDateStart}
+            </if>
+            <if test="noticeSearchVO.noticeDateEnd != null and noticeSearchVO.noticeDateEnd != ''">
+                AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
+            </if>
+        </where>
+        ORDER BY NOTICES_ID DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+    <select id="countSearchNotice" resultType="int">
+        SELECT COUNT(*)
+        FROM notices
+        <where>
+            <if test="noticeSearchVO.noticeTitle != null and noticeSearchVO.noticeTitle != ''">
+                AND NOTICES_TITLE LIKE CONCAT('%', #{noticeSearchVO.noticeTitle}, '%')
+            </if>
+            <if test="noticeSearchVO.noticeContent != null and noticeSearchVO.noticeContent != ''">
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchVO.noticeContent}, '%')
+            </if>
+            <if test="noticeSearchVO.noticeDateStart != null and noticeSearchVO.noticeDateStart != ''">
+                AND NOTICES_CREATED_AT &gt;= #{noticeSearchVO.noticeDateStart}
+            </if>
+            <if test="noticeSearchVO.noticeDateEnd != null and noticeSearchVO.noticeDateEnd != ''">
+                AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
+            </if>
+        </where>
+    </select>
+
+    <!-- 공지 수정 -->
+    <update id="modifyNotice">
+        UPDATE notices
+        SET
+        NOTICES_TITLE = #{param2},
+        NOTICES_IS_PINNED =#{param3},
+        NOTICES_FILE_PATH =#{param4},
+        NOTICES_CONTENT =#{param5}
+        WHERE NOTICES_ID = #{param1}
+    </update>
+
+    <!--  공지 작성  -->
+    <insert id="writeNotice">
+        INSERT INTO notices(NOTICES_CREATED_AT, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_FILE_PATH, NOTICES_CONTENT)
+        VALUES(NOW(), #{param1}, #{param2}, #{param3}, #{param4})
+    </insert>
+
+    <!--  공지 삭제  -->
+    <delete id="deleteNotice">
+        DELETE FROM notices WHERE NOTICES_ID = #{param1}
+    </delete>
+</mapper>
