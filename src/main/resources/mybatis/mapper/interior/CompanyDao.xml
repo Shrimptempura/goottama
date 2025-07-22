@@ -11,8 +11,6 @@
         VALUES(#{name},#{nickname},#{gender},#{birth},#{tel},#{zipcode},#{fullAddr},#{email})
     </insert>
 
-
-
     <!-- 시작전에 세션아이디(user_id)로 company_id 찾기 -->
     <select id="findCompanyIdByUserId" resultType="java.lang.Long">
         select company_id
@@ -65,6 +63,20 @@
         where company_name = #{companyName}
     </select>
 
+    <!-- 세션으로 user_id 얻고, findCompanyIdByUserId로 company_id 얻음 -->
+    <!--  -->
+    <select id="selectDetailCompany" resultType="com.ama.don.interior.dto.response.CompanyDetailDto">
+        select c.company_id AS companyId,
+            d.company_addr AS companyAddr,
+            d.company_field AS companyField,
+            d.company_license AS companyLicense,
+            d.company_as AS companyAs,
+            d.company_career AS companyCareer
+        from company c
+        join company_detail d ON c.company_detail_id = d.company_detail_id
+        where company_id = #{company_id}
+    </select>
+
     <update id="updateCompany">
 
     </update>
@@ -72,11 +84,6 @@
     <delete id="deleteCompany">
 
     </delete>
-
-
-    <select id="selectDetailCompany" resultType="com.ama.don.interior.dto.response.CompanyDetailDto">
-
-    </select>
 
     <select id="selectSummaryCompany" resultType="com.ama.don.interior.dto.response.CompanySummaryDto">
 
