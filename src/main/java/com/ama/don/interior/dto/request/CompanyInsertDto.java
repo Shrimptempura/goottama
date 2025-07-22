@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// 업체 테이블
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
