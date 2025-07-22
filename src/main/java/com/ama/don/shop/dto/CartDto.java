@@ -2,6 +2,8 @@ package com.ama.don.shop.dto;
 
 import java.sql.Timestamp;
 
+import com.ama.don.member.dto.UserDtailDto;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,5 +28,8 @@ public class CartDto {
 		
 	}	
 	
-
+	
+//	private ProductDto productDto;
+//	
+//	private UserDtailDto userDto;
 }

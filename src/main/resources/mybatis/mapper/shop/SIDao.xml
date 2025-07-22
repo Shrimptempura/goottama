@@ -72,17 +72,32 @@
 	</insert>
 	
 	<insert id="imgwritemain">
-	INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
-	VALUES(#{param1},#{param2},'메인');
+		INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
+		VALUES(#{param1},#{param2},'메인');
 	
 	</insert>
 	
 	<insert id="imgwrite">
-	INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
-	VALUES(#{param1},#{param2},'서브');
+		INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
+		VALUES(#{param1},#{param2},'서브');
 	
 	</insert>
 	
+	
+	<insert id="cart_write" parameterType="com.ama.don.shop.dto.CartDto">
+		INSERT INTO CART(USER_ID,PRODUCT_ID,CART_QUANTITY,CART_DATE) 
+		VALUES(#{param1}, #{param2}, #{param3},now());
+		
+	</insert> 
+	
+	<!-- <select id="cart_list" parameterType="com.ama.don.shop.dto,CartDto">
+		SELECT U.USER_IMG,U.USER_ID,U.USER_NAME,C.CART_QUANTITY,P.PRODUCT_ID,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_MALL_NAME
+		FROM CART C 
+		JOIN USER_DETAIL U ON C.USER_ID=U.USER_ID
+		JOIN PRODUCT P ON C.PRODUCT_ID=P.PRODUCT_ID
+		WHERE U.USER_ID= #{PARAM1};
+	
+	</select> -->
 	
 
 </mapper>	

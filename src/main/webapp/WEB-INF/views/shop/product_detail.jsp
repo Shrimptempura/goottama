@@ -214,7 +214,8 @@
 				
 			
 			<div class="container">
-										
+									
+				<p>${product.product_id }</p>	
 				<p class="mallname">${product.product_mall_name }</p>
 				<p class="title">${product.product_name }</p>
 			
@@ -224,10 +225,28 @@
 				
 				
 				<div class="buttons">
-				
-					<a href="cart?user_id=user1?product_id=${product.product_id }"><input type="submit" value="장바구니 담기" /></a>
+					<button type="button" onclick="changeCount(-1)">-</button>
+						<span id="count">1</span>
+						
+					<button type="button" onclick="changeCount(1)">+</button> <br />
+					<button onclick="showAlert()">장바구니 담기</button>
+						<script>
+							let count = 1;
+							
+							function changeCount(value){
+								count+=value;
+								if (count < 1 ) count=1;
+								 document.getElementById("count").innerText = count;
+							}
+						
+							function showAlert(){
+								alert("장바구니에 담았습니다.");
+								location.href="cart_write?user_id=13&product_id=${product.product_id }&cart_quantity="+count;
+							}
+						</script>
 					<a href="order"><input type="submit" value="주문하기" /></a>
 				</div>
+					
 			</div>
 
 		

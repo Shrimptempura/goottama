@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ama.don.shop.dao.IDao;
 import com.ama.don.shop.service.SCartService;
+import com.ama.don.shop.service.SCartWriteService;
 import com.ama.don.shop.service.SExhibitionService;
 import com.ama.don.shop.service.SListService;
 import com.ama.don.shop.service.SProductdetailService;
@@ -96,11 +97,22 @@ public class SController {
 	@RequestMapping("/shop/cart")
 	public String cart(HttpServletRequest request,Model model) {
 		
-		model.addAttribute(model);
-		sServiceinter=new SCartService(iDao);
-		sServiceinter.execute(model);
+//		model.addAttribute(model);
+//		sServiceinter=new SCartService(iDao);
+//		sServiceinter.execute(model);
 		
 		return "shop/cart";
+	}
+	
+	@RequestMapping("/shop/cart_write")
+	public String cart_write(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("request",request);
+		sServiceinter=new SCartWriteService(iDao);
+		sServiceinter.execute(model);
+		
+		
+		return "redirect:/shop/product_detail?product_id=" + request.getParameter("product_id");
 	}
 	
 	
