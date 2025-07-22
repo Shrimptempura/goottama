@@ -66,17 +66,17 @@
     <update id="modifyNotice">
         UPDATE notices
         SET
-        NOTICES_TITLE = #{param2},
-        NOTICES_IS_PINNED =#{param3},
-        NOTICES_FILE_PATH =#{param4},
-        NOTICES_CONTENT =#{param5}
-        WHERE NOTICES_ID = #{param1}
+        NOTICES_TITLE = #{notices_title},
+        NOTICES_IS_PINNED =#{notices_is_pinned},
+        NOTICES_FILE_PATH =#{notices_file_path},
+        NOTICES_CONTENT =#{notices_content}
+        WHERE NOTICES_ID = #{notices_id}
     </update>
 
     <!--  공지 작성  -->
     <insert id="writeNotice">
         INSERT INTO notices(NOTICES_CREATED_AT, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_FILE_PATH, NOTICES_CONTENT)
-        VALUES(NOW(), #{param1}, #{param2}, #{param3}, #{param4})
+        VALUES(NOW(), #{notices_title}, #{notices_is_pinned}, #{notices_file_path}, #{notices_content})
     </insert>
 
     <!--  공지 삭제  -->

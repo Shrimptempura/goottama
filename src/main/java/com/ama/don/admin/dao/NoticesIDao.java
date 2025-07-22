@@ -61,29 +61,34 @@ public interface NoticesIDao {
 
     /**
      * 공지사항 내용을 수정한다.
-     * @param noticeId 수정할 공지 ID
-     * @param title 수정할 제목
-     * @param isPinned 상단 고정 여부
-     * @param filePath 첨부 파일 경로 (null 가능)
-     * @param content 공지 본문 내용
+     * @param noticesDto NoticesDto의 아래 값들을 받는다. <br>
+     *          - title <br>
+     *          - content <br>
+     *          - file_path <br>
+     *          - is_pinned <br>
+     *          - id
      * @return 성공 시 true, 실패 시 false
+     * @see NoticesDto
      */
-    public boolean modifyNotice(String noticeId, String title, boolean isPinned, String filePath, String content);
+    public boolean modifyNotice(NoticesDto noticesDto);
 
     /**
      * 새로운 공지사항을 작성한다.
-     * @param title 제목
-     * @param isPinned 상단 고정 여부
-     * @param filePath 첨부 파일 경로 (null 가능)
-     * @param content 본문 내용
+     * @param noticesDto NoticesDto의 아래 값들을 받는다. <br>
+     *           - title <br>
+     *           - content <br>
+     *           - file_path <br>
+     *           - is_pinned <br>
+     * created_at은 NOW()를 갖고, id는 auto increment이다.
      * @return 성공 시 true, 실패 시 false
+     * @see NoticesDto
      */
-    public boolean writeNotice(String title, boolean isPinned, String filePath, String content);
+    public boolean writeNotice(NoticesDto noticesDto);
 
     /**
      * 주어진 ID의 공지사항을 삭제한다.
      * @param noticeId 삭제할 공지의 ID
-     * @return 성공 시 true, 실패 시 false
+     * @return int, 성공시 1, 실패시 0
      */
-    public boolean deleteNotice(String noticeId);
+    public int deleteNotice(String noticeId);
 }

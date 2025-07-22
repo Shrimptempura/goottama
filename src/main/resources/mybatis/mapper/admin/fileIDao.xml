@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.admin.mapper.FileIDao">
+
+    <insert id="insertFile" parameterType="com.ama.don.admin.dto.temp.FileDto" useGeneratedKeys="true" keyProperty="file_id">
+        INSERT INTO file (
+        file_uploader,
+        file_name,
+        file_path,
+        target_type,
+        target_id
+        ) VALUES (
+        #{file_uploader},
+        #{file_name},
+        #{file_path},
+        #{target_type},
+        #{target_id}
+        )
+    </insert>
+
+    <select id="getFilesByTarget" resultType="com.ama.don.admin.dto.temp.FileDto">
+        SELECT
+        file_id,
+        file_uploader,
+        file_name,
+        file_path,
+        target_type,
+        target_id
+        FROM file
+        WHERE target_type = #{targetType} AND target_id = #{targetId}
+        ORDER BY file_id ASC
+    </select>
+
+    <select id="getFileById" resultType="com.ama.don.admin.dto.temp.FileDto">
+        SELECT
+        file_id,
+        file_uploader,
+        file_name,
+        file_path,
+        target_type,
+        target_id
+        FROM file
+        WHERE file_id = #{fileId}
+    </select>
+
+    <delete id="deleteFile">
+        DELETE FROM file
+        WHERE file_id = #{fileId}
+    </delete>
+
+    <delete id="deleteFilesByTarget">
+        DELETE FROM file
+        WHERE target_type = #{targetType} AND target_id = #{targetId}
+    </delete>
+
+</mapper>

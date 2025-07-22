@@ -12,6 +12,7 @@ public class AdminController {
         model.addAttribute("leftNavigationBar", "leftNavigationBar.jsp");
         return "admin/admin_index";
     }
+
     @RequestMapping("admin/admin_dashboard")
     public String adminDashboard(){
         return "admin/admin_dashboard";
