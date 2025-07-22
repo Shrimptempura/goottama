@@ -27,6 +27,7 @@ public class SCartService implements SServiceinter{
 		
 		String product_id=request.getParameter("product_id");
 		String user_id=request.getParameter("user_id");
+	
 		
 		
 //		iDao.selectcart(user_id);
@@ -34,10 +35,14 @@ public class SCartService implements SServiceinter{
 //		
 //		CartDto cartDto=
 //		CartDto cartDto=iDao.select();
-//		
-//		ArrayList<CartDto> cartList=iDao.cart_list(user_id);
 		
-//		model.addAttribute("cart",cartList);
+		
+		
+		
+//		
+		ArrayList<CartDto> cartList=iDao.cart_list(user_id);
+		
+		model.addAttribute("cart",cartList);
 		//USER ID를기반으로 검색하고 나온 상품들을 상품아이디로 상품과 조인해서 상품을 가져오기
 		//USER ID 를 기반으로 검색한다. 13개
 		//13개 상품을 상품아이디로 검색한다. (가격,상품이름,상품_쇼핑_몰,갯수);

@@ -97,9 +97,11 @@ public class SController {
 	@RequestMapping("/shop/cart")
 	public String cart(HttpServletRequest request,Model model) {
 		
-//		model.addAttribute(model);
-//		sServiceinter=new SCartService(iDao);
-//		sServiceinter.execute(model);
+
+		System.out.println("cartlist");
+		model.addAttribute("request",request);
+		sServiceinter=new SCartService(iDao);
+		sServiceinter.execute(model);
 		
 		return "shop/cart";
 	}

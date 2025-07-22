@@ -18,7 +18,7 @@ public interface IDao {
 	public ArrayList<ProductDto> product_list();
 	public ProductDto product(String product_id);
 	public void cart_write(int user_id,int product_id,int cart_quantity);
-//	public ArrayList<CartDto> cart_list(String user_id);
+	public ArrayList<CartDto> cart_list(String user_id);
 
 	
 }

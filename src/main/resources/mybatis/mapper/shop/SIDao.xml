@@ -28,6 +28,7 @@
 		<result column="product_istoday" property="product_istoday"/>
 		<result column="product_date" property="product_date"/>
 		
+		<!-- property란 객체를 연결하는 변수 -->
 		<!-- collection은 단일 객체와 list 모두 가능하다. -->
 		<collection property="product_imgDto" resultMap="Product_imgDto"/>	<!-- resultMap이름과 위의 resultMap 아이디이름이 같아야한다. -->
 		<collection property="product_imgDtoList" ofType="com.ama.don.shop.dto.Product_imgDto">
@@ -37,7 +38,26 @@
 		</collection>
 	</resultMap>  
 	
+	<resultMap id="CartDto" type="com.ama.don.shop.dto.CartDto">
+	    <id property="cart_id" column="cart_id"/>
+	    <result property="user_id" column="user_id"/>
+	    <result property="product_id" column="product_id"/>
+	    <result property="cart_quantity" column="cart_quantity"/>
+	    <result property="cart_date" column="cart_date"/>
+	    
+	    <association property="productDto" javaType="com.ama.don.shop.dto.ProductDto">
+	        <result property="product_name" column="product_name"/>
+	        <result property="product_price" column="product_price"/>
+	        <result property="product_mall_name" column="product_mall_name"/>
+	    	<result property="product_istoday" column="product_istoday"/>
+	    </association>
 	
+	    <association property="product_imgDto" javaType="com.ama.don.shop.dto.Product_imgDto">
+	        <result property="product_imgurl" column="product_imgurl"/>
+	    </association>
+	</resultMap>
+	
+
 
 	<select id="product_list" parameterType="com.ama.don.shop.dto.ProductDto" resultMap="ProductDto">
 		
@@ -84,20 +104,23 @@
 	</insert>
 	
 	
-	<insert id="cart_write" parameterType="com.ama.don.shop.dto.CartDto">
+	<insert id="cart_write">
 		INSERT INTO CART(USER_ID,PRODUCT_ID,CART_QUANTITY,CART_DATE) 
 		VALUES(#{param1}, #{param2}, #{param3},now());
 		
 	</insert> 
 	
-	<!-- <select id="cart_list" parameterType="com.ama.don.shop.dto,CartDto">
-		SELECT U.USER_IMG,U.USER_ID,U.USER_NAME,C.CART_QUANTITY,P.PRODUCT_ID,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_MALL_NAME
+	<select id="cart_list" resultMap="CartDto">
+		SELECT C.CART_ID,C.USER_ID,C.CART_QUANTITY,C.CART_DATE,U.USER_ID,P.PRODUCT_ID,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_MALL_NAME,P.PRODUCT_ISTODAY,PI.PRODUCT_IMGURL
 		FROM CART C 
 		JOIN USER_DETAIL U ON C.USER_ID=U.USER_ID
 		JOIN PRODUCT P ON C.PRODUCT_ID=P.PRODUCT_ID
-		WHERE U.USER_ID= #{PARAM1};
+		JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID 
+		AND PI.PRODUCT_IMG_TYPE = '메인'
+		WHERE U.USER_ID= #{param1};
+
 	
-	</select> -->
+	</select>
 	
 
 </mapper>	

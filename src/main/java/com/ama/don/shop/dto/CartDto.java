@@ -1,6 +1,7 @@
 package com.ama.don.shop.dto;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 import com.ama.don.member.dto.UserDtailDto;
 
@@ -12,13 +13,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CartDto {
-	int cart_id;
+	long cart_id;
 	long user_id;
 	long product_id;
-	int cart_quantity;
+	long cart_quantity;
 	Timestamp cart_date;
 	
-	public CartDto(int cart_id,long user_id,long product_id,int cart_quantity,Timestamp cart_date) {
+	public CartDto(long cart_id,long user_id,long product_id,long cart_quantity,Timestamp cart_date) {
 		
 		this.cart_id=cart_id;
 		this.user_id=user_id;
@@ -29,7 +30,9 @@ public class CartDto {
 	}	
 	
 	
-//	private ProductDto productDto;
-//	
-//	private UserDtailDto userDto;
+	private ProductDto productDto;
+
+	private UserDtailDto userDto;
+	
+	private Product_imgDto product_imgDto;
 }
