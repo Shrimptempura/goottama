@@ -5,6 +5,13 @@
 
 <mapper namespace="com.ama.don.interior.dao.CompanyDao">
 
+    <!--  회원 예제  -->
+    <insert id="insertUser" parameterType="com.ama.don.member.dto.JoinformDto" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO user_detail(USER_NAME,USER_NICKNAME,USER_GENDER,USER_BIRTH,USER_TEL,USER_ZIPCODE,USER_ADDR,USER_EMAIL)
+        VALUES(#{name},#{nickname},#{gender},#{birth},#{tel},#{zipcode},#{fullAddr},#{email})
+    </insert>
+
+
     <!--  company_detail 생성  -->
     <insert id="insertCompanyDetail"
             parameterType="com.ama.don.interior.dto.request.CompanyCreateDto"
@@ -33,13 +40,16 @@
     </insert>
 
     <insert id="insertCompany"
-
-
-
-    >
-
+            parameterType="com.ama.don.interior.dto.request.CompanyInsertDto"
+            useGeneratedKeys="true"
+            keyProperty="companyId">
+        insert into company (
+            user_id, company_detail_id, location_id, company_img
+        )
+        values (
+            #{userId}, #{companyDetailId}, #{locationId}, #{companyImg}
+        );
     </insert>
-
 
 
     <update id="updateCompany">

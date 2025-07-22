@@ -12,8 +12,10 @@ import lombok.Setter;
 @Setter
 public class CompanyInsertDto {
 
+    private Long companyId;
+
     private Long userId;
-    private String locationId;
+    private Long locationId;
     private Long companyDetailId;
     private String companyImg;
 }
