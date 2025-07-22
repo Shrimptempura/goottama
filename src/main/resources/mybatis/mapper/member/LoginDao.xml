@@ -12,5 +12,11 @@
 	JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
 	WHERE UL.LOGIN_ID = #{loginId}
 	</select>
+	
+	<select id="findByLoginId" resultType="string">
+	SELECT UL.LOGIN_ID FROM user_login UL
+	JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
+	WHERE UD.USER_NAME = #{name} AND UD.USER_EMAIL = #{email};
+	</select>
 
 </mapper>

@@ -12,8 +12,15 @@
 <form action="/login" method="post">
     ID : <input type="text" name="loginId" /><br />
     PW : <input type="password" name="pw" /><br />
+    
+    <c:if test="${not empty login_error }"><p>${login_error }</p></c:if>
+    
     <input type="submit" value="로그인" />
 </form>
+
+<a href="/findId_view">아이디 찾기</a>
+<a href="">비밀번호 찾기</a>
+<a href="/join_view">회원가입</a>
 
 </body>
 </html>

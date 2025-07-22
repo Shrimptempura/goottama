@@ -50,7 +50,6 @@ public class JoinController {
 		//검증실패 시
 		if (model.containsAttribute("email_error") || model.containsAttribute("id_error")
 				|| model.containsAttribute("nickname_error") || model.containsAttribute("pw_error")) {
-			model.addAttribute("joinformDto", joinformDto);
 			return "member/join_view";
 		}
 		//검증 성공

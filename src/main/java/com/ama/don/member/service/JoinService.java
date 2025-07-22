@@ -32,6 +32,7 @@ public class JoinService implements JoinServiceInter {
 			model.containsAttribute("id_error") ||
 			model.containsAttribute("nickname_error") ||
 			model.containsAttribute("pw_error")) {
+			model.addAttribute("joinformDto",joinformDto);
 			return;
 		}
 		

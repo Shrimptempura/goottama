@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.ama.don.member.dto.FindLoginIdDto;
 import com.ama.don.member.dto.LoginformDto;
 import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.service.FindMemberService;
 import com.ama.don.member.service.LoginService;
 
 import jakarta.servlet.http.HttpSession;
@@ -21,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class LoginController {
 	
 	private final LoginService loginService;
+	private final FindMemberService findMemberService;
 	
 	@GetMapping("/")
 	public String index() {
@@ -30,6 +33,30 @@ public class LoginController {
 	@GetMapping("/login_view")
 	public String login_view() {
 		return "member/login_view";
+	}
+	
+	@GetMapping("/findLoginId_view")
+	public String findId_view(Model model) {
+		model.addAttribute("findLoginIdDto",new FindLoginIdDto());
+		return "member/findLoginId_view";
+	}
+	
+	@PostMapping("/find_loginId")
+	public String find_loginId(@Valid @ModelAttribute FindLoginIdDto findLoginIdDto,BindingResult bindingResult,Model model) {
+		
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("findLoginIdDto", findLoginIdDto);
+			return "member/findLoginId_view";
+		}
+		
+		String loginId = findMemberService.findLoginId(findLoginIdDto);
+		if (loginId == null) {
+			model.addAttribute("id_error","해당 정보로 가입된 아이디가 없습니다.");
+			return "member/findLoginId_view";
+		}
+		model.addAttribute("loginId",loginId);
+		
+		return "member/findLoginId_view";
 	}
 	
 	@PostMapping("/login")
