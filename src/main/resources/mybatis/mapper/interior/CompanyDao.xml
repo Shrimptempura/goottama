@@ -9,10 +9,20 @@
             parameterType="com.ama.don.interior.dto.request.CompanyCreateDto"
             useGeneratedKeys="true"
             keyProperty="companyDetailId">
-
+    insert into company_detail (
+        company_name, company_addr, company_field, company_license, company_as,
+        company_career, company_intro)
+        values (
+        #{companyName}, #{companyAddr}, #{companyField}, #{companyLicense}, #{companyAs},
+        #{companyCareer}, #{companyIntro}
+        );
     </insert>
 
     <insert id="insertCompany">
+
+    </insert>
+
+    <insert id="insertLocation">
 
     </insert>
 
