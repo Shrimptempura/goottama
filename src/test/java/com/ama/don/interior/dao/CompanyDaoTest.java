@@ -1,6 +1,7 @@
 package com.ama.don.interior.dao;
 
 import com.ama.don.interior.dto.request.CompanyCreateDto;
+import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,5 +31,15 @@ class CompanyDaoTest {
         companyDao.insertCompanyDetail(dto);
 
         assertThat(dto.getCompanyDetailId()).isNotNull();
+    }
+
+    @Test
+    void insertLocation() {
+        CompanyCreateLocationDto dto = new CompanyCreateLocationDto();
+        dto.setLocationAddr("서울특별시 구로구");
+
+        companyDao.insertLocation(dto);
+
+        assertThat(dto.getLocationId()).isNotNull();
     }
 }
