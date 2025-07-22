@@ -23,7 +23,7 @@
         values (
             #{companyName}, #{companyAddr}, #{companyField}, #{companyLicense}, #{companyAs},
             #{companyCareer}, #{companyIntro}
-        );
+        )
     </insert>
 
     <!--  location 테이블  -->
@@ -36,7 +36,7 @@
             location_addr)
         values (
             #{locationAddr}
-        );
+        )
     </insert>
 
     <insert id="insertCompany"
@@ -48,9 +48,14 @@
         )
         values (
             #{userId}, #{companyDetailId}, #{locationId}, #{companyImg}
-        );
+        )
     </insert>
 
+    <select id="isDuplicateCompanyName" resultType="java.lang.Boolean">
+        select count(*) > 0
+        from company_detail
+        where company_name = #{companyName}
+    </select>
 
     <update id="updateCompany">
 
@@ -60,9 +65,6 @@
 
     </delete>
 
-    <select id="isDuplicateCompanyName" resultType="java.lang.Boolean">
-
-    </select>
 
     <select id="selectDetailCompany" resultType="com.ama.don.interior.dto.response.CompanyDetailDto">
 
