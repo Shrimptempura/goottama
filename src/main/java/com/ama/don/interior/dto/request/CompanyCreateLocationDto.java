@@ -1,5 +1,6 @@
 package com.ama.don.interior.dto.request;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,22 +14,21 @@ import lombok.Setter;
 @Setter
 public class CompanyCreateLocationDto {
 
-    @NotNull
     private Long locationId;
 
     // 카카오 api로 변환 예정
-    @NotNull
+    @NotBlank
     private String locationAddr;    // 위치 주소(한글)
 
-    @NotNull
+    @NotBlank
     private String locationLat;     // 위치 위도
 
-    @NotNull
+    @NotBlank
     private String locationLng;     // 위치 경도
 
-    @NotNull
+    @NotBlank
     private String locationAc;      // 위치 코드
 
-    @NotNull
+    @NotBlank
     private String locationLimit;   // 위치 제한
 }
