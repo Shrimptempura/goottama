@@ -9,11 +9,12 @@ import com.ama.don.community.Command.Write_viewCommand;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
+@RequestMapping("/community")
 public class Wirte_viewController {
 
 	Write_viewCommand command;
 	
-	@RequestMapping("write_view")
+	@RequestMapping("/write_view")
 	public String write_view(Model model) {
 		System.out.println("write_view() ctr");
 
