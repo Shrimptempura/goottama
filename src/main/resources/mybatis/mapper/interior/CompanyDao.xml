@@ -5,26 +5,41 @@
 
 <mapper namespace="com.ama.don.interior.dao.CompanyDao">
 
+    <!--  company_detail 생성  -->
     <insert id="insertCompanyDetail"
             parameterType="com.ama.don.interior.dto.request.CompanyCreateDto"
             useGeneratedKeys="true"
             keyProperty="companyDetailId">
-    insert into company_detail (
-        company_name, company_addr, company_field, company_license, company_as,
-        company_career, company_intro)
+        insert into company_detail (
+            company_name, company_addr, company_field, company_license, company_as,
+            company_career, company_intro)
         values (
-        #{companyName}, #{companyAddr}, #{companyField}, #{companyLicense}, #{companyAs},
-        #{companyCareer}, #{companyIntro}
+            #{companyName}, #{companyAddr}, #{companyField}, #{companyLicense}, #{companyAs},
+            #{companyCareer}, #{companyIntro}
         );
     </insert>
 
-    <insert id="insertCompany">
+    <!--  location 테이블  -->
+    <!--  일단 주소만 적고 나머지는 추후 계산  -->
+    <insert id="insertLocation"
+            parameterType="com.ama.don.interior.dto.request.CompanyCreateLocationDto"
+            useGeneratedKeys="true"
+            keyProperty="locationId">
+        insert into location (
+            location_addr)
+        values (
+            #{locationAddr}
+        );
+    </insert>
+
+    <insert id="insertCompany"
+
+
+
+    >
 
     </insert>
 
-    <insert id="insertLocation">
-
-    </insert>
 
 
     <update id="updateCompany">
