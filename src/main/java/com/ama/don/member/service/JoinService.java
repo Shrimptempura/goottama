@@ -17,15 +17,16 @@ public class JoinService implements JoinServiceInter {
 
 	private final JoinDao joinDao;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	private final ValidationServiceInter validationServiceInter;
+	private final ValidationService validationService;
 
 	@Override
 	public void join(JoinformDto joinformDto, Model model) {
 		
-		validationServiceInter.emailCheck(joinformDto, model);
-		validationServiceInter.loginIdCheck(joinformDto, model);
-		validationServiceInter.nicknameCheck(joinformDto, model);
-		validationServiceInter.passwordCheck(joinformDto, model);
+		//중복 검증
+		validationService.emailCheck(joinformDto, model);
+		validationService.loginIdCheck(joinformDto, model);
+		validationService.nicknameCheck(joinformDto, model);
+		validationService.passwordCheck(joinformDto, model);
 		
 		if (model.containsAttribute("email_error") ||
 			model.containsAttribute("id_error") ||

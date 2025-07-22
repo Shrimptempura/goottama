@@ -48,7 +48,7 @@
 </head>
 <body>
 
-	<form action="join" method="post">
+	<form action="/join" method="post">
 		아이디: <input type="text" name="loginId" />
 		<button>중복확인</button> <br />
 		

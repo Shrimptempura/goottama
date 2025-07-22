@@ -6,5 +6,7 @@ package com.ama.don.common.enums;
 public enum TargetType {
     INTERIOR,       // 인테리어
     COMMUNITY,      // 커뮤니티
-    SHOP            // 쇼핑
+    SHOP,        // 쇼핑
+    ADMIN,		//관리자
+    MEMBER
 }

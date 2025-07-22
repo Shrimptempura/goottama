@@ -5,4 +5,12 @@
 
 <mapper namespace="com.ama.don.member.dao.LoginDao">
 
+	<select id="findByMember" parameterType="string" resultType="com.ama.don.member.dto.MemberDto">
+	SELECT UL.LOGIN_ID,UL.ROLES_ID,UL.USER_PASSWORD,UD.USER_ID,UD.USER_NAME,UD.USER_NICKNAME,
+	UD.USER_GENDER,UD.USER_BIRTH,UD.USER_CREATED_AT,UD.USER_TEL,UD.USER_ZIPCODE,UD.USER_ADDR,
+	UD.USER_EMAIL,UD.USER_IMG FROM user_login UL
+	JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
+	WHERE UL.LOGIN_ID = #{loginId}
+	</select>
+
 </mapper>

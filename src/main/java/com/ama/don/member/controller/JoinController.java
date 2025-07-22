@@ -20,14 +20,14 @@ public class JoinController {
 
 	private final JoinService joinService;
 
-	@GetMapping("join_view")
+	@GetMapping("/join_view")
 	public String join_view(Model model) {
 		model.addAttribute("joinformDto", new JoinformDto());
 		return "member/join_view";
 	}
 
 	// 회원가입
-	@PostMapping("join")
+	@PostMapping("/join")
 	public String join(@Valid @ModelAttribute JoinformDto joinformDto, BindingResult bindingResult, Model model) {
 
 		// 폼에 입력된 값 하나로 dto에 주입
@@ -48,8 +48,8 @@ public class JoinController {
 		// 중복검증 확인 후 비밀번호 암호화,회원정보 db저장,회원가입완료
 		joinService.join(joinformDto, model);
 		//검증실패 시
-		if (model.containsAttribute("emailError") || model.containsAttribute("loginIdError")
-				|| model.containsAttribute("nicknameError") || model.containsAttribute("passwordError")) {
+		if (model.containsAttribute("email_error") || model.containsAttribute("id_error")
+				|| model.containsAttribute("nickname_error") || model.containsAttribute("pw_error")) {
 			model.addAttribute("joinformDto", joinformDto);
 			return "member/join_view";
 		}
