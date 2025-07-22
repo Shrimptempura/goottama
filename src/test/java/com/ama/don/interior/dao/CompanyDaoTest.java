@@ -59,6 +59,25 @@ class CompanyDaoTest {
     }
 
 
+    @DisplayName("중복 없이 통과조건")
+    @Test
+    void isDuplicateCompanyName() {
+        String otherCompanyName = "중복없는업체이름";
+        Boolean isDuplicate = companyDao.isDuplicateCompanyName(otherCompanyName);
+
+        assertThat(isDuplicate).isFalse();
+    }
+
+    @DisplayName("중복된 이름 실패조건")
+    @Test
+    void isDuplicateCompanyNameFail() {
+        String duplicateCompanyName = "중복업체이름";
+        companyDao.insertCompanyDetail(createTestCompanyDetail(duplicateCompanyName));
+
+        Boolean isDuplicate = companyDao.isDuplicateCompanyName(duplicateCompanyName);
+
+        assertThat(isDuplicate).isTrue();
+    }
 
     private JoinformDto createTestUser() {
         JoinformDto dto = new JoinformDto();
@@ -81,8 +100,12 @@ class CompanyDaoTest {
     }
 
     private CompanyCreateDto createTestCompanyDetail() {
+        return createTestCompanyDetail("업체이름");
+    }
+
+    private CompanyCreateDto createTestCompanyDetail(String companyName) {
         CompanyCreateDto dto = new CompanyCreateDto();
-        dto.setCompanyName("업체이름");
+        dto.setCompanyName(companyName);
         dto.setCompanyAddr("업체주소");
         dto.setCompanyField("업체필드");
         dto.setCompanyLicense("업체라이센스");
