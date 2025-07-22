@@ -16,6 +16,9 @@ import java.util.List;
 @Setter
 public class CompanyReviewCreateDto {
 
+    private Long reviewId;
+    private Long companyId;
+
     @NotNull
     private int communicationRate;  // 소통 점수
     @NotNull

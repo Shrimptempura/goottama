@@ -8,6 +8,7 @@ import com.ama.don.interior.dto.response.CompanyDetailDto;
 import com.ama.don.interior.dto.response.CompanySummaryDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.Optional;
 
@@ -38,7 +39,11 @@ public interface CompanyDao {
     CompanyDetailDto selectDetailCompany(Long companyId);
 
     // 업체 요약 정보 조회(박스)
-    CompanySummaryDto selectSummaryCompany(Long companyId);
+    // company_detail, company, company_score_avg, company_follow와 연관됨
+    CompanySummaryDto selectSummaryCompany(@Param("companyId") Long companyId,
+                                           @Param("userId") Long userId);
+
+    void isFollowedCompany(Long companyId, Long userId);
 
     // 업체 정보 수정
     void updateCompany(CompanyUpdateDto dto);

@@ -26,7 +26,6 @@ class CompanyDaoTest {
     @Autowired
     CompanyDao companyDao;
 
-
     @DisplayName("company_detail 테이블 생성 테스트")
     @Test
     void insertCompanyDetail() {
@@ -148,6 +147,11 @@ class CompanyDaoTest {
         assertThat(result.getCompanyLicense()).isEqualTo(detail.getCompanyLicense());
         assertThat(result.getCompanyAs()).isEqualTo(detail.getCompanyAs());
         assertThat(result.getCompanyCareer()).isEqualTo(detail.getCompanyCareer());
+    }
+
+    @DisplayName("업체 상세페이지의 좌측 요약 정보 박스")
+    @Test
+    void selectSummaryCompany() {
 
     }
 
