@@ -11,6 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
+
+import java.util.Optional;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -20,6 +24,7 @@ class CompanyDaoTest {
 
     @Autowired
     CompanyDao companyDao;
+
 
     @DisplayName("company_detail 테이블 생성 테스트")
     @Test
@@ -79,6 +84,41 @@ class CompanyDaoTest {
         assertThat(isDuplicate).isTrue();
     }
 
+    @DisplayName("로그인된 user_id로 company_id 찾기")
+    @Test
+    void findCompanyIdByUserId() {
+        // given
+        JoinformDto user = createTestUser();
+        System.out.println("%%%%%%%%%%%: " + user.getUserId());
+
+        CompanyCreateDto detail = createTestCompanyDetail();
+        CompanyCreateLocationDto location = createTestLocation();
+        CompanyInsertDto dto = new CompanyInsertDto();
+
+        dto.setUserId(user.getUserId());
+        dto.setCompanyDetailId(detail.getCompanyDetailId());
+        dto.setLocationId(location.getLocationId());
+        dto.setCompanyImg("images/interior/test.img");
+
+        companyDao.insertCompany(dto);
+        Long expectedCompanyId = dto.getCompanyId();
+
+        Optional<Long> result = companyDao.findCompanyIdByUserId(user.getUserId());
+
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(expectedCompanyId);
+        System.out.println("############: " + result.get());
+    }
+
+    @DisplayName("회원이 업체가입안한 상태로 company_id 찾고 실패 경우")
+    @Test
+    void findCompanyIdByUserIdFail() {
+        JoinformDto user = createTestUser();
+        Optional<Long> companyId = companyDao.findCompanyIdByUserId(user.getUserId());
+
+        assertThat(companyId).isEmpty();
+    }
+
     private JoinformDto createTestUser() {
         JoinformDto dto = new JoinformDto();
         dto.setLoginId("테스트아이디");
@@ -126,5 +166,6 @@ class CompanyDaoTest {
 
         return dto;
     }
+
 
 }
