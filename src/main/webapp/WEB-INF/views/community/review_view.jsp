@@ -15,7 +15,7 @@
 
 	<!-- 글쓰기 view단 -->
 	<div class="container mt-3 d-flex justify-content-end">
-		<a href="write_view" class="btn fw-bold"
+		<a href="community/write_view" class="btn fw-bold"
 			onmouseover="this.style.backgroundColor='#f0f0f0'"
 			onmouseout="this.style.backgroundColor='white'">글쓰기</a>
 
@@ -24,28 +24,28 @@
 	<table class="table table-bordered" style="width: 100%;">
 		<tr>
 			<th>제목</th>
-			<td>${review_view.post_title}</td>
+			<td>${dto.post_title}</td>
 		</tr>
 		<tr>
 			<th>내용</th>
-			<td>${review_view.post_content}</td>
+			<td>${dto.post_content}</td>
 		</tr>
 		<tr>
 			<th>작성일</th>
-			<td>${review_view.post_date}</td>
+			<td>${dto.post_date}</td>
 		</tr>
 		<tr>
 			<th>조회수</th>
-			<td>${review_view.post_count}</td>
+			<td>${dto.post_count}</td>
 		</tr>
 		<tr>
 			<th>좋아요 수</th>
-			<td>${review_view.post_like_count}</td>
+			<td>${dto.post_like_count}</td>
 		</tr>
 		<tr>
 			<th>사진</th>
-			<td><c:if test="${not empty review_view.post_img}">
-					<img src="${review_view.post_img}" width="100">
+			<td><c:if test="${not empty dto.post_img}">
+					<img src="${dto.post_img}" width="100">
 				</c:if></td>
 		</tr>
 	</table>
