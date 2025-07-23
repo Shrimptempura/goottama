@@ -182,9 +182,59 @@ class CompanyDaoTest {
         assertThat(result.getCompanyRate()).isNull();
     }
 
+    @DisplayName("로그인 한 회원이 업체를 팔로우 한 경우")
+    @Test
+    void isFollowedCompanyReturnTrueWhenFollowed() {
+        JoinformDto user = createTestUser();
+        CompanyCreateDto detail = createTestCompanyDetail();
+        CompanyCreateLocationDto location = createTestLocation();
+
+        CompanyInsertDto dto = new CompanyInsertDto();
+        dto.setUserId(user.getUserId());
+        dto.setCompanyDetailId(detail.getCompanyDetailId());
+        dto.setLocationId(location.getLocationId());
+        dto.setCompanyImg("images/interior/test.img");
+
+        companyDao.insertCompany(dto);
+        Long companyId = dto.getCompanyId();
+
+        // 회원과 업체는 팔로우 상태
+
+        assertThat(result).isFalse();
+    }
+
+    @DisplayName("로그인 한 회원이 업체를 팔로우 하지 않은 경우")
+    @Test
+    void isFollowedCompanyReturnFalseWhenNotFollowed() {
+        JoinformDto user = createTestUser();
+        CompanyCreateDto detail = createTestCompanyDetail();
+        CompanyCreateLocationDto location = createTestLocation();
+
+        CompanyInsertDto dto = new CompanyInsertDto();
+        dto.setUserId(user.getUserId());
+        dto.setCompanyDetailId(detail.getCompanyDetailId());
+        dto.setLocationId(location.getLocationId());
+        dto.setCompanyImg("images/interior/test.img");
+
+        companyDao.insertCompany(dto);
+        Long companyId = dto.getCompanyId();
+
+        // 팔로우하지 않은 다른 유저
+        JoinformDto otherUser = createTestUser("otherUser111");
+
+        Boolean result = companyDao.isFollowedCompany(companyId, otherUser.getUserId());
+
+        assertThat(result).isFalse();
+    }
+
+
     private JoinformDto createTestUser() {
+        return createTestUser("테스트아이디");
+    }
+
+    private JoinformDto createTestUser(String loginId) {
         JoinformDto dto = new JoinformDto();
-        dto.setLoginId("테스트아이디");
+        dto.setLoginId(loginId);
         dto.setPw("abcdefghi!@");
         dto.setPw2("abcdefghi!@");
         dto.setName("홍길동");
@@ -201,7 +251,7 @@ class CompanyDaoTest {
 
         return dto;
     }
-
+    
     private CompanyCreateDto createTestCompanyDetail() {
         return createTestCompanyDetail("업체이름");
     }
