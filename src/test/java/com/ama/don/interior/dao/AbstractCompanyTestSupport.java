@@ -2,6 +2,7 @@ package com.ama.don.interior.dao;
 
 import com.ama.don.interior.dto.request.CompanyCreateDto;
 import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
+import com.ama.don.interior.dto.request.CompanyInsertDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -58,6 +59,36 @@ public class AbstractCompanyTestSupport {
         dto.setLocationAddr("서울특별시 구로구");
 
         companyDao.insertLocation(dto);
+
+        return dto;
+    }
+
+    protected CompanyInsertDto createTestCompany() {
+        JoinformDto user = createTestUser();
+        CompanyCreateDto detail = createTestCompanyDetail();
+        CompanyCreateLocationDto location = createTestLocation();
+
+        CompanyInsertDto dto = new CompanyInsertDto();
+        dto.setUserId(user.getUserId());
+        dto.setCompanyDetailId(detail.getCompanyDetailId());
+        dto.setLocationId(location.getLocationId());
+
+        companyDao.insertCompany(dto);
+
+        return dto;
+    }
+
+    protected CompanyInsertDto createTestCompany(String loginId, String companyName) {
+        JoinformDto user = createTestUser(loginId);
+        CompanyCreateDto detail = createTestCompanyDetail(companyName);
+        CompanyCreateLocationDto location = createTestLocation();
+
+        CompanyInsertDto dto = new CompanyInsertDto();
+        dto.setUserId(user.getUserId());
+        dto.setCompanyDetailId(detail.getCompanyDetailId());
+        dto.setLocationId(location.getLocationId());
+
+        companyDao.insertCompany(dto);
 
         return dto;
     }
