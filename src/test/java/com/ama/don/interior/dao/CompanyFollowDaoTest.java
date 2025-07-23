@@ -45,6 +45,63 @@ class CompanyFollowDaoTest extends AbstractCompanyTestSupport {
         assertThat(followDto.getFollowId()).isNotNull();
     }
 
+    @DisplayName("회원이 특정 업체 팔로우 취소")
+    @Test
+    void deleteFollowCompany() {
+        // 업체 2개 생성
+        JoinformDto user = createTestUser();
+        CompanyCreateDto detail = createTestCompanyDetail();
+        CompanyCreateLocationDto location = createTestLocation();
+
+        CompanyInsertDto dto = new CompanyInsertDto();
+        dto.setUserId(user.getUserId());
+        dto.setCompanyDetailId(detail.getCompanyDetailId());
+        dto.setLocationId(location.getLocationId());
+
+        companyDao.insertCompany(dto);
+
+        JoinformDto otherUser = createTestUser("otherUser111");
+        CompanyCreateDto otherDetail = createTestCompanyDetail("otherCompany");
+        CompanyCreateLocationDto otherLocation = createTestLocation();
+
+        CompanyInsertDto otherDto = new CompanyInsertDto();
+        otherDto.setUserId(otherUser.getUserId());
+        otherDto.setCompanyDetailId(otherDetail.getCompanyDetailId());
+        otherDto.setLocationId(otherLocation.getLocationId());
+
+        companyDao.insertCompany(otherDto);
+
+        // 팔로우 테스트 회원
+        JoinformDto thirdUser = createTestUser("thirdUser111");
+
+        // 2개의 업체에 팔로우
+        CompanyFollowDto followDto = new CompanyFollowDto();
+        followDto.setUserId(thirdUser.getUserId());
+        followDto.setCompanyId(dto.getCompanyId());
+
+        companyFollowDao.insertFollowCompany(followDto);
+
+        CompanyFollowDto secondFollowDto = new CompanyFollowDto();
+        secondFollowDto.setUserId(thirdUser.getUserId());
+        secondFollowDto.setCompanyId(otherDto.getCompanyId());
+
+        companyFollowDao.insertFollowCompany(secondFollowDto);
+
+        // 2개의 업체 팔로우 확인
+        assertThat(followDto.getFollowId()).isNotNull();
+        assertThat(followDto.getUserId()).isEqualTo(thirdUser.getUserId());
+
+        assertThat(secondFollowDto.getFollowId()).isNotNull();
+        assertThat(secondFollowDto.getUserId()).isEqualTo(thirdUser.getUserId());
+
+        // 2개 업체 팔로우 취소
+        companyFollowDao.deleteFollowCompany(followDto);
+        companyFollowDao.deleteFollowCompany(secondFollowDto);
+
+        assertThat(companyFollowDao.isFollowedCompany(dto.getCompanyId(), thirdUser.getUserId())).isFalse();
+        assertThat(companyFollowDao.isFollowedCompany(otherDto.getCompanyId(), thirdUser.getUserId())).isFalse();
+    }
+
     @DisplayName("로그인 한 회원이 업체를 팔로우 한 경우")
     @Test
     void isFollowedCompanyReturnTrueWhenFollowed() {
