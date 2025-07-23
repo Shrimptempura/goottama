@@ -4,6 +4,7 @@ import com.ama.don.interior.dto.request.CompanyCreateDto;
 import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
 import com.ama.don.interior.dto.request.CompanyInsertDto;
 import com.ama.don.interior.dto.response.CompanyDetailDto;
+import com.ama.don.interior.dto.response.CompanySummaryDto;
 import com.ama.don.member.dao.JoinDao;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
@@ -149,10 +150,36 @@ class CompanyDaoTest {
         assertThat(result.getCompanyCareer()).isEqualTo(detail.getCompanyCareer());
     }
 
-    @DisplayName("업체 상세페이지의 좌측 요약 정보 박스")
+    @DisplayName("업체 상세페이지의 좌측 요약 정보 박스(정보 + 별점), 별점은" +
+            "기입이 없을시 null 가능")
     @Test
     void selectSummaryCompany() {
+        // given
+        JoinformDto user = createTestUser();
+        CompanyCreateDto detail = createTestCompanyDetail();
+        CompanyCreateLocationDto location = createTestLocation();
 
+        CompanyInsertDto dto = new CompanyInsertDto();
+        dto.setUserId(user.getUserId());
+        dto.setCompanyDetailId(detail.getCompanyDetailId());
+        dto.setLocationId(location.getLocationId());
+        dto.setCompanyImg("images/interior/test.img");
+
+        companyDao.insertCompany(dto);
+        Long companyId = dto.getCompanyId();
+
+        // when
+        CompanySummaryDto result = companyDao.selectSummaryCompany(companyId);
+
+        // then
+        assertThat(result).isNotNull();     // 모든값이 null일때
+        assertThat(result.getCompanyId()).isEqualTo(companyId);
+        assertThat(result.getCompanyName()).isEqualTo(detail.getCompanyName());
+        assertThat(result.getCompanyIntro()).isEqualTo(detail.getCompanyIntro());
+        assertThat(result.getCompanyAddr()).isEqualTo(detail.getCompanyAddr());
+        assertThat(result.getCompanyLicense()).isEqualTo(detail.getCompanyLicense());
+        assertThat(result.getCompanyField()).isEqualTo(detail.getCompanyField());
+        assertThat(result.getCompanyRate()).isNull();
     }
 
     private JoinformDto createTestUser() {
