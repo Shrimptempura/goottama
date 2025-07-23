@@ -28,6 +28,8 @@ public class SOrderService implements SServiceinter{
 		String product_id=request.getParameter("product_id");
 		String user_id=request.getParameter("user_id");
 		
+		
+		System.out.println(user_id);
 		ArrayList<CartDto> cartList=iDao.cart_list(user_id);
 			
 		model.addAttribute("cart",cartList);

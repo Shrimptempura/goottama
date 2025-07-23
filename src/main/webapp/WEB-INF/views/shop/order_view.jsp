@@ -130,12 +130,14 @@ buttons.forEach(btn => {
 		</div>
 	</div>
 	
+	
+	
 	<div class="product">
-		<c:forEach var="cart" items="${cartList}">
-		    <p>${cart.product_name}</p>
-		    <p>${cart.product_price}</p>
-		    <p>${cart.product_mall_name}</p>
-		    <p>${cart.cart_quantity}</p>
+		<c:forEach items="${cart }"  var="cart_list">
+		    <p>${cart_list.productDto.product_name}</p>
+		    <p>${cart_list.productDto.product_price}원</p>
+		    <p>${cart_list.productDto.product_mall_name}</p>
+		    <p>${cart_list.productDto.cart_quantity}개</p>
 		</c:forEach>
 	</div>
 	
