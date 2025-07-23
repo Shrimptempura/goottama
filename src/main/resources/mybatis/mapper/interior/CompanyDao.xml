@@ -88,9 +88,8 @@
     <select id="selectSummaryCompany" resultType="com.ama.don.interior.dto.response.CompanySummaryDto">
 
     </select>
+    <select id="isFollowedCompany" resultType="java.lang.Boolean"></select>
+    <select id="getAvgScore" resultType="java.lang.Double"></select>
 
-    <select id="isFollowedCompany">
-
-    </select>
 
 </mapper>
