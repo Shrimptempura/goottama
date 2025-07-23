@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
-class CompanyDaoTest {
+class CompanyDaoTest extends AbstractCompanyTestSupport {
 
     @Autowired
     CompanyDao companyDao;
@@ -181,104 +181,5 @@ class CompanyDaoTest {
         assertThat(result.getCompanyField()).isEqualTo(detail.getCompanyField());
         assertThat(result.getCompanyRate()).isNull();
     }
-
-    @DisplayName("로그인 한 회원이 업체를 팔로우 한 경우")
-    @Test
-    void isFollowedCompanyReturnTrueWhenFollowed() {
-        JoinformDto user = createTestUser();
-        CompanyCreateDto detail = createTestCompanyDetail();
-        CompanyCreateLocationDto location = createTestLocation();
-
-        CompanyInsertDto dto = new CompanyInsertDto();
-        dto.setUserId(user.getUserId());
-        dto.setCompanyDetailId(detail.getCompanyDetailId());
-        dto.setLocationId(location.getLocationId());
-        dto.setCompanyImg("images/interior/test.img");
-
-        companyDao.insertCompany(dto);
-        Long companyId = dto.getCompanyId();
-
-        // 회원과 업체는 팔로우 상태
-
-        assertThat(result).isFalse();
-    }
-
-    @DisplayName("로그인 한 회원이 업체를 팔로우 하지 않은 경우")
-    @Test
-    void isFollowedCompanyReturnFalseWhenNotFollowed() {
-        JoinformDto user = createTestUser();
-        CompanyCreateDto detail = createTestCompanyDetail();
-        CompanyCreateLocationDto location = createTestLocation();
-
-        CompanyInsertDto dto = new CompanyInsertDto();
-        dto.setUserId(user.getUserId());
-        dto.setCompanyDetailId(detail.getCompanyDetailId());
-        dto.setLocationId(location.getLocationId());
-        dto.setCompanyImg("images/interior/test.img");
-
-        companyDao.insertCompany(dto);
-        Long companyId = dto.getCompanyId();
-
-        // 팔로우하지 않은 다른 유저
-        JoinformDto otherUser = createTestUser("otherUser111");
-
-        Boolean result = companyDao.isFollowedCompany(companyId, otherUser.getUserId());
-
-        assertThat(result).isFalse();
-    }
-
-
-    private JoinformDto createTestUser() {
-        return createTestUser("테스트아이디");
-    }
-
-    private JoinformDto createTestUser(String loginId) {
-        JoinformDto dto = new JoinformDto();
-        dto.setLoginId(loginId);
-        dto.setPw("abcdefghi!@");
-        dto.setPw2("abcdefghi!@");
-        dto.setName("홍길동");
-        dto.setNickname("테스트닉네임");
-        dto.setGender(JoinformDto.Gender.M);
-        dto.setBirth("1999-09-09");
-        dto.setTel("010-1234-5678");
-        dto.setZipcode("12345");
-        dto.setAddr("서울특별시 구로구");
-        dto.setEmailId("abcdefg");
-        dto.setEmailDomain("naver.com");
-
-        companyDao.insertUser(dto);
-
-        return dto;
-    }
-    
-    private CompanyCreateDto createTestCompanyDetail() {
-        return createTestCompanyDetail("업체이름");
-    }
-
-    private CompanyCreateDto createTestCompanyDetail(String companyName) {
-        CompanyCreateDto dto = new CompanyCreateDto();
-        dto.setCompanyName(companyName);
-        dto.setCompanyAddr("업체주소");
-        dto.setCompanyField("업체필드");
-        dto.setCompanyLicense("업체라이센스");
-        dto.setCompanyAs("업체AS");
-        dto.setCompanyCareer("업체경력");
-        dto.setCompanyIntro("업체소개글");
-
-        companyDao.insertCompanyDetail(dto);
-
-        return dto;
-    }
-
-    private CompanyCreateLocationDto createTestLocation() {
-        CompanyCreateLocationDto dto = new CompanyCreateLocationDto();
-        dto.setLocationAddr("서울특별시 구로구");
-
-        companyDao.insertLocation(dto);
-
-        return dto;
-    }
-
 
 }
