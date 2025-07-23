@@ -63,7 +63,7 @@ public class AbstractCompanyTestSupport {
         return dto;
     }
 
-    protected CompanyInsertDto createTestCompany() {
+    protected CompanyInsertDto insertTestCompanyWithUserLocationAndDetail() {
         JoinformDto user = createTestUser();
         CompanyCreateDto detail = createTestCompanyDetail();
         CompanyCreateLocationDto location = createTestLocation();
@@ -78,7 +78,7 @@ public class AbstractCompanyTestSupport {
         return dto;
     }
 
-    protected CompanyInsertDto createTestCompany(String loginId, String companyName) {
+    protected CompanyInsertDto insertTestCompanyWithUserLocationAndDetail(String loginId, String companyName) {
         JoinformDto user = createTestUser(loginId);
         CompanyCreateDto detail = createTestCompanyDetail(companyName);
         CompanyCreateLocationDto location = createTestLocation();
@@ -91,5 +91,20 @@ public class AbstractCompanyTestSupport {
         companyDao.insertCompany(dto);
 
         return dto;
+    }
+
+    protected TestCompanyContext insertTestCompanyContext() {
+        JoinformDto user = createTestUser();
+        CompanyCreateDto detail = createTestCompanyDetail();
+        CompanyCreateLocationDto location = createTestLocation();
+
+        CompanyInsertDto dto = new CompanyInsertDto();
+        dto.setUserId(user.getUserId());
+        dto.setCompanyDetailId(detail.getCompanyDetailId());
+        dto.setLocationId(location.getLocationId());
+
+        companyDao.insertCompany(dto);
+
+        return new TestCompanyContext(user, detail, location, dto);
     }
 }
