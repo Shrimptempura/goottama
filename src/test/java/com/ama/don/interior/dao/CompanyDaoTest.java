@@ -5,7 +5,6 @@ import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
 import com.ama.don.interior.dto.request.CompanyInsertDto;
 import com.ama.don.interior.dto.response.CompanyDetailDto;
 import com.ama.don.interior.dto.response.CompanySummaryDto;
-import com.ama.don.member.dao.JoinDao;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,12 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
-
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @Transactional
 @SpringBootTest
@@ -49,17 +45,7 @@ class CompanyDaoTest extends AbstractCompanyTestSupport {
     @DisplayName("여러 테이블에서 fk를 받아 생성한 company 테이블")
     @Test
     void insertCompany() {
-        JoinformDto user = createTestUser();
-        CompanyCreateDto detail = createTestCompanyDetail();
-        CompanyCreateLocationDto location = createTestLocation();
-
-        CompanyInsertDto dto = new CompanyInsertDto();
-        dto.setUserId(user.getUserId());
-        dto.setCompanyDetailId(detail.getCompanyDetailId());
-        dto.setLocationId(location.getLocationId());
-        dto.setCompanyImg("images/interior/test.img");
-
-        companyDao.insertCompany(dto);
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
 
         assertThat(dto.getCompanyId()).isNotNull();
     }
@@ -89,26 +75,13 @@ class CompanyDaoTest extends AbstractCompanyTestSupport {
     @Test
     void findCompanyIdByUserId() {
         // given
-        JoinformDto user = createTestUser();
-        System.out.println("%%%%%%%%%%%: " + user.getUserId());
-
-        CompanyCreateDto detail = createTestCompanyDetail();
-        CompanyCreateLocationDto location = createTestLocation();
-        CompanyInsertDto dto = new CompanyInsertDto();
-
-        dto.setUserId(user.getUserId());
-        dto.setCompanyDetailId(detail.getCompanyDetailId());
-        dto.setLocationId(location.getLocationId());
-        dto.setCompanyImg("images/interior/test.img");
-
-        companyDao.insertCompany(dto);
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
         Long expectedCompanyId = dto.getCompanyId();
 
-        Optional<Long> result = companyDao.findCompanyIdByUserId(user.getUserId());
+        Optional<Long> result = companyDao.findCompanyIdByUserId(dto.getUserId());
 
         assertThat(result).isPresent();
         assertThat(result.get()).isEqualTo(expectedCompanyId);
-        System.out.println("############: " + result.get());
     }
 
     @DisplayName("회원이 업체가입안한 상태로 company_id 찾고 실패 경우")
@@ -123,31 +96,20 @@ class CompanyDaoTest extends AbstractCompanyTestSupport {
     @DisplayName("업체 상세정보의 CompanyDetailDto 보기")
     @Test
     void selectDetailCompany() {
-        // given, 업체 등록 후 company_id 확보
-        JoinformDto user = createTestUser();
-        CompanyCreateDto detail = createTestCompanyDetail();
-        CompanyCreateLocationDto location = createTestLocation();
-        CompanyInsertDto dto = new CompanyInsertDto();
+        // given
+        TestCompanyContext ctx = insertTestCompanyContext();
 
-        dto.setUserId(user.getUserId());
-        dto.setCompanyDetailId(detail.getCompanyDetailId());
-        dto.setLocationId(location.getLocationId());
-        dto.setCompanyImg("images/interior/test.img");
-
-        companyDao.insertCompany(dto);
-        Long companyId = dto.getCompanyId();
-
-        // when, CompanyDetail에 company_id로 값 등록
-        CompanyDetailDto result = companyDao.selectDetailCompany(companyId);
+        // when
+        CompanyDetailDto result = companyDao.selectDetailCompany(ctx.getCompanyId());
 
         // then
         assertThat(result).isNotNull();
-        assertThat(result.getCompanyId()).isEqualTo(companyId);
-        assertThat(result.getCompanyAddr()).isEqualTo(detail.getCompanyAddr());
-        assertThat(result.getCompanyField()).isEqualTo(detail.getCompanyField());
-        assertThat(result.getCompanyLicense()).isEqualTo(detail.getCompanyLicense());
-        assertThat(result.getCompanyAs()).isEqualTo(detail.getCompanyAs());
-        assertThat(result.getCompanyCareer()).isEqualTo(detail.getCompanyCareer());
+        assertThat(result.getCompanyId()).isEqualTo(ctx.getCompanyId());
+        assertThat(result.getCompanyAddr()).isEqualTo(ctx.getDetail().getCompanyAddr());
+        assertThat(result.getCompanyField()).isEqualTo(ctx.getDetail().getCompanyField());
+        assertThat(result.getCompanyLicense()).isEqualTo(ctx.getDetail().getCompanyLicense());
+        assertThat(result.getCompanyAs()).isEqualTo(ctx.getDetail().getCompanyAs());
+        assertThat(result.getCompanyCareer()).isEqualTo(ctx.getDetail().getCompanyCareer());
     }
 
     @DisplayName("업체 상세페이지의 좌측 요약 정보 박스(정보 + 별점), 별점은" +
@@ -155,30 +117,19 @@ class CompanyDaoTest extends AbstractCompanyTestSupport {
     @Test
     void selectSummaryCompany() {
         // given
-        JoinformDto user = createTestUser();
-        CompanyCreateDto detail = createTestCompanyDetail();
-        CompanyCreateLocationDto location = createTestLocation();
-
-        CompanyInsertDto dto = new CompanyInsertDto();
-        dto.setUserId(user.getUserId());
-        dto.setCompanyDetailId(detail.getCompanyDetailId());
-        dto.setLocationId(location.getLocationId());
-        dto.setCompanyImg("images/interior/test.img");
-
-        companyDao.insertCompany(dto);
-        Long companyId = dto.getCompanyId();
+        TestCompanyContext ctx = insertTestCompanyContext();
 
         // when
-        CompanySummaryDto result = companyDao.selectSummaryCompany(companyId);
+        CompanySummaryDto result = companyDao.selectSummaryCompany(ctx.getCompanyId());
 
         // then
         assertThat(result).isNotNull();     // 모든값이 null일때
-        assertThat(result.getCompanyId()).isEqualTo(companyId);
-        assertThat(result.getCompanyName()).isEqualTo(detail.getCompanyName());
-        assertThat(result.getCompanyIntro()).isEqualTo(detail.getCompanyIntro());
-        assertThat(result.getCompanyAddr()).isEqualTo(detail.getCompanyAddr());
-        assertThat(result.getCompanyLicense()).isEqualTo(detail.getCompanyLicense());
-        assertThat(result.getCompanyField()).isEqualTo(detail.getCompanyField());
+        assertThat(result.getCompanyId()).isEqualTo(ctx.getCompanyId());
+        assertThat(result.getCompanyName()).isEqualTo(ctx.getDetail().getCompanyName());
+        assertThat(result.getCompanyIntro()).isEqualTo(ctx.getDetail().getCompanyIntro());
+        assertThat(result.getCompanyAddr()).isEqualTo(ctx.getDetail().getCompanyAddr());
+        assertThat(result.getCompanyLicense()).isEqualTo(ctx.getDetail().getCompanyLicense());
+        assertThat(result.getCompanyField()).isEqualTo(ctx.getDetail().getCompanyField());
         assertThat(result.getCompanyRate()).isNull();
     }
 

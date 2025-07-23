@@ -1,7 +1,5 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.interior.dto.request.CompanyCreateDto;
-import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
 import com.ama.don.interior.dto.request.CompanyFollowDto;
 import com.ama.don.interior.dto.request.CompanyInsertDto;
 import com.ama.don.member.dto.JoinformDto;
@@ -23,7 +21,7 @@ class CompanyFollowDaoTest extends AbstractCompanyTestSupport {
     @DisplayName("회원이 업체 팔로우, 테이블 생성")
     @Test
     void insertFollowCompany() {
-        CompanyInsertDto dto = createTestCompany();
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
         Long companyId = dto.getCompanyId();
 
         JoinformDto otherUser = createTestUser("otherUser111");
@@ -40,8 +38,8 @@ class CompanyFollowDaoTest extends AbstractCompanyTestSupport {
     @Test
     void deleteFollowCompany() {
         // 업체 2개 생성
-        CompanyInsertDto dto = createTestCompany();
-        CompanyInsertDto otherDto = createTestCompany("otherUser111", "otherCompany");
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
+        CompanyInsertDto otherDto = insertTestCompanyWithUserLocationAndDetail("otherUser111", "otherCompany");
 
         // 팔로우 테스트 회원
         JoinformDto thirdUser = createTestUser("thirdUser111");
@@ -75,7 +73,7 @@ class CompanyFollowDaoTest extends AbstractCompanyTestSupport {
     @DisplayName("로그인 한 회원이 업체를 팔로우 한 경우")
     @Test
     void isFollowedCompanyReturnTrueWhenFollowed() {
-        CompanyInsertDto dto = createTestCompany();
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
         Long companyId = dto.getCompanyId();
 
         // 회원과 업체는 팔로우 상태
@@ -93,7 +91,7 @@ class CompanyFollowDaoTest extends AbstractCompanyTestSupport {
     @DisplayName("로그인 한 회원이 업체를 팔로우 하지 않은 경우")
     @Test
     void isFollowedCompanyReturnFalseWhenNotFollowed() {
-        CompanyInsertDto dto = createTestCompany();
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
         Long companyId = dto.getCompanyId();
 
         // 팔로우하지 않은 다른 유저
