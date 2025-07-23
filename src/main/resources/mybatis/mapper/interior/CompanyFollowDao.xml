@@ -31,4 +31,10 @@
         and user_id = #{userId}
     </select>
 
+    <select id="getFollowCompanyCount" resultType="java.lang.Integer">
+        select count(*)
+        from company_follow
+        where company_id = #{companyId}
+    </select>
+
 </mapper>
