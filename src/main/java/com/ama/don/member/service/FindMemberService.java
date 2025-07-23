@@ -2,11 +2,14 @@ package com.ama.don.member.service;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import com.ama.don.member.dao.JoinDao;
 import com.ama.don.member.dao.LoginDao;
 import com.ama.don.member.dto.FindLoginIdDto;
+import com.ama.don.member.dto.FindPwDto;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -22,9 +25,19 @@ public class FindMemberService implements FindMemberServiceInter{
 	}
 
 	@Override
-	public String findPw(String loginId, String email) {
-		// TODO Auto-generated method stub
-		return null;
+	public boolean findPw(FindPwDto findPwDto,HttpSession session,Model model) {
+		
+		
+		if (loginDao.findMemberCount(findPwDto) == 0) {
+			model.addAttribute("email_error","존재하지 않는 회원입니다.");
+			return false;
+		}
+		
+		  // 2. 인증 코드 생성
+		  // 3. 세션 저장
+		//return true;
+		
+		return false;
 	}
 
 }

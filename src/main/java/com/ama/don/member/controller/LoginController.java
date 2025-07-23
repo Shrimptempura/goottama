@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.ama.don.member.dto.FindLoginIdDto;
+import com.ama.don.member.dto.FindPwDto;
 import com.ama.don.member.dto.LoginformDto;
 import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.service.FindMemberService;
@@ -41,6 +42,11 @@ public class LoginController {
 		return "member/findLoginId_view";
 	}
 	
+	@GetMapping("/findPw_view")
+	public String findPw_view(Model model) {		
+		return "member/findPw_view";
+	}
+	
 	@PostMapping("/find_loginId")
 	public String find_loginId(@Valid @ModelAttribute FindLoginIdDto findLoginIdDto,BindingResult bindingResult,Model model) {
 		
@@ -57,6 +63,23 @@ public class LoginController {
 		model.addAttribute("loginId",loginId);
 		
 		return "member/findLoginId_view";
+	}
+	
+	@GetMapping("/findPw")
+	public String findPw(@Valid @ModelAttribute FindPwDto findPwDto,BindingResult bindingResult,HttpSession session,Model model) {
+		
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("findPwDto", findPwDto);
+			return "member/findPw_view";
+		}
+		
+		boolean success = findMemberService.findPw(findPwDto,session,model);
+		
+		if (!success) {
+			return"member/findPw_view";
+		}
+		
+		return null; //성공 시 인증코드 입력 화면으로
 	}
 	
 	@PostMapping("/login")

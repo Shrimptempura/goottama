@@ -63,6 +63,11 @@ public class ValidationService implements ValidationServiceInter {
 		String code=request.getParameter("code");
 		String id=request.getParameter("id");
 		
+		if (joinformDto == null) {
+			model.addAttribute("emailValFail", "세션이 만료되었거나 유효하지 않은 접근입니다.");
+			return false;
+		}
+		
 		String memberEmail = joinformDto.getEmail();
 		boolean isRight=(new EmailSHA().getSHA256(memberEmail).equals(code))?true:false;
 		

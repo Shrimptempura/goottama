@@ -16,7 +16,13 @@
 	<select id="findByLoginId" resultType="string">
 	SELECT UL.LOGIN_ID FROM user_login UL
 	JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
-	WHERE UD.USER_NAME = #{name} AND UD.USER_EMAIL = #{email};
+	WHERE UD.USER_NAME = #{name} AND UD.USER_EMAIL = #{email}
+	</select>
+	
+	<select id="findMemberCount" resultType="integer">
+	SELECT COUNT(*) FROM user_login UL
+	JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
+	WHERE UL.login_id = #{loginId} AND UD.USER_EMAIL = #{email}
 	</select>
 
 </mapper>

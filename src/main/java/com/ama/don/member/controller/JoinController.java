@@ -68,7 +68,7 @@ public class JoinController {
 		sendEmailService.emailSendAction(joinformDto, model);
 		session.setAttribute("tempJoinUser", joinformDto);
 
-		return "member/join_view";
+		return "member/emailSent_view";
 
 	}
 

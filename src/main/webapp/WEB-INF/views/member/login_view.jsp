@@ -18,8 +18,8 @@
     <input type="submit" value="로그인" />
 </form>
 
-<a href="/findId_view">아이디 찾기</a>
-<a href="">비밀번호 찾기</a>
+<a href="/findLoginId_view">아이디 찾기</a>
+<a href="/findPw_view">비밀번호 찾기</a>
 <a href="/join_view">회원가입</a>
 
 </body>
