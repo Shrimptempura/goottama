@@ -39,20 +39,20 @@ public interface CompanyDao {
     CompanyDetailDto selectDetailCompany(Long companyId);
 
     // 업체 요약 정보 조회(박스)
-    // company_detail
+    // company_detail, company_score_avg
     CompanySummaryDto selectSummaryCompany(@Param("companyId") Long companyId);
 
     // 팔로우 여부 확인
     Boolean isFollowedCompany(@Param("companyId") Long companyId,
                            @Param("userId") Long userId);
 
-    // 업체 별점 평균
-    Optional<Double> getAvgScore(Long companyId);
-
     // 업체 정보 수정
     void updateCompany(CompanyUpdateDto dto);
 
     // 업체 탈퇴(실제 지우기보단 status 또는 is_active, is_deleted 사용 생각)
     void deleteCompany(Long companyId);
+
+    // 업체 별점 평균, 단순 값 추출 추후 정렬에 이용 가능성
+    Optional<Double> getAvgScore(Long companyId);
 
 }

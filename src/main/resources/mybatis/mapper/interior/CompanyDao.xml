@@ -74,7 +74,17 @@
             d.company_career AS companyCareer
         from company c
         join company_detail d ON c.company_detail_id = d.company_detail_id
-        where company_id = #{company_id}
+        where company_id = #{companyId}
+    </select>
+
+    <select id="selectSummaryCompany" resultType="com.ama.don.interior.dto.response.CompanySummaryDto">
+        select c.company_id AS companyId, d.company_name AS companyName, d.company_intro AS companyIntro,
+        d.company_addr AS companyAddr, d.company_license AS companyLicense, d.company_field AS companyField,
+        s.avg_total_rate AS companyRate
+        from company c
+        join company_detail d ON c.company_detail_id = d.company_detail_id
+        left join company_score_avg s ON c.company_id = s.company_id
+        where c.company_id = #{companyId}
     </select>
 
     <update id="updateCompany">
@@ -85,9 +95,6 @@
 
     </delete>
 
-    <select id="selectSummaryCompany" resultType="com.ama.don.interior.dto.response.CompanySummaryDto">
-
-    </select>
     <select id="isFollowedCompany" resultType="java.lang.Boolean"></select>
     <select id="getAvgScore" resultType="java.lang.Double"></select>
 
