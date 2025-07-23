@@ -8,13 +8,11 @@
         INSERT INTO file (
         file_uploader,
         file_name,
-        file_path,
         target_type,
         target_id
         ) VALUES (
         #{file_uploader},
         #{file_name},
-        #{file_path},
         #{target_type},
         #{target_id}
         )
@@ -25,7 +23,6 @@
         file_id,
         file_uploader,
         file_name,
-        file_path,
         target_type,
         target_id
         FROM file
@@ -38,7 +35,6 @@
         file_id,
         file_uploader,
         file_name,
-        file_path,
         target_type,
         target_id
         FROM file

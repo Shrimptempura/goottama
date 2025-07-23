@@ -13,6 +13,12 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import java.util.List;
 
 /**
+ * TODO
+ * 1. 작성, 수정, 삭제 시 toast로 결과 알림
+ * 2. 사진 클릭 시 확대 보기 지원
+ */
+
+/**
  * 공지사항 관련 HTTP 요청을 처리하는 컨트롤러.<br/>
  * 클라이언트의 요청을 받아 서비스 계층으로 전달하고,
  * 서비스 처리 결과를 바탕으로 적절한 뷰(View)를 반환함.<br/>
