@@ -6,6 +6,7 @@
 <mapper namespace="com.ama.don.shop.dao.IDao">
 
 			<!--id로 pk  -->
+			<!-- productimgDto map -->
 	<resultMap type="com.ama.don.shop.dto.Product_imgDto" id="Product_imgDto">
 		
 		<result column="product_id" property="product_id"/>
@@ -13,6 +14,7 @@
 		<result column="product_imgurl" property="product_imgurl"/>
 		<result column="product_img_type" property="product_img_type"></result>
 	</resultMap>   
+    		<!-- productDto map -->
     <resultMap type="com.ama.don.shop.dto.ProductDto" id="ProductDto">
 		<result column="product_id" property="product_id"/>
 		<result column="category_id" property="category_id"/>
@@ -38,6 +40,7 @@
 		</collection>
 	</resultMap>  
 	
+			<!-- cartDto map -->
 	<resultMap id="CartDto" type="com.ama.don.shop.dto.CartDto">
 	    <id property="cart_id" column="cart_id"/>
 	    <result property="user_id" column="user_id"/>
@@ -50,17 +53,16 @@
 	        <result property="product_price" column="product_price"/>
 	        <result property="product_mall_name" column="product_mall_name"/>
 	    	<result property="product_istoday" column="product_istoday"/>
+	    	<result column="product_discountrate" property="product_discountrate"/>
 	    </association>
 	
 	    <association property="product_imgDto" javaType="com.ama.don.shop.dto.Product_imgDto">
 	        <result property="product_imgurl" column="product_imgurl"/>
 	    </association>
 	</resultMap>
-	
 
 
 	<select id="product_list" parameterType="com.ama.don.shop.dto.ProductDto" resultMap="ProductDto">
-		
 		SELECT P.PRODUCT_ID,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_DISCOUNTRATE, P.PRODUCT_MALL_NAME, PI.PRODUCT_IMGURL,PI.PRODUCT_IMG_TYPE
 		FROM PRODUCT P
 		LEFT OUTER JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID
@@ -68,7 +70,6 @@
 	</select>
 	
 	<select id="product" resultMap="ProductDto">
-	
 		SELECT P.PRODUCT_ID,P.CATEGORY_ID,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_DISCOUNTRATE,P.PRODUCT_MALL_NAME,
 		P.PRODUCT_MADEIN,P.PRODUCT_RELEASE,P.PRODUCT_AS_MANAGER_PHONE,P.PRODUCT_TYPE,P.PRODUCT_COLOR,
 		P.PRODUCT_ISTODAY,P.PRODUCT_DATE,
@@ -80,47 +81,38 @@
 	
 								<!-- primary key를 가져온다. -->
 	<insert id="write" parameterType="map" useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id">
-
-		
 		INSERT INTO PRODUCT(CATEGORY_ID,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DISCOUNTRATE,PRODUCT_MALL_NAME,
 		PRODUCT_MADEIN,PRODUCT_RELEASE,PRODUCT_AS_MANAGER_PHONE,PRODUCT_TYPE
 		,PRODUCT_COLOR,PRODUCT_ISTODAY,PRODUCT_DATE) VALUES(
 		#{category_id},#{product_name},#{product_price},#{product_discountrate}
 		,#{product_mall_name},#{product_madein},#{product_release},#{product_as_manager_phone}
 		,#{product_type},#{product_color},#{product_istoday},NOW())
-		
 	</insert>
 	
 	<insert id="imgwritemain">
 		INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
 		VALUES(#{param1},#{param2},'메인');
-	
 	</insert>
 	
 	<insert id="imgwrite">
 		INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
 		VALUES(#{param1},#{param2},'서브');
-	
 	</insert>
 	
 	
 	<insert id="cart_write">
 		INSERT INTO CART(USER_ID,PRODUCT_ID,CART_QUANTITY,CART_DATE) 
 		VALUES(#{param1}, #{param2}, #{param3},now());
-		
 	</insert> 
 	
 	<select id="cart_list" resultMap="CartDto">
-		SELECT C.CART_ID,C.USER_ID,C.CART_QUANTITY,C.CART_DATE,U.USER_ID,P.PRODUCT_ID,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_MALL_NAME,P.PRODUCT_ISTODAY,PI.PRODUCT_IMGURL
+		SELECT C.CART_ID,C.USER_ID,C.PRODUCT_ID,C.CART_QUANTITY,C.CART_DATE,U.USER_NAME,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_MALL_NAME,P.PRODUCT_ISTODAY,P.PRODUCT_DISCOUNTRATE,PI.PRODUCT_IMGURL
 		FROM CART C 
 		JOIN USER_DETAIL U ON C.USER_ID=U.USER_ID
 		JOIN PRODUCT P ON C.PRODUCT_ID=P.PRODUCT_ID
 		JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID 
 		AND PI.PRODUCT_IMG_TYPE = '메인'
 		WHERE U.USER_ID= #{param1};
-
-	
 	</select>
-	
 
 </mapper>	

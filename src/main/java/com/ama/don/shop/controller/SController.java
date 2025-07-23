@@ -12,6 +12,7 @@ import com.ama.don.shop.service.SCartService;
 import com.ama.don.shop.service.SCartWriteService;
 import com.ama.don.shop.service.SExhibitionService;
 import com.ama.don.shop.service.SListService;
+import com.ama.don.shop.service.SOrderService;
 import com.ama.don.shop.service.SProductdetailService;
 import com.ama.don.shop.service.SServiceinter;
 import com.ama.don.shop.service.SWriteService;
@@ -117,5 +118,19 @@ public class SController {
 		return "redirect:/shop/product_detail?product_id=" + request.getParameter("product_id");
 	}
 	
+	@RequestMapping("/shop/order_view")
+	public String order_view(HttpServletRequest request, Model model){
+		
+		model.addAttribute("request",request);
+		sServiceinter=new SOrderService(iDao);
+		sServiceinter.execute(model);
+		
+		return "shop/order_view";
+	}
+	
+	@RequestMapping("/shop/order")
+	public String order() {
+		return "shop/order";
+	}
 	
 }
