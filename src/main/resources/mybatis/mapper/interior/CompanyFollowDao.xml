@@ -24,6 +24,7 @@
         and company_id = #{companyId}
     </delete>
 
+    <!--  회원이 업체를 팔로우 했는지  -->
     <select id="isFollowedCompany" resultType="java.lang.Boolean">
         select count(*) > 0
         from company_follow
@@ -31,6 +32,7 @@
         and user_id = #{userId}
     </select>
 
+    <!--  업체의 팔로워 수 구하기  -->
     <select id="getFollowCompanyCount" resultType="java.lang.Integer">
         select count(*)
         from company_follow

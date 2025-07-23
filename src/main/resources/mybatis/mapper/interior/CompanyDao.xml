@@ -45,6 +45,7 @@
         )
     </insert>
 
+    <!--  업체 테이블 생성  -->
     <insert id="insertCompany"
             parameterType="com.ama.don.interior.dto.request.CompanyInsertDto"
             useGeneratedKeys="true"
@@ -77,6 +78,7 @@
         where company_id = #{companyId}
     </select>
 
+    <!--  업체 상세페이지의 요약상자 중, 업체 정보와 별점 정보 얻기  -->
     <select id="selectSummaryCompany" resultType="com.ama.don.interior.dto.response.CompanySummaryDto">
         select c.company_id AS companyId, d.company_name AS companyName, d.company_intro AS companyIntro,
         d.company_addr AS companyAddr, d.company_license AS companyLicense, d.company_field AS companyField,
@@ -87,6 +89,7 @@
         where c.company_id = #{companyId}
     </select>
 
+    <!--  업체 팔로우 여부 확인  -->
     <select id="isFollowedCompany" resultType="java.lang.Boolean">
         select count(*) > 0
         from company_follow
