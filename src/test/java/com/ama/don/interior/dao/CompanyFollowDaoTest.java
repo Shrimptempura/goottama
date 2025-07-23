@@ -2,6 +2,7 @@ package com.ama.don.interior.dao;
 
 import com.ama.don.interior.dto.request.CompanyCreateDto;
 import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
+import com.ama.don.interior.dto.request.CompanyFollowDto;
 import com.ama.don.interior.dto.request.CompanyInsertDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
@@ -36,6 +37,14 @@ class CompanyFollowDaoTest extends AbstractCompanyTestSupport {
         Long companyId = dto.getCompanyId();
 
         // 회원과 업체는 팔로우 상태
+        CompanyFollowDto followDto = new CompanyFollowDto();
+        followDto.setUserId(user.getUserId());
+        followDto.setCompanyId(companyId);
+        companyFollowDao.insertFollowCompany(companyId, user.getUserId());
+
+        Boolean result = companyFollowDao.isFollowedCompany(companyId, user.getUserId());
+
+        assertThat(result).isTrue();
     }
 
     @DisplayName("로그인 한 회원이 업체를 팔로우 하지 않은 경우")
