@@ -5,6 +5,22 @@
 
 <mapper namespace="com.ama.don.interior.dao.CompanyFollowDao">
 
+    <!--  회원이 업체 팔로우 생성  -->
+    <insert id="insertFollowCompany"
+            parameterType="com.ama.don.interior.dto.request.CompanyFollowDto"
+            useGeneratedKeys="true"
+            keyProperty="followId">
+        insert into company_follow (
+            company_id, user_id, follow_at)
+        values (
+            #{companyId}, #{userId}, now()
+        )
+    </insert>
+
+    <delete id="deleteFollowCompany">
+
+    </delete>
+
     <select id="isFollowedCompany" resultType="java.lang.Boolean">
         select count(*) > 0
         from company_follow
