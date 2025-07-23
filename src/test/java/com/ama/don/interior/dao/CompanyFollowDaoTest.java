@@ -102,4 +102,36 @@ class CompanyFollowDaoTest extends AbstractCompanyTestSupport {
         assertThat(result).isFalse();
     }
 
+    @DisplayName("업체의 팔로워 수 구하기")
+    @Test
+    void countCompanyFollowers() {
+        // 업체 생성
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
+        Long companyId = dto.getCompanyId();
+
+        // 3명의 회원 생성 및 팔로우
+        JoinformDto user1 = createTestUser("testUser1");
+        JoinformDto user2 = createTestUser("testUser2");
+        JoinformDto user3 = createTestUser("testUser3");
+
+        CompanyFollowDto followDto1 = new CompanyFollowDto();
+        followDto1.setUserId(user1.getUserId());
+        followDto1.setCompanyId(companyId);
+        companyFollowDao.insertFollowCompany(followDto1);
+
+        CompanyFollowDto followDto2 = new CompanyFollowDto();
+        followDto2.setUserId(user2.getUserId());
+        followDto2.setCompanyId(companyId);
+        companyFollowDao.insertFollowCompany(followDto2);
+
+        CompanyFollowDto followDto3 = new CompanyFollowDto();
+        followDto3.setUserId(user3.getUserId());
+        followDto3.setCompanyId(companyId);
+        companyFollowDao.insertFollowCompany(followDto3);
+
+        // 업체의 팔로워 수 검증
+        int followerCount = companyFollowDao.getFollowCompanyCount(companyId);
+        assertThat(followerCount).isEqualTo(3);
+    }
+
 }
