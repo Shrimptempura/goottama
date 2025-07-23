@@ -97,15 +97,20 @@
         and user_id = #{userId}
     </select>
 
-    <update id="updateCompany">
-
+    <!--  업체 정보 수정  -->
+    <update id="updateCompanyImg">
+        update company
+        set company_img = #{companyImg}
+        where company_id = #{companyId}
     </update>
 
-    <delete id="deleteCompany">
+    <delete id="deleteCompanyDetail">
 
     </delete>
 
-    <select id="getAvgScore" resultType="java.lang.Double"></select>
+    <select id="getAvgScore" resultType="java.lang.Double">
+
+    </select>
 
 
 </mapper>

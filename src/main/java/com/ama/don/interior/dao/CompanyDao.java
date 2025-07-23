@@ -42,13 +42,19 @@ public interface CompanyDao {
     // company_detail, company_score_avg
     CompanySummaryDto selectSummaryCompany(@Param("companyId") Long companyId);
 
-    // 업체 정보 수정
-    void updateCompany(CompanyUpdateDto dto);
+    // 업체 정보 수정(detail + company + location(api->service))
+    // company table 수정(이미지만)
+    void updateCompanyImg(CompanyUpdateDto dto);
+
+    // company_detail table 수정(대부분)
+    void updateCompanyDetail(CompanyCreateDto dto);
 
     // 업체 탈퇴(실제 지우기보단 status 또는 is_active, is_deleted 사용 생각)
     void deleteCompany(Long companyId);
 
     // 업체 별점 평균, 단순 값 추출 추후 정렬에 이용 가능성
     Optional<Double> getAvgScore(Long companyId);
+    
+    // api location lat, lng, code 추후 변경 메서드 필요
 
 }
