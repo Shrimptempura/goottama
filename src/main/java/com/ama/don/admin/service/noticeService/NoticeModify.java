@@ -14,6 +14,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 기존 공지사항을 수정하고 데이터베이스에 반영하는 비즈니스 로직을 수행함.<br/>
+ * 수정된 공지 내용, 고정 여부 외에 첨부파일 삭제 및 새로운 파일 추가 처리를 모두 포함함.<br/>
+ * 모든 변경 사항은 단일 트랜잭션으로 처리되어 데이터 일관성 보장함.
+ */
 @Service
 public class NoticeModify implements NoticeServiceInterface{
 
@@ -27,6 +32,17 @@ public class NoticeModify implements NoticeServiceInterface{
         this.fileUtil = fileUtil;
     }
 
+    /**
+     * 공지사항 수정 작업을 실행함.<br/>
+     * 모델에서 수정될 공지 정보({@link com.ama.don.admin.dto.NoticesDto}),<br/>
+     * 삭제할 첨부파일 ID 목록({@link java.util.List}<{@link java.lang.Long}>),<br/>
+     * 그리고 새로 추가될 파일 데이터({@link org.springframework.web.multipart.MultipartHttpServletRequest})를 받아 처리함.<br/>
+     * 공지사항 본문 수정, 기존 파일 삭제, 새 파일 저장 순으로 작업 진행됨.
+     *
+     * @param model Spring UI Model. 수정될 공지 정보, 삭제할 파일 ID, 새로운 파일 데이터를 포함하며,<br/>
+     * 처리 결과(`modifyResult`)를 모델에 추가하는 데 사용됨.
+     * @throws RuntimeException 공지사항 수정 또는 파일 처리 중 오류 발생 시 발생함.
+     */
     @Override
     @Transactional
     public void execute(Model model) {

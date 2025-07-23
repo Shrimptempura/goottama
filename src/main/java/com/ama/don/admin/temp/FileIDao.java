@@ -6,6 +6,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * 파일 정보 데이터베이스 접근을 위한 DAO(Data Access Object) 인터페이스.<br/>
+ * 파일 정보(FileDto)를 조회, 삽입, 삭제하는 데이터 연산 메서드 정의함.<br/>
+ * MyBatis 매퍼와 연동되어 파일 관련 데이터베이스 상호작용 처리함.
+ */
 @Repository
 @Mapper
 public interface  FileIDao {

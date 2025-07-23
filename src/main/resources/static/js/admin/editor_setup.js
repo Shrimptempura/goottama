@@ -1,7 +1,18 @@
+/**
+ * @fileoverview TUI 에디터 초기화 및 이미지 업로드 훅 설정 스크립트.
+ * 공지사항 작성/수정 페이지에서 TUI 에디터의 기능을 활성화하고,
+ * 에디터 내 이미지 업로드 시 서버와의 통신 로직을 정의함.
+ */
+
 // const colorPicker = toastui.Editor.plugin.colorSyntax;
 // const chart = toastui.Editor.plugin.chart;
 /// const codeSyntaxHighlight = toastui.Editor.plugin.codeSyntaxHighlight;
 
+/**
+ * TUI 에디터 인스턴스를 생성하고 초기 설정 적용함.
+ * 이미지 업로드 훅을 통해 에디터 내 이미지 처리 방식을 커스터마이징함.
+ * @constant {toastui.Editor} editor TUI 에디터 인스턴스.
+ */
 const editor = new toastui.Editor({
     el: document.querySelector('#editor'),
     height: '500px',

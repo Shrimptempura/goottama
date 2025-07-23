@@ -17,6 +17,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * 공지사항 삭제 비즈니스 로직을 수행하는 서비스 구현체.<br/>
+ * 특정 공지사항을 삭제할 때, 해당 공지사항과 연관된 모든 첨부파일 및
+ * TUI 에디터로 삽입된 이미지 파일들을 함께 물리적으로, 그리고 DB에서 삭제함.<br/>
+ * 트랜잭션 관리({@code @Transactional})를 통해 데이터 일관성 보장함.
+ */
 @Service
 public class NoticeDelete implements NoticeServiceInterface{
 
@@ -33,6 +39,17 @@ public class NoticeDelete implements NoticeServiceInterface{
         this.fileUtil = fileUtil;
     }
 
+    /**
+     * 공지사항 삭제 작업을 실행함.<br/>
+     * 요청에서 공지 ID를 받아, 해당 공지 내용 내의 TUI 에디터 이미지,
+     * 일반 첨부파일 정보 및 실제 파일, 마지막으로 공지사항 본문까지 모두 삭제함.<br/>
+     * 모든 삭제 작업은 하나의 트랜잭션으로 처리됨.
+     *
+     * @param model Spring UI Model. 요청 정보(HttpServletRequest)를 받아오고,
+     * 삭제 결과를 모델에 추가하는 데 사용됨.
+     * @throws RuntimeException 삭제할 공지사항을 찾을 수 없거나,<br/>
+     * 파일 삭제, DB 정보 삭제, 공지사항 본문 삭제 중 오류 발생 시 발생함.
+     */
     @Override
     @Transactional
     public void execute(Model model) {

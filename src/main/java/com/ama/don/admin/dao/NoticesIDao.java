@@ -9,10 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 공지사항에 관련된 DB 접근을 정의한 MyBatis Mapper 인터페이스. <br>
- * - 공지 목록 조회, 검색, 등록, 수정, 삭제 기능 포함
- *
- * @author 정순석
+ * 공지사항 데이터베이스 접근을 위한 DAO(Data Access Object) 인터페이스.<br/>
+ * 공지사항 정보(NoticesDto)를 조회, 삽입, 수정, 삭제하는 데이터 연산 메서드 정의함.<br/>
+ * MyBatis 매퍼와 연동되어 데이터베이스와의 상호작용 처리함.
  */
 @Repository
 @Mapper

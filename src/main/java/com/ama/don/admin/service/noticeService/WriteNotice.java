@@ -15,6 +15,13 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 새로운 공지사항 작성 비즈니스 로직을 수행하는 서비스 구현체.<br/>
+ * 클라이언트로부터 받은 공지사항 내용과 첨부된 파일들을 데이터베이스에 저장함.<br/>
+ * TUI 에디터로 삽입된 이미지는 에디터 측에서 별도로 처리되므로,
+ * 여기서는 일반 첨부파일만 관리됨.<br/>
+ * 모든 저장 작업은 단일 트랜잭션으로 처리되어 데이터 일관성 보장함.
+ */
 @Service
 public class WriteNotice implements NoticeServiceInterface{
 
@@ -28,6 +35,16 @@ public class WriteNotice implements NoticeServiceInterface{
         this.fileUtil = fileUtil;
     }
 
+    /**
+     * 새로운 공지사항 작성 작업을 실행함.<br/>
+     * 모델에서 공지사항 정보({@link com.ama.don.admin.dto.NoticesDto})와<br/>
+     * 첨부된 파일 데이터({@link org.springframework.web.multipart.MultipartHttpServletRequest})를 받아 처리함.<br/>
+     * 먼저 공지사항 본문을 DB에 저장하고, 이어서 첨부파일들을 물리적으로 저장하고 DB에 파일 정보 기록함.<br/>
+     *
+     * @param model Spring UI Model. 새로운 공지 정보, 파일 데이터를 포함하며,<br/>
+     * 작성 결과(`writeResult`)를 모델에 추가하는 데 사용됨.
+     * @throws RuntimeException 공지사항 본문 저장 또는 첨부파일 저장/처리 중 오류 발생 시 발생함.
+     */
     @Override
     @Transactional
     public void execute(Model model) {

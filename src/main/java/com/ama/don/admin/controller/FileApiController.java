@@ -11,6 +11,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
 
+/**
+ * TUI 에디터 이미지 업로드 전용 컨트롤러.
+ * 다운로드는 `AttachmentController`에서, <br/>
+ * 에디터 속 이미지 출력은 `WebConfig`가 하고 있음.
+ */
 @RestController
 @RequestMapping("/tui-editor")
 public class FileApiController {
@@ -63,6 +68,7 @@ public class FileApiController {
      * 디스크에 업로드된 파일을 byte[]로 반환
      * @param filename 디스크에 업로드된 파일명
      * @return image byte array
+     * @deprecated - WebConfig의 도입으로 실제로는 사용되지 않음.
      */
     @GetMapping(value = "/image-print", produces = {MediaType.IMAGE_GIF_VALUE, MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})
     public byte[] printEditorImage(@RequestParam final String filename) {
