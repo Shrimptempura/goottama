@@ -20,6 +20,31 @@ class CompanyFollowDaoTest extends AbstractCompanyTestSupport {
     @Autowired
     CompanyFollowDao companyFollowDao;
 
+    @DisplayName("회원이 업체 팔로우, 테이블 생성")
+    @Test
+    void insertFollowCompany() {
+        JoinformDto user = createTestUser();
+        CompanyCreateDto detail = createTestCompanyDetail();
+        CompanyCreateLocationDto location = createTestLocation();
+
+        CompanyInsertDto dto = new CompanyInsertDto();
+        dto.setUserId(user.getUserId());
+        dto.setCompanyDetailId(detail.getCompanyDetailId());
+        dto.setLocationId(location.getLocationId());
+
+        companyDao.insertCompany(dto);
+        Long companyId = dto.getCompanyId();
+
+        JoinformDto otherUser = createTestUser("otherUser111");
+        CompanyFollowDto followDto = new CompanyFollowDto();
+        followDto.setCompanyId(companyId);
+        followDto.setUserId(otherUser.getUserId());
+
+        companyFollowDao.insertFollowCompany(followDto);
+
+        assertThat(followDto.getFollowId()).isNotNull();
+    }
+
     @DisplayName("로그인 한 회원이 업체를 팔로우 한 경우")
     @Test
     void isFollowedCompanyReturnTrueWhenFollowed() {
