@@ -40,7 +40,8 @@ class CompanyFollowDaoTest extends AbstractCompanyTestSupport {
         CompanyFollowDto followDto = new CompanyFollowDto();
         followDto.setUserId(user.getUserId());
         followDto.setCompanyId(companyId);
-        companyFollowDao.insertFollowCompany(companyId, user.getUserId());
+
+        companyFollowDao.insertFollowCompany(followDto);
 
         Boolean result = companyFollowDao.isFollowedCompany(companyId, user.getUserId());
 

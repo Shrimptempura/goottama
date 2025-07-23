@@ -8,12 +8,10 @@ import org.apache.ibatis.annotations.Param;
 public interface CompanyFollowDao {
 
     // 회원 -> 업체에게 팔로우 등록
-    CompanyFollowDto insertFollowCompany(@Param("companyId") Long companyId,
-                                         @Param("userId") Long userId);
+    void insertFollowCompany(CompanyFollowDto companyFollowDto);
 
     // 팔로우 취소
-    CompanyFollowDto deleteFollowCompany(@Param("companyId") Long companyId,
-                                         @Param("userId") Long userId);
+    void deleteFollowCompany(CompanyFollowDto companyFollowDto);
 
     // 로그인 후 팔로우 여부 확인, 비로그인 시 아에 자바에서 세션 확인으로 false 처리
     Boolean isFollowedCompany(@Param("companyId") Long companyId,
