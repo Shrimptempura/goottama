@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import java.util.List;
+
 @Controller
 public class AdminNoticeController {
 
@@ -112,18 +114,21 @@ public class AdminNoticeController {
 
     @RequestMapping("/admin/notices/notice_modify")
     public String noticeModify(Model model,
+                               MultipartHttpServletRequest mtfRequest,
                                @RequestParam("notices_id") int noticesId,
                                @RequestParam("title") String title,
                                @RequestParam("content") String content,
-                               @RequestParam(value = "isPinned", defaultValue = "false") boolean isPinned){
+                               @RequestParam(value = "isPinned", defaultValue = "false") boolean isPinned,
+                               @RequestParam(value = "deleteFileIds", required = false) List<Long> deleteFileIds){
         NoticesDto modifiedNotice = new NoticesDto();
         modifiedNotice.setNotices_id(noticesId);
         modifiedNotice.setNotices_title(title);
         modifiedNotice.setNotices_content(content);
         modifiedNotice.setNotices_is_pinned(isPinned);
-        // modifiedNotice.setNotices_file_path(null);
 
         model.addAttribute("modifiedNotice", modifiedNotice);
+        model.addAttribute("deleteFileIds", deleteFileIds);
+        model.addAttribute("mtfRequest", mtfRequest);
         noticeModify.execute(model);
         Boolean result = (Boolean) model.asMap().get("modifyResult");
         String message = result ? "modify_success" : "modify_failure";

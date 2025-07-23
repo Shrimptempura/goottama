@@ -17,20 +17,24 @@ public class WebConfig implements WebMvcConfigurer {
     // application.properties에서 설정한 업로드 경로를 주입받음
     @Value("${file.upload-location}")
     private String uploadLocation;
+    // 첨부파일용 경로 주입
+    @Value("${file.attachment-upload-location}")
+    private String attachmentUploadLocation;
 
     /**
      * 애플리케이션 시작 시 업로드 디렉토리가 없으면 생성함
      */
     @PostConstruct
     public void init() {
-        File directory = new File(uploadLocation);
-        if (!directory.exists()) {
-            boolean created = directory.mkdirs();
-            if (!created) {
-                // 디렉토리 생성에 실패했을 경우 로그를 남기거나 예외를 발생시킬 수 있습니다.
-                System.err.println("Failed to create upload directory: " + uploadLocation);
-                // throw new RuntimeException("Failed to create upload directory: " + uploadLocation);
-            }
+        // TUI 에디터 이미지 업로드 디렉토리 생성
+        File imageDirectory = new File(uploadLocation);
+        if (!imageDirectory.exists()) {
+            imageDirectory.mkdirs();
+        }
+        // 첨부파일 업로드 디렉토리 생성
+        File attachmentDirectory = new File(attachmentUploadLocation);
+        if (!attachmentDirectory.exists()) {
+            attachmentDirectory.mkdirs();
         }
     }
 
@@ -43,6 +47,10 @@ public class WebConfig implements WebMvcConfigurer {
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/uploadedImages/**") // 웹에서 접근할 URL 패턴
                 .addResourceLocations("file:" + uploadLocation); // 실제 파일 시스템 경로
+
+        // 첨부파일을 웹으로 노출시키는 URL 매핑
+        registry.addResourceHandler("/attachments/**") // 웹에서 접근할 URL 패턴
+                .addResourceLocations("file:" + attachmentUploadLocation); // 실제 파일 시스템 경로
 
         // 기존 static 리소스 유지
         registry.addResourceHandler("/static/**")

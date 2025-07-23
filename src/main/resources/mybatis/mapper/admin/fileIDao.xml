@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ama.don.admin.mapper.FileIDao">
+<mapper namespace="com.ama.don.admin.temp.FileIDao">
 
-    <insert id="insertFile" parameterType="com.ama.don.admin.dto.temp.FileDto" useGeneratedKeys="true" keyProperty="file_id">
+    <insert id="insertFile" parameterType="com.ama.don.admin.temp.FileDto" useGeneratedKeys="true" keyProperty="file_id">
         INSERT INTO file (
         file_uploader,
         file_name,
@@ -20,7 +20,7 @@
         )
     </insert>
 
-    <select id="getFilesByTarget" resultType="com.ama.don.admin.dto.temp.FileDto">
+    <select id="getFilesByTarget" resultType="com.ama.don.admin.temp.FileDto">
         SELECT
         file_id,
         file_uploader,
@@ -33,7 +33,7 @@
         ORDER BY file_id ASC
     </select>
 
-    <select id="getFileById" resultType="com.ama.don.admin.dto.temp.FileDto">
+    <select id="getFileById" resultType="com.ama.don.admin.temp.FileDto">
         SELECT
         file_id,
         file_uploader,

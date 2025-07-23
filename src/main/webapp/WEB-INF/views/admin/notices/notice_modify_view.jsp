@@ -30,15 +30,23 @@
         </fieldset></div>
         <br />
         <div><fieldset>
-            <label for="attachedFiles"> 첨부파일
+            <label for="attachedFiles"> 첨부파일 추가
                 <input multiple type="file" name="attachedFiles" size="50" /></label>
-            <c:if test="${not empty notice.notices_file_path}">
-                <p>현재 파일: <a href="${notice.notices_file_path}" target="_blank">${notice.notices_file_path}</a></p>
+            <!-- 기존 첨부파일 수정 -->
+            <c:if test="${not empty notice.attachedFiles}">
+                <p>기존 첨부파일</p>
+                <p>체크 시 삭제 됨</p>
+                <c:forEach var="file" items="${notice.attachedFiles}">
+                    <div>
+                        <input type="checkbox" name="deleteFileIds" value="${file.file_id}" id="del_file_${file.file_id}" />
+                        <a href="/admin/attachments/download?fileId=${file.file_id}"><label for="del_file_${file.file_id}" >${file.file_name}</label></a><br />
+                    </div>
+                </c:forEach>
             </c:if>
         </fieldset></div>
         <br />
         <button type="submit">수정 완료</button>
-        <a href="/admin/notices/notice_detail?noticeId=${notice.notices_id}"><button type="button">취소</button></a>
+        <a href="/admin/notices/notice_detail?notices_id=${notice.notices_id}"><button type="button">취소</button></a>
     </form>
 
     <script src="/static/js/admin/toastui-editor-all.min.js"></script>

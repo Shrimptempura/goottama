@@ -8,7 +8,7 @@
     <!--  공지 모든 공지 추출  -->
     <select id="getAllNotices" resultType="com.ama.don.admin.dto.NoticesDto">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_FILE_PATH, NOTICES_CONTENT
-        FROM notices ORDER BY NOTICES_ID
+        FROM notices ORDER BY NOTICES_CREATED_AT DESC
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 
@@ -40,7 +40,7 @@
                 AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
             </if>
         </where>
-        ORDER BY NOTICES_ID DESC
+        ORDER BY ORDER BY NOTICES_CREATED_AT DESC
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
     <select id="countSearchNotice" resultType="int">
@@ -63,20 +63,19 @@
     </select>
 
     <!-- 공지 수정 -->
-    <update id="modifyNotice">
+    <update id="modifyNotice" useGeneratedKeys="true" keyProperty="notices_id">
         UPDATE notices
         SET
         NOTICES_TITLE = #{notices_title},
         NOTICES_IS_PINNED =#{notices_is_pinned},
-        NOTICES_FILE_PATH =#{notices_file_path},
         NOTICES_CONTENT =#{notices_content}
         WHERE NOTICES_ID = #{notices_id}
     </update>
 
     <!--  공지 작성  -->
-    <insert id="writeNotice">
-        INSERT INTO notices(NOTICES_CREATED_AT, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_FILE_PATH, NOTICES_CONTENT)
-        VALUES(NOW(), #{notices_title}, #{notices_is_pinned}, #{notices_file_path}, #{notices_content})
+    <insert id="writeNotice" useGeneratedKeys="true" keyProperty="notices_id">
+        INSERT INTO notices(NOTICES_CREATED_AT, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CONTENT)
+        VALUES(NOW(), #{notices_title}, #{notices_is_pinned}, #{notices_content})
     </insert>
 
     <!--  공지 삭제  -->
