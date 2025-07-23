@@ -17,8 +17,11 @@
         )
     </insert>
 
+    <!--  회원이 업체 팔로우 취소  -->
     <delete id="deleteFollowCompany">
-
+        delete from company_follow
+        where user_id = #{userId}
+        and company_id = #{companyId}
     </delete>
 
     <select id="isFollowedCompany" resultType="java.lang.Boolean">
