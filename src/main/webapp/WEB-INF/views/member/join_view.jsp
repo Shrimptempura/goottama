@@ -88,7 +88,6 @@
 			<option value="daum.net">daum.net</option>
 			<option value="kakao.com">kakao.com</option>
 			<option value="직접입력">직접입력</option>
-		</select> <br /> 
 		<c:if test="${not empty email_error }"><p>${email_error }</p></c:if>
 		<input type="submit" value="join" />
 	</form>
