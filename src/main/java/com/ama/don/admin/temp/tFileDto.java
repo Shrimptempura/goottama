@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FileDto {
+public class tFileDto {
     private Long file_id;
     private String file_uploader;
     private String file_name; // original_filename

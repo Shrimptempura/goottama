@@ -4,7 +4,7 @@
 
 <mapper namespace="com.ama.don.admin.temp.FileIDao">
 
-    <insert id="insertFile" parameterType="com.ama.don.admin.temp.FileDto" useGeneratedKeys="true" keyProperty="file_id">
+    <insert id="insertFile" parameterType="com.ama.don.admin.temp.tFileDto" useGeneratedKeys="true" keyProperty="file_id">
         INSERT INTO file (
         file_uploader,
         file_name,
@@ -18,7 +18,7 @@
         )
     </insert>
 
-    <select id="getFilesByTarget" resultType="com.ama.don.admin.temp.FileDto">
+    <select id="getFilesByTarget" resultType="com.ama.don.admin.temp.tFileDto">
         SELECT
         file_id,
         file_uploader,
@@ -30,7 +30,7 @@
         ORDER BY file_id ASC
     </select>
 
-    <select id="getFileById" resultType="com.ama.don.admin.temp.FileDto">
+    <select id="getFileById" resultType="com.ama.don.admin.temp.tFileDto">
         SELECT
         file_id,
         file_uploader,
