@@ -4,8 +4,8 @@ import org.springframework.ui.Model;
 
 import com.ama.don.member.dto.JoinformDto;
 
-public interface JoinServiceInter {
+public interface SendEmailServiceInter {
 	
-	void join(JoinformDto joinformDto,Model model); 
+	void emailSendAction(JoinformDto joinformDto,Model model);
 
 }
