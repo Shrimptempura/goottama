@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.ama.don.member.dao.JoinDao;
 import com.ama.don.member.dao.ValidationDao;
 import com.ama.don.member.dto.JoinformDto;
 import com.ama.don.member.utill.EmailSHA;
