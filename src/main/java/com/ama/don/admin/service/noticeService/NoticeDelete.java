@@ -2,7 +2,7 @@ package com.ama.don.admin.service.noticeService;
 
 import com.ama.don.admin.dao.NoticesIDao;
 import com.ama.don.admin.dto.NoticesDto;
-import com.ama.don.admin.temp.FileDto;
+import com.ama.don.admin.temp.tFileDto;
 import com.ama.don.admin.temp.FileIDao;
 import com.ama.don.admin.utils.FileUtil;
 import jakarta.servlet.http.HttpServletRequest;
@@ -83,10 +83,10 @@ public class NoticeDelete implements NoticeServiceInterface{
             }
         }
         // 해당 공지사항에 연결된 첨부파일 조회
-        List<FileDto> attachedFiles = fileIDao.getFilesByTarget("ADMIN", noticeIdLong);
+        List<tFileDto> attachedFiles = fileIDao.getFilesByTarget("ADMIN", noticeIdLong);
         // 파일 물리적 삭제
         if (attachedFiles != null && !attachedFiles.isEmpty()) {
-            for (FileDto file : attachedFiles) {
+            for (tFileDto file : attachedFiles) {
                 boolean fileDeleted = fileUtil.deleteFile(file.getFile_path());
                 if (fileDeleted) {
                     System.out.println("DEBUG: 물리적 파일 삭제 성공: " + file.getFile_path());

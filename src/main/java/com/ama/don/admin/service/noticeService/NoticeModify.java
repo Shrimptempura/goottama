@@ -2,7 +2,7 @@ package com.ama.don.admin.service.noticeService;
 
 import com.ama.don.admin.dao.NoticesIDao;
 import com.ama.don.admin.dto.NoticesDto;
-import com.ama.don.admin.temp.FileDto;
+import com.ama.don.admin.temp.tFileDto;
 import com.ama.don.admin.temp.FileIDao;
 import com.ama.don.admin.utils.FileUtil;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,7 @@ public class NoticeModify implements NoticeServiceInterface{
         // 첨부파일 삭제
         if (deleteFileIds != null && !deleteFileIds.isEmpty()) {
             for (Long fileId : deleteFileIds) {
-                FileDto fileToDelete = fileIDao.getFileById(fileId);
+                tFileDto fileToDelete = fileIDao.getFileById(fileId);
                 if (fileToDelete != null) {
                     boolean fileDeleted = fileUtil.deleteFile(fileToDelete.getFile_path());
                     if (fileDeleted) {
@@ -82,14 +82,14 @@ public class NoticeModify implements NoticeServiceInterface{
                 try {
                     String savedFilename = fileUtil.saveFile(file);
                     if (savedFilename != null) {
-                        FileDto fileDto = new FileDto();
-                        fileDto.setTarget_type("ADMIN");;
-                        fileDto.setTarget_id(currentNoticeId);;
-                        fileDto.setFile_name(file.getOriginalFilename());;
-                        fileDto.setFile_path(savedFilename);;
-                        fileDto.setFile_uploader("관리자");
+                        tFileDto tFileDto = new tFileDto();
+                        tFileDto.setTarget_type("ADMIN");;
+                        tFileDto.setTarget_id(currentNoticeId);;
+                        tFileDto.setFile_name(file.getOriginalFilename());;
+                        tFileDto.setFile_path(savedFilename);;
+                        tFileDto.setFile_uploader("관리자");
 
-                        fileIDao.insertFile(fileDto);
+                        fileIDao.insertFile(tFileDto);
                     }
                 } catch (Exception e) {
                     System.err.println("새 첨부파일 저장 중 오류 발생: " + file.getOriginalFilename());

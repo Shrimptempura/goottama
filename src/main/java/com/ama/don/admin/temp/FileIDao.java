@@ -16,10 +16,10 @@ import java.util.List;
 public interface  FileIDao {
     /**
      * 새로운 파일 정보를 저장한다.
-     * @param fileDto 저장할 파일 DTO
+     * @param tFileDto 저장할 파일 DTO
      * @return 성공 시 true (영향받은 행의 수가 1이면 true)
      */
-    boolean insertFile(FileDto fileDto);
+    boolean insertFile(tFileDto tFileDto);
 
     /**
      * 특정 target_type과 target_id에 속한 파일 목록을 조회한다.
@@ -27,14 +27,14 @@ public interface  FileIDao {
      * @param targetId 대상 ID (예: notices_id)
      * @return 파일 목록
      */
-    List<FileDto> getFilesByTarget(@Param("targetType") String targetType, @Param("targetId") Long targetId);
+    List<tFileDto> getFilesByTarget(@Param("targetType") String targetType, @Param("targetId") Long targetId);
 
     /**
      * 특정 파일을 ID로 조회한다.
      * @param fileId 파일 ID
      * @return FileDto (없으면 null)
      */
-    FileDto getFileById(@Param("fileId") Long fileId);
+    tFileDto getFileById(@Param("fileId") Long fileId);
 
     /**
      * 특정 파일을 삭제한다. (DB에서만)
