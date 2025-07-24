@@ -1,5 +1,6 @@
 package com.ama.don.shop.dto;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class ProductDto {
 	int category_id;
     String product_name;
 	int product_price;
-    float product_discountrate;
+    BigDecimal product_discountrate;
     String product_mall_name;
     String product_madein;
     Timestamp product_release;
@@ -25,7 +26,7 @@ public class ProductDto {
     String product_istoday;
     Timestamp product_date;
     
-	public ProductDto(int product_id, int category_id,String product_name, int product_price, float product_discountrate,
+	public ProductDto(int product_id, int category_id,String product_name, int product_price, BigDecimal product_discountrate,
 			String product_img, String product_mall_name, String product_madein, Timestamp product_release,
 			String product_as_manager_phone, String product_type, String product_color, String product_istoday,
 			Timestamp product_date) {
@@ -43,10 +44,8 @@ public class ProductDto {
 		this.product_istoday = product_istoday;
 		this.product_date = product_date;
 	}
-    
-	//
-	// ✅ 이미지 여러 개 담는 리스트
-    //private List<Product_imgDto> product_imgDtoList;
+	
+
 	private Product_imgDto product_imgDto;	//여기와 collection properties가 같은 이름이어야한다. 
 	
 	// ✅ 이미지 여러 개 담는 리스트
