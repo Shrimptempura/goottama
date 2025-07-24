@@ -9,10 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * 공지사항에 관련된 DB 접근을 정의한 MyBatis Mapper 인터페이스. <br>
- * - 공지 목록 조회, 검색, 등록, 수정, 삭제 기능 포함
- *
- * @author 정순석
+ * 공지사항 데이터베이스 접근을 위한 DAO(Data Access Object) 인터페이스.<br/>
+ * 공지사항 정보(NoticesDto)를 조회, 삽입, 수정, 삭제하는 데이터 연산 메서드 정의함.<br/>
+ * MyBatis 매퍼와 연동되어 데이터베이스와의 상호작용 처리함.
  */
 @Repository
 @Mapper
@@ -61,29 +60,34 @@ public interface NoticesIDao {
 
     /**
      * 공지사항 내용을 수정한다.
-     * @param noticeId 수정할 공지 ID
-     * @param title 수정할 제목
-     * @param isPinned 상단 고정 여부
-     * @param filePath 첨부 파일 경로 (null 가능)
-     * @param content 공지 본문 내용
+     * @param noticesDto NoticesDto의 아래 값들을 받는다. <br>
+     *          - title <br>
+     *          - content <br>
+     *          - file_path <br>
+     *          - is_pinned <br>
+     *          - id
      * @return 성공 시 true, 실패 시 false
+     * @see NoticesDto
      */
-    public boolean modifyNotice(String noticeId, String title, boolean isPinned, String filePath, String content);
+    public boolean modifyNotice(NoticesDto noticesDto);
 
     /**
      * 새로운 공지사항을 작성한다.
-     * @param title 제목
-     * @param isPinned 상단 고정 여부
-     * @param filePath 첨부 파일 경로 (null 가능)
-     * @param content 본문 내용
+     * @param noticesDto NoticesDto의 아래 값들을 받는다. <br>
+     *           - title <br>
+     *           - content <br>
+     *           - file_path <br>
+     *           - is_pinned <br>
+     * created_at은 NOW()를 갖고, id는 auto increment이다.
      * @return 성공 시 true, 실패 시 false
+     * @see NoticesDto
      */
-    public boolean writeNotice(String title, boolean isPinned, String filePath, String content);
+    public boolean writeNotice(NoticesDto noticesDto);
 
     /**
      * 주어진 ID의 공지사항을 삭제한다.
      * @param noticeId 삭제할 공지의 ID
-     * @return 성공 시 true, 실패 시 false
+     * @return int, 성공시 1, 실패시 0
      */
-    public boolean deleteNotice(String noticeId);
+    public int deleteNotice(String noticeId);
 }

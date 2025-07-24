@@ -16,7 +16,11 @@
 
     </delete>
 
-    <select id="list" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
+    <select id="findAllReviewsForHome" resultType="com.ama.don.interior.dto.response.CompanyHomeReviewDto">
+
+    </select>
+
+    <select id="listByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
 
     </select>
 
@@ -24,7 +28,8 @@
 
     </select>
 
-    <select id="getEditView" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
+    <select id="getEditView" resultType="com.ama.don.interior.dto.request.CompanyReviewUpdateDto">
 
     </select>
+
 </mapper>
