@@ -4,14 +4,14 @@ import java.util.Map;
 
 import org.springframework.ui.Model;
 
-import com.ama.don.shop.dao.IDao;
+import com.ama.don.shop.dao.ShopIDao;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class SExhibitionService implements SServiceinter{
+public class ShopProductMallService implements ShopServiceinter{
 
-	private IDao iDao;
-	public SExhibitionService(IDao iDao) {
+	private ShopIDao iDao;
+	public ShopProductMallService(ShopIDao iDao) {
 		this.iDao=iDao;
 	}
 	@Override

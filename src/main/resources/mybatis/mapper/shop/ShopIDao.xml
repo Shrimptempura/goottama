@@ -3,7 +3,7 @@
 	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
-<mapper namespace="com.ama.don.shop.dao.IDao">
+<mapper namespace="com.ama.don.shop.dao.ShopIDao">
 
 			<!--id로 pk  -->
 			<!-- productimgDto map -->

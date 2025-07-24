@@ -4,15 +4,15 @@ import java.util.Map;
 
 import org.springframework.ui.Model;
 
-import com.ama.don.shop.dao.IDao;
+import com.ama.don.shop.dao.ShopIDao;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class SCartWriteService implements SServiceinter {
+public class ShopCartWriteService implements ShopServiceinter {
 
-	private IDao siDao;
+	private ShopIDao siDao;
 	
-	public SCartWriteService(IDao siDao) {
+	public ShopCartWriteService(ShopIDao siDao) {
 		this.siDao=siDao;
 	}
 	

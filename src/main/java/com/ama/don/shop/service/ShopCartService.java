@@ -5,16 +5,16 @@ import java.util.Map;
 
 import org.springframework.ui.Model;
 
-import com.ama.don.shop.dao.IDao;
+import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.CartDto;
 import com.ama.don.shop.dto.Product_imgDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class SCartService implements SServiceinter{
+public class ShopCartService implements ShopServiceinter{
 
-	private IDao iDao;
-	public SCartService(IDao iDao) {
+	private ShopIDao iDao;
+	public ShopCartService(ShopIDao iDao) {
 		this.iDao=iDao;
 	}
 	@Override

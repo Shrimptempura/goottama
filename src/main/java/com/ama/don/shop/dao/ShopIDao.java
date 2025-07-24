@@ -11,12 +11,19 @@ import com.ama.don.shop.dto.CartDto;
 import com.ama.don.shop.dto.ProductDto;
 
 @Mapper
-public interface IDao {
+public interface ShopIDao {
+	
+	// Write iDao
 	public void imgwritemain(int pid, String firstFile);
 	public void imgwrite(int pid, String changeFile);
 	public int write(Map<String, Object> map);
+	
+	//ShopHome iDao
 	public ArrayList<ProductDto> product_list();
 	public ProductDto product(String product_id);
+	
+	
+	
 	public void cart_write(int user_id,int product_id,int cart_quantity);
 	public ArrayList<CartDto> cart_list(String user_id);
 

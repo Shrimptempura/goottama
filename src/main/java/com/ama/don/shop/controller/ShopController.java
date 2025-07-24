@@ -7,25 +7,26 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ama.don.shop.dao.IDao;
-import com.ama.don.shop.service.SCartService;
-import com.ama.don.shop.service.SCartWriteService;
-import com.ama.don.shop.service.SExhibitionService;
-import com.ama.don.shop.service.SListService;
-import com.ama.don.shop.service.SOrderService;
-import com.ama.don.shop.service.SProductdetailService;
-import com.ama.don.shop.service.SServiceinter;
-import com.ama.don.shop.service.SWriteService;
+import com.ama.don.shop.dao.ShopIDao;
+import com.ama.don.shop.service.ShopCartService;
+import com.ama.don.shop.service.ShopCartWriteService;
+import com.ama.don.shop.service.ShopProductMallService;
+import com.ama.don.shop.service.ShopListService;
+import com.ama.don.shop.service.ShopOrderService;
+import com.ama.don.shop.service.ShopProductdetailService;
+import com.ama.don.shop.service.ShopServiceinter;
+import com.ama.don.shop.service.ShopWriteService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
-public class SController {
+public class ShopController {
 	
-	SServiceinter sServiceinter;
+	ShopServiceinter sServiceinter;
+	ShopServiceinter shopServiceinter;
 	
 	@Autowired
-	private IDao iDao;
+	private ShopIDao iDao;
 
 	@RequestMapping("/shop/subheader")
 	public String subheader() {
@@ -47,8 +48,8 @@ public class SController {
 		
 		
 		model.addAttribute("request",request);
-		sServiceinter=new SWriteService(iDao);
-		sServiceinter.execute(model);
+		shopServiceinter=new ShopWriteService(iDao);
+		shopServiceinter.execute(model);
 		
 		return "shop/home";
 	}
@@ -58,8 +59,8 @@ public class SController {
 		
 		
 		model.addAttribute("request",request);
-		sServiceinter=new SListService(iDao);
-		sServiceinter.execute(model);
+		shopServiceinter=new ShopListService(iDao);
+		shopServiceinter.execute(model);
 		
 		return "shop/category";
 	}
@@ -69,8 +70,8 @@ public class SController {
 		
 		
 		model.addAttribute("request",request);
-		sServiceinter=new SProductdetailService(iDao);
-		sServiceinter.execute(model);
+		shopServiceinter=new ShopProductdetailService(iDao);
+		shopServiceinter.execute(model);
 		
 		return "shop/product_detail";
 	}
@@ -101,8 +102,8 @@ public class SController {
 
 		System.out.println("cartlist");
 		model.addAttribute("request",request);
-		sServiceinter=new SCartService(iDao);
-		sServiceinter.execute(model);
+		shopServiceinter=new ShopCartService(iDao);
+		shopServiceinter.execute(model);
 		
 		return "shop/cart";
 	}
@@ -111,8 +112,8 @@ public class SController {
 	public String cart_write(HttpServletRequest request,Model model) {
 		
 		model.addAttribute("request",request);
-		sServiceinter=new SCartWriteService(iDao);
-		sServiceinter.execute(model);
+		shopServiceinter=new ShopCartWriteService(iDao);
+		shopServiceinter.execute(model);
 		
 		
 		return "redirect:/shop/product_detail?product_id=" + request.getParameter("product_id");
@@ -122,8 +123,8 @@ public class SController {
 	public String order_view(HttpServletRequest request, Model model){
 		
 		model.addAttribute("request",request);
-		sServiceinter=new SOrderService(iDao);
-		sServiceinter.execute(model);
+		shopServiceinter=new ShopOrderService(iDao);
+		shopServiceinter.execute(model);
 		
 		return "shop/order_view";
 	}
