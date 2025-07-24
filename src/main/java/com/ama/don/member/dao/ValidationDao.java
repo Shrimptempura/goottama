@@ -1,10 +1,7 @@
 package com.ama.don.member.dao;
 
-import org.apache.ibatis.annotations.Mapper;
-
 import com.ama.don.member.dto.JoinformDto;
-import com.ama.don.member.dto.UserDetailDto;
-import com.ama.don.member.dto.UserDetailDto.Gender;
+import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface ValidationDao {
