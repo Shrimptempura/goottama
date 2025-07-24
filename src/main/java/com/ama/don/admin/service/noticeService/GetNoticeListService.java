@@ -11,6 +11,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 공지사항 목록을 조회하는 비즈니스 로직을 수행하는 서비스 구현체.<br/>
+ * 검색 조건 및 페이지네이션 정보에 따라 전체 공지 또는 검색된 공지 목록을 반환함.<br/>
+ * 조회된 공지사항 데이터를 가공하여 뷰에 전달할 준비를 함.
+ */
 @Service
 public class GetNoticeListService implements NoticeServiceInterface{
 
@@ -19,6 +24,15 @@ public class GetNoticeListService implements NoticeServiceInterface{
         this.noticesIDao = noticesIDao;
     }
 
+    /**
+     * 공지사항 목록 조회 작업을 실행함.<br/>
+     * 모델에서 검색 조건(`NoticeSearchVO`)과 페이지네이션 정보(`SearchVO`)를 추출함.<br/>
+     * 검색 조건 유무에 따라 전체 공지 또는 검색된 공지를 DB에서 조회하고,<br/>
+     * 페이지 계산을 수행한 뒤, 조회된 데이터를 맵 형태로 가공하여 모델에 추가함.
+     *
+     * @param model Spring UI Model. 검색 및 페이지네이션 정보를 포함하며,<br/>
+     * 조회된 공지사항 목록(`list`)과 업데이트된 페이지네이션 정보(`searchVO`)를 모델에 추가하는 데 사용됨.
+     */
     @Override
     public void execute(Model model) {
         Map<String, Object> map = model.asMap();
@@ -54,7 +68,6 @@ public class GetNoticeListService implements NoticeServiceInterface{
             row.put("noticesTitle", dto.getNotices_title());
             row.put("noticesIsPinned", dto.isNotices_is_pinned());
             row.put("noticesCreatedAt", dto.getNotices_created_at());
-            row.put("noticesFilePath", dto.getNotices_file_path());
             row.put("noticesContent", dto.getNotices_content());
             mapList.add(row);
         }
