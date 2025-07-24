@@ -3,13 +3,12 @@ package com.ama.don.community.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.ama.don.community.Command.Review_viewCommand;
+import com.ama.don.community.Command.CommunityCommand;
 
 @Controller
 public class CommunityController {
 
-	Review_viewCommand command;
-	// 컨트롤러
+	CommunityCommand command;
 
 	@RequestMapping("community_home")
 	public String home() {
@@ -39,12 +38,6 @@ public class CommunityController {
 	public String house_decoration() {
 
 		return "community/house_decoration_view";
-	}
-
-	@RequestMapping("write_view")
-	public String write() {
-
-		return "community/write_view";
 	}
 
 }
