@@ -23,7 +23,7 @@ public class Write_viewController {
 
 	@GetMapping("/Community/write_view")
 	public String writeForm() {
-		return "community/write_view"; // 글쓰기 JSP 뷰 이름
+		return "community/write_view";
 	}
 
 	@PostMapping("/write")

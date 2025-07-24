@@ -9,7 +9,6 @@ import com.ama.don.community.Command.CommunityCommand;
 public class CommunityController {
 
 	CommunityCommand command;
-	// 컨트롤러
 
 	@RequestMapping("community_home")
 	public String home() {
