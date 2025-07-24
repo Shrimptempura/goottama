@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 @Service
 public class NoticeDelete implements NoticeServiceInterface{
 
-    @Value("${file.upload-location}") // C:\tui-editor-uploads
+    @Value("${file.upload-location:}") // C:\tui-editor-uploads
     private String tuiEditorUploadLocation;
 
     private final NoticesIDao noticesIDao;

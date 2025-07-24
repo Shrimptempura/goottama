@@ -18,11 +18,11 @@ import java.util.UUID;
 @Component
 public class FileUtil {
     // 첨부파일 저장경로 주입
-    @Value("${file.attachment-upload-location}")
+    @Value("${file.attachment-upload-location:}")
     private String attachmentUploadLocation;
 
     // 디렉터리 생성
-    public FileUtil(@Value("${file.attachment-upload-location}") String uploadLoc) throws IOException {
+    public FileUtil(@Value("${file.attachment-upload-location:}") String uploadLoc) throws IOException {
         Path uploadPath = Paths.get(uploadLoc);
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);

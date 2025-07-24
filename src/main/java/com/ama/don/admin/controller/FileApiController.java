@@ -20,7 +20,7 @@ import java.util.UUID;
 @RequestMapping("/tui-editor")
 public class FileApiController {
     // 파일 업로드 할 디렉터리 경로
-    @Value("${file.upload-location}")
+    @Value("${file.upload-location:}")
     private String uploadDir;
 
     /**

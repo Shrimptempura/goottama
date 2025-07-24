@@ -17,10 +17,10 @@ import java.io.File;
 public class WebConfig implements WebMvcConfigurer {
 
     // application.properties에서 설정한 업로드 경로를 주입받음
-    @Value("${file.upload-location}")
+    @Value("${file.upload-location:}")
     private String uploadLocation;
     // 첨부파일용 경로 주입
-    @Value("${file.attachment-upload-location}")
+    @Value("${file.attachment-upload-location:}")
     private String attachmentUploadLocation;
 
     /**
