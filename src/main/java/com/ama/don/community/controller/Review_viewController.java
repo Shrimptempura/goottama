@@ -25,7 +25,7 @@ public class Review_viewController {
 		return "community/review_view";
 	}
 
-	@GetMapping("/write_view")
+	@GetMapping("/write_con")
 	public String writeView() {
 		System.out.println("write_view() controller");
 		return "community/write_view";
