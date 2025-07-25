@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.text.html.Option;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -193,6 +194,20 @@ class CompanyDaoTest extends AbstractCompanyTestSupport {
         updateLocationDto.setLocationAddr("testCompanyAddr");
 
         assertThat(updateLocationDto.getLocationAddr()).isEqualTo("testCompanyAddr");
+    }
+
+    @DisplayName("업체 비활성화 is_deleted = 1")
+    @Test
+    void updateCompanyDelete() {
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
+        Long companyId = dto.getCompanyId();
+
+        int result = companyDao.deleteCompany(companyId);
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(1);
+
+        Optional<Long> findTry = companyDao.findCompanyIdByUserId(dto.getUserId());
+        assertThat(findTry).isEmpty();
     }
 
 }
