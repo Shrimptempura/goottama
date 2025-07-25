@@ -1,20 +1,25 @@
 package com.ama.don.community.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.community.dao.Write_viewDao;
 import com.ama.don.community.dto.Write_viewDto;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
-
 @Controller
+@RequestMapping("/community")
 public class Write_viewController {
 
 	@Autowired
@@ -22,9 +27,18 @@ public class Write_viewController {
 
 	private final String uploadDir = "C:/upload/";
 
-	@GetMapping("/Community/write_view")
+	@GetMapping("/write_view")
 	public String writeForm() {
 		return "community/write_view";
+	}
+
+	@PostMapping("/upload-image")
+	@ResponseBody
+	public String uploadImage(@RequestParam("imgFile") MultipartFile file) throws IOException {
+		String uploadDir = "C:/upload/";
+		String saveName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+		file.transferTo(new File(uploadDir + saveName));
+		return "/images/" + saveName;
 	}
 
 	@PostMapping("/write")

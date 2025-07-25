@@ -16,11 +16,10 @@
 		<h4 class="mb-4">리뷰 게시글</h4>
 
 		<div class="mb-3 d-flex justify-content-end">
-			<a href="${pageContext.request.contextPath}/Community/write_view"
+			<a href="${pageContext.request.contextPath}/community/write_view"
 				class="btn btn-outline-primary fw-bold"
 				onmouseover="this.style.backgroundColor='#f0f0f0'"
 				onmouseout="this.style.backgroundColor='white'">글쓰기</a>
-
 		</div>
 
 		<table class="table table-bordered">
@@ -30,7 +29,10 @@
 			</tr>
 			<tr>
 				<th>내용</th>
-				<td>${review.post_content}</td>
+				<td>
+					<!-- HTML로 저장된 본문 렌더링 (예: summernote 작성 내용) --> <c:out
+						value="${review.post_content}" escapeXml="false" />
+				</td>
 			</tr>
 			<tr>
 				<th>작성일</th>
@@ -48,7 +50,7 @@
 				<th>사진</th>
 				<td><c:if test="${not empty review.post_img}">
 						<img
-							src="${pageContext.request.contextPath}/upload/${review.post_img}"
+							src="${pageContext.request.contextPath}/images/${review.post_img}"
 							width="150" alt="게시글 이미지" />
 					</c:if></td>
 			</tr>

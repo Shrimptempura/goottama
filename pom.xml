@@ -131,13 +131,33 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<version>3.3.3</version>
 		</dependency>
-		
+
 		<!--0723 mail-->
 		<dependency>
-   			 <groupId>com.sun.mail</groupId>
-  			  <artifactId>javax.mail</artifactId>
-   			 <version>1.6.2</version>
+			<groupId>com.sun.mail</groupId>
+			<artifactId>javax.mail</artifactId>
+			<version>1.6.2</version>
 		</dependency>
+
+
+		<!-- 현성 의존성 추가 -->
+		<!-- webjars for Summernote -->
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>summernote</artifactId>
+			<version>0.8.20</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>5.1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>3.6.0</version>
+		</dependency>
+
 
 	</dependencies>
 

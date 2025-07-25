@@ -19,17 +19,15 @@ public class Review_viewController {
 	private Review_viewDao review_viewDao;
 
 	@GetMapping({ "/review", "/review/list", "/review_view" })
-	public String list(Model model) {
+	public String reviewList(Model model) {
 		List<Review_viewDto> list = review_viewDao.selectAllReviews();
 		model.addAttribute("reviewList", list);
 		return "community/review_view";
 	}
 
-	@RequestMapping("/write_view")
-	public String write_view(Model model) {
-		System.out.println("write_view() ctr");
-
-		return "Community/write_view";
+	@GetMapping("/write_view")
+	public String writeView() {
+		System.out.println("write_view() controller");
+		return "community/write_view";
 	}
-
 }
