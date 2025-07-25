@@ -1,9 +1,6 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.interior.dto.request.CompanyCreateDto;
-import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
-import com.ama.don.interior.dto.request.CompanyInsertDto;
-import com.ama.don.interior.dto.request.CompanyUpdateDto;
+import com.ama.don.interior.dto.request.*;
 import com.ama.don.interior.dto.response.CompanyDetailDto;
 import com.ama.don.interior.dto.response.CompanySummaryDto;
 import com.ama.don.member.dto.JoinformDto;
@@ -48,6 +45,11 @@ public interface CompanyDao {
 
     // company table 수정(이미지만)
     int updateCompanyImg(CompanyUpdateDto dto);
+
+    // 업체의 주소가 바뀌면 company_addr를 가져다 위치 정보 업데이트
+    int updateLocation(CompanyUpdateLocationDto dto);
+
+
 
     // 업체 탈퇴(실제 지우기보단 status 또는 is_active, is_deleted 사용 생각)
     int deleteCompany(Long companyId);

@@ -114,6 +114,16 @@
         where company_id = #{companyId}
     </update>
 
+    <!-- 업체 정보 수정3, 주소 테이블 -->
+    <!-- company_deatil의 주소 변경시 수정 -->
+    <update id="updateLocation">
+        update location
+        set location_addr = #{locationAddr}, location_lat = #{locationLat},
+            location_lng = #{locationLng}, location_ac = #{locationAc},
+            location_limit = #{locationLimit}
+        where location_id = #{locationId}
+    </update>
+
 
     <delete id="deleteCompanyDetail">
 

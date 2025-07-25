@@ -13,6 +13,7 @@ public class CompanyUpdateDto {
 
     private Long companyId;
     private Long companyDetailId;
+    private Long locationId;
 
     private String companyName;
     private String companyImg;
