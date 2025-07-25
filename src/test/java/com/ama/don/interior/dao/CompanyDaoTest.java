@@ -3,6 +3,7 @@ package com.ama.don.interior.dao;
 import com.ama.don.interior.dto.request.CompanyCreateDto;
 import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
 import com.ama.don.interior.dto.request.CompanyInsertDto;
+import com.ama.don.interior.dto.request.CompanyUpdateDto;
 import com.ama.don.interior.dto.response.CompanyDetailDto;
 import com.ama.don.interior.dto.response.CompanySummaryDto;
 import com.ama.don.member.dto.JoinformDto;
@@ -131,6 +132,23 @@ class CompanyDaoTest extends AbstractCompanyTestSupport {
         assertThat(result.getCompanyLicense()).isEqualTo(ctx.getDetail().getCompanyLicense());
         assertThat(result.getCompanyField()).isEqualTo(ctx.getDetail().getCompanyField());
         assertThat(result.getCompanyRate()).isNull();
+    }
+
+    @DisplayName("업체 정보 수정에서 업체 이미지 수정")
+    @Test
+    void updateCompanyImage() {
+        // 업체 생성, 사진 설정
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
+        dto.setCompanyImg("testCompanyImg");
+        Long companyId = dto.getCompanyId();
+
+        CompanyUpdateDto updateDto = new CompanyUpdateDto();
+        updateDto.setCompanyId(companyId);
+        updateDto.setCompanyImg("testCompanyImg2");
+
+        int updateCount = companyDao.updateCompanyImg(updateDto);
+
+        assertThat(updateCount).isEqualTo(1);
     }
 
 }

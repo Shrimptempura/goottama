@@ -20,15 +20,21 @@ public class AbstractCompanyTestSupport {
         dto.setLoginId(loginId);
         dto.setPw("abcdefghi!@");
         dto.setPw2("abcdefghi!@");
+
         dto.setName("홍길동");
         dto.setNickname("테스트닉네임");
         dto.setGender(JoinformDto.Gender.M);
         dto.setBirth("1999-09-09");
         dto.setTel("010-1234-5678");
+
         dto.setZipcode("12345");
         dto.setAddr("서울특별시 구로구");
+        dto.setDetailAddr("은마아파트 123동");
+        dto.combineAddress();
+
         dto.setEmailId("abcdefg");
         dto.setEmailDomain("naver.com");
+        dto.combineEmail();
 
         companyDao.insertUser(dto);
 
