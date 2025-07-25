@@ -16,6 +16,7 @@
         select company_id
         from company
         where user_id = #{userId}
+        and is_deleted = false
     </select>
 
     <!--  company_detail 생성  -->
@@ -75,7 +76,8 @@
             d.company_career AS companyCareer
         from company c
         join company_detail d ON c.company_detail_id = d.company_detail_id
-        where company_id = #{companyId}
+        where c.company_id = #{companyId}
+        and c.is_deleted = false
     </select>
 
     <!--  업체 상세페이지의 요약상자 중, 업체 정보와 별점 정보 얻기  -->
@@ -87,14 +89,17 @@
         join company_detail d ON c.company_detail_id = d.company_detail_id
         left join company_score_avg s ON c.company_id = s.company_id
         where c.company_id = #{companyId}
+        and c.is_deleted = false
     </select>
 
     <!--  업체 팔로우 여부 확인  -->
     <select id="isFollowedCompany" resultType="java.lang.Boolean">
         select count(*) > 0
-        from company_follow
-        where company_id = #{companyId}
-        and user_id = #{userId}
+        from company_follow f
+        join company c ON f.company_id = c.company_id
+        where f.company_id = #{companyId}
+        and f.user_id = #{userId}
+        and c.is_deleted = false
     </select>
 
     <!-- 업체 정보수정1, company_detail 테이블 -->

@@ -49,9 +49,7 @@ public interface CompanyDao {
     // 업체의 주소가 바뀌면 company_addr를 가져다 위치 정보 업데이트
     int updateLocation(CompanyUpdateLocationDto dto);
 
-
-
-    // 업체 탈퇴(실제 지우기보단 status 또는 is_active, is_deleted 사용 생각)
+    // 업체 탈퇴(is_deleted), company table
     int deleteCompany(Long companyId);
 
     // 업체 별점 평균, 단순 값 추출 추후 정렬에 이용 가능성
