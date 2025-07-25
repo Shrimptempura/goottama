@@ -12,6 +12,7 @@ import com.ama.don.community.dao.Review_viewDao;
 import com.ama.don.community.dto.Review_viewDto;
 
 @Controller
+@RequestMapping("/community")
 public class Review_viewController {
 
 	@Autowired
@@ -23,7 +24,7 @@ public class Review_viewController {
 		model.addAttribute("reviewList", list);
 		return "community/review_view";
 	}
-	
+
 	@RequestMapping("/write_view")
 	public String write_view(Model model) {
 		System.out.println("write_view() ctr");

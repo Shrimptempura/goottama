@@ -7,9 +7,23 @@
 
 	<insert id="insertPost"
 		parameterType="com.ama.don.community.dto.Write_viewDto"
-		useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO post (title, content, img)
-		VALUES (#{title}, #{content}, #{img})
+		useGeneratedKeys="true" keyProperty="post_id">
+		INSERT INTO post (
+		user_id,
+		post_title,
+		post_content,
+		post_img,
+		target_type,
+		target_id
+		)
+		VALUES (
+		#{user_id},
+		#{post_title},
+		#{post_content},
+		#{post_img},
+		#{target_type},
+		#{target_id}
+		)
 	</insert>
 
 </mapper>

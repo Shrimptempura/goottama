@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ama.don.common.enums.TargetType;
 import com.ama.don.community.dao.Write_viewDao;
 import com.ama.don.community.dto.Write_viewDto;
 
@@ -31,8 +32,11 @@ public class Write_viewController {
 			@RequestParam("imgFile") MultipartFile imgFile, Model model) {
 
 		Write_viewDto dto = new Write_viewDto();
-		dto.setTitle(title);
-		dto.setContent(content);
+		dto.setUser_id(1); // 실제 사용 시: 로그인 유저 ID 세션에서 받아오기
+		dto.setPost_title(title);
+		dto.setPost_content(content);
+		dto.setTarget_type(TargetType.valueOf("COMMUNITY"));
+		dto.setTarget_id(1);
 
 		if (!imgFile.isEmpty()) {
 			String originalFilename = imgFile.getOriginalFilename();
@@ -41,7 +45,7 @@ public class Write_viewController {
 			try {
 				File saveFile = new File(uploadDir + saveFileName);
 				imgFile.transferTo(saveFile);
-				dto.setImg(saveFileName);
+				dto.setPost_img(saveFileName);
 			} catch (IOException e) {
 				e.printStackTrace();
 				model.addAttribute("msg", "이미지 업로드 실패");
@@ -50,7 +54,6 @@ public class Write_viewController {
 		}
 
 		write_viewDao.insertPost(dto);
-
 		return "redirect:/community/review_view";
 	}
 }
