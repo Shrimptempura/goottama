@@ -129,10 +129,11 @@
         where location_id = #{locationId}
     </update>
 
-
-    <delete id="deleteCompanyDetail">
-
-    </delete>
+    <update id="deleteCompany">
+        update company
+        set is_deleted = 1
+        where company_id = #{companyId}
+    </update>
 
     <select id="getAvgScore" resultType="java.lang.Double">
 
