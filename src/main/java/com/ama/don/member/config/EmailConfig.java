@@ -1,5 +1,6 @@
 package com.ama.don.member.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -7,16 +8,14 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Component
-@ConfigurationProperties(prefix = "mail")
 @Getter
 @Setter
 public class EmailConfig {
-	
-	private String host;
-	private int port;
-	private String username;
-	private String password;
+
+	@Value("${spring.mail.username}")
 	private String from;
+	
+	@Value("${custom.callback-url}")
 	private String callbackUrl;
 
 }

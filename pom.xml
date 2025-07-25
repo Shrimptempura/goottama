@@ -132,13 +132,6 @@
 			<version>3.3.3</version>
 		</dependency>
 		
-		<!--0723 mail-->
-		<dependency>
-   			 <groupId>com.sun.mail</groupId>
-  			  <artifactId>javax.mail</artifactId>
-   			 <version>1.6.2</version>
-		</dependency>
-		
 		<!-- 0724 mail-->
 		<dependency>
    			 <groupId>org.springframework.boot</groupId>

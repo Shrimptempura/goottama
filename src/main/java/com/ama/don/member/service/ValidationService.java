@@ -60,7 +60,6 @@ public class ValidationService implements ValidationServiceInter {
 		HttpServletRequest request=(HttpServletRequest) map.get("request");
 		
 		String code=request.getParameter("code");
-		String id=request.getParameter("id");
 		
 		if (joinformDto == null) {
 			model.addAttribute("emailValFail", "세션이 만료되었거나 유효하지 않은 접근입니다.");
@@ -76,6 +75,18 @@ public class ValidationService implements ValidationServiceInter {
 		}
 		model.addAttribute("emailValFail","이메일 인증 실패");
 		return isRight;
+	}
+
+	@Override
+	public boolean pwCodeValidation(String inputcode, HttpSession session, Model model) {
+
+		String sessionCode = (String) session.getAttribute("authCode");
+		
+		if (sessionCode != null && sessionCode.equals(inputcode)) {
+			return true;
+		}
+		model.addAttribute("pwCode_error","코드가 일치하지 않습니다.");
+		return false;
 	}
 
 }

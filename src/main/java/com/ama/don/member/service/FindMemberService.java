@@ -8,6 +8,7 @@ import com.ama.don.member.dao.JoinDao;
 import com.ama.don.member.dao.LoginDao;
 import com.ama.don.member.dto.FindLoginIdDto;
 import com.ama.don.member.dto.FindPwDto;
+import com.ama.don.member.utill.EmailSHA;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import lombok.RequiredArgsConstructor;
 public class FindMemberService implements FindMemberServiceInter{
 	
 	private final LoginDao loginDao;
+	private final SendEmailService sendEmailService;
+	
 
 	@Override
 	public String findLoginId(FindLoginIdDto findLoginIdDto) {
@@ -33,11 +36,18 @@ public class FindMemberService implements FindMemberServiceInter{
 			return false;
 		}
 		
-		  // 2. 인증 코드 생성
-		  // 3. 세션 저장
-		//return true;
+		//6자리 인증 코드 생성
+		int randomCode = (int) (Math.random() * 90000) + 10000;
+		String code = String.valueOf(randomCode);
 		
-		return false;
+		//세션 저장
+		session.setAttribute("authCode", code);
+		session.setAttribute("tempPwMember", findPwDto);
+		
+		//메일전송
+		sendEmailService.sendPwcodeEmailAction(findPwDto, code);
+		
+		return true;
 	}
 
 }
