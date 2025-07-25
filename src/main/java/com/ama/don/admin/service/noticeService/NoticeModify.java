@@ -26,13 +26,13 @@ public class NoticeModify implements NoticeServiceInterface{
     private final NoticesIDao noticesIDao;
     private final FileIDao fileIDao;
     private final FileUtil fileUtil;
-    private final NoticeFileService noticeFileService;
+    private final TUIImageControlService tUIImageControlService;
 
-    public NoticeModify(NoticesIDao noticesIDao, FileIDao fileIDao, FileUtil fileUtil, NoticeFileService noticeFileService) {
+    public NoticeModify(NoticesIDao noticesIDao, FileIDao fileIDao, FileUtil fileUtil, TUIImageControlService tUIImageControlService) {
         this.noticesIDao = noticesIDao;
         this.fileIDao = fileIDao;
         this.fileUtil = fileUtil;
-        this.noticeFileService = noticeFileService;
+        this.tUIImageControlService = tUIImageControlService;
     }
 
     /**
@@ -102,7 +102,7 @@ public class NoticeModify implements NoticeServiceInterface{
                 }
             }
         }
-        noticeFileService.processTuiEditorImages((long)noticesId, noticeContent);
+        tUIImageControlService.processTuiEditorImages((long)noticesId, noticeContent);
         System.out.println(">>> " + noticeContent);
         model.addAttribute("modifyResult", result);
         System.out.println("공지 수정 및 첨부파일 수정 성공 : " + currentNoticeId);

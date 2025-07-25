@@ -27,12 +27,12 @@ import java.nio.file.Path;
  */
 @Controller
 @RequestMapping("/admin/attachments")
-public class AttachmentController {
+public class FileDownloadController {
 
     private final FileIDao fileIDao;
     private final FileUtil fileUtil;
 
-    public AttachmentController(FileIDao fileIDao, FileUtil fileUtil) {
+    public FileDownloadController(FileIDao fileIDao, FileUtil fileUtil) {
         this.fileIDao = fileIDao;
         this.fileUtil = fileUtil;
     }
@@ -54,19 +54,19 @@ public class AttachmentController {
     public ResponseEntity<Resource> downloadAttachment(@RequestParam("fileId") Long fileId) {
         try {
             // DB에서 파일 정보 조회
-            FileDto FileDto = fileIDao.getFileById(fileId);
-            if (FileDto == null) {
+            FileDto fileDto = fileIDao.getFileById(fileId);
+            if (fileDto == null) {
                 throw new FileNotFoundException("파일 정보를 찾을 수 없음");
             }
             // 파일 경로 가져오기
-            Path filePath = fileUtil.getFilePath(FileDto.getFile_path()); // file_path는 서버에 저장된 이름임
+            Path filePath = fileUtil.getFilePath(fileDto.getFile_path()); // file_path는 서버에 저장된 이름임
             Resource resource = new UrlResource(filePath.toUri());
             // 파일 존재 확인
             if (!resource.exists() || !resource.isReadable()) {
                 throw new FileNotFoundException("파일을 찾을 수 없음");
             }
             // Content-Disposition 헤더 설정 (다운로드될 파일명은 original_filename)
-            String encodedOriginalFilename = UriUtils.encode(FileDto.getFile_name(), StandardCharsets.UTF_8.toString());
+            String encodedOriginalFilename = UriUtils.encode(fileDto.getFile_name(), StandardCharsets.UTF_8.toString());
             String contentDisposition = "attachment; filename=\"" + encodedOriginalFilename + "\"";
             // ResponseEntity 반환
             return ResponseEntity.ok() // 200

@@ -19,7 +19,7 @@ import java.util.regex.Pattern;
  * 이 클래스는 그런 고아파일을 찾아 삭제하는 역할을 함.
  */
 @Service
-public class NoticeFileService {
+public class TUIImageControlService {
 
     // tui 사진 저장경로 주입
     @Value("${file.upload-location:}")
@@ -28,7 +28,7 @@ public class NoticeFileService {
     private final FileIDao fileIDao;
     private final FileUtil fileUtil;
 
-    public NoticeFileService(FileIDao fileIDao, FileUtil fileUtil){
+    public TUIImageControlService(FileIDao fileIDao, FileUtil fileUtil){
         this.fileIDao = fileIDao;
         this.fileUtil = fileUtil;
     }

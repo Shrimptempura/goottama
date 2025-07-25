@@ -29,13 +29,13 @@ public class WriteNotice implements NoticeServiceInterface{
     private final NoticesIDao noticesIDao;
     private final FileIDao fileIDao;
     private final FileUtil fileUtil;
-    private final NoticeFileService noticeFileService;
+    private final TUIImageControlService tUIImageControlService;
 
-    public WriteNotice(NoticesIDao noticesIDao, FileIDao fileIDao, FileUtil fileUtil, NoticeFileService noticeFileService) {
+    public WriteNotice(NoticesIDao noticesIDao, FileIDao fileIDao, FileUtil fileUtil, TUIImageControlService tUIImageControlService) {
         this.noticesIDao = noticesIDao;
         this.fileIDao = fileIDao;
         this.fileUtil = fileUtil;
-        this.noticeFileService = noticeFileService;
+        this.tUIImageControlService = tUIImageControlService;
     }
 
     /**
@@ -86,7 +86,7 @@ public class WriteNotice implements NoticeServiceInterface{
                 }
             }
         }
-        noticeFileService.processTuiEditorImages((long)newNotice.getNotices_id(), newNotice.getNotices_content());
+        tUIImageControlService.processTuiEditorImages((long)newNotice.getNotices_id(), newNotice.getNotices_content());
         model.addAttribute("writeResult", result);
         System.out.println("공지사항 및 첨부파일 DB 저장 성공!");
     }

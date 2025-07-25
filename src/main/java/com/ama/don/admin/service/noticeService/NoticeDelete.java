@@ -84,12 +84,13 @@ public class NoticeDelete implements NoticeServiceInterface{
             }
         }
         // 해당 공지사항에 연결된 첨부파일 조회
-        List<FileDto> attachedFiles = fileIDao.getFilesByTarget(TargetType.ADMIN, noticeIdLong);
+        List<FileDto> attachedFiles = fileIDao.getFilesByTargetAndUploader(TargetType.ADMIN, noticeIdLong, "관리자");
         // 파일 물리적 삭제
         if (attachedFiles != null && !attachedFiles.isEmpty()) {
             for (FileDto file : attachedFiles) {
                 System.out.println(">>> file.getFile_path() :" +file.getFile_path() );
                 boolean fileDeleted = fileUtil.deleteFile(file.getFile_path(), file.getFile_uploader());
+                System.out.println(">>> fileDeleted : "+fileDeleted);
                 if (fileDeleted) {
                     System.out.println("DEBUG: 물리적 파일 삭제 성공: " + file.getFile_path());
                 } else {

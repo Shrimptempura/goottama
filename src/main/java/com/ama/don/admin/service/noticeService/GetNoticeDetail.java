@@ -33,7 +33,7 @@ public class GetNoticeDetail implements NoticeServiceInterface{
      *
      * @param model Spring UI Model. 요청 정보(HttpServletRequest)를 받아오고,<br/>
      * 조회된 공지사항 정보({@link com.ama.don.admin.dto.NoticesDto})와<br/>
-     * 첨부파일 목록({@link java.util.List}<{@link com.ama.don.admin.dto.FileDto}>)을 모델에 추가하는 데 사용됨.
+     * 첨부파일 목록({@link java.util.List}<{@link com.ama.don.common.dto.FileDto}>)을 모델에 추가하는 데 사용됨.
      * @throws RuntimeException 조회할 공지사항을 찾을 수 없는 경우 발생함.
      */
     @Override
@@ -49,7 +49,7 @@ public class GetNoticeDetail implements NoticeServiceInterface{
         }
 
         Long noticeIdLong = Long.parseLong(noticeId);
-        notice.setAttachedFiles(fileIDao.getFilesByTarget(TargetType.ADMIN, noticeIdLong));
+        notice.setAttachedFiles(fileIDao.getFilesByTargetAndUploader(TargetType.ADMIN, noticeIdLong, "관리자"));
 
         model.addAttribute("notice", notice);
     }
