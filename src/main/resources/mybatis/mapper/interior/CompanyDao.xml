@@ -104,6 +104,15 @@
         where company_id = #{companyId}
     </update>
 
+    <update id="updateCompanyDetail">
+        update company_detail
+        set company_name = #{companyName}, company_addr = #{companyAddr},
+            company_field = #{companyField}, company_license = #{companyLicense},
+            company_as = #{companyAs}, company_career = #{companyCareer},
+            company_intro = #{companyIntro}
+        where company_id = #{companyId}
+    </update>
+
     <delete id="deleteCompanyDetail">
 
     </delete>
