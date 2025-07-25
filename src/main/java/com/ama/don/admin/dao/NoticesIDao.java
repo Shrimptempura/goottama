@@ -90,4 +90,10 @@ public interface NoticesIDao {
      * @return int, 성공시 1, 실패시 0
      */
     public int deleteNotice(String noticeId);
+
+    /**
+     * 최신 공지 아이디를 가져온다.
+     * @return 공지 아이디
+     */
+    public long getLatestNoticeId();
 }

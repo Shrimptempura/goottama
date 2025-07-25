@@ -3,6 +3,7 @@ package com.ama.don.admin.service.noticeService;
 import com.ama.don.admin.dao.NoticesIDao;
 import com.ama.don.admin.dto.NoticesDto;
 import com.ama.don.admin.temp.FileIDao;
+import com.ama.don.common.enums.TargetType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -48,7 +49,7 @@ public class GetNoticeDetail implements NoticeServiceInterface{
         }
 
         Long noticeIdLong = Long.parseLong(noticeId);
-        notice.setAttachedFiles(fileIDao.getFilesByTarget("ADMIN", noticeIdLong));
+        notice.setAttachedFiles(fileIDao.getFilesByTarget(TargetType.ADMIN, noticeIdLong));
 
         model.addAttribute("notice", notice);
     }

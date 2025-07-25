@@ -2,9 +2,10 @@ package com.ama.don.admin.service.noticeService;
 
 import com.ama.don.admin.dao.NoticesIDao;
 import com.ama.don.admin.dto.NoticesDto;
-import com.ama.don.admin.temp.tFileDto;
+import com.ama.don.common.dto.FileDto;
 import com.ama.don.admin.temp.FileIDao;
 import com.ama.don.admin.utils.FileUtil;
+import com.ama.don.common.enums.TargetType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -83,11 +84,12 @@ public class NoticeDelete implements NoticeServiceInterface{
             }
         }
         // 해당 공지사항에 연결된 첨부파일 조회
-        List<tFileDto> attachedFiles = fileIDao.getFilesByTarget("ADMIN", noticeIdLong);
+        List<FileDto> attachedFiles = fileIDao.getFilesByTarget(TargetType.ADMIN, noticeIdLong);
         // 파일 물리적 삭제
         if (attachedFiles != null && !attachedFiles.isEmpty()) {
-            for (tFileDto file : attachedFiles) {
-                boolean fileDeleted = fileUtil.deleteFile(file.getFile_path());
+            for (FileDto file : attachedFiles) {
+                System.out.println(">>> file.getFile_path() :" +file.getFile_path() );
+                boolean fileDeleted = fileUtil.deleteFile(file.getFile_path(), file.getFile_uploader());
                 if (fileDeleted) {
                     System.out.println("DEBUG: 물리적 파일 삭제 성공: " + file.getFile_path());
                 } else {
@@ -97,7 +99,7 @@ public class NoticeDelete implements NoticeServiceInterface{
             }
         }
         // DB 동기화
-        int filesDeletedCount = fileIDao.deleteFilesByTarget("ADMIN", noticeIdLong);
+        int filesDeletedCount = fileIDao.deleteFilesByTarget(TargetType.ADMIN, noticeIdLong);
         System.out.println("DEBUG: DB에서 첨부파일 정보 " + filesDeletedCount + "개 삭제 완료 (target_id=" + noticeId + ")");
 
         // 공지사항 본문 삭제

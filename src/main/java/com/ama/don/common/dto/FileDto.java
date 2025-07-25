@@ -19,6 +19,17 @@ public class FileDto {
 	private String file_path;
 	private  TargetType target_type;
 	private long target_id;
-	
+
+	@Override
+	public String toString() {
+		return "FileDto{" +
+				"file_id=" + file_id +
+				", file_uploader='" + file_uploader + '\'' +
+				", file_name='" + file_name + '\'' +
+				", file_path='" + file_path + '\'' +
+				", target_type=" + target_type +
+				", target_id=" + target_id +
+				'}';
+	}
 
 }
