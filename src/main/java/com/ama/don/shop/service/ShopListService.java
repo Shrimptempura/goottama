@@ -3,6 +3,7 @@ package com.ama.don.shop.service;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.ama.don.shop.dao.ShopIDao;
@@ -17,7 +18,9 @@ public class ShopListService implements ShopServiceinter{
 	public ShopListService(ShopIDao iDao) {
 		this.iDao=iDao;
 	}
+	
 	@Override
+	@Transactional
 	public void execute(Model model) {
 		// TODO Auto-generated method stub
 		Map<String, Object> map=model.asMap();

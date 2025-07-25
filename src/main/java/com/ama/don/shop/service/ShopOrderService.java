@@ -33,7 +33,7 @@ public class ShopOrderService implements ShopServiceinter{
 		ArrayList<CartDto> cartList=iDao.cart_list(user_id);
 			
 		model.addAttribute("cart",cartList);
-		
+		//
 	}
 
 }
