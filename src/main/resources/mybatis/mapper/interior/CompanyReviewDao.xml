@@ -4,32 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ama.don.interior.dao.CompanyReviewDao">
-    <insert id="create">
 
-    </insert>
-
-    <update id="update">
-
-    </update>
-
-    <delete id="delete">
-
-    </delete>
-
-    <select id="findAllReviewsForHome" resultType="com.ama.don.interior.dto.response.CompanyHomeReviewDto">
-
-    </select>
-
-    <select id="listByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
-
-    </select>
-
-    <select id="detail" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
-
-    </select>
-
-    <select id="getEditView" resultType="com.ama.don.interior.dto.request.CompanyReviewUpdateDto">
-
-    </select>
+    <insert id="insertCompanyReview"></insert>
 
 </mapper>
