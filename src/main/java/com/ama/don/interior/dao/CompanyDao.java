@@ -52,6 +52,9 @@ public interface CompanyDao {
     // 업체 탈퇴(is_deleted), company table
     int deleteCompany(Long companyId);
 
+    // 리뷰 평균 점수 계산 로직
+    int updateScoreAvg(Long companyId);
+
     // 업체 별점 평균, 단순 값 추출 추후 정렬에 이용 가능성
     Optional<Double> getAvgScore(Long companyId);
 
