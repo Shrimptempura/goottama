@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.common.dao.ReviewDao">
+
+    <!-- 다형성 리뷰만 사용시 -->
+    <!-- 공통리뷰(userId, targetId, targetType) -->
+    <insert id="insertPolyReview"
+            parameterType="com.ama.don.common.dto.ReviewDto"
+            useGeneratedKeys="true"
+            keyProperty="reviewId">
+        insert into review (user_id, target_id, target_type)
+        values (#{userId}, #{targetId}, #{targetType})
+    </insert>
+
+    <!-- 공통 리뷰를 그대로 사용하여 작성-->
+    <insert id="insertCommonReview"
+            parameterType="com.ama.don.common.dto.ReviewDto"
+            useGeneratedKeys="true"
+            keyProperty="reviewId">
+        insert into review (user_id, review_title, review_content, review_count,
+            review_date, review_modify, review_img, target_id, target_type)
+        values (#{userId}, #{reviewTitle}, #{reviewContent}, #{reviewCount},
+            #{reviewDate}, #{reviewModify}, #{reviewImg}, #{targetId}, #{targetType})
+    </insert>
+</mapper>

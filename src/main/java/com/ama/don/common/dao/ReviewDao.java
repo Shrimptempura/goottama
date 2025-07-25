@@ -9,12 +9,15 @@ import java.util.ArrayList;
 // 주로 관리자만 사용
 @Mapper
 public interface ReviewDao {
+    // 다형성 리뷰 작성(userId, targetId, targetType만)
+    int insertPolyReview(ReviewDto dto);
+
+    // 리뷰 작성
+    int insertCommonReview(ReviewDto dto);
+
     // targetType과 targetId를 이용한 리뷰 목록 조회
     ArrayList<ReviewDto> findByTarget(String targetType, Long targetId);
-    
-    // 리뷰 작성
-    void create(ReviewDto dto);
-    
+
     // 리뷰 상세보기
     ReviewDto detail(Long reviewId);
     

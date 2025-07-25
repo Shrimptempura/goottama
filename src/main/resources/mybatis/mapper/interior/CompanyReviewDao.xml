@@ -5,15 +5,6 @@
 
 <mapper namespace="com.ama.don.interior.dao.CompanyReviewDao">
 
-    <!-- 공통리뷰(userId, targetId, targetType) -->
-    <insert id="insertCommonReview"
-            parameterType="com.ama.don.common.dto.ReviewDto"
-            useGeneratedKeys="true"
-            keyProperty="reviewId">
-        insert into review (user_id, target_id, target_type)
-        values (#{userId}, #{companyId}, 'INTERIOR')
-    </insert>
-
     <insert id="insertCompanyReview"></insert>
 
     <insert id="insertScoreTable">
