@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface CompanyReviewDao {
 
     // 공통 리뷰 작성, (공통리뷰 + 업체리뷰 트랜잭션)
-    int insertCommonReview(CompanyReviewCreateDto dto);
+    //int insertCommonReview(CompanyReviewCreateDto dto);
 
     // 사용자가 작성하는 업체 리뷰
     int insertCompanyReview(CompanyReviewCreateDto dto);

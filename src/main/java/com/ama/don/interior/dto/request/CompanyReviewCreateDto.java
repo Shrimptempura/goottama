@@ -34,7 +34,7 @@ public class CompanyReviewCreateDto {
     @NotBlank
     private String structureType;       // 건물 유형
     @NotBlank
-    private String areaInPyeong;           // 평수
+    private String areaPyeong;           // 평수
     @NotBlank
     private String constructionField;       // 시공 분야
 }

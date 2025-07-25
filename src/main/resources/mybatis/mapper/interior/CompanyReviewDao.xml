@@ -5,7 +5,18 @@
 
 <mapper namespace="com.ama.don.interior.dao.CompanyReviewDao">
 
-    <insert id="insertCompanyReview"></insert>
+    <!-- 다형성 리뷰 작성된 상태에서 업체 리뷰생성하기 -->
+    <insert id="insertCompanyReview"
+            parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
+        insert into company_review (
+            review_id, company_id, communication_rate, price_rate, result_rate,
+            schedule_rate, structure_type, area_pyeong, construction_field)
+        values (
+            #{reviewId}, #{companyId}, #{communicationRate}, #{priceRate}, #{resultRate},
+            #{scheduleRate}, #{structureType}, #{areaPyeong}, #{constructionField}
+        )
+    </insert>
+
 
     <insert id="insertScoreTable">
 
