@@ -17,6 +17,17 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
     @Autowired
     CompanyReviewDao companyReviewDao;
 
+    @DisplayName("리뷰 작성 전 공통리뷰 먼저 생성")
+    @Test
+    void insertCommonReview() {
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
+        Long companyId = dto.getCompanyId();
+        Long userId = dto.getUserId();
+
+
+    }
+
+
     @DisplayName("업체 리뷰 평균점수 계산")
     @Test
     void selectCompanyAvgRate() {
