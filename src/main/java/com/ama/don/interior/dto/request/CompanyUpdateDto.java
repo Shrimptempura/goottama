@@ -12,6 +12,7 @@ import lombok.Setter;
 public class CompanyUpdateDto {
 
     private Long companyId;
+    private Long companyDetailId;
 
     private String companyName;
     private String companyImg;

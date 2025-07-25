@@ -97,21 +97,23 @@
         and user_id = #{userId}
     </select>
 
-    <!--  업체 정보 수정  -->
-    <update id="updateCompanyImg">
-        update company
-        set company_img = #{companyImg}
-        where company_id = #{companyId}
-    </update>
-
+    <!-- 업체 정보수정1, company_detail 테이블 -->
     <update id="updateCompanyDetail">
         update company_detail
         set company_name = #{companyName}, company_addr = #{companyAddr},
             company_field = #{companyField}, company_license = #{companyLicense},
             company_as = #{companyAs}, company_career = #{companyCareer},
             company_intro = #{companyIntro}
+        where company_detail_id = #{companyDetailId}
+    </update>
+
+    <!--  업체 정보 수정2, 이미지  -->
+    <update id="updateCompanyImg">
+        update company
+        set company_img = #{companyImg}
         where company_id = #{companyId}
     </update>
+
 
     <delete id="deleteCompanyDetail">
 

@@ -43,11 +43,11 @@ public interface CompanyDao {
     CompanySummaryDto selectSummaryCompany(@Param("companyId") Long companyId);
 
     // 업체 정보 수정(detail + company + location(api->service))
-    // company table 수정(이미지만)
-    int updateCompanyImg(CompanyUpdateDto dto);
-
     // company_detail table 수정(대부분)
     int updateCompanyDetail(CompanyUpdateDto dto);
+
+    // company table 수정(이미지만)
+    int updateCompanyImg(CompanyUpdateDto dto);
 
     // 업체 탈퇴(실제 지우기보단 status 또는 is_active, is_deleted 사용 생각)
     int deleteCompany(Long companyId);
