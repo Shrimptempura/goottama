@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.interior.dao.CompanyPostDao">
+    <insert id="create">
+
+    </insert>
+
+    <update id="update">
+
+    </update>
+
+    <update id="increaseHit">
+
+    </update>
+
+    <delete id="delete">
+
+    </delete>
+
+    <select id="findAllCompanyPosts" resultType="com.ama.don.interior.dto.response.CompanyHomePostDto">
+
+    </select>
+
+    <select id="caseList" resultType="com.ama.don.interior.dto.response.CompanyPostPreviewDto">
+
+    </select>
+
+    <select id="detail" resultType="com.ama.don.interior.dto.response.CompanyPostDetailDto">
+
+    </select>
+
+    <select id="getEditView" resultType="com.ama.don.interior.dto.request.CompanyPostUpdateDto">
+
+    </select>
+
+    <select id="getLikeCount" resultType="java.lang.Integer">
+
+    </select>
+
+</mapper>

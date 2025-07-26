@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.interior.dao.CompanyDao">
+
+    <!--  회원 예제  -->
+    <insert id="insertUser" parameterType="com.ama.don.member.dto.JoinformDto" useGeneratedKeys="true" keyProperty="userId">
+        INSERT INTO user_detail(USER_NAME,USER_NICKNAME,USER_GENDER,USER_BIRTH,USER_TEL,USER_ZIPCODE,USER_ADDR,USER_EMAIL)
+        VALUES(#{name},#{nickname},#{gender},#{birth},#{tel},#{zipcode},#{fullAddr},#{email})
+    </insert>
+
+    <!-- 시작전에 세션아이디(user_id)로 company_id 찾기 -->
+    <select id="findCompanyIdByUserId" resultType="java.lang.Long">
+        select company_id
+        from company
+        where user_id = #{userId}
+    </select>
+
+    <!--  company_detail 생성  -->
+    <insert id="insertCompanyDetail"
+            parameterType="com.ama.don.interior.dto.request.CompanyCreateDto"
+            useGeneratedKeys="true"
+            keyProperty="companyDetailId">
+        insert into company_detail (
+            company_name, company_addr, company_field, company_license, company_as,
+            company_career, company_intro)
+        values (
+            #{companyName}, #{companyAddr}, #{companyField}, #{companyLicense}, #{companyAs},
+            #{companyCareer}, #{companyIntro}
+        )
+    </insert>
+
+    <!--  location 테이블  -->
+    <!--  일단 주소만 적고 나머지는 추후 계산  -->
+    <insert id="insertLocation"
+            parameterType="com.ama.don.interior.dto.request.CompanyCreateLocationDto"
+            useGeneratedKeys="true"
+            keyProperty="locationId">
+        insert into location (
+            location_addr)
+        values (
+            #{locationAddr}
+        )
+    </insert>
+
+    <!--  업체 테이블 생성  -->
+    <insert id="insertCompany"
+            parameterType="com.ama.don.interior.dto.request.CompanyInsertDto"
+            useGeneratedKeys="true"
+            keyProperty="companyId">
+        insert into company (
+            user_id, company_detail_id, location_id, company_img
+        )
+        values (
+            #{userId}, #{companyDetailId}, #{locationId}, #{companyImg}
+        )
+    </insert>
+
+    <select id="isDuplicateCompanyName" resultType="java.lang.Boolean">
+        select count(*) > 0
+        from company_detail
+        where company_name = #{companyName}
+    </select>
+
+    <!-- 세션으로 user_id 얻고, findCompanyIdByUserId로 company_id 얻음 -->
+    <!--  -->
+    <select id="selectDetailCompany" resultType="com.ama.don.interior.dto.response.CompanyDetailDto">
+        select c.company_id AS companyId,
+            d.company_addr AS companyAddr,
+            d.company_field AS companyField,
+            d.company_license AS companyLicense,
+            d.company_as AS companyAs,
+            d.company_career AS companyCareer
+        from company c
+        join company_detail d ON c.company_detail_id = d.company_detail_id
+        where company_id = #{companyId}
+    </select>
+
+    <!--  업체 상세페이지의 요약상자 중, 업체 정보와 별점 정보 얻기  -->
+    <select id="selectSummaryCompany" resultType="com.ama.don.interior.dto.response.CompanySummaryDto">
+        select c.company_id AS companyId, d.company_name AS companyName, d.company_intro AS companyIntro,
+        d.company_addr AS companyAddr, d.company_license AS companyLicense, d.company_field AS companyField,
+        s.avg_total_rate AS companyRate
+        from company c
+        join company_detail d ON c.company_detail_id = d.company_detail_id
+        left join company_score_avg s ON c.company_id = s.company_id
+        where c.company_id = #{companyId}
+    </select>
+
+    <!--  업체 팔로우 여부 확인  -->
+    <select id="isFollowedCompany" resultType="java.lang.Boolean">
+        select count(*) > 0
+        from company_follow
+        where company_id = #{companyId}
+        and user_id = #{userId}
+    </select>
+
+    <!--  업체 정보 수정  -->
+    <update id="updateCompanyImg">
+        update company
+        set company_img = #{companyImg}
+        where company_id = #{companyId}
+    </update>
+
+    <delete id="deleteCompanyDetail">
+
+    </delete>
+
+    <select id="getAvgScore" resultType="java.lang.Double">
+
+    </select>
+
+
+</mapper>
