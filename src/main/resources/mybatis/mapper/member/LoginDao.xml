@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://.org/dtdmybatis/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.member.dao.LoginDao">
+
+	<select id="findByMember" parameterType="string" resultType="com.ama.don.member.dto.MemberDto">
+	SELECT UL.LOGIN_ID,UL.ROLES_ID,UL.USER_PASSWORD,UD.USER_ID,UD.USER_NAME,UD.USER_NICKNAME,
+	UD.USER_GENDER,UD.USER_BIRTH,UD.USER_CREATED_AT,UD.USER_TEL,UD.USER_ZIPCODE,UD.USER_ADDR,
+	UD.USER_EMAIL,UD.USER_IMG FROM user_login UL
+	JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
+	WHERE UL.LOGIN_ID = #{loginId}
+	</select>
+	
+	<select id="findByLoginId" resultType="string">
+	SELECT UL.LOGIN_ID FROM user_login UL
+	JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
+	WHERE UD.USER_NAME = #{name} AND UD.USER_EMAIL = #{email}
+	</select>
+	
+	<select id="findMemberCount" resultType="integer">
+	SELECT COUNT(*) FROM user_login UL
+	JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
+	WHERE UL.login_id = #{loginId} AND UD.USER_EMAIL = #{email}
+	</select>
+
+</mapper>

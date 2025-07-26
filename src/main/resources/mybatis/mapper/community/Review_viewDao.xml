@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.community.dao.Review_viewDao">
+
+	<select id="selectAllReviews"
+		resultType="com.ama.don.community.dto.Review_viewDto">
+		SELECT
+		post_id, user_id, post_title, post_content, post_date,
+		post_count, post_like_count, post_img, target_type, target_id
+		FROM post
+		ORDER BY post_date DESC
+	</select>
+
+	<select id="selectReviewById" parameterType="java.lang.Long"
+		resultType="com.ama.don.community.dto.Review_viewDto">
+		SELECT
+		post_id, user_id, post_title, post_content, post_date,
+		post_count, post_like_count, post_img, target_type, target_id
+		FROM post
+		WHERE post_id = #{post_id}
+	</select>
+
+	<insert id="insertReview"
+		parameterType="com.ama.don.community.dto.Review_viewDto"
+		useGeneratedKeys="true" keyProperty="post_id">
+		INSERT INTO post (
+		user_id, post_title, post_content, post_date,
+		post_count, post_like_count, post_img, target_type, target_id
+		) VALUES (
+		#{user_id}, #{post_title}, #{post_content}, CURRENT_TIMESTAMP,
+		#{post_count}, #{post_like_count}, #{post_img}, #{target_type}, #{target_id}
+		)
+	</insert>
+
+	<update id="updateReview"
+		parameterType="com.ama.don.community.dto.Review_viewDto">
+		UPDATE post
+		SET
+		post_title = #{post_title},
+		post_content = #{post_content},
+		post_count = #{post_count},
+		post_like_count = #{post_like_count},
+		post_img = #{post_img},
+		target_type = #{target_type},
+		target_id = #{target_id}
+		WHERE post_id = #{post_id}
+	</update>
+
+	<delete id="deleteReview" parameterType="java.lang.Long">
+		DELETE FROM post WHERE post_id = #{post_id}
+	</delete>
+
+</mapper>
