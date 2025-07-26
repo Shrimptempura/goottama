@@ -114,5 +114,27 @@
 		AND PI.PRODUCT_IMG_TYPE = '메인'
 		WHERE U.USER_ID= #{param1};
 	</select>
+	
+	<select id="cart_list_flat" parameterType="Long" resultType="com.ama.don.shop.dto.CartFlatDto">
+        SELECT 
+            C.CART_ID as cart_id,
+            C.CART_QUANTITY as cart_quantity,
+            U.USER_ID as user_id,
+            U.USER_NAME as user_name,
+            P.PRODUCT_ID as product_id,
+            P.PRODUCT_NAME as product_name,
+            P.PRODUCT_MALL_NAME as product_mall_name,
+            P.PRODUCT_PRICE as product_price,
+            P.PRODUCT_DISCOUNTRATE as product_discountrate,
+            PI.PRODUCT_IMGURL as product_imgurl,
+            PI.PRODUCT_IMG_TYPE as product_img_type
+        FROM CART C
+        JOIN USER_DETAIL U ON C.USER_ID = U.USER_ID
+        JOIN PRODUCT P ON C.PRODUCT_ID = P.PRODUCT_ID
+        LEFT JOIN PRODUCT_IMG PI ON P.PRODUCT_ID = PI.PRODUCT_ID
+            AND PI.PRODUCT_IMG_TYPE = '메인'
+        WHERE U.USER_ID = #{userid}
+        ORDER BY C.CART_DATE DESC
+    </select>
 
 </mapper>	

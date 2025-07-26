@@ -31,6 +31,8 @@ public class ShopWriteService implements ShopServiceinter{
 		MultipartHttpServletRequest mtfRequest=
 				(MultipartHttpServletRequest) map.get("request");
 		
+		
+		
 //		//String product_id=mtfRequest.getParameter("product_id");
 //		
 //		//iDao.product_list(product_id);

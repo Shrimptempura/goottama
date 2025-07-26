@@ -86,9 +86,7 @@
       						<img class="img" src="/static/uploads/shop/${product.product_imgDto.product_imgurl}" alt="상품 이미지" style="width:150px;">
     					</c:otherwise>
 					</c:choose>
-					<%--   <div>${product.product_imgurl }</div> --%>
-			        <%-- <img src="${product.product_image}" alt="${product.name}">
- --%>			    <div class="card-body">
+	 			    <div class="card-body">
  					<a href="product_detail?product_id=${product.product_id }">${product.product_name}</a> <br />	
 			        <a href="product_detail?product_id=${product.product_id }" class="card-price">${product.product_price}원</a> <br />
 					

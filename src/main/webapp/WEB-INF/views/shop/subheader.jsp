@@ -43,9 +43,7 @@
 <a href="exhibition">exhibition</a>
 <a href="best">best</a>
 <a href="todaydeliver">todaydeliver</a>
-<a href="cart">cart</a>
-
-<a href="cart?user_id=13">cart</a>
+<a href="cart?user_id=2">cart</a>
 </div>
 
 </body>

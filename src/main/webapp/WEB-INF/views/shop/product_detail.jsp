@@ -150,7 +150,7 @@
 	}
 	function showAlert(){
 		alert("장바구니에 담았습니다.");
-		location.href="cart_write?user_id=13&product_id=${product.product_id }&cart_quantity="+count;
+		location.href="cart_write?user_id=2&product_id=${product.product_id }&cart_quantity="+count;
 	}
 </script>
 

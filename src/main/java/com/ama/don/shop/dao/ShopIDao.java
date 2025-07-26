@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.ama.don.shop.dto.CartDto;
+import com.ama.don.shop.dto.CartFlatDto;
 import com.ama.don.shop.dto.ProductDto;
 
 @Mapper
@@ -23,9 +24,10 @@ public interface ShopIDao {
 	public ProductDto product(String product_id);
 	
 	
+	//Cart iDao
+	public void cart_write(long user_id,long product_id,long product_quantity);
+	public ArrayList<CartFlatDto> cart_list_flat(Long user_id);
 	
-	public void cart_write(int user_id,int product_id,int cart_quantity);
-	public ArrayList<CartDto> cart_list(String user_id);
-	//
+	
 	
 }
