@@ -3,19 +3,28 @@ package com.ama.don.shop.controller;
 import java.net.http.HttpRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ama.don.shop.dao.ShopIDao;
+import com.ama.don.shop.dto.KakaoPayApprovalResponse;
+import com.ama.don.shop.dto.KakaoPayReadyResponse;
 import com.ama.don.shop.service.ShopCartService;
 import com.ama.don.shop.service.ShopCartWriteService;
 import com.ama.don.shop.service.ShopProductMallService;
 import com.ama.don.shop.service.ShopListService;
-import com.ama.don.shop.service.ShopOrderService;
+import com.ama.don.shop.service.ShopOrderDetailService;
+import com.ama.don.shop.service.ShopOrderViewService;
+import com.ama.don.shop.service.ShopOrderWriteService;
 import com.ama.don.shop.service.ShopProductdetailService;
 import com.ama.don.shop.service.ShopServiceinter;
 import com.ama.don.shop.service.ShopWriteService;
+import com.ama.don.shop.service.Kakaopay.ShopKakaopayService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -24,6 +33,12 @@ public class ShopController {
 	
 	ShopServiceinter sServiceinter;
 	ShopServiceinter shopServiceinter;
+	
+	private final ShopKakaopayService kakaoPayService;
+	
+	public ShopController(ShopKakaopayService kakaoPayService) {
+        this.kakaoPayService = kakaoPayService;
+    }
 	
 	@Autowired
 	private ShopIDao iDao;
@@ -123,15 +138,39 @@ public class ShopController {
 	public String order_view(HttpServletRequest request, Model model){
 		
 		model.addAttribute("request",request);
-		shopServiceinter=new ShopOrderService(iDao);
+		shopServiceinter=new ShopOrderViewService(iDao);
 		shopServiceinter.execute(model);
 		
 		return "shop/order_view";
 	}
 	
-	@RequestMapping("/shop/order")
-	public String order() {
-		return "shop/order";
+	@RequestMapping("/shop/order_write")
+	public String order_complete(HttpServletRequest request, Model model) {
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopOrderWriteService(iDao);
+		shopServiceinter.execute(model);
+		return "shop/order_complete";
 	}
+	
+	@RequestMapping("/shop/order_details")
+	public String order_details(HttpServletRequest request, Model model) {
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopOrderDetailService(iDao);
+		shopServiceinter.execute(model);	
+		return "shop/order_details";
+	}
+	
+	/*
+	 * @PostMapping("/kakaopay") public ResponseEntity<?>
+	 * kakaoPayReady(@RequestParam int amount) { KakaoPayReadyResponse response =
+	 * kakaoPayService.kakaoPayReady(amount); return ResponseEntity.ok(response); }
+	 * 
+	 * @GetMapping("/kakaopay/success") public ResponseEntity<?>
+	 * kakaoPaySuccess(@RequestParam String pg_token) { KakaoPayApprovalResponse
+	 * response = kakaoPayService.kakaoPayApprove(pg_token); return
+	 * ResponseEntity.ok(response); }
+	 */
 	
 }

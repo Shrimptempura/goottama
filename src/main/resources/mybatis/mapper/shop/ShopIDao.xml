@@ -98,43 +98,6 @@
 		INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
 		VALUES(#{param1},#{param2},'서브');
 	</insert>
-	
-	
-	<insert id="cart_write">
-		INSERT INTO CART(USER_ID,PRODUCT_ID,CART_QUANTITY,CART_DATE) 
-		VALUES(#{param1}, #{param2}, #{param3},now());
-	</insert> 
-	
-	<select id="cart_list" resultMap="CartDto">
-		SELECT C.CART_ID,C.USER_ID,C.PRODUCT_ID,C.CART_QUANTITY,C.CART_DATE,U.USER_NAME,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_MALL_NAME,P.PRODUCT_ISTODAY,P.PRODUCT_DISCOUNTRATE,PI.PRODUCT_IMGURL
-		FROM CART C 
-		JOIN USER_DETAIL U ON C.USER_ID=U.USER_ID
-		JOIN PRODUCT P ON C.PRODUCT_ID=P.PRODUCT_ID
-		JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID 
-		AND PI.PRODUCT_IMG_TYPE = '메인'
-		WHERE U.USER_ID= #{param1};
-	</select>
-	
-	<select id="cart_list_flat" parameterType="Long" resultType="com.ama.don.shop.dto.CartFlatDto">
-        SELECT 
-            C.CART_ID as cart_id,
-            C.CART_QUANTITY as cart_quantity,
-            U.USER_ID as user_id,
-            U.USER_NAME as user_name,
-            P.PRODUCT_ID as product_id,
-            P.PRODUCT_NAME as product_name,
-            P.PRODUCT_MALL_NAME as product_mall_name,
-            P.PRODUCT_PRICE as product_price,
-            P.PRODUCT_DISCOUNTRATE as product_discountrate,
-            PI.PRODUCT_IMGURL as product_imgurl,
-            PI.PRODUCT_IMG_TYPE as product_img_type
-        FROM CART C
-        JOIN USER_DETAIL U ON C.USER_ID = U.USER_ID
-        JOIN PRODUCT P ON C.PRODUCT_ID = P.PRODUCT_ID
-        LEFT JOIN PRODUCT_IMG PI ON P.PRODUCT_ID = PI.PRODUCT_ID
-            AND PI.PRODUCT_IMG_TYPE = '메인'
-        WHERE U.USER_ID = #{userid}
-        ORDER BY C.CART_DATE DESC
-    </select>
-
+	  
+    
 </mapper>	

@@ -97,13 +97,17 @@
 		
 
 		if (cartItems === 0) {
-		    alert('장바구니에 상품이 없습니다.');
-		    return;
-		}
-		// 방법 1: URL 파라미터에서 user_id 가져오기 (가장 안전)
-		const urlParams = new URLSearchParams(window.location.search);
-		const userId = urlParams.get('user_id');
-		location.href="order_view?user_id="+userId;
+		       alert('장바구니에 상품이 없습니다.');
+		       return;
+		   }
+
+		
+		   let userId = '${sessionScope.user_id}';
+		   	    if (!userId || userId.trim() === '' || userId === 'null') {
+		   	    userId = '2'; // 기본값으로 2 사용
+		   } 
+		  	
+		   location.href = "order_view?user_id=" + userId;
 	}
 	
 	function showAlert(){
@@ -145,7 +149,7 @@
                         <!-- 상품 정보 -->
                         <div class="product-info">
                             <p class="mall-name">${item.product_mall_name}</p>
-                            <a class="productname" href="product?product_id=${item.product_id}">${item.product_name}</a>
+                            <a class="productname" href="product_detail?product_id=${item.product_id}">${item.product_name}</a>
                             
                             <!-- 수량 조절 -->
                             <div class="quantity-controls">

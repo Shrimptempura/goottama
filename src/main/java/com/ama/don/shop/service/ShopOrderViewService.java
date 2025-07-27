@@ -12,10 +12,10 @@ import com.ama.don.shop.dto.Product_imgDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class ShopOrderService implements ShopServiceinter{
+public class ShopOrderViewService implements ShopServiceinter{
 
 	private ShopIDao iDao;
-	public ShopOrderService(ShopIDao iDao) {
+	public ShopOrderViewService(ShopIDao iDao) {
 		this.iDao=iDao;
 	}
 	@Override

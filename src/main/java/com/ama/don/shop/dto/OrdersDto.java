@@ -13,11 +13,11 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrdersDto {
 
-	long order_id;
-	long user_id;
-	Timestamp order_date;
-	String order_status;
-	int order_totalprice;
+	private long order_id;
+	private long user_id;
+	private Timestamp order_date;
+	private String order_status;
+	private int order_totalprice;
 	
 	
 }

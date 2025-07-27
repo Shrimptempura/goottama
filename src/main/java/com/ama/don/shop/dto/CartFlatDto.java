@@ -16,7 +16,7 @@ import lombok.Setter;
 //카트 읽기
 public class CartFlatDto {
     
-    // ===== 중요: 필드 순서를 SQL SELECT 순서와 맞추거나 alias 정확히 =====
+    // ===== 중요: 필드 순서를 SQL SELECT 순서와 맞추거나 aias 정확히 =====
     
     // 장바구니 정보
     private Long cart_id;
