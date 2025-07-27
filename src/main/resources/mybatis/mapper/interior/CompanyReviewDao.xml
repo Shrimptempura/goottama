@@ -40,6 +40,7 @@
     </insert>
 
     <!-- 회원이 리뷰를 남기면 점수만 따로 계산해서 저장 -->
+    <!-- parameterType -> companyScoreAvgDto.. 책임분리 추후 생각 -->
     <update id="updateScoreAvg"
             parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
         update company_score_avg
