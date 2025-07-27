@@ -1,18 +1,16 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.common.dao.ReviewDao;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.common.enums.TargetType;
-import com.ama.don.interior.dto.request.CompanyInsertDto;
 import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
+import com.ama.don.interior.dto.response.CompanyScoreAvgDto;
+import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,7 +28,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
     @Test
     void insertCommonReview() {
         // 다형성 리뷰 생성 + 업체 리뷰 생성
-        CreateReviewSet result = insertPolyReviewAndCompanyReview();
+        CreateReviewSet result = createPolyReviewAndCompanyReview();
         Long companyReviewId = result.getCompanyReviewDto().getReviewId();
         Long commonReviewId = result.getCommonReviewDto().getReviewId();
 
@@ -43,7 +41,8 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
     @DisplayName("리뷰 작성시 첫번째 리뷰면 생성해야 함")
     @Test
     void insertCompanyReview() {
-        CreateReviewSet dto = insertPolyReviewAndCompanyReview();
+        // 다형성 리뷰 생성 + 업체 리뷰 생성
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
         Long companyId = dto.getCompanyReviewDto().getCompanyId();
 
         // 무조건 테이블이 비어있다고 가정
@@ -63,18 +62,48 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
     }
 
 
-    @DisplayName("업체 리뷰후 평균점수 계산")
+    @DisplayName("업체 리뷰후 평균 점수 update 확인")
     @Test
-    void selectCompanyAvgRate() {
-        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
-        Long companyId = dto.getCompanyId();
+    void updateCompanyReviewAvgScore () {
+        // 다형성 리뷰 생성 + 업체 리뷰 생성
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        Long companyId = dto.getCompanyReviewDto().getCompanyId();
+        
+        companyReviewDao.insertScoreTable(dto.getCompanyReviewDto());
 
-        CompanyReviewCreateDto reviewDto = new CompanyReviewCreateDto();
-        reviewDto.setCompanyId(companyId);
-        reviewDto.setCommunicationRate(4);
-        reviewDto.setPriceRate(4);
-        reviewDto.setResultRate(5);
-        reviewDto.setScheduleRate(5);
+        // 첫번째 리뷰의 계산으로 얻은 총 별점
+        CompanyScoreAvgDto avgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
+        assertThat(avgDto).isNotNull();
+        double firstAvg = avgDto.getAvgTotalRate();
+
+        // 다른 회원 다형성 리뷰 작성
+        ReviewDto reviewDto = createPolyReview(companyId);
+        Long reviewId = reviewDto.getReviewId();
+
+        // 다른 회원 업체 리뷰 작성
+        CompanyReviewCreateDto forceReviewDto = createCheckCompanyReview(companyId, reviewId);
+
+        int secondReview = companyReviewDao.insertCompanyReview(forceReviewDto);
+        assertThat(secondReview).isEqualTo(1);
+
+        int updated = companyReviewDao.updateScoreAvg(forceReviewDto);
+        assertThat(updated).isEqualTo(1);
+
+        // 첫번째 + 두번째 리뷰의 평균 뽑기
+        CompanyScoreAvgDto SecondAvgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
+        assertThat(SecondAvgDto).isNotNull();
+        double secondAvg = SecondAvgDto.getAvgTotalRate();
+
+        System.out.println("firstAvg: " + firstAvg);
+        System.out.println("secondAvg: " + secondAvg);
+
+        assertThat(firstAvg).isNotEqualTo(secondAvg);
+    }
+
+    @DisplayName("업체 점수 테이블 점수 확인")
+    @Test
+    void getAvgScoreByCompanyId() {
+
     }
 
 }

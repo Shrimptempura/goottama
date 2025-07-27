@@ -43,12 +43,12 @@
     <update id="updateScoreAvg"
             parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
         update company_score_avg
-        set company_review_count = company_review_count + 1,
-
+        set
         sum_communication = sum_communication + #{communicationRate},
         sum_price = sum_price + #{priceRate},
         sum_result = sum_result + #{resultRate},
         sum_schedule = sum_schedule + #{scheduleRate},
+        company_review_count = company_review_count + 1,
 
         avg_communication = (sum_communication + #{communicationRate}) / (company_review_count + 1),
         avg_price = (sum_price + #{priceRate}) / (company_review_count + 1),
@@ -65,7 +65,8 @@
     </update>
 
     <select id="getAvgScoreByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyScoreAvgDto">
-        select avg_communication, avg_price, avg_result, avg_schedule, avg_total_rate
+        select company_id AS companyId, avg_communication AS avgCommunication, avg_price AS avgPrice,
+        avg_result AS avgResult, avg_schedule AS avgSchedule, avg_total_rate AS avgTotalRate
         from company_score_avg
         where company_id = #{companyId}
     </select>

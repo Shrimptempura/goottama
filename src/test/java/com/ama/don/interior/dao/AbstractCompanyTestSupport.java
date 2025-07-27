@@ -126,7 +126,8 @@ public class AbstractCompanyTestSupport {
         return new TestCompanyContext(user, detail, location, dto);
     }
 
-    protected CreateReviewSet insertPolyReviewAndCompanyReview() {
+    // 다형성 리뷰 + 업체 리뷰
+    protected CreateReviewSet createPolyReviewAndCompanyReview() {
         // 업체 생성
         CompanyInsertDto companyDto = insertTestCompanyWithUserLocationAndDetail();
         Long companyId = companyDto.getCompanyId();
@@ -167,6 +168,38 @@ public class AbstractCompanyTestSupport {
         result.setCommonReviewDto(dto);
 
         return result;
+    }
+    
+    // 다형성 건너띄고 업체 리뷰 강제 생성
+    protected CompanyReviewCreateDto createCheckCompanyReview(Long companyId, Long reviewId) {
+        CompanyReviewCreateDto dto = new CompanyReviewCreateDto();
+        dto.setCompanyId(companyId);
+        dto.setReviewId(reviewId);
+        dto.setCommunicationRate(3);
+        dto.setPriceRate(3);
+        dto.setResultRate(3);
+        dto.setScheduleRate(3);
+
+        dto.setReviewContent("두번째 테스트 내용");
+
+        dto.setStructureType("빌딩 테스트");
+        dto.setAreaPyeong("34평");
+        dto.setConstructionField("욕실 공사");
+
+        return dto;
+    }
+
+    // 다형성 리뷰 생성
+    protected ReviewDto createPolyReview(Long companyId) {
+        JoinformDto user = createTestUser("otherUser222");
+        ReviewDto dto = new ReviewDto();
+        dto.setUserId(user.getUserId());
+        dto.setTargetId(companyId);
+        dto.setTargetType(TargetType.valueOf("INTERIOR"));
+
+        reviewDao.insertPolyReview(dto);
+
+        return dto;
     }
 
 }
