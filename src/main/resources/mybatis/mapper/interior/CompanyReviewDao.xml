@@ -27,20 +27,23 @@
             parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
         update company_score_avg
         set company_review_count = company_review_count + 1,
+
         sum_communication = sum_communication + #{communicationRate},
         sum_price = sum_price + #{priceRate},
         sum_result = sum_result + #{resultRate},
         sum_schedule = sum_schedule + #{scheduleRate},
+
         avg_communication = (sum_communication + #{communicationRate}) / (company_review_count + 1),
         avg_price = (sum_price + #{priceRate}) / (company_review_count + 1),
         avg_result = (sum_result + #{resultRate}) / (company_review_count + 1),
         avg_schedule = (sum_schedule + #{scheduleRate}) / (company_review_count + 1),
+
         avg_total_rate = (
-        (sum_price + #{priceRate}) / (company_review_count + 1) +
-        (sum_price + #{priceRate}) / (company_review_count + 1) +
-        (sum_result + #{resultRate}) / (company_review_count + 1) +
-        (sum_schedule + #{scheduleRate}) / (company_review_count + 1)
-        ) / 4
+            (sum_communication + #{communicationRate}) +
+            (sum_price + #{priceRate}) +
+            (sum_result + #{resultRate}) +
+            (sum_schedule + #{scheduleRate})
+        ) / 4 / (company_review_count + 1)
         where company_id = #{companyId}
     </update>
 
