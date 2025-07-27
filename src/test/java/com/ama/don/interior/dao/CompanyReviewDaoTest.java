@@ -9,6 +9,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -23,7 +24,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
     CompanyReviewDao companyReviewDao;
 
     @Autowired
-    ReviewDao reviewDao;
+    JdbcTemplate jdbcTemplate;
 
     @DisplayName("리뷰 작성 전 공통리뷰 먼저 생성후 업체 리뷰 작성")
     @Test
@@ -38,8 +39,31 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(companyReviewId).isEqualTo(commonReviewId);
     }
 
+    // isExistScoreTable + insertScoreTable
+    @DisplayName("리뷰 작성시 첫번째 리뷰면 생성해야 함")
+    @Test
+    void insertCompanyReview() {
+        CreateReviewSet dto = insertPolyReviewAndCompanyReview();
+        Long companyId = dto.getCompanyReviewDto().getCompanyId();
 
-    @DisplayName("업체 리뷰 평균점수 계산")
+        // 무조건 테이블이 비어있다고 가정
+        jdbcTemplate.update("DELETE FROM company_score_avg WHERE company_id = ?", companyId);
+
+        companyReviewDao.insertScoreTable(dto.getCompanyReviewDto());
+
+        boolean exists = companyReviewDao.isExistScoreTable(dto.getCompanyReviewDto().getCompanyId());
+
+        Double avg =  jdbcTemplate.queryForObject(
+                "SELECT avg_communication FROM company_score_avg WHERE company_id = ?",
+                Double.class, companyId
+        );
+
+        assertThat(exists).isTrue();
+        assertThat(avg).isEqualTo(dto.getCompanyReviewDto().getCommunicationRate());
+    }
+
+
+    @DisplayName("업체 리뷰후 평균점수 계산")
     @Test
     void selectCompanyAvgRate() {
         CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
