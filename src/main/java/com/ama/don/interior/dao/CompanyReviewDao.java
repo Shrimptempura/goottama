@@ -19,16 +19,6 @@ public interface CompanyReviewDao {
     // 사용자가 작성하는 업체 리뷰
     int insertCompanyReview(CompanyReviewCreateDto dto);
 
-    /**
-     * 홈에서 보는 업체에 대한 리뷰 목록 뷰(최신 순)
-     */
-    List<CompanyHomeReviewDto> findAllReviewsForHome();
-
-    /**
-     * 업체 상세페이지에서 보는 리뷰 목록 뷰
-     */
-    List<CompanyReviewDto> listByCompanyId(Long companyId);
-
     // 리뷰 상세보기
     CompanyReviewDto detail(Long reviewId);
 
@@ -45,6 +35,16 @@ public interface CompanyReviewDao {
 
     // 업체 별점 평균, 단순 값 추출 추후 정렬에 이용 가능성
     Optional<Double> getAvgScore(Long companyId);
+
+    /**
+     * 홈에서 보는 업체에 대한 리뷰 목록 뷰(최신 순)
+     */
+    List<CompanyHomeReviewDto> findAllReviewsForHome();
+
+    /**
+     * 업체 상세페이지에서 보는 리뷰 목록 뷰
+     */
+    List<CompanyReviewDto> listByCompanyId(Long companyId);
 
     // 리뷰 삭제
     void delete(Long reviewId);

@@ -17,7 +17,13 @@
         )
     </insert>
 
-    <!-- 첫 리뷰작성후만 실행 -->
+    <select id="isExistScoreTable" resultType="java.lang.Boolean">
+        select count(*) > 0
+        from company_score_avg
+        where company_id = #{companyId}
+    </select>
+
+    <!-- 첫 리뷰작성후만 실행, 점수 테이블 생성 -->
     <insert id="insertScoreTable"
             parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
         insert into company_score_avg(
@@ -57,5 +63,6 @@
         ) / 4 / (company_review_count + 1)
         where company_id = #{companyId}
     </update>
+
 
 </mapper>
