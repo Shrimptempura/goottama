@@ -32,10 +32,15 @@ public interface CompanyReviewDao {
     // 리뷰 상세보기
     CompanyReviewDto detail(Long reviewId);
 
+    // 업체 아이디로 company_score_avg 테이블이 존재하는지 확인
+    Boolean isExistScoreTable(Long companyId);
+
     // 리뷰 점수 계산 테이블 생성
+    // 서비스단에서 먼저 테이블이 있는지 체크해야함
     int insertScoreTable(CompanyReviewCreateDto dto);
 
     // 리뷰 평균 점수 계산 업데이트
+    // 사용자가 리뷰를 작성시 무조건 마지막에 실행되어야 함
     int updateScoreAvg(CompanyReviewCreateDto dto);
 
     // 업체 별점 평균, 단순 값 추출 추후 정렬에 이용 가능성

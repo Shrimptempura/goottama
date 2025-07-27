@@ -8,7 +8,7 @@
     <!-- 다형성 리뷰 작성된 상태에서 업체 리뷰생성하기 -->
     <insert id="insertCompanyReview"
             parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
-        insert into company_review (
+        insert into company_review(
             review_id, company_id, communication_rate, price_rate, result_rate,
             schedule_rate, structure_type, area_pyeong, construction_field)
         values (
@@ -17,9 +17,20 @@
         )
     </insert>
 
-
-    <insert id="insertScoreTable">
-
+    <!-- 첫 리뷰작성후만 실행 -->
+    <insert id="insertScoreTable"
+            parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
+        insert into company_score_avg(
+            company_id, company_review_count,
+            sum_communication, sum_price, sum_result, sum_schedule,
+            avg_communication, avg_price, avg_result, avg_schedule, avg_total_rate)
+        values (
+            #{companyId}, 1,
+            #{communicationRate}, #{priceRate}, #{resultRate}, #{scheduleRate},
+            #{communicationRate}, #{priceRate}, #{resultRate}, #{scheduleRate},
+            (#{communicationRate} + #{priceRate} + #{resultRate} + #{scheduleRate}
+            ) / 4.0
+        )
     </insert>
 
     <!-- 회원이 리뷰를 남기면 점수만 따로 계산해서 저장 -->
