@@ -64,5 +64,15 @@
         where company_id = #{companyId}
     </update>
 
+    <select id="getAvgScoreByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyScoreAvgDto">
+        select avg_communication, avg_price, avg_result, avg_schedule, avg_total_rate
+        from company_score_avg
+        where company_id = #{companyId}
+    </select>
+
+    <select id="findAllReviewsForHome" resultType="com.ama.don.interior.dto.response.CompanyHomeReviewDto"></select>
+    <select id="listByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyReviewDto"></select>
+    <select id="getReviewCountByCompanyId" resultType="java.lang.Integer"></select>
+
 
 </mapper>
