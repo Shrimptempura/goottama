@@ -1,15 +1,27 @@
 package com.ama.don.interior.dao;
 
+import com.ama.don.common.dao.ReviewDao;
+import com.ama.don.common.dto.ReviewDto;
+import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.request.CompanyCreateDto;
 import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
 import com.ama.don.interior.dto.request.CompanyInsertDto;
+import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 public class AbstractCompanyTestSupport {
 
     @Autowired
     protected CompanyDao companyDao;
+
+    @Autowired
+    protected ReviewDao reviewDao;
+
+    @Autowired
+    protected CompanyReviewDao companyReviewDao;
 
     protected JoinformDto createTestUser() {
         return createTestUser("테스트아이디");
@@ -113,4 +125,48 @@ public class AbstractCompanyTestSupport {
 
         return new TestCompanyContext(user, detail, location, dto);
     }
+
+    protected CreateReviewSet insertPolyReviewAndCompanyReview() {
+        // 업체 생성
+        CompanyInsertDto companyDto = insertTestCompanyWithUserLocationAndDetail();
+        Long companyId = companyDto.getCompanyId();
+        Long userId = companyDto.getUserId();
+
+        // 업체가 쓸 다형성 리뷰 생성
+        ReviewDto dto = new ReviewDto();
+        dto.setUserId(userId);
+        dto.setTargetId(companyId);
+        dto.setTargetType(TargetType.valueOf("INTERIOR"));
+
+        reviewDao.insertPolyReview(dto);
+
+        // 업체 리뷰 생성
+        CompanyReviewCreateDto companyReviewDto = new CompanyReviewCreateDto();
+        companyReviewDto.setReviewId(dto.getReviewId());
+        companyReviewDto.setCompanyId(companyId);
+        companyReviewDto.setCommunicationRate(4);
+        companyReviewDto.setPriceRate(4);
+        companyReviewDto.setResultRate(5);
+        companyReviewDto.setScheduleRate(5);
+
+        companyReviewDto.setReviewContent("여기는 업체 리뷰 내용 테스트");
+
+        List<String> reviewImgList = List.of("interior/images1", "interior/images2",
+                "interior/images3");
+        companyReviewDto.setReviewImg(reviewImgList);
+
+        companyReviewDto.setStructureType("아파트 건물유형 테스트");
+        companyReviewDto.setAreaPyeong("30평");
+        companyReviewDto.setConstructionField("장판공사");
+
+        companyReviewDao.insertCompanyReview(companyReviewDto);
+
+        // context 방식
+        CreateReviewSet result = new CreateReviewSet();
+        result.setCompanyReviewDto(companyReviewDto);
+        result.setCommonReviewDto(dto);
+
+        return result;
+    }
+
 }
