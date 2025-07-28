@@ -80,15 +80,63 @@
 }
 
 </style>
+
+
 	
 <script>
-	function changeCount(spanId, value) {
-		const span = document.getElementById(spanId);
-		let count = parseInt(span.innerText);
-		count += value;
-		if (count < 1) count = 1;
-		span.innerText = count;
+	//장바구니 개별 상품 삭제
+	function deleteCartItem(userId, productId) {
+	    if (confirm('이 상품을 장바구니에서 삭제하시겠습니까?')) {
+	        location.href = 'cart_delete?user_id=' + userId + '&product_id=' + productId;
+	    }
 	}
+	
+	// 방법 1: 각 아이템마다 user_id를 전달하는 방식 (권장)
+	function changeCount(cartId, value) {
+	    const span = document.getElementById('count_' + cartId);
+	    let count = parseInt(span.innerText);
+	    const newCount = count + value;
+
+	    if (newCount < 1) {
+	        alert('수량은 1개 이상이어야 합니다.');
+	        return;
+	    }
+	    
+	 	// 세션에서 user_id 가져오기
+	    let userId = '${sessionScope.user_id}';
+	    if (!userId || userId.trim() === '' || userId === 'null') {
+	        userId = '2'; // 기본값
+	    }
+	    
+
+	    // 서버에 수량 업데이트 요청
+	    if (confirm('수량을 변경하시겠습니까?')) {
+	        location.href = 'cart_update?cart_id=' + cartId + '&cart_quantity=' + newCount + '&user_id=' + userId;
+	    }
+	}
+	function goToOrder(){
+		// 장바구니에 상품이 있는지 확인
+		const cartItems = document.querySelectorAll('.container').length;
+		
+
+		if (cartItems === 0) {
+		       alert('장바구니에 상품이 없습니다.');
+		       return;
+		   }
+
+		
+		   let userId = '${sessionScope.user_id}';
+		   	    if (!userId || userId.trim() === '' || userId === 'null') {
+		   	    userId = '2'; // 기본값으로 2 사용
+		   } 
+		  	
+		   location.href = "order_view?user_id=" + userId;
+	}
+	
+	function showAlert(){
+			alert("장바구니에 담았습니다.");
+			location.href="cart_write?user_id=2&product_id=${product.product_id }&cart_quantity="+count;
+		}
 </script>	
 	
 	
@@ -97,85 +145,131 @@
 <body>
 
 <h2>cart</h2>
-
-<p>유저 이름:${cart_list.user_id }</p>
  
- 		<div class="maincontainer">
-			
-			<!-- 주문 상품 -->
-			<c:forEach items="${cart }" var="cart_list" >
-				<c:set var="countId" value="count_${cart_list.cart_id}" />
-				<div class="container">
-					<button class="delete">X</button>	<!-- 삭제버튼 -->
-					<br />
-					
-					<p class="mallname">${cart_list.productDto.product_mall_name }</p>
-					<a class="productname" href="#">${cart_list.productDto.product_name }</a>
-					<%-- <p>cart_id:${cart_list.cart_id }</p>	 --%>				<%-- <p>상품 아이디:${cart_list.product_id }</p> --%>
-					<%-- <p>장바구니 등록일:${cart_list.cart_date }</p> <br /> --%>
-					<c:choose>
-						<c:when test="${empty cart_list.product_imgDto or empty cart_list.product_imgDto.product_imgurl}">
-							<img class="img" src="/static/uploads/shop/noimages.png" alt="기본 이미지" style="width:150px;">
-						</c:when>
-						<c:otherwise>
-      						<img class="img" src="/static/uploads/shop/${cart_list.product_imgDto.product_imgurl}" alt="상품 이미지" style="width:150px;">
-    					</c:otherwise>
-					</c:choose>
-				
-					<div class="buttons">
-						<button type="button" onclick="changeCount('${countId}',-1)">-</button>
-							<span id="${countId }">${cart_list.cart_quantity }</span>
-							
-						<button type="button" onclick="changeCount('${countId}',1)">+</button> <br />
-					</div>
-					<p></p>
-
-					<br />
-					<div class="todaydeliver">
-					<c:choose>
-						<c:when test="${cart_list.productDto.product_istoday == 'Y'}">
-				     	   <br />
-				     	   <p>당일배송 상품입니다.</p>
-					    </c:when>
-					    <c:otherwise>
-						    <p>당일배송 상품이 아닙니다.</p>
-					    </c:otherwise>
-					</c:choose>
-					</div>			
-					<br />
-					<p class="price"><fmt:formatNumber value="${cart_list.productDto.product_price*cart_list.productDto.product_discountrate }" type="number" maxFractionDigits="0" />원</p>
-				</div>	
-				
-				
-			
-			</c:forEach>
-			
-			<div class="pricecontainer">
-				
-				<c:set var="totalprice" value="0"/>
-				<c:set var="totalsaleprice" value="0" />
-				<c:set var="discounttotal" value="0"/>
-				
-				<c:forEach items="${cart }" var="cart_list">
-					<p>${cart_list.productDto.product_price}</p>
-					<p>${cart_list.productDto.product_price*cart_list.productDto.product_discountrate}</p>
-					<c:set var="productprice" value="${cart_list.productDto.product_price}"/>
-					<c:set var="discountprice" value="${cart_list.productDto.product_price*cart_list.productDto.product_discountrate }"> </c:set>
-					<c:set var="total" value="${productprice-discountprice}"/>
-					
-					<c:set var="totalprice" value="${totalprice+productprice }" />
-					<c:set var="totalsaleprice" value="${totalsaleprice + discountprice}" />
-					<c:set var="discounttotal" value="${discounttotal+total}" />
-					
-				</c:forEach>
-				
-				<p>총 상품금액: ${totalprice }</p>
-				<p>총 할인금액: ${totalsaleprice }</p>
-				<p>총 합계: ${discounttotal }</p>
-			
-				<a class="order" href="order_view?user_id=13"><button class="order">주문하기</button></a>
-			</div>
-		</div>
+<div class="maincontainer">
+    
+    <!-- 장바구니 아이템들 -->
+    <div class="cart-items-container">
+        <c:choose>
+            <c:when test="${not empty cart}">
+                <c:forEach var="item" items="${cart}">
+                    <div class="container">
+                        <!-- 삭제 버튼 -->
+                        <button class="delete" onclick="deleteCartItem(${item.user_id},${item.product_id })">x</button>
+                        
+                        <!-- 상품 이미지 -->
+                        <div class="image-section">
+                            <c:choose>
+                                <c:when test="${not empty item.product_imgurl}">
+                                    <img class="img" src="/static/uploads/shop/${item.product_imgurl}" alt="${item.product_name}">
+                                </c:when>
+                                <c:otherwise>
+                                    <img class="img" src="/static/uploads/shop/noimages.png" alt="기본 이미지">
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                        
+                        <!-- 상품 정보 -->
+                        <div class="product-info">
+                            <p class="mall-name">${item.product_mall_name}</p>
+                            <a class="productname" href="product_detail?product_id=${item.product_id}">${item.product_name}</a>
+                            
+                            <!-- 수량 조절 -->
+                            <div class="quantity-controls">
+                                <button type="button" class="quantity-btn" onclick="changeCount(${item.cart_id}, -1)">-</button>
+                                <span id="count_${item.cart_id}" class="quantity-display">${item.cart_quantity}</span>
+                                <button type="button" class="quantity-btn" onclick="changeCount(${item.cart_id}, 1)">+</button>
+                            </div>
+                            
+                            <!-- 당일배송 여부 -->
+                            <c:if test="${item.product_istoday == 'Y'}">
+                                <div class="today-delivery">당일배송</div>
+                            </c:if>
+                        </div>
+                        
+                        <!-- 가격 정보 -->
+                        <div class="price-section">
+                            <!-- 할인 정보 -->
+                            <c:if test="${item.discountText != ''}">
+                                <div>
+                                    <span class="discount-badge">${item.discountText}</span>
+                                </div>
+                                <div class="original-price">
+                                    ₩<fmt:formatNumber value="${item.product_price}" pattern="#,###"/>
+                                </div>
+                            </c:if>
+                            
+                            <!-- 판매가 -->
+                            <div class="sale-price">
+                                ₩<fmt:formatNumber value="${item.discountedPrice}" pattern="#,###"/>
+                            </div>
+                            
+                            <!-- 아이템 총액 -->
+                            <div class="item-total">
+                                소계: ₩<fmt:formatNumber value="${item.totalPrice}" pattern="#,###"/>
+                            </div>
+                        </div>
+                    </div>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <div class="empty-cart">
+                    <h3>장바구니가 비어있습니다.</h3>
+                    <p>원하는 상품을 장바구니에 담아보세요!</p>
+                    <a href="products">쇼핑하러 가기</a>
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </div>
+    
+    <!-- 주문 요약 -->
+    <c:if test="${not empty cart}">
+        <div class="pricecontainer">
+            <div class="summary-title">주문 요약</div>
+            
+            <!-- 총합 계산 -->
+            <c:set var="totalItems" value="0"/>
+            <c:set var="totalQuantity" value="0"/>
+            <c:set var="totalOriginal" value="0"/>
+            <c:set var="totalDiscount" value="0"/>
+            <c:set var="totalFinal" value="0"/>
+            
+            <c:forEach var="item" items="${cart}">
+                <c:set var="totalItems" value="${totalItems + 1}"/>
+                <c:set var="totalQuantity" value="${totalQuantity + item.cart_quantity}"/>
+                <c:set var="totalOriginal" value="${totalOriginal + (item.product_price * item.cart_quantity)}"/>
+   
+                <c:set var="totalFinal" value="${totalFinal + item.totalPrice}"/>
+            </c:forEach>
+            
+            <!-- 요약 정보 표시 -->
+            <div class="summary-row">
+                <span>상품 종류</span>
+                <span>${totalItems}개</span>
+            </div>
+            <div class="summary-row">
+                <span>총 수량</span>
+                <span>${totalQuantity}개</span>
+            </div>
+            <div class="summary-row">
+                <span>상품금액</span>
+                <span>₩<fmt:formatNumber value="${totalOriginal}" pattern="#,###"/></span>
+            </div>
+            <c:if test="${totalDiscount > 0}">
+                <div class="summary-row" style="color: #ff4444;">
+                    <span>할인금액</span>
+                    <span>-₩<fmt:formatNumber value="${totalDiscount}" pattern="#,###"/></span>
+                </div>
+            </c:if>
+            <div class="summary-row summary-total">
+                <span>최종결제금액</span>
+                <span>₩<fmt:formatNumber value="${totalFinal}" pattern="#,###"/></span>
+            </div>
+            
+            <button class="order-btn" onclick="goToOrder()">주문하기</button>
+        </div>
+    </c:if>
+</div>
 			
 			
 		

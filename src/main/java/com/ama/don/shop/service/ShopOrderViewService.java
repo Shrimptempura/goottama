@@ -12,10 +12,10 @@ import com.ama.don.shop.dto.Product_imgDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class ShopCartService implements ShopServiceinter{
+public class ShopOrderViewService implements ShopServiceinter{
 
 	private ShopIDao iDao;
-	public ShopCartService(ShopIDao iDao) {
+	public ShopOrderViewService(ShopIDao iDao) {
 		this.iDao=iDao;
 	}
 	@Override
@@ -30,7 +30,6 @@ public class ShopCartService implements ShopServiceinter{
 		String user_id=request.getParameter("user_id");
 		
 		
-		
 		// user_id null 체크 및 안전한 변환
         if (user_id == null || user_id.trim().isEmpty()) {
             System.out.println("ERROR: user_id가 null이거나 비어있음");
@@ -40,16 +39,13 @@ public class ShopCartService implements ShopServiceinter{
         }
 		
 		Long userid=Long.parseLong(user_id);
-	
 		
-		
-
-		
-		// 새로운 FlatDto 방식
+		System.out.println(user_id);
 		ArrayList<CartFlatDto> cartFlatList = iDao.cart_list_flat(userid);
-		
+		/* ArrayList<CartDto> cartList=iDao.cart_list(user_id); */
+			
 		model.addAttribute("cart",cartFlatList);
-		
+		//
 	}
 
 }

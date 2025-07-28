@@ -30,7 +30,7 @@ public class ShopCartWriteService implements ShopServiceinter {
 		String cart_quantity=request.getParameter("cart_quantity");
 		
 		
-		siDao.cart_write(Integer.parseInt(user_id),Integer.parseInt(product_id),Integer.parseInt(cart_quantity));
+		siDao.cart_write(Long.parseLong(user_id),Long.parseLong(product_id),Long.parseLong(cart_quantity));
 		
 	}
 
