@@ -3,6 +3,7 @@ package com.ama.don.interior.dao;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
+import com.ama.don.interior.dto.response.CompanyReviewDto;
 import com.ama.don.interior.dto.response.CompanyScoreAvgDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -124,6 +127,21 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(totalRate).isEqualTo(total / 4);
         assertThat(result).isEqualTo(dto.getCompanyReviewDto().getResultRate());
         assertThat(communication).isEqualTo(dto.getCompanyReviewDto().getCommunicationRate());
+    }
+
+    @DisplayName("리뷰 상세보기")
+    @Test
+    void selectReviewDetail() {
+        // 다형성 리뷰 + 업체 리뷰
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        Long companyId = dto.getCompanyReviewDto().getCompanyId();
+
+        CompanyReviewDto read = companyReviewDao.getDetail(dto.getCompanyReviewDto().getReviewId());
+        assertThat(read).isNotNull();
+
+        assertThat(dto.getCompanyReviewDto().getConstructionField()).isEqualTo(read.getConstructionField());
+        assertThat(dto.getCommonReviewDto().getUserId()).isEqualTo(read.getUserId());
+        assertThat(read.getUserNickName()).isNotNull();
     }
 
 }
