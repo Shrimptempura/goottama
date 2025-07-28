@@ -26,7 +26,6 @@
 	<table class="table table-hover text-center">
 		<thead class="table-light">
 			<tr>
-				<th>번호</th>
 				<th>제목</th>
 				<th>작성일</th>
 				<th>사진</th>
@@ -37,7 +36,6 @@
 		<tbody>
 			<c:forEach var="review" items="${reviewList}" varStatus="status">
 				<tr>
-					<td>${status.count}</td>
 					<td><a
 						href="${pageContext.request.contextPath}/community/post_detail_view?post_id=${review.post_id}">
 							${review.post_title} </a></td>

@@ -22,6 +22,16 @@
 		<form action="/community/write" method="post"
 			enctype="multipart/form-data">
 
+			<tr>
+				<td>게시판 선택</td>
+				<td><select name="targetType" class="form-select">
+						<option value="COMMUNITY_REVIEW">리뷰</option>
+						<option value="COMMUNITY_HOUSEPHOTO">집 사진</option>
+						<option value="COMMUNITY_HOUSEDECORATION">집 꾸미기</option>
+				</select></td>
+			</tr>
+
+
 			<div class="mb-3 d-flex justify-content-end">
 				<button type="submit" class="btn btn-outline-primary fw-bold"
 					style="color: black; border: none; background-color: white;"

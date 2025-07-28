@@ -4,9 +4,11 @@ package com.ama.don.common.enums;
  * targetType에 대한 목록들 추가 가능
  */
 public enum TargetType {
-    INTERIOR,       // 인테리어
-    COMMUNITY,      // 커뮤니티
-    SHOP,        // 쇼핑
-    ADMIN,		//관리자
-    MEMBER
+	INTERIOR, // 인테리어
+	COMMUNITY_REVIEW,
+	COMMUNITY_HOUSEPHOTO,
+	COMMUNITY_HOUSEDECORATION, // 커뮤니티 세부화 리뷰, 집사진, 집꾸미기
+	SHOP, // 쇼핑
+	ADMIN, // 관리자
+	MEMBER
 }

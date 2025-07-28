@@ -5,16 +5,27 @@
 
 <mapper namespace="com.ama.don.common.dao.FileDao">
 
-    <!-- 업체가 사용하기 위한 만든 간단 mapper -->
-    <!-- 다른사람도 가능(아마도) -->
-    <insert id="create"
-            parameterType="com.ama.don.common.dto.FileDto"
-            useGeneratedKeys="true"
-            keyProperty="fileId">
-        insert into file (
-            file_uploader, file_name, file_path, target_type, target_id)
-        values (
-            #{fileUploader}, #{fileName}, #{filePath}, #{targetType}, #{targetId}
-        )
-    </insert>
+	<!-- 업체가 사용하기 위한 만든 간단 mapper -->
+	<!-- 다른사람도 가능(아마도) -->
+	<insert id="create"
+		parameterType="com.ama.don.common.dto.FileDto" useGeneratedKeys="true"
+		keyProperty="fileId">
+		insert into file (
+		file_uploader, file_name, file_path,
+		target_type, target_id)
+		values (
+		#{fileUploader}, #{fileName},
+		#{filePath}, #{targetType}, #{targetId}
+		)
+	</insert>
+	<!-- 조회 -->
+	<select id="findFilesByTarget"
+		resultType="com.ama.don.common.dto.FileDto">
+		select file_id AS fileId, file_uploader AS fileUploader, file_name AS
+		fileName, file_path AS filePath,
+		target_type AS targetType, target_id AS targetId
+		from file
+		where target_type = #{targetType}
+		and target_id = #{targetId}
+	</select>
 </mapper>

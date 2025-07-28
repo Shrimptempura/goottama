@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ama.don.common.enums.TargetType;
 import com.ama.don.community.dao.Review_viewDao;
 import com.ama.don.community.dto.Review_viewDto;
 
@@ -21,7 +22,8 @@ public class Review_viewController {
 
 	@GetMapping({ "/review", "/review/list", "/review_view" })
 	public String reviewList(Model model) {
-		List<Review_viewDto> list = review_viewDao.selectAllReviews();
+		// 타겟타입이 COMMUNITY_REVIEW인 글만 가져오기
+		List<Review_viewDto> list = review_viewDao.selectByTargetType(TargetType.COMMUNITY_REVIEW);
 		model.addAttribute("reviewList", list);
 		return "community/review_view";
 	}

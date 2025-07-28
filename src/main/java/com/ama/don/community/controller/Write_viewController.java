@@ -33,15 +33,24 @@ public class Write_viewController {
 
 	@PostMapping("/write")
 	public String writePost(@RequestParam("title") String title, @RequestParam("content") String content,
-			@RequestParam("imgFile") MultipartFile imgFile, Model model) {
+			@RequestParam("targetType") String targetType, @RequestParam("imgFile") MultipartFile imgFile,
+			Model model) {
 
 		Write_viewDto dto = new Write_viewDto();
 		dto.setUser_id(1);
 		dto.setPost_title(title);
 		dto.setPost_content(content);
-		dto.setTarget_type(TargetType.valueOf("COMMUNITY"));
+
+		// 타겟 타입 설정
+		try {
+			dto.setTarget_type(TargetType.valueOf(targetType));
+		} catch (IllegalArgumentException e) {
+			model.addAttribute("msg", "잘못된 게시판 유형입니다.");
+			return "community/write_view";
+		}
 		dto.setTarget_id(1);
 
+		// 이미지 업로드
 		if (!imgFile.isEmpty()) {
 			String saveFileName = UUID.randomUUID() + "_" + imgFile.getOriginalFilename();
 			File dir = new File(uploadDir);
@@ -63,7 +72,7 @@ public class Write_viewController {
 		return "redirect:/community/review_view";
 	}
 
-	// 드래그앤드롭 파일 업로드
+	// 드래그앤드롭 이미지 업로드 처리
 	@PostMapping("/write_view")
 	@ResponseBody
 	public String dragAndDropUpload(MultipartHttpServletRequest multipartRequest) {
