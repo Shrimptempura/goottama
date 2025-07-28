@@ -16,6 +16,7 @@
         select company_id
         from company
         where user_id = #{userId}
+        and is_deleted = false
     </select>
 
     <!--  company_detail 생성  -->
@@ -58,6 +59,7 @@
         )
     </insert>
 
+    <!-- 업체등록 시 중복 이름 검사 -->
     <select id="isDuplicateCompanyName" resultType="java.lang.Boolean">
         select count(*) > 0
         from company_detail
@@ -65,7 +67,6 @@
     </select>
 
     <!-- 세션으로 user_id 얻고, findCompanyIdByUserId로 company_id 얻음 -->
-    <!--  -->
     <select id="selectDetailCompany" resultType="com.ama.don.interior.dto.response.CompanyDetailDto">
         select c.company_id AS companyId,
             d.company_addr AS companyAddr,
@@ -75,7 +76,8 @@
             d.company_career AS companyCareer
         from company c
         join company_detail d ON c.company_detail_id = d.company_detail_id
-        where company_id = #{companyId}
+        where c.company_id = #{companyId}
+        and c.is_deleted = false
     </select>
 
     <!--  업체 상세페이지의 요약상자 중, 업체 정보와 별점 정보 얻기  -->
@@ -87,30 +89,51 @@
         join company_detail d ON c.company_detail_id = d.company_detail_id
         left join company_score_avg s ON c.company_id = s.company_id
         where c.company_id = #{companyId}
+        and c.is_deleted = false
     </select>
 
     <!--  업체 팔로우 여부 확인  -->
     <select id="isFollowedCompany" resultType="java.lang.Boolean">
         select count(*) > 0
-        from company_follow
-        where company_id = #{companyId}
-        and user_id = #{userId}
+        from company_follow f
+        join company c ON f.company_id = c.company_id
+        where f.company_id = #{companyId}
+        and f.user_id = #{userId}
+        and c.is_deleted = false
     </select>
 
-    <!--  업체 정보 수정  -->
+    <!-- 업체 정보수정1, company_detail 테이블 -->
+    <update id="updateCompanyDetail">
+        update company_detail
+        set company_name = #{companyName}, company_addr = #{companyAddr},
+            company_field = #{companyField}, company_license = #{companyLicense},
+            company_as = #{companyAs}, company_career = #{companyCareer},
+            company_intro = #{companyIntro}
+        where company_detail_id = #{companyDetailId}
+    </update>
+
+    <!--  업체 정보 수정2, 이미지  -->
     <update id="updateCompanyImg">
         update company
         set company_img = #{companyImg}
         where company_id = #{companyId}
     </update>
 
-    <delete id="deleteCompanyDetail">
+    <!-- 업체 정보 수정3, 주소 테이블 -->
+    <!-- company_deatil의 주소 변경시 수정 -->
+    <update id="updateLocation">
+        update location
+        set location_addr = #{locationAddr}, location_lat = #{locationLat},
+            location_lng = #{locationLng}, location_ac = #{locationAc},
+            location_limit = #{locationLimit}
+        where location_id = #{locationId}
+    </update>
 
-    </delete>
-
-    <select id="getAvgScore" resultType="java.lang.Double">
-
-    </select>
-
+    <!-- 업체 비활성화 -->
+    <update id="deleteCompany">
+        update company
+        set is_deleted = 1
+        where company_id = #{companyId}
+    </update>
 
 </mapper>

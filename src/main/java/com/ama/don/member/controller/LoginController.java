@@ -7,6 +7,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ama.don.member.dto.FindLoginIdDto;
 import com.ama.don.member.dto.FindPwDto;
@@ -14,6 +15,7 @@ import com.ama.don.member.dto.LoginformDto;
 import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.service.FindMemberService;
 import com.ama.don.member.service.LoginService;
+import com.ama.don.member.service.ValidationService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -25,6 +27,7 @@ public class LoginController {
 	
 	private final LoginService loginService;
 	private final FindMemberService findMemberService;
+	private final ValidationService validationService;
 	
 	@GetMapping("/")
 	public String index() {
@@ -65,7 +68,7 @@ public class LoginController {
 		return "member/findLoginId_view";
 	}
 	
-	@GetMapping("/findPw")
+	@PostMapping("/findPw")
 	public String findPw(@Valid @ModelAttribute FindPwDto findPwDto,BindingResult bindingResult,HttpSession session,Model model) {
 		
 		if (bindingResult.hasErrors()) {
@@ -78,8 +81,19 @@ public class LoginController {
 		if (!success) {
 			return"member/findPw_view";
 		}
+		return "member/checkPwCode_view"; //성공 시 인증코드 입력 화면으로
+	}
+	
+	@PostMapping("/checkPwCode")
+	public String checkPwCode(@RequestParam("inputCode") String inputCode,HttpSession session,Model model) {
 		
-		return null; //성공 시 인증코드 입력 화면으로
+		boolean isRight = validationService.pwCodeValidation(inputCode, session, model);
+		
+		if (isRight == true) {
+			return "member/resetPw_view";
+		}
+		
+		return "member/checkPwCode_view";
 	}
 	
 	@PostMapping("/login")

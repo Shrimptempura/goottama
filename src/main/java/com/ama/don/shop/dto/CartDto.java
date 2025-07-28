@@ -17,8 +17,7 @@ public class CartDto {
 	long product_id;
 	int cart_quantity;
 	Timestamp cart_date;
-	
-	
+
 	private ProductDto productDto;
 
 	private Product_imgDto product_imgDto;

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://.org/dtdmybatis/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.member.dao.MemberProfileDao">
+
+	<update id="updatePw">
+	UPDATE user_login UL join user_detail UD ON UL.USER_ID = UD.USER_ID
+	SET UL.USER_PASSWORD = #{encodePw}
+	WHERE UL.LOGIN_ID = #{findPwDto.loginId} AND UD.USER_EMAIL = #{findPwDto.email}
+	</update>
+
+</mapper>
