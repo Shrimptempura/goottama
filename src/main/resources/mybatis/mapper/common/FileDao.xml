@@ -6,6 +6,7 @@
 <mapper namespace="com.ama.don.common.dao.FileDao">
 
     <!-- 업체가 사용하기 위한 만든 간단 mapper -->
+    <!-- 다른사람도 가능(아마도) -->
     <insert id="create"
             parameterType="com.ama.don.common.dto.FileDto"
             useGeneratedKeys="true"

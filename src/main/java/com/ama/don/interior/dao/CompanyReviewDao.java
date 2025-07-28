@@ -7,6 +7,7 @@ import com.ama.don.interior.dto.response.CompanyReviewDto;
 import com.ama.don.interior.dto.response.CompanyScoreAvgDto;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.io.File;
 import java.util.List;
 import java.util.Optional;
 

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 // 공통 리뷰 테이블에 대한 dto
 @AllArgsConstructor
@@ -23,7 +24,7 @@ public class ReviewDto {
     private int reviewCount;            // 조회수
     private Timestamp reviewDate;       // 리뷰 작성 날짜
     private Timestamp reviewModify;     // 리뷰 수정 일지
-    private String reviewImg;           // 리뷰 사진
+    private List<String> reviewImg;           // 리뷰 사진, 여러장
 
     private Long targetId;       // 대상 아이디
     private TargetType targetType;      //  enum: INTERIOR, COMMUNITY, SHOP

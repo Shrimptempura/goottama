@@ -3,6 +3,7 @@ package com.ama.don.common.dao;
 import com.ama.don.common.dto.ReviewDto;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.io.File;
 import java.util.ArrayList;
 
 // 공통 리뷰 테이블에 대한 dao
@@ -14,6 +15,9 @@ public interface ReviewDao {
 
     // 리뷰 작성
     int insertCommonReview(ReviewDto dto);
+
+    // 리뷰 작성중 파일 저장(여러장)
+    void insertReviewFile(File dto);
 
     // targetType과 targetId를 이용한 리뷰 목록 조회
     ArrayList<ReviewDto> findByTarget(String targetType, Long targetId);

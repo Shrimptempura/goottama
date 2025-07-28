@@ -17,6 +17,8 @@
         )
     </insert>
 
+
+
     <!-- 점수 테이블 존재 유무 -->
     <select id="isExistScoreTable" resultType="java.lang.Boolean">
         select count(*) > 0
