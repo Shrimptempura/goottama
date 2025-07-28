@@ -99,14 +99,14 @@
 <body>
     <div class="modify-container">
         <h2>주문 수정</h2>
-        
+       
         <!-- 주문 기본 정보 -->
         <c:if test="${not empty orderDetail}">
             <div class="order-info">
                 <h4>주문 정보</h4>
-                <p><strong>주문번호:</strong> ${orderDetail.orderId}</p>
-                <p><strong>주문일:</strong> <fmt:formatDate value="${orderDetail.orderDate}" pattern="yyyy-MM-dd HH:mm"/></p>
-                <p><strong>총 금액:</strong> ₩<fmt:formatNumber value="${orderDetail.totalAmount}" pattern="#,###"/></p>
+                <p><strong>주문번호:</strong> ${orderDetail.order_id}</p>
+                <p><strong>주문일:</strong> <fmt:formatDate value="${orderDetail.order_date}" pattern="yyyy-MM-dd HH:mm"/></p>
+                <p><strong>총 금액:</strong> ₩<fmt:formatNumber value="${orderDetail.order_totalprice}" pattern="#,###"/></p>
             </div>
         </c:if>
         
@@ -138,37 +138,43 @@
             </c:choose>
         </div>
         
-        <!-- 배송지 수정 폼 -->
-        <div class="delivery-form">
-            <h4>배송지 정보 수정</h4>
-            <form action="order_modify_process" method="post">
-                <input type="hidden" name="order_id" value="${orderDetail.orderId}">
-                <input type="hidden" name="user_id" value="${user_id}">
-                
-                <div class="form-group">
-                    <label for="deliver_name">받는 사람:</label>
-                    <input type="text" id="deliver_name" name="deliver_name" 
-                           value="${orderDetail.deliverName}" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="deliver_phone">연락처:</label>
-                    <input type="tel" id="deliver_phone" name="deliver_phone" 
-                           value="${orderDetail.deliverPhone}" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="deliver_address">배송주소:</label>
-                    <input type="text" id="deliver_address" name="deliver_address" 
-                           value="${orderDetail.deliverAddress}" required>
-                </div>
-                
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary">수정 완료</button>
-                    <a href="order_detail?order_id=${orderDetail.orderId}" class="btn btn-secondary">취소</a>
-                </div>
-            </form>
-        </div>
+		<!-- 배송지 수정 폼 -->
+		<div class="delivery-form">
+		    <h4>배송지 정보 수정</h4>
+		    <form action="order_update" method="post">
+		        <input type="hidden" name="order_id" value="${orderDetail.order_id}">
+		        <input type="hidden" name="user_id" value="${orderDetail.user_id }" />
+		        
+		        <div class="form-group">
+		            <label for="deliver_person">받는 사람:</label>
+		            <input type="text" id="deliver_person" name="deliver_person" 
+		                   value="${orderDetail.deliver_person}" required>
+		        </div>
+		        
+		        <div class="form-group">
+		            <label for="deliver_recipient_phone">연락처:</label>
+		            <input type="tel" id="deliver_recipient_phone" name="deliver_recipient_phone" 
+		                   value="${orderDetail.deliver_recipient_phone}" required>
+		        </div>
+		        
+		        <div class="form-group">
+		            <label for="deliver_loc">배송주소:</label>
+		            <input type="text" id="deliver_loc" name="deliver_loc" 
+		                   value="${orderDetail.deliver_loc}" required>
+		        </div>
+		        
+		        <div class="form-group">
+		            <label for="deliver_detail_loc">상세주소:</label>
+		            <input type="text" id="deliver_detail_loc" name="deliver_detail_loc"
+		                   value="${orderDetail.deliver_detail_loc}">
+		        </div>
+		        
+		        <div class="btn-group">
+		            <button type="submit" class="btn btn-primary">수정 완료</button>
+		            <a href="order_list?user_id=${orderDetail.user_id}" class="btn btn-secondary">취소</a>
+		        </div>
+		    </form>
+		</div>
     </div>
     
     <script>

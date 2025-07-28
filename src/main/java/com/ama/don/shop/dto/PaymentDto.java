@@ -19,5 +19,4 @@ public class PaymentDto {
 	String payment_status;
 	int payment_price;	
 	
-	
 }

@@ -20,13 +20,15 @@ import com.ama.don.shop.service.ShopCartUpdateService;
 import com.ama.don.shop.service.ShopCartWriteService;
 import com.ama.don.shop.service.ShopProductMallService;
 import com.ama.don.shop.service.ShopListService;
-import com.ama.don.shop.service.ShopOrderDetailService;
-import com.ama.don.shop.service.ShopOrderViewService;
-import com.ama.don.shop.service.ShopOrderWriteService;
 import com.ama.don.shop.service.ShopProductdetailService;
 import com.ama.don.shop.service.ShopServiceinter;
 import com.ama.don.shop.service.ShopWriteService;
 import com.ama.don.shop.service.Kakaopay.ShopKakaopayService;
+import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
+import com.ama.don.shop.service.orderservice.ShopOrderModifyViewService;
+import com.ama.don.shop.service.orderservice.ShopOrderUpdateSerivce;
+import com.ama.don.shop.service.orderservice.ShopOrderViewService;
+import com.ama.don.shop.service.orderservice.ShopOrderWriteService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -172,28 +174,29 @@ public class ShopController {
 		return "shop/order_complete";
 	}
 
-	/*
-	 * @RequestMapping("/shop/order_modify_view") public String
-	 * order_modify_view(HttpServletRequest request, Model model) {
-	 * 
-	 * 
-	 * model.addAttribute("request", request); shopServiceinter= new
-	 * ShopOrderModifyViewService(iDao); shopServiceinter.execute(model); return
-	 * "shop/order_modify_view";
-	 * 
-	 * 
-	 * }
-	 */
+	
+	 @RequestMapping("/shop/order_modify_view") 
+	 public String order_modify_view(HttpServletRequest request, Model model) {
+	
+	
+		model.addAttribute("request", request); 
+		shopServiceinter= new ShopOrderModifyViewService(iDao); 
+		shopServiceinter.execute(model); 
+		return "shop/order_modify_view";
+	
+	}
+	 
 
 	@RequestMapping("/shop/order_update")
 	public String order_update(HttpServletRequest request, Model model) {
 
-		/*
-		 * model.addAttribute("request",request); shopServiceinter=new
-		 * ShopOrderUpdateService(iDao); shopServiceinter.execute(model);
-		 */
-
-		return "shop/order_complete";
+		
+		model.addAttribute("request",request); 
+		shopServiceinter=new ShopOrderUpdateSerivce(iDao); 
+		shopServiceinter.execute(model);
+		String order_id = request.getParameter("order_id");
+	
+		return "redirect:/shop/order_details?user_id="+request.getParameter("user_id");
 	}
 
 	@RequestMapping("/shop/order_details")

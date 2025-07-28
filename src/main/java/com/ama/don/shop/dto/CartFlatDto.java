@@ -17,11 +17,11 @@ import lombok.Setter;
 public class CartFlatDto {
     
     // ===== 중요: 필드 순서를 SQL SELECT 순서와 맞추거나 aias 정확히 =====
-    
+	
     // 장바구니 정보
     private Long cart_id;
     private Integer cart_quantity;
-    
+    private Timestamp cart_date;
     // 사용자 정보  
     private Long user_id;
     private String user_name;        // 반드시 String 타입!

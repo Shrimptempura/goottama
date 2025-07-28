@@ -1,4 +1,4 @@
-package com.ama.don.shop.service;
+package com.ama.don.shop.service.orderservice;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,10 +16,12 @@ import com.ama.don.shop.dto.OrdersDto;
 import com.ama.don.shop.dto.Orders_productsDto;
 import com.ama.don.shop.dto.PaymentDto;
 import com.ama.don.shop.dto.Product_imgDto;
+import com.ama.don.shop.service.ShopServiceinter;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 public class ShopOrderWriteService implements ShopServiceinter{
+	
 
     private ShopIDao iDao;
     public ShopOrderWriteService(ShopIDao iDao) {
@@ -55,6 +57,7 @@ public class ShopOrderWriteService implements ShopServiceinter{
         int total=0;
         ArrayList<CartFlatDto> cartFlatDtos=iDao.cart_list_flat(userid);
         for(CartFlatDto cartitem: cartFlatDtos) {
+        	//주문 총가격
             total+=cartitem.getTotalPrice();
         }
         
@@ -124,7 +127,7 @@ public class ShopOrderWriteService implements ShopServiceinter{
             // ===== 6. 주문 완료 후 조회 =====
             
             // 6-1. 주문 기본 정보 조회
-            OrderFlatDto orderInfo = iDao.order_flat(order_id);
+            OrderFlatDto orderInfo = iDao.order_detail_flat(order_id);
             
             // 6-2. 주문 상품 목록 조회
             ArrayList<OrderFlatDto> orderProducts = iDao.order_products_flat(order_id);

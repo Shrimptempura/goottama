@@ -9,14 +9,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class product_inquiryDto {
+@NoArgsConstructor
+public class Product_reply {
+	long preply_id;
 	long pinquiry_id;
-	long user_id;
-	long product_id;
-	String pinquiry_content;
-	Timestamp pinquiry_date;
-	String pinquiry_status;
-	
+	String preply_content;
+	Timestamp preply_date;
 }

@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Orders_productsDto {
-	long po_id;
+	long orders_prodocts_id;
 	long order_id;
 	long product_id;
 	int op_quantity;
@@ -23,3 +23,5 @@ public class Orders_productsDto {
 	
 	//
 }
+
+

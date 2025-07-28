@@ -1,4 +1,4 @@
-package com.ama.don.shop.service;
+package com.ama.don.shop.service.orderservice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,12 +9,15 @@ import org.springframework.ui.Model;
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.CartDto;
 import com.ama.don.shop.dto.CartFlatDto;
+import com.ama.don.shop.dto.DeliverDto;
 import com.ama.don.shop.dto.OrderFlatDto;
 import com.ama.don.shop.dto.Product_imgDto;
+import com.ama.don.shop.service.ShopServiceinter;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 public class ShopOrderUpdateSerivce implements ShopServiceinter{
+	
 
 	private ShopIDao iDao;
 	public ShopOrderUpdateSerivce(ShopIDao iDao) {
@@ -28,11 +31,18 @@ public class ShopOrderUpdateSerivce implements ShopServiceinter{
 		HttpServletRequest request=
 				(HttpServletRequest) map.get("request");
 		
+		
+		// 폼에서 전송된 데이터 받기
+        String order_id = request.getParameter("order_id");
+        String deliver_person = request.getParameter("deliver_person");
+        String deliver_recipient_phone = request.getParameter("deliver_recipient_phone");
+        String deliver_loc = request.getParameter("deliver_loc");
+        String deliver_detail_loc = request.getParameter("deliver_detail_loc");
+        
+
+		
 		String product_id=request.getParameter("product_id");
 		String user_id=request.getParameter("user_id");
-		
-		//주문수정하기 실제로는 배송지만 수정;
-		String order_id=request.getParameter("order_id");
 		
 		
 		// user_id null 체크 및 안전한 변환
@@ -55,12 +65,15 @@ public class ShopOrderUpdateSerivce implements ShopServiceinter{
 		Long orderid=Long.parseLong(order_id);
 		
 		try {
-			// 1. 주문 정보 조회 (배송지 정보 포함)
-            OrderFlatDto orderDetail = iDao.order_detail_flat(orderid);
-            
+            // 1. 주문 배송지 업데이트
+            iDao.deliver_update(orderid, deliver_person, deliver_recipient_phone, 
+                               deliver_loc, deliver_detail_loc);
+            System.out.println("success: 배송지 수정 완료");
 		} catch (Exception e) {
-		   
+		    e.printStackTrace();
 		}
+		
+		
 		
 	}
 

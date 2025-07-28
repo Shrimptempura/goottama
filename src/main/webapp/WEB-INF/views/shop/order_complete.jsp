@@ -27,23 +27,23 @@
 <table border="1">
 <tr>
 <td>주문번호</td>
-<td>${orderInfo.orderId}</td>
+<td>${orderInfo.order_id}</td>
 </tr>
 <tr>
 <td>사용자 ID</td>
-<td>${orderInfo.userId}</td>
+<td>${orderInfo.user_id}</td>
 </tr>
 <tr>
 <td>주문일시</td>
-<td><fmt:formatDate value="${orderInfo.orderDate}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+<td><fmt:formatDate value="${orderInfo.order_date}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
 </tr>
 <tr>
 <td>주문상태</td>
-<td>${orderInfo.orderStatus}</td>
+<td>${orderInfo.order_status}</td>
 </tr>
 <tr>
 <td>총 결제금액</td>
-<td>₩<fmt:formatNumber value="${orderInfo.orderTotalprice}" pattern="#,###"/></td>
+<td>₩<fmt:formatNumber value="${orderInfo.order_totalprice}" pattern="#,###"/></td>
 </tr>
 </table>
 </c:if>
@@ -72,7 +72,7 @@
         </c:otherwise>
     </c:choose>
 </td>
-<td>${product.productId}</td>
+<td>${product.product_id}</td>
 <td>${product.product_name}</td>
 <td>${product.op_quantity}개</td>
 <td>₩<fmt:formatNumber value="${product.op_price}" pattern="#,###"/></td>
@@ -115,7 +115,7 @@
 <!-- 첫 번째 상품 정보 확인 -->
 <c:if test="${not empty orderProducts and orderProducts.size() > 0}">
 <h5>첫 번째 상품 디버깅:</h5>
-<p>productId: ${orderProducts[0].productId}</p>
+<p>productId: ${orderProducts[0].product_id}</p>
 <p>product_name: ${orderProducts[0].product_name}</p>
 <p>op_quantity: ${orderProducts[0].op_quantity}</p>
 <p>op_price: ${orderProducts[0].op_price}</p>

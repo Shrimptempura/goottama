@@ -1,4 +1,4 @@
-package com.ama.don.shop.service;
+package com.ama.don.shop.service.orderservice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,10 +11,13 @@ import com.ama.don.shop.dto.CartDto;
 import com.ama.don.shop.dto.CartFlatDto;
 import com.ama.don.shop.dto.OrderFlatDto;
 import com.ama.don.shop.dto.Product_imgDto;
+import com.ama.don.shop.service.ShopServiceinter;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 public class ShopOrderDetailService implements ShopServiceinter{
+	
+	//주문 상세 뷰
 
 	private ShopIDao iDao;
 	public ShopOrderDetailService(ShopIDao iDao) {
@@ -28,7 +31,6 @@ public class ShopOrderDetailService implements ShopServiceinter{
 		HttpServletRequest request=
 				(HttpServletRequest) map.get("request");
 		
-		String product_id=request.getParameter("product_id");
 		String user_id=request.getParameter("user_id");
 		
 		
@@ -44,26 +46,24 @@ public class ShopOrderDetailService implements ShopServiceinter{
 		Long userid=Long.parseLong(user_id);
 		
 		try {
-		    System.out.println("=== 주문 조회 시작 ===");
+			System.out.println("=== 주문 조회 시작 ===");
 		    System.out.println("조회 user_id: " + userid);
 		    
-		    // 먼저 간단한 쿼리로 테스트
-		    ArrayList<OrderFlatDto> userOrders = iDao.user_orders_simple(userid);
-		    System.out.println("간단 조회 결과: " + userOrders.size() + "개");
+		    // 1.사용자가 등록한 주문들 가져오기 (리스트로)
+		    ArrayList<OrderFlatDto> userOrders = iDao.user_orders_list(userid);
 		    
-		    if (userOrders.isEmpty()) {
-		        // 다시 복잡한 쿼리로 시도
-		        userOrders = iDao.user_orders_list(userid);
-		        System.out.println("복잡 조회 결과: " + userOrders.size() + "개");
-		    }
+		   
+		    System.out.println("복잡 조회 결과: " + userOrders.size() + "개");
+		    
 
 		    // 각 주문별 상품 목록 조회하여 Map으로 구성
 		    Map<Long, ArrayList<OrderFlatDto>> orderProductsMap = new HashMap<>();
 		    
 		    for(OrderFlatDto order : userOrders) {
-		        Long orderId = order.getOrderId();
-		        System.out.println("주문 ID: " + orderId + ", 날짜: " + order.getOrderDate());
+		        Long orderId = order.getOrder_id();
+		        System.out.println("주문 ID: " + orderId + ", 날짜: " + order.getOrder_date());
 		        
+		        // 2. 주문별 상품
 		        ArrayList<OrderFlatDto> products = iDao.order_products_flat(orderId);
 		        orderProductsMap.put(orderId, products);
 		        
