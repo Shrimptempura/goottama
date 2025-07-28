@@ -100,7 +100,17 @@
         order by r.review_modify desc
     </select>
 
-    <select id="listByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyReviewDto"></select>
+    <!-- 업체 상세정보에서 리뷰탭 보기(사진 제외: userImg, reviewImg) -->
+    <select id="listByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
+        select r.review_id AS reviewId, u.user_id AS userId, u.user_nickname AS userNickName,
+            c.structure_type AS structureType, c.area_pyeong AS areaPyeong, c.construction_field AS constructionField,
+            review_content AS reviewContent, review_date AS reviewDate, review_modify AS reviewModify
+        from company_review c
+        join review r ON c.review_id = r.review_id
+        join user_detail u ON r.user_id = u.user_id
+        where company_id = #{companyId}
+    </select>
+
     <select id="getReviewCountByCompanyId" resultType="java.lang.Integer"></select>
 
 
