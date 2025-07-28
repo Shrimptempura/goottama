@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 // 공통 리뷰 테이블에 대한 dao
 // 주로 관리자만 사용
@@ -20,7 +21,7 @@ public interface ReviewDao {
     void insertReviewFile(File dto);
 
     // targetType과 targetId를 이용한 리뷰 목록 조회
-    ArrayList<ReviewDto> findByTarget(String targetType, Long targetId);
+    List<ReviewDto> findReviewByTarget(String targetType, Long targetId);
 
     // 리뷰 상세보기
     ReviewDto detail(Long reviewId);

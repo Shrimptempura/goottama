@@ -88,8 +88,16 @@
         where c.review_id = #{reviewId}
     </select>
 
+    <!-- 홈에서 보여주는 최신 업체 리뷰목록들 -->
+    <!-- 사진은 추후 file에서 처리 -->
+    <select id="findAllReviewsForHome" resultType="com.ama.don.interior.dto.response.CompanyHomeReviewDto">
+        select r.review_id AS reviewId
+            c.area_pyeong AS areaPyeong, c.structure_type AS structureType, r.review_content AS reviewContent
+        from company_review c
+        join review r ON c.review_id = r.review_id
+        where review_id = #{reviewId}
+    </select>
 
-    <select id="findAllReviewsForHome" resultType="com.ama.don.interior.dto.response.CompanyHomeReviewDto"></select>
     <select id="listByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyReviewDto"></select>
     <select id="getReviewCountByCompanyId" resultType="java.lang.Integer"></select>
 
