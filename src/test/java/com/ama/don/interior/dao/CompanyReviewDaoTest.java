@@ -161,4 +161,19 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(list).hasSize(1);
     }
 
+    @DisplayName("업체 상세페이지에서 보는 업체 리뷰 리스트들")
+    @Test
+    void getCompanyReviews() {
+        // 다형성 리뷰 + 업체 리뷰
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        Long companyId = dto.getCompanyReviewDto().getCompanyId();
+
+        List<CompanyReviewDto> list = companyReviewDao.listByCompanyId(companyId);
+
+        assertThat(list).isNotNull();
+        assertThat(list.get(0).getReviewDate()).isEqualTo(dto.getCommonReviewDto().getReviewDate());
+        assertThat(list.get(0).getReviewContent()).isEqualTo(dto.getCommonReviewDto().getReviewContent());
+        assertThat(list.get(0).getUserNickName()).isNotNull();
+    }
+
 }
