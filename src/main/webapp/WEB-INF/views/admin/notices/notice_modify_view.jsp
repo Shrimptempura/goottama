@@ -58,7 +58,6 @@
             height: '500px',
             initialEditType: 'markdown',
             previewStyle: 'vertical',
-            // 기존 TUI 에디터 설정 (이미지 업로드 훅 등)
             hooks: {
                 async addImageBlobHook(blob, callback){
                     try {
@@ -80,11 +79,10 @@
             initialValue: `${notice.notices_content}` // JSP 변수를 JavaScript 문자열로 삽입
         });
 
-        // '수정 완료' 버튼 클릭 시 TUI 에디터 내용을 hidden textarea에 저장
+        // '수정 완료' 버튼 클릭 시 TUI 에디터 내용을 hidden textarea에 저장 - TUI 에디터를 바로 보내는 방법을 못 찾음
         document.querySelector('#noticeModifyForm').addEventListener('submit', function(event) {
             const editorContent = editor.getHTML();
             document.querySelector('#content').value = editorContent;
-            // console.log("전송될 내용:", document.querySelector('#content').value); // 디버깅용
         });
     </script>
 </body>

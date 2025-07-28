@@ -40,7 +40,7 @@
                 AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
             </if>
         </where>
-        ORDER BY ORDER BY NOTICES_CREATED_AT DESC
+        ORDER BY NOTICES_CREATED_AT DESC
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
     <select id="countSearchNotice" resultType="int">
@@ -82,4 +82,8 @@
     <delete id="deleteNotice">
         DELETE FROM notices WHERE NOTICES_ID = #{param1}
     </delete>
+
+    <select id="getLatestNoticeId">
+        SELECT MAX(notices_id) FROM notices
+    </select>
 </mapper>

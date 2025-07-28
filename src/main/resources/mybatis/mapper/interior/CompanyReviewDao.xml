@@ -4,32 +4,94 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ama.don.interior.dao.CompanyReviewDao">
-    <insert id="create">
 
+    <!-- 다형성 리뷰 작성된 상태에서 업체 리뷰생성하기 -->
+    <insert id="insertCompanyReview"
+            parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
+        insert into company_review(
+            review_id, company_id, communication_rate, price_rate, result_rate,
+            schedule_rate, structure_type, area_pyeong, construction_field)
+        values (
+            #{reviewId}, #{companyId}, #{communicationRate}, #{priceRate}, #{resultRate},
+            #{scheduleRate}, #{structureType}, #{areaPyeong}, #{constructionField}
+        )
     </insert>
 
-    <update id="update">
 
+
+    <!-- 점수 테이블 존재 유무 -->
+    <select id="isExistScoreTable" resultType="java.lang.Boolean">
+        select count(*) > 0
+        from company_score_avg
+        where company_id = #{companyId}
+    </select>
+
+    <!-- 첫 리뷰작성후만 실행, 점수 테이블 생성 -->
+    <insert id="insertScoreTable"
+            parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
+        insert into company_score_avg(
+            company_id, company_review_count,
+            sum_communication, sum_price, sum_result, sum_schedule,
+            avg_communication, avg_price, avg_result, avg_schedule, avg_total_rate)
+        values (
+            #{companyId}, 1,
+            #{communicationRate}, #{priceRate}, #{resultRate}, #{scheduleRate},
+            #{communicationRate}, #{priceRate}, #{resultRate}, #{scheduleRate},
+            (#{communicationRate} + #{priceRate} + #{resultRate} + #{scheduleRate}
+            ) / 4.0
+        )
+    </insert>
+
+    <!-- 회원이 리뷰를 남기면 점수만 따로 계산해서 저장 -->
+    <!-- parameterType -> companyScoreAvgDto.. 책임분리 추후 생각 -->
+    <update id="updateScoreAvg"
+            parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
+        update company_score_avg
+        set
+        sum_communication = sum_communication + #{communicationRate},
+        sum_price = sum_price + #{priceRate},
+        sum_result = sum_result + #{resultRate},
+        sum_schedule = sum_schedule + #{scheduleRate},
+        company_review_count = company_review_count + 1,
+
+        avg_communication = (sum_communication + #{communicationRate}) / (company_review_count + 1),
+        avg_price = (sum_price + #{priceRate}) / (company_review_count + 1),
+        avg_result = (sum_result + #{resultRate}) / (company_review_count + 1),
+        avg_schedule = (sum_schedule + #{scheduleRate}) / (company_review_count + 1),
+
+        avg_total_rate = (
+            (sum_communication + #{communicationRate}) +
+            (sum_price + #{priceRate}) +
+            (sum_result + #{resultRate}) +
+            (sum_schedule + #{scheduleRate})
+        ) / 4 / (company_review_count + 1)
+        where company_id = #{companyId}
     </update>
 
-    <delete id="delete">
-
-    </delete>
-
-    <select id="findAllReviewsForHome" resultType="com.ama.don.interior.dto.response.CompanyHomeReviewDto">
-
+    <!-- 업체아이디로 점수평균 값 빼오기 -->
+    <select id="getAvgScoreByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyScoreAvgDto">
+        select company_id AS companyId, avg_communication AS avgCommunication, avg_price AS avgPrice,
+        avg_result AS avgResult, avg_schedule AS avgSchedule, avg_total_rate AS avgTotalRate
+        from company_score_avg
+        where company_id = #{companyId}
     </select>
 
-    <select id="listByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
-
+    <select id="getDetail" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
+        select r.review_id AS reviewId, u.user_id AS userId, u.user_nickname AS userNickname, u.user_img AS userImg,
+            c.structure_type AS structureType, c.area_pyeong AS areaPyeong, c.construction_field AS constructionField,
+            r.review_img AS reviewImg, r.review_content AS reviewContent, r.review_date AS reviewDate,
+            r.review_modify AS reviewModify
+        from company_review c
+        join review r ON r.review_id = c.review_id
+        join user_detail u ON r.user_id = u.user_id
+        where c.review_id = #{reviewId}
     </select>
 
-    <select id="detail" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
 
-    </select>
+    <select id="findAllReviewsForHome" resultType="com.ama.don.interior.dto.response.CompanyHomeReviewDto"></select>
+    <select id="listByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyReviewDto"></select>
+    <select id="getReviewCountByCompanyId" resultType="java.lang.Integer"></select>
 
-    <select id="getEditView" resultType="com.ama.don.interior.dto.request.CompanyReviewUpdateDto">
 
-    </select>
 
 </mapper>
