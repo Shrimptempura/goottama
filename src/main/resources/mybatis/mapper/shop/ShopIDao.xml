@@ -98,6 +98,7 @@
 		INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
 		VALUES(#{param1},#{param2},'서브');
 	</insert>
-	  
-    
+	
+
+	
 </mapper>	
