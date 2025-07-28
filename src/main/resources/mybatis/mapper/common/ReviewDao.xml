@@ -39,4 +39,6 @@
             #{fileUploader}, #{fileName}, #{filePath}, #{targetType}, #{targetId}
         )
     </insert>
+
+
 </mapper>

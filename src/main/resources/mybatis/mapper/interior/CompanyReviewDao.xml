@@ -76,8 +76,9 @@
         where company_id = #{companyId}
     </select>
 
+    <!-- 유저가 저장한 리뷰 상세보기(user_detail + company_review + review + file(제외) -->
     <select id="getDetail" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
-        select r.review_id AS reviewId, u.user_id AS userId, u.user_nickname AS userNickname, u.user_img AS userImg,
+        select r.review_id AS reviewId, u.user_id AS userId, u.user_nickname AS userNickname,
             c.structure_type AS structureType, c.area_pyeong AS areaPyeong, c.construction_field AS constructionField,
             r.review_img AS reviewImg, r.review_content AS reviewContent, r.review_date AS reviewDate,
             r.review_modify AS reviewModify
