@@ -20,10 +20,10 @@ public class CompanyReviewDto {
     private Long userId;            // 유저 아이디
 
     private String userNickName;            // 유저 닉네임
-    private String userProfileImg;          // 유저 프로필 사진
+    private String userImg;          // 유저 프로필 사진
     
     private String structureType;       // 건물 유형
-    private String areaInPyeong;        // 평수
+    private String areaPyeong;        // 평수
     private String constructionField;   // 시공 분야
 
     private List<String> reviewImg;     // 리뷰 사진

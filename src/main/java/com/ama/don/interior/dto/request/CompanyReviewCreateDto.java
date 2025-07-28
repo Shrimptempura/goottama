@@ -19,13 +19,10 @@ public class CompanyReviewCreateDto {
     private Long reviewId;
     private Long companyId;
 
-    @NotNull
+
     private int communicationRate;  // 소통 점수
-    @NotNull
     private int priceRate;          // 가격 점수
-    @NotNull
     private int resultRate;         // 결과 점수
-    @NotNull
     private int scheduleRate;       // 일정 점수
     @NotBlank
     private String reviewContent;       // 리뷰 내용
@@ -34,7 +31,7 @@ public class CompanyReviewCreateDto {
     @NotBlank
     private String structureType;       // 건물 유형
     @NotBlank
-    private String areaInPyeong;           // 평수
+    private String areaPyeong;           // 평수
     @NotBlank
     private String constructionField;       // 시공 분야
 }

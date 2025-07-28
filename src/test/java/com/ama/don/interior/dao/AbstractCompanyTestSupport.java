@@ -1,15 +1,27 @@
 package com.ama.don.interior.dao;
 
+import com.ama.don.common.dao.ReviewDao;
+import com.ama.don.common.dto.ReviewDto;
+import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.request.CompanyCreateDto;
 import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
 import com.ama.don.interior.dto.request.CompanyInsertDto;
+import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 public class AbstractCompanyTestSupport {
 
     @Autowired
     protected CompanyDao companyDao;
+
+    @Autowired
+    protected ReviewDao reviewDao;
+
+    @Autowired
+    protected CompanyReviewDao companyReviewDao;
 
     protected JoinformDto createTestUser() {
         return createTestUser("테스트아이디");
@@ -20,15 +32,21 @@ public class AbstractCompanyTestSupport {
         dto.setLoginId(loginId);
         dto.setPw("abcdefghi!@");
         dto.setPw2("abcdefghi!@");
+
         dto.setName("홍길동");
         dto.setNickname("테스트닉네임");
         dto.setGender(JoinformDto.Gender.M);
         dto.setBirth("1999-09-09");
         dto.setTel("010-1234-5678");
+
         dto.setZipcode("12345");
         dto.setAddr("서울특별시 구로구");
+        dto.setDetailAddr("은마아파트 123동");
+        dto.combineAddress();
+
         dto.setEmailId("abcdefg");
         dto.setEmailDomain("naver.com");
+        dto.combineEmail();
 
         companyDao.insertUser(dto);
 
@@ -107,4 +125,81 @@ public class AbstractCompanyTestSupport {
 
         return new TestCompanyContext(user, detail, location, dto);
     }
+
+    // 다형성 리뷰 + 업체 리뷰
+    protected CreateReviewSet createPolyReviewAndCompanyReview() {
+        // 업체 생성
+        CompanyInsertDto companyDto = insertTestCompanyWithUserLocationAndDetail();
+        Long companyId = companyDto.getCompanyId();
+        Long userId = companyDto.getUserId();
+
+        // 업체가 쓸 다형성 리뷰 생성
+        ReviewDto dto = new ReviewDto();
+        dto.setUserId(userId);
+        dto.setTargetId(companyId);
+        dto.setTargetType(TargetType.valueOf("INTERIOR"));
+
+        reviewDao.insertPolyReview(dto);
+
+        // 업체 리뷰 생성
+        CompanyReviewCreateDto companyReviewDto = new CompanyReviewCreateDto();
+        companyReviewDto.setReviewId(dto.getReviewId());
+        companyReviewDto.setCompanyId(companyId);
+        companyReviewDto.setCommunicationRate(4);
+        companyReviewDto.setPriceRate(4);
+        companyReviewDto.setResultRate(5);
+        companyReviewDto.setScheduleRate(5);
+
+        companyReviewDto.setReviewContent("여기는 업체 리뷰 내용 테스트");
+
+        List<String> reviewImgList = List.of("interior/images1", "interior/images2",
+                "interior/images3");
+        companyReviewDto.setReviewImg(reviewImgList);
+
+        companyReviewDto.setStructureType("아파트 건물유형 테스트");
+        companyReviewDto.setAreaPyeong("30평");
+        companyReviewDto.setConstructionField("장판공사");
+
+        companyReviewDao.insertCompanyReview(companyReviewDto);
+
+        // context 방식
+        CreateReviewSet result = new CreateReviewSet();
+        result.setCompanyReviewDto(companyReviewDto);
+        result.setCommonReviewDto(dto);
+
+        return result;
+    }
+    
+    // 다형성 건너띄고 업체 리뷰 강제 생성
+    protected CompanyReviewCreateDto createCheckCompanyReview(Long companyId, Long reviewId) {
+        CompanyReviewCreateDto dto = new CompanyReviewCreateDto();
+        dto.setCompanyId(companyId);
+        dto.setReviewId(reviewId);
+        dto.setCommunicationRate(3);
+        dto.setPriceRate(3);
+        dto.setResultRate(3);
+        dto.setScheduleRate(3);
+
+        dto.setReviewContent("두번째 테스트 내용");
+
+        dto.setStructureType("빌딩 테스트");
+        dto.setAreaPyeong("34평");
+        dto.setConstructionField("욕실 공사");
+
+        return dto;
+    }
+
+    // 다형성 리뷰 생성
+    protected ReviewDto createPolyReview(Long companyId) {
+        JoinformDto user = createTestUser("otherUser222");
+        ReviewDto dto = new ReviewDto();
+        dto.setUserId(user.getUserId());
+        dto.setTargetId(companyId);
+        dto.setTargetType(TargetType.valueOf("INTERIOR"));
+
+        reviewDao.insertPolyReview(dto);
+
+        return dto;
+    }
+
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.common.dao.FileDao">
+
+    <!-- 업체가 사용하기 위한 만든 간단 mapper -->
+    <!-- 다른사람도 가능(아마도) -->
+    <insert id="create"
+            parameterType="com.ama.don.common.dto.FileDto"
+            useGeneratedKeys="true"
+            keyProperty="fileId">
+        insert into file (
+            file_uploader, file_name, file_path, target_type, target_id)
+        values (
+            #{fileUploader}, #{fileName}, #{filePath}, #{targetType}, #{targetId}
+        )
+    </insert>
+</mapper>
