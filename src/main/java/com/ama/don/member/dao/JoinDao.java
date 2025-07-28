@@ -1,7 +1,8 @@
 package com.ama.don.member.dao;
 
-import com.ama.don.member.dto.JoinformDto;
 import org.apache.ibatis.annotations.Mapper;
+
+import com.ama.don.member.dto.JoinformDto;
 
 @Mapper
 public interface JoinDao {

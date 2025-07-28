@@ -23,7 +23,6 @@ CREATE TABLE notices (
 	notices_title	varchar(500)	NULL,
 	notices_is_pinned	boolean	NULL,
 	notices_created_at	timestamp	NULL,
-	notices_file_path	varchar(100)	NULL,
 	notices_content	varchar(2000)	NULL
 );
 
