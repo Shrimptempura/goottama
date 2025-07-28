@@ -1,5 +1,7 @@
 package com.ama.don.admin.controller;
 
+import com.ama.don.admin.dto.NoticeSearchVO;
+import com.ama.don.admin.utils.SearchVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,12 +21,16 @@ public class AdminController {
     }
 
     @RequestMapping("admin/notices/notice_page")
-    public String notice(Model model){ return "admin/notices/notice_page"; }
-
-    @RequestMapping("admin/users/user_manage")
-    public String manageUser(){
-        return "admin/users/user_manage";
+    public String notice(Model model){
+        model.addAttribute("searchVO", new SearchVO());
+        model.addAttribute("noticeSearchVO", new NoticeSearchVO());
+        return "admin/notices/notice_page";
     }
+
+//    @RequestMapping("admin/users/user_manage")
+//    public String manageUser(){
+//        return "admin/users/user_manage";
+//    }
 
     @RequestMapping("admin/reports/report_page")
     public String report(){

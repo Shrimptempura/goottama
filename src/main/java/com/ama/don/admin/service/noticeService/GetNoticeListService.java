@@ -55,10 +55,6 @@ public class GetNoticeListService implements NoticeServiceInterface{
             dtoList = noticesIDao.getAllNotices(searchVO);
         // 검색 조건이 있으면 검색 된 공지사항을 가져옴
         } else {
-            System.out.println("제목: " + noticeSearchVO.getNoticeTitle());
-            System.out.println("내용: " + noticeSearchVO.getNoticeContent());
-            System.out.println("시작일: " + noticeSearchVO.getNoticeDateStart());
-            System.out.println("종료일: " + noticeSearchVO.getNoticeDateEnd());
             total = noticesIDao.countSearchNotice(noticeSearchVO);
             dtoList = noticesIDao.searchNotice(noticeSearchVO, searchVO);
         }

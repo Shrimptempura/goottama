@@ -5,8 +5,9 @@
 
 <mapper namespace="com.ama.don.admin.dao.ManageUserIDao">
     <select id="getAllUsers">
-        SELECT USER_ID, USER_NAME, USER_NICKNAME, USER_GENDER, USER_BIRTH, USER_CREATED_AT, USER_TEL, USER_ZIPCODE, USER_ADDR, USER_EMAIL, USER_IMG
+        SELECT USER_ID, USER_NAME, USER_NICKNAME
         FROM user_detail
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 
     <select id="countAllUsers">
@@ -30,75 +31,64 @@
         SELECT USER_ID, USER_NAME, USER_NICKNAME, USER_GENDER, USER_BIRTH, USER_CREATED_AT, USER_TEL, USER_ZIPCODE, USER_ADDR, USER_EMAIL, USER_IMG
         FROM user_detail
         <where>
-            <if test="user_name != null">
+            <if test="user_name != null and user_name != ''">
                 AND USER_NAME LIKE CONCAT('%', #{user_name}, '%')
             </if>
-            <if test="user_nickname != null">
+            <if test="user_nickname != null and user_nickname != ''">
                 AND USER_NAME LIKE CONCAT('%', #{user_nickname}, '%')
             </if>
-            <if test="user_gender != null">
+            <if test="user_gender != null and user_gender != ''">
                 AND USER_GENDER = #{user_gender}
             </if>
-            <if test="birth_start_date != null">
-                AND USER_BIRTH &gt;= #{birth_start_date}
+            <if test="create_start_date != null and create_start_date != ''">
+                AND USER_CREATED_AT &gt;= #{create_start_date}
             </if>
-            <if test="birth_end_date != null">
-                AND USER_BIRTH &lt; = #{birth_end_date}
+            <if test="create_end_date != null and create_end_date != ''">
+                AND USER_CREATED_AT &lt;= #{create_end_date}
             </if>
-            <if test="create_start_date != null">
-                AND USER_CREATED_AT &gt; = #{create_start_date}
-            </if>
-            <if test="create_end_date != null">
-                AND USER_CREATED_AT &lt; = #{create_end_date}
-            </if>
-            <if test="user_tel != null">
+            <if test="user_tel != null and user_tel != ''">
                 AND USER_TEL LIKE CONCAT('%', #{user_tel}, '%')
             </if>
-            <if test="user_zipcode != null">
+            <if test="user_zipcode != null and user_zipcode != ''">
                 AND USER_ZIPCODE LIKE CONCAT('%', #{search_zipcode}, '%')
             </if>
-            <if test="user_addr != null">
+            <if test="user_addr != null and user_addr != ''">
                 AND USER_ADDR LIKE CONCAT('%', #{user_addr}, '%')
             </if>
-            <if test="user_email != null">
+            <if test="user_email != null and user_email != ''">
                 AND USER_EMAIL LIKE CONCAT('%', #{user_email}, '%')
             </if>
         </where>
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
     <select id="countSearchUsers">
         SELECT COUNT(*) FROM user_detail
         <where>
-            <if test="user_name != null">
+            <if test="user_name != null and user_name != ''">
                 AND USER_NAME LIKE CONCAT('%', #{user_name}, '%')
             </if>
-            <if test="user_nickname != null">
+            <if test="user_nickname != null and user_nickname != ''">
                 AND USER_NAME LIKE CONCAT('%', #{user_nickname}, '%')
             </if>
-            <if test="user_gender != null">
+            <if test="user_gender != null and user_gender != ''">
                 AND USER_GENDER = #{user_gender}
             </if>
-            <if test="birth_start_date != null">
-                AND USER_BIRTH &gt;= #{birth_start_date}
+            <if test="create_start_date != null and create_start_date != ''">
+                AND USER_CREATED_AT &gt;= #{create_start_date}
             </if>
-            <if test="birth_end_date != null">
-                AND USER_BIRTH &lt; = #{birth_end_date}
+            <if test="create_end_date != null and create_end_date != ''">
+                AND USER_CREATED_AT &lt;= #{create_end_date}
             </if>
-            <if test="create_start_date != null">
-                AND USER_CREATED_AT &gt; = #{create_start_date}
-            </if>
-            <if test="create_end_date != null">
-                AND USER_CREATED_AT &lt; = #{create_end_date}
-            </if>
-            <if test="user_tel != null">
+            <if test="user_tel != null and user_tel != ''">
                 AND USER_TEL LIKE CONCAT('%', #{user_tel}, '%')
             </if>
-            <if test="user_zipcode != null">
+            <if test="user_zipcode != null and user_zipcode != ''">
                 AND USER_ZIPCODE LIKE CONCAT('%', #{search_zipcode}, '%')
             </if>
-            <if test="user_addr != null">
+            <if test="user_addr != null and user_addr != ''">
                 AND USER_ADDR LIKE CONCAT('%', #{user_addr}, '%')
             </if>
-            <if test="user_email != null">
+            <if test="user_email != null and user_email != ''">
                 AND USER_EMAIL LIKE CONCAT('%', #{user_email}, '%')
             </if>
         </where>

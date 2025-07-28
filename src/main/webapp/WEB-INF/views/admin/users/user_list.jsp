@@ -43,22 +43,22 @@
     </div>
 </div>
 
-<!-- 공지 목록 출력 -->
-<table class="notice-table">
+<!-- 유저 목록 출력 -->
+<table>
     <tr>
-       <td>제목</td>
-       <td>날자</td>
+        <td>유저 번호</td>
+        <td>유저 이름</td>
+        <td>유저 닉네임</td>
     </tr>
-    <c:forEach items="${list}" var="notice">
+    <c:forEach items="${list}" var="user">
         <tr>
+            <td>${user.userId}</td>
             <td>
-                <a href="/admin/notices/notice_detail?notices_id=${notice.noticesId}">
-                    ${notice.noticesTitle}
+                <a href="#">
+                    ${user.userName}
                 </a>
             </td>
-            <td>
-            <fmt:formatDate value="${notice.noticesCreatedAt}" pattern="yyyy-MM-dd"/>
-            </td>
+            <td>${user.userNickname}</td>
         </tr>
     </c:forEach>
 </table>

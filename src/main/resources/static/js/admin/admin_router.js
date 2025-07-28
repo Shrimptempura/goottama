@@ -10,7 +10,6 @@ function loadContent(menuType) {
 
         case 'notices':
             targetUrl = '/admin/notices/notice_page';
-            console.log("notice clicked");
             break;
 
         case 'users':
@@ -53,7 +52,6 @@ function loadContent(menuType) {
         return Response.text();
     }).then(html => {
         mainContainer.innerHTML = html;
-        console.log(html);
     }).catch (error => {
         console.error('Error loading content:', error); // TODO : 나중에 toast로 바꾸기
         mainContainer.innerHTML = '<p>컨텐츠 불러오기 실패</p>'; // TODO : 에러페이지 만들기
@@ -68,13 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 네비게이션 버튼 클릭 이벤트리스너
     const navbar = document.querySelector("#admin-navigation-bar");
-    console.log(navbar);
     if (navbar) {
         navbar.addEventListener('click', (event) => {
-        console.log(event);
             if (event.target.tagName === 'BUTTON') {
                 const menuType = event.target.dataset.menu;
-                console.log("menuType : " + menuType);
                 if (menuType) {
                     const newURL = window.location.origin + window.location.pathname + '?menu=' + menuType;
                     history.pushState({menu : menuType}, '', newURL);
