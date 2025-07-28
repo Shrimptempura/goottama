@@ -18,7 +18,8 @@ public interface ReviewDao {
     int insertCommonReview(ReviewDto dto);
 
     // 리뷰 작성중 파일 저장(여러장)
-    void insertReviewFile(File dto);
+    // 공통 file의 해당 메서드 사용
+    //void insertReviewFile(File dto);
 
     // targetType과 targetId를 이용한 리뷰 목록 조회
     List<ReviewDto> findReviewByTarget(String targetType, Long targetId);

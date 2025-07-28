@@ -3,6 +3,7 @@ package com.ama.don.interior.dao;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
+import com.ama.don.interior.dto.response.CompanyHomeReviewDto;
 import com.ama.don.interior.dto.response.CompanyReviewDto;
 import com.ama.don.interior.dto.response.CompanyScoreAvgDto;
 import com.ama.don.member.dto.JoinformDto;
@@ -134,7 +135,6 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
     void selectReviewDetail() {
         // 다형성 리뷰 + 업체 리뷰
         CreateReviewSet dto = createPolyReviewAndCompanyReview();
-        Long companyId = dto.getCompanyReviewDto().getCompanyId();
 
         CompanyReviewDto read = companyReviewDao.getDetail(dto.getCompanyReviewDto().getReviewId());
         assertThat(read).isNotNull();
@@ -142,6 +142,23 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(dto.getCompanyReviewDto().getConstructionField()).isEqualTo(read.getConstructionField());
         assertThat(dto.getCommonReviewDto().getUserId()).isEqualTo(read.getUserId());
         assertThat(read.getUserNickName()).isNotNull();
+    }
+
+    @DisplayName("홈에서 보는 업체리뷰 리스트들")
+    @Test
+    void getHomeCompanyReviews() {
+        jdbcTemplate.update("DELETE FROM company_review");
+        jdbcTemplate.update("DELETE FROM review");
+
+        // 다형성 리뷰 + 업체 리뷰
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        List<CompanyHomeReviewDto> list = companyReviewDao.getHomeCompanyReviews();
+
+        assertThat(list).isNotNull();
+        assertThat(list.get(0).getReviewContent()).isEqualTo(dto.getCommonReviewDto().getReviewContent());
+        assertThat(list.get(0).getStructureType()).isEqualTo(dto.getCompanyReviewDto().getStructureType());
+
+        assertThat(list).hasSize(1);
     }
 
 }

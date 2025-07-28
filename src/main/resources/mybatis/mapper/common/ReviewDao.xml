@@ -6,14 +6,14 @@
 <mapper namespace="com.ama.don.common.dao.ReviewDao">
 
     <!-- 다형성 리뷰만 사용시 -->
-    <!-- 공통리뷰(userId, targetId, targetType) -->
+    <!-- 공통리뷰(userId, targetId, targetType, review_content) -->
     <insert id="insertPolyReview"
             parameterType="com.ama.don.common.dto.ReviewDto"
             useGeneratedKeys="true"
             keyProperty="reviewId">
-        insert into review (user_id, target_id, target_type)
+        insert into review (user_id, target_id, target_type, review_content)
         values (
-            #{userId}, #{targetId}, #{targetType})
+            #{userId}, #{targetId}, #{targetType}, #{reviewContent})
     </insert>
 
     <!-- 공통 리뷰를 그대로 사용하여 작성, 파일은 여러장 이므로 따로 생성 -->
@@ -28,7 +28,7 @@
             #{reviewDate}, #{reviewModify}, #{targetId}, #{targetType})
     </insert>
 
-    <!-- 파일만 저장 여러장 -->
+<!--    &lt;!&ndash; 파일만 저장 여러장 &ndash;&gt;
     <insert id="insertReviewFile"
             parameterType="com.ama.don.common.dto.FileDto"
             useGeneratedKeys="true"
@@ -38,7 +38,7 @@
         values (
             #{fileUploader}, #{fileName}, #{filePath}, #{targetType}, #{targetId}
         )
-    </insert>
+    </insert>-->
 
 
 </mapper>

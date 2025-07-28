@@ -7,9 +7,7 @@ import com.ama.don.interior.dto.response.CompanyReviewDto;
 import com.ama.don.interior.dto.response.CompanyScoreAvgDto;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.io.File;
 import java.util.List;
-import java.util.Optional;
 
 // 사용자가 업체에 쓰는 리뷰 dao
 @Mapper
@@ -41,7 +39,7 @@ public interface CompanyReviewDao {
     /**
      * 홈에서 보는 업체에 대한 리뷰 목록 뷰(최신 순)
      */
-    List<CompanyHomeReviewDto> findAllReviewsForHome();
+    List<CompanyHomeReviewDto> getHomeCompanyReviews();
 
     /**
      * 업체 상세페이지에서 보는 리뷰 목록 뷰

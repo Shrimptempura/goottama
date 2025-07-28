@@ -138,6 +138,7 @@ public class AbstractCompanyTestSupport {
         dto.setUserId(userId);
         dto.setTargetId(companyId);
         dto.setTargetType(TargetType.valueOf("INTERIOR"));
+        dto.setReviewContent("다형성에 적는 리뷰 내용 테스트");
 
         reviewDao.insertPolyReview(dto);
 
@@ -150,7 +151,7 @@ public class AbstractCompanyTestSupport {
         companyReviewDto.setResultRate(5);
         companyReviewDto.setScheduleRate(5);
 
-        companyReviewDto.setReviewContent("여기는 업체 리뷰 내용 테스트");
+//        companyReviewDto.setReviewContent("여기는 업체 리뷰 내용 테스트");
 
         List<String> reviewImgList = List.of("interior/images1", "interior/images2",
                 "interior/images3");
