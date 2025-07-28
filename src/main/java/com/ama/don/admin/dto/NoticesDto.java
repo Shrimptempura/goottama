@@ -1,6 +1,6 @@
 package com.ama.don.admin.dto;
 
-import com.ama.don.admin.temp.tFileDto;
+import com.ama.don.common.dto.FileDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,7 +38,7 @@ public class NoticesDto {
 
     /**
      * 해당 공지사항에 첨부된 파일들의 목록.<br/>
-     * {@link com.ama.don.admin.dto.FileDto} 객체들의 리스트로 구성됨.
+     * {@link com.ama.don.common.dto.FileDto} 객체들의 리스트로 구성됨.
      */
-    private List<tFileDto> attachedFiles;
+    private List<FileDto> attachedFiles;
 }

@@ -20,6 +20,9 @@ public class FileUtil {
     // 첨부파일 저장경로 주입
     @Value("${file.attachment-upload-location:}")
     private String attachmentUploadLocation;
+    // tui 사진 저장경로 주입
+    @Value("${file.upload-location:}")
+    private String tuiEditorUploadLocation;
 
     // 디렉터리 생성
     public FileUtil(@Value("${file.attachment-upload-location:}") String uploadLoc) throws IOException {
@@ -65,12 +68,23 @@ public class FileUtil {
      * 서버의 실제 파일 시스템에서 파일을 삭제함.<br/>
      * 파일 경로를 받아 해당 파일을 물리적으로 제거함.
      *
-     * @param filePath 삭제할 파일의 서버 절대 경로.
+     * @param savedFilename 삭제할 파일의 서버 절대 경로.
+     * @param fileUploader file_uploader. 파일 결로 구분을 위함.
      * @return 삭제 성공 시 `true`, 실패 시 `false` 반환됨.<br/>
      * 파일이 존재하지 않거나 삭제 권한이 없는 경우 `false` 반환될 수 있음.
      */
-    public boolean deleteFile(String savedFilename) {
-        Path filePath = Paths.get(attachmentUploadLocation, savedFilename);
+    public boolean deleteFile(String savedFilename, String fileUploader) {
+        String baseUploadLocation;
+        if (fileUploader.equals("TUI_EDITOR")) {
+            baseUploadLocation = tuiEditorUploadLocation;
+        } else{
+            baseUploadLocation = attachmentUploadLocation;
+        }
+        if (baseUploadLocation == null || baseUploadLocation.isEmpty()) {
+            System.err.println("[FileUtil] 파일 삭제 실패: 업로드 위치가 설정되지 않음. Uploader: " + fileUploader);
+            return false;
+        }
+        Path filePath = Paths.get(baseUploadLocation, savedFilename);
         try {
             return Files.deleteIfExists(filePath);
         } catch (IOException e) {
@@ -83,7 +97,7 @@ public class FileUtil {
      * 파일의 전체 경로를 포함하는 {@link java.nio.file.Path} 객체 반환함.<br/>
      * 파일 경로 문자열을 Path 객체로 변환하여 파일 시스템 작업에 용이하게 함.
      *
-     * @param filePath Path 객체로 변환할 파일 경로 문자열.
+     * @param savedFilename Path 객체로 변환할 파일 경로 문자열.
      * @return 변환된 {@link java.nio.file.Path} 객체 반환됨.
      */
     public Path getFilePath(String savedFilename) {
