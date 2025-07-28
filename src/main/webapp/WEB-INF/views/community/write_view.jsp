@@ -22,9 +22,13 @@
 		<form action="/community/write" method="post"
 			enctype="multipart/form-data">
 
-			<div class="d-flex justify-content-end">
-				<button type="submit" class="btn btn-primary">글작성</button>
+			<div class="mb-3 d-flex justify-content-end">
+				<button type="submit" class="btn btn-outline-primary fw-bold"
+					style="color: black; border: none; background-color: white;"
+					onmouseover="this.style.backgroundColor='#f0f0f0'"
+					onmouseout="this.style.backgroundColor='white'">글쓰기</button>
 			</div>
+
 			<table width="100%" class="table table-bordered">
 				<tr>
 					<td>제목</td>

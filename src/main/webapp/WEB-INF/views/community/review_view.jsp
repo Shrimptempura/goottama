@@ -11,14 +11,14 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-<h3>게시글 목록</h3>
+	<h3>게시글 목록</h3>
 
 	<div class="mb-3 d-flex justify-content-end">
 		<a href="${pageContext.request.contextPath}/community/write_view"
 			class="btn btn-outline-primary fw-bold"
 			style="color: black; border: none;"
 			onmouseover="this.style.backgroundColor='#f0f0f0'"
-			onmouseout="this.style.backgroundColor='white'"> 글쓰기 </a>
+			onmouseout="this.style.backgroundColor='white'"> 글작성</a>
 	</div>
 
 
