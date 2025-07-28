@@ -10,10 +10,4 @@ public interface Review_viewDao {
 	List<Review_viewDto> selectAllReviews();
 
 	Review_viewDto selectReviewById(Long post_id);
-
-	void insertReview(Review_viewDto dto);
-
-	void updateReview(Review_viewDto dto);
-
-	void deleteReview(Long post_id);
 }

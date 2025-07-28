@@ -25,65 +25,67 @@
 			<div class="col">
 				<img
 					src="${pageContext.request.contextPath}/images/community/images.png"><br>
-				<a href="suggest_view">추천</a>
+				<a href="${pageContext.request.contextPath}/community/suggest_view">추천</a>
 			</div>
 			<div class="col">
 				<img
 					src="${pageContext.request.contextPath}/images/community/images.png"><br>
-				<a href="popularity_view">인기</a>
+				<a
+					href="${pageContext.request.contextPath}/community/popularity_view">인기</a>
 			</div>
 			<div class="col">
 				<img
 					src="${pageContext.request.contextPath}/images/community/images.png"><br>
-				<a href="review_view">리뷰</a>
+				<a href="${pageContext.request.contextPath}/community/review_view">리뷰</a>
 			</div>
 			<div class="col">
 				<img
 					src="${pageContext.request.contextPath}/images/community/images.png"><br>
-				<a href="house_photo_view">집사진</a>
+				<a
+					href="${pageContext.request.contextPath}/community/house_photo_view">집사진</a>
 			</div>
 			<div class="col">
 				<img
 					src="${pageContext.request.contextPath}/images/community/images.png"><br>
-				<a href="house_decoration_view">집꾸미기</a>
+				<a
+					href="${pageContext.request.contextPath}/community/house_decoration_view">집꾸미기</a>
 			</div>
 		</div>
 	</div>
 
 	<div class="container mt-4">
 		<tr>
-			<td colspan="4"><a href="suggest_view">추천</a></td>
+			<td colspan="4"><a
+				href="${pageContext.request.contextPath}/community/suggest_view">추천</a></td>
 		</tr>
-
 	</div>
 	<div class="container mt-4">
 		<tr>
-			<td colspan="4"><a href="popularity_view">인기</a></td>
+			<td colspan="4"><a
+				href="${pageContext.request.contextPath}/community/popularity_view">인기</a></td>
 		</tr>
-
-	</div>
-
-	<div class="container mt-4">
-		<tr>
-			<td colspan="4"><a href="review_view">리뷰</a></td>
-		</tr>
-
 	</div>
 
 	<div class="container mt-4">
 		<tr>
-			<td colspan="4"><a href="house_photo_view">집사진</a></td>
+			<td colspan="4"><a
+				href="${pageContext.request.contextPath}/community/review_view">리뷰</a></td>
 		</tr>
-
 	</div>
 
 	<div class="container mt-4">
 		<tr>
-			<td colspan="4"><a href="house_decoration_view">집꾸미기</td>
+			<td colspan="4"><a
+				href="${pageContext.request.contextPath}/community/house_photo_view">집사진</a></td>
 		</tr>
-
 	</div>
 
+	<div class="container mt-4">
+		<tr>
+			<td colspan="4"><a
+				href="${pageContext.request.contextPath}/community/house_decoration_view">집꾸미기</a></td>
+		</tr>
+	</div>
 
 </body>
 </html>
