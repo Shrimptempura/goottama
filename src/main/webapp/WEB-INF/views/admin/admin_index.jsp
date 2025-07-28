@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-<script src="/static/js/admin/admin_router.js"></script>
+
 <title>Admin Dashboard</title>
 </head>
 <body>
@@ -16,7 +16,8 @@
         <hr />
     </div>
     <div class="main-content">
-        <!-- AJAX로 콘텐츠가 로드될 영역 -->
+        <!-- AJAX로 컨텐츠가 로드될 영역 -->
     </div>
 </body>
+<script src="/static/js/admin/admin_router.js"></script>
 </html>

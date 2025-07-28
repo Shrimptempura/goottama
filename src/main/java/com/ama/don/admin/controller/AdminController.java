@@ -19,9 +19,7 @@ public class AdminController {
     }
 
     @RequestMapping("admin/notices/notice_page")
-    public String notice(){
-        return "admin/notices/notice_page";
-    }
+    public String notice(Model model){ return "admin/notices/notice_page"; }
 
     @RequestMapping("admin/users/user_manage")
     public String manageUser(){
