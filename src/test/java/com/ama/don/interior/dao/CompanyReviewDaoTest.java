@@ -100,10 +100,30 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(firstAvg).isNotEqualTo(secondAvg);
     }
 
-    @DisplayName("업체 점수 테이블 점수 확인")
+    @DisplayName("업체 점수 테이블 평균 점수 꺼내기")
     @Test
     void getAvgScoreByCompanyId() {
+        // 다형성 리뷰 + 업체 리뷰
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        Long companyId = dto.getCompanyReviewDto().getCompanyId();
 
+        companyReviewDao.insertScoreTable(dto.getCompanyReviewDto());
+
+        CompanyScoreAvgDto avgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
+        assertThat(avgDto).isNotNull();
+
+        double totalRate = avgDto.getAvgTotalRate();
+
+        double result = avgDto.getAvgResult();
+        double communication = avgDto.getAvgCommunication();
+        double schedule = avgDto.getAvgSchedule();
+        double price = avgDto.getAvgPrice();
+
+        double total = result + communication + schedule + price;
+
+        assertThat(totalRate).isEqualTo(total / 4);
+        assertThat(result).isEqualTo(dto.getCompanyReviewDto().getResultRate());
+        assertThat(communication).isEqualTo(dto.getCompanyReviewDto().getCommunicationRate());
     }
 
 }

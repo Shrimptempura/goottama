@@ -17,6 +17,7 @@ public class CompanyScoreAvgDto {
     private double avgCommunication;
     private double avgResult;
     private double avgSchedule;
+    private double avgPrice;
 
     private double avgTotalRate;
 }
