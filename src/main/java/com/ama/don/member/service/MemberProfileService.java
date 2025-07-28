@@ -46,6 +46,10 @@ public class MemberProfileService implements MemberProfileServiceInter{
 	@Override
 	public void updateProfile(MemberDto memberDto, MemberEditDto memberEditDto) {
 		
+		//닉네임 중복확인
+		//db update
+		//세션 정보 갱신
+		
 		
 	}
 
