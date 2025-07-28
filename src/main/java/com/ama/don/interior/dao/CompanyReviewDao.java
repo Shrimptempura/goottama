@@ -20,9 +20,6 @@ public interface CompanyReviewDao {
     // 사용자가 작성하는 업체 리뷰
     int insertCompanyReview(CompanyReviewCreateDto dto);
 
-    // 리뷰 상세보기
-    CompanyReviewDto detail(Long reviewId);
-
     // 업체 아이디로 company_score_avg 테이블이 존재하는지 확인
     Boolean isExistScoreTable(Long companyId);
 
@@ -36,6 +33,9 @@ public interface CompanyReviewDao {
 
     // 업체 모든 별점 평균
     CompanyScoreAvgDto getAvgScoreByCompanyId (Long companyId);
+
+    // 리뷰 상세보기
+    CompanyReviewDto getDetail(Long reviewId);
 
     /**
      * 홈에서 보는 업체에 대한 리뷰 목록 뷰(최신 순)
