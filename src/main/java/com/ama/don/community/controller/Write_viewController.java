@@ -2,17 +2,15 @@ package com.ama.don.community.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.community.dao.Write_viewDao;
@@ -27,18 +25,10 @@ public class Write_viewController {
 
 	private final String uploadDir = "C:/upload/";
 
+	// 글쓰기 페이지
 	@GetMapping("/write_view")
 	public String writeForm() {
 		return "community/write_view";
-	}
-
-	@PostMapping("/upload-image")
-	@ResponseBody
-	public String uploadImage(@RequestParam("imgFile") MultipartFile file) throws IOException {
-		String uploadDir = "C:/upload/";
-		String saveName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-		file.transferTo(new File(uploadDir + saveName));
-		return "/images/" + saveName;
 	}
 
 	@PostMapping("/write")
@@ -46,15 +36,17 @@ public class Write_viewController {
 			@RequestParam("imgFile") MultipartFile imgFile, Model model) {
 
 		Write_viewDto dto = new Write_viewDto();
-		dto.setUser_id(1); // 실제 사용 시: 로그인 유저 ID 세션에서 받아오기
+		dto.setUser_id(1);
 		dto.setPost_title(title);
 		dto.setPost_content(content);
 		dto.setTarget_type(TargetType.valueOf("COMMUNITY"));
 		dto.setTarget_id(1);
 
 		if (!imgFile.isEmpty()) {
-			String originalFilename = imgFile.getOriginalFilename();
-			String saveFileName = UUID.randomUUID() + "_" + originalFilename;
+			String saveFileName = UUID.randomUUID() + "_" + imgFile.getOriginalFilename();
+			File dir = new File(uploadDir);
+			if (!dir.exists())
+				dir.mkdirs();
 
 			try {
 				File saveFile = new File(uploadDir + saveFileName);
@@ -69,5 +61,39 @@ public class Write_viewController {
 
 		write_viewDao.insertPost(dto);
 		return "redirect:/community/review_view";
+	}
+
+	// 드래그앤드롭 파일 업로드
+	@PostMapping("/write_view")
+	@ResponseBody
+	public String dragAndDropUpload(MultipartHttpServletRequest multipartRequest) {
+		Iterator<String> itr = multipartRequest.getFileNames();
+
+		while (itr.hasNext()) {
+			MultipartFile mpf = multipartRequest.getFile(itr.next());
+
+			if (mpf != null && !mpf.isEmpty()) {
+				String originalFilename = mpf.getOriginalFilename();
+				String saveName = UUID.randomUUID() + "_" + originalFilename;
+				String fileFullPath = uploadDir + saveName;
+
+				try {
+					File dir = new File(uploadDir);
+					if (!dir.exists())
+						dir.mkdirs();
+
+					mpf.transferTo(new File(fileFullPath));
+					System.out.println("업로드 성공: " + fileFullPath);
+
+					return "/upload/" + saveName;
+
+				} catch (Exception e) {
+					System.out.println("파일 업로드 실패 => " + fileFullPath);
+					e.printStackTrace();
+				}
+			}
+		}
+
+		return "fail";
 	}
 }
