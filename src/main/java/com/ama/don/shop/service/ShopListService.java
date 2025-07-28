@@ -3,21 +3,24 @@ package com.ama.don.shop.service;
 import java.util.ArrayList;
 import java.util.Map;
 
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
-import com.ama.don.shop.dao.IDao;
+import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.ProductDto;
 import com.ama.don.shop.dto.Product_imgDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class SListService implements SServiceinter{
+public class ShopListService implements ShopServiceinter{
 
-	private IDao iDao;
-	public SListService(IDao iDao) {
+	private ShopIDao iDao;
+	public ShopListService(ShopIDao iDao) {
 		this.iDao=iDao;
 	}
+	
 	@Override
+	@Transactional
 	public void execute(Model model) {
 		// TODO Auto-generated method stub
 		Map<String, Object> map=model.asMap();

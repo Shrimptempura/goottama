@@ -12,15 +12,15 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartRequest;
 
-import com.ama.don.shop.dao.IDao;
+import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.ProductDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class SWriteService implements SServiceinter{
+public class ShopWriteService implements ShopServiceinter{
 
-	private IDao iDao;
-	public SWriteService(IDao iDao) {
+	private ShopIDao iDao;
+	public ShopWriteService(ShopIDao iDao) {
 		this.iDao=iDao;
 	}
 	@Override
@@ -30,6 +30,8 @@ public class SWriteService implements SServiceinter{
 		Map<String, Object> map=model.asMap();
 		MultipartHttpServletRequest mtfRequest=
 				(MultipartHttpServletRequest) map.get("request");
+		
+		
 		
 //		//String product_id=mtfRequest.getParameter("product_id");
 //		

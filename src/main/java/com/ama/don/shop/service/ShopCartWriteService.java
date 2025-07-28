@@ -4,15 +4,15 @@ import java.util.Map;
 
 import org.springframework.ui.Model;
 
-import com.ama.don.shop.dao.IDao;
+import com.ama.don.shop.dao.ShopIDao;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class SCartWriteService implements SServiceinter {
+public class ShopCartWriteService implements ShopServiceinter {
 
-	private IDao siDao;
+	private ShopIDao siDao;
 	
-	public SCartWriteService(IDao siDao) {
+	public ShopCartWriteService(ShopIDao siDao) {
 		this.siDao=siDao;
 	}
 	
@@ -30,7 +30,7 @@ public class SCartWriteService implements SServiceinter {
 		String cart_quantity=request.getParameter("cart_quantity");
 		
 		
-		siDao.cart_write(Integer.parseInt(user_id),Integer.parseInt(product_id),Integer.parseInt(cart_quantity));
+		siDao.cart_write(Long.parseLong(user_id),Long.parseLong(product_id),Long.parseLong(cart_quantity));
 		
 	}
 
