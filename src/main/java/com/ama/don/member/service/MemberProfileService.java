@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 
 import com.ama.don.member.dao.MemberProfileDao;
 import com.ama.don.member.dto.FindPwDto;
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.dto.MemberEditDto;
 import com.ama.don.member.dto.ResetPwDto;
 
 import jakarta.servlet.http.HttpSession;
@@ -38,6 +40,12 @@ public class MemberProfileService implements MemberProfileServiceInter{
 		session.removeAttribute("tempPwMember");
 		
 		return true;
+		
+	}
+
+	@Override
+	public void updateProfile(MemberDto memberDto, MemberEditDto memberEditDto) {
+		
 		
 	}
 
