@@ -24,6 +24,7 @@
 
 			<tr>
 				<td>게시판 선택</td>
+				<!-- 게시판 선택 모달? -->
 				<td><select name="targetType" class="form-select">
 						<option value="COMMUNITY_REVIEW">리뷰</option>
 						<option value="COMMUNITY_HOUSEPHOTO">집 사진</option>
