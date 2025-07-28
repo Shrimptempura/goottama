@@ -12,16 +12,14 @@ import com.ama.don.shop.dto.Product_imgDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class ShopCartService implements ShopServiceinter{
+public class ShopCartDeleteService implements ShopServiceinter{
 
 	private ShopIDao iDao;
-	public ShopCartService(ShopIDao iDao) {
+	public ShopCartDeleteService(ShopIDao iDao) {
 		this.iDao=iDao;
 	}
 	@Override
 	public void execute(Model model) {
-		
-		
 		Map<String, Object> map=model.asMap();
 		HttpServletRequest request=
 				(HttpServletRequest) map.get("request");
@@ -40,15 +38,23 @@ public class ShopCartService implements ShopServiceinter{
         }
 		
 		Long userid=Long.parseLong(user_id);
-	
 		
+		Long productid=Long.parseLong(product_id);
+		//cartdeleteiDao;
 		
+		try {
+			
+			iDao.cart_delete_item(userid, productid);
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+			
 
+		System.out.println("장바구니 상품 삭제 완료: user_id=" + userid + ", product_id=" + productid);
+        model.addAttribute("message", "상품이 삭제되었습니다.");
 		
-		// 새로운 FlatDto 방식
-		ArrayList<CartFlatDto> cartFlatList = iDao.cart_list_flat(userid);
-		
-		model.addAttribute("cart",cartFlatList);
+	
 		
 	}
 

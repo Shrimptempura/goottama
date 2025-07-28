@@ -84,12 +84,35 @@
 
 	
 <script>
-	function changeCount(spanId, value) {
-		const span = document.getElementById(spanId);
-		let count = parseInt(span.innerText);
-		count += value;
-		if (count < 1) count = 1;
-		span.innerText = count;
+	//장바구니 개별 상품 삭제
+	function deleteCartItem(userId, productId) {
+	    if (confirm('이 상품을 장바구니에서 삭제하시겠습니까?')) {
+	        location.href = 'cart_delete?user_id=' + userId + '&product_id=' + productId;
+	    }
+	}
+	
+	// 방법 1: 각 아이템마다 user_id를 전달하는 방식 (권장)
+	function changeCount(cartId, value) {
+	    const span = document.getElementById('count_' + cartId);
+	    let count = parseInt(span.innerText);
+	    const newCount = count + value;
+
+	    if (newCount < 1) {
+	        alert('수량은 1개 이상이어야 합니다.');
+	        return;
+	    }
+	    
+	 	// 세션에서 user_id 가져오기
+	    let userId = '${sessionScope.user_id}';
+	    if (!userId || userId.trim() === '' || userId === 'null') {
+	        userId = '2'; // 기본값
+	    }
+	    
+
+	    // 서버에 수량 업데이트 요청
+	    if (confirm('수량을 변경하시겠습니까?')) {
+	        location.href = 'cart_update?cart_id=' + cartId + '&cart_quantity=' + newCount + '&user_id=' + userId;
+	    }
 	}
 	function goToOrder(){
 		// 장바구니에 상품이 있는지 확인
@@ -132,7 +155,7 @@
                 <c:forEach var="item" items="${cart}">
                     <div class="container">
                         <!-- 삭제 버튼 -->
-                        <button class="delete" onclick="removeFromCart(${item.cart_id})">×</button>
+                        <button class="delete" onclick="deleteCartItem(${item.user_id},${item.product_id })">x</button>
                         
                         <!-- 상품 이미지 -->
                         <div class="image-section">

@@ -33,7 +33,8 @@ public interface ShopIDao {
 	public void cart_write(long user_id,long product_id,long product_quantity);
 	public ArrayList<CartFlatDto> cart_list_flat(Long user_id);
     public void cart_clear(Long user_id);
-
+    public void cart_delete_item(Long user_id,Long product_id);
+    public void cart_update(Long cart_id, int cart_quantity);
 	//Order iDao
     // 이렇게 수정해야 함
     public void order_write(OrdersDto ordersDto);
@@ -46,7 +47,9 @@ public interface ShopIDao {
     public OrderFlatDto order_detail_flat(Long order_id);             // 주문 전체 정보 (배송/결제 포함)
 	public ArrayList<OrderFlatDto> user_orders_list(Long userid);	//주문 목록
 	public ArrayList<OrderFlatDto> user_orders_simple(Long userid);	//디버깅 샘플
+	//Deliver iDao
+	public void deliver_update();
 	
-	
+	//주문수정을 하는데 실제로는 배송지 수정정도를 할것 그러니까 주문아이디로 배송지를 찾아서 배송지를 deliver_update를 하면된다.
 	
 }

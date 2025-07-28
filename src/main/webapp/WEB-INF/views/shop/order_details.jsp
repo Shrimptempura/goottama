@@ -238,7 +238,19 @@ body {
                                             <p>${product.op_quantity}개 × ₩<fmt:formatNumber value="${product.op_price}" pattern="#,###"/> = ₩<fmt:formatNumber value="${product.op_totalprice}" pattern="#,###"/></p>
                                         </div>
                                     </div>
+                                    
                                 </c:forEach>
+                                 <!-- 주문 수정 버튼 - forEach 밖으로 이동하고 order_id 전달 -->
+						        <div class="order-actions">
+						            <a href="order_modify_view?order_id=${orderProducts[0].orderId}">
+						                <button id="update_orders" class="btn btn-primary">주문 수정하기</button>
+						            </a>
+						            
+						            <!-- 추가 버튼들 (필요시) -->
+						            <a href="cancel_order?order_id=${orderProducts[0].orderId}">
+						                <button class="btn btn-danger">주문 취소</button>
+						            </a>
+						        </div>
                             </c:when>
                             <c:otherwise>
                                 <p style="color: #999; font-size: 13px;">상품 정보를 불러올 수 없습니다.</p>

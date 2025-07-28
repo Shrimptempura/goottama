@@ -143,6 +143,11 @@
         ORDER BY op.op_date ASC
     </select>
     
+    
+    
+    
+    
+    
      <!-- 9. 사용자별 주문 목록 조회 -->
     <select id="user_orders_list" parameterType="Long" resultType="com.ama.don.shop.dto.OrderFlatDto">
         SELECT 
@@ -172,5 +177,6 @@
         WHERE user_id = #{user_id}
         ORDER BY order_date DESC
     </select>
+    
 
 </mapper>

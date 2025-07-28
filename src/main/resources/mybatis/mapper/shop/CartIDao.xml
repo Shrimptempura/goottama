@@ -49,6 +49,19 @@
         WHERE user_id = #{user_id}
     </delete>
     
+      <!-- 5-1. 장바구니 단일 품목 지우기 -->
+    <delete id="cart_delete_item" parameterType="map">
+        DELETE FROM cart 
+        WHERE user_id = #{user_id} AND product_id = #{product_id}
+    </delete>
+    
+      <!-- 5-1. 장바구니 단일 품목 지우기 -->
+    <delete id="cart_update" parameterType="map">
+        UPDATE cart 
+    	SET cart_quantity = #{cart_quantity}
+    	WHERE cart_id = #{cart_id}
+    </delete>
+    
     
     
     
