@@ -142,6 +142,11 @@ public class AbstractCompanyTestSupport {
 
         reviewDao.insertPolyReview(dto);
 
+        // 새 객체에서 default만 읽고 기존 dto에 넣어줌
+        ReviewDto getDefault = reviewDao.selectById(dto.getReviewId());
+        dto.setReviewDate(getDefault.getReviewDate());
+        dto.setReviewModify(getDefault.getReviewModify());
+
         // 업체 리뷰 생성
         CompanyReviewCreateDto companyReviewDto = new CompanyReviewCreateDto();
         companyReviewDto.setReviewId(dto.getReviewId());
@@ -197,6 +202,7 @@ public class AbstractCompanyTestSupport {
         dto.setUserId(user.getUserId());
         dto.setTargetId(companyId);
         dto.setTargetType(TargetType.valueOf("INTERIOR"));
+        dto.setReviewContent("다형성에 적는 리뷰 내용 테스트");
 
         reviewDao.insertPolyReview(dto);
 
