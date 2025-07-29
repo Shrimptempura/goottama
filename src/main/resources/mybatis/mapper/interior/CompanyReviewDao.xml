@@ -156,8 +156,12 @@
     </update>
 
     <!-- 다형성 리뷰 수정하기 -->
-    <update id="updatePolyReview">
-
+    <update id="updatePolyReview"
+            parameterType="com.ama.don.common.dto.ReviewDto">
+        update review
+        set
+            review_content = {reviewContent}, review_modify = now()
+        where review_id = #{reviewId}
     </update>
 
     <!-- 업체 리뷰 수정 -->
@@ -166,6 +170,7 @@
     </update>
 
     <!-- 파일 수정(삭제->생성)은 fileDao에서 -->
+    <!-- review_img -->
 
     <!-- 리뷰 수정또는 삭제시 평균점수 다시 계산 필요 -->
     <update id="updateSubScore">
