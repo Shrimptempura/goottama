@@ -66,14 +66,16 @@
 			</tr>
 			<tr>
 				<th>사진</th>
-				<td><c:if test="${not empty review.post_img}">
-						<img
-							src="${pageContext.request.contextPath}/images/${review.post_img}"
-							alt="첨부 이미지" style="max-width: 300px;" />
-					</c:if> <c:if test="${empty review.post_img}">
-            이미지 없음
-        </c:if></td>
+				<td><c:if test="${not empty review.post_images}">
+						<c:forEach var="img" items="${review.post_images}">
+							<img
+								src="${pageContext.request.contextPath}/images/${img.file_name}"
+								style="max-width: 300px;" />
+						</c:forEach>
+					</c:if> <c:if test="${empty review.post_images}">이미지 없음</c:if></td>
 			</tr>
+
+
 
 		</table>
 	</div>

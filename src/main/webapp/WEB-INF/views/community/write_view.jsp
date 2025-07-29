@@ -53,7 +53,7 @@
 				</tr>
 				<tr>
 					<td>사진</td>
-					<td><input type="file" name="imgFile" id="hiddenFileInput"
+					<td><input type="file" name="imgFiles" id="hiddenFileInput"
 						style="display: none;" multiple />
 						<div id="fileUpload" class="dragAndDropDiv">드래그 또는 클릭하여 파일을
 							선택해주세요</div>
@@ -65,25 +65,26 @@
 
 		<!-- 이미지 미리보기 -->
 		<script>
-    document.getElementById("post_img").addEventListener("change", function (e) {
-        const preview = document.getElementById("preview");
-        preview.innerHTML = "";
-        Array.from(e.target.files).forEach(file => {
-            if (!file.type.startsWith("image/")) return;
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                const img = document.createElement("img");
-                img.src = event.target.result;
-                img.style.maxWidth = "100px";
-                img.style.maxHeight = "100px";
-                img.style.border = "1px solid #ccc";
-                img.style.objectFit = "cover";
-                preview.appendChild(img);
-            };
-            reader.readAsDataURL(file);
-        });
+document.getElementById("hiddenFileInput").addEventListener("change", function (e) {
+    const preview = document.getElementById("preview");
+    preview.innerHTML = "";
+    Array.from(e.target.files).forEach(file => {
+        if (!file.type.startsWith("image/")) return;
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const img = document.createElement("img");
+            img.src = event.target.result;
+            img.style.maxWidth = "100px";
+            img.style.maxHeight = "100px";
+            img.style.border = "1px solid #ccc";
+            img.style.objectFit = "cover";
+            preview.appendChild(img);
+        };
+        reader.readAsDataURL(file);
     });
+});
 </script>
+
 		<script>
 </script>
 </body>

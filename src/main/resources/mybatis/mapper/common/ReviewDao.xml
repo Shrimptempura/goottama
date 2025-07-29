@@ -5,38 +5,28 @@
 
 <mapper namespace="com.ama.don.common.dao.ReviewDao">
 
-    <!-- 다형성 리뷰만 사용시 -->
-    <!-- 공통리뷰(userId, targetId, targetType) -->
-    <insert id="insertPolyReview"
-            parameterType="com.ama.don.common.dto.ReviewDto"
-            useGeneratedKeys="true"
-            keyProperty="reviewId">
-        insert into review (user_id, target_id, target_type)
-        values (
-            #{userId}, #{targetId}, #{targetType})
-    </insert>
+	<insert id="insertPolyReview"
+		parameterType="com.ama.don.common.dto.ReviewDto"
+		useGeneratedKeys="true" keyProperty="reviewId">
+		insert into review (user_id,
+		target_id, target_type)
+		values (
+		#{userId}, #{targetId}, #{targetType})
+	</insert>
 
-    <!-- 공통 리뷰를 그대로 사용하여 작성, 파일은 여러장 이므로 따로 생성 -->
-    <insert id="insertCommonReview"
-            parameterType="com.ama.don.common.dto.ReviewDto"
-            useGeneratedKeys="true"
-            keyProperty="reviewId">
-        insert into review (user_id, review_title, review_content, review_count,
-            review_date, review_modify, target_id, target_type)
-        values (
-            #{userId}, #{reviewTitle}, #{reviewContent}, #{reviewCount},
-            #{reviewDate}, #{reviewModify}, #{targetId}, #{targetType})
-    </insert>
+	<insert id="insertCommonReview"
+		parameterType="com.ama.don.common.dto.ReviewDto"
+		useGeneratedKeys="true" keyProperty="reviewId">
+		insert into review (user_id,
+		review_title, review_content, review_count,
+		review_date, review_modify,
+		target_id, target_type)
+		values (
+		#{userId}, #{reviewTitle},
+		#{reviewContent}, #{reviewCount},
+		#{reviewDate}, #{reviewModify},
+		#{targetId}, #{targetType})
+	</insert>
 
-    <!-- 파일만 저장 여러장 -->
-    <insert id="insertReviewFile"
-            parameterType="com.ama.don.common.dto.FileDto"
-            useGeneratedKeys="true"
-            keyProperty="fileId">
-        insert into file (
-            file_uploader, file_name, file_path, target_type, target_id)
-        values (
-            #{fileUploader}, #{fileName}, #{filePath}, #{targetType}, #{targetId}
-        )
-    </insert>
+
 </mapper>

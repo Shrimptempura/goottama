@@ -1,7 +1,9 @@
 package com.ama.don.community.dto;
 
 import java.sql.Timestamp;
+import java.util.List;
 
+import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
 
 import lombok.AllArgsConstructor;
@@ -23,6 +25,7 @@ public class Detail_viewDto {
 	private int post_count;
 	private int post_like_count;
 	private String post_img;
+	private List<FileDto> post_images;
 
 	private TargetType target_type;
 

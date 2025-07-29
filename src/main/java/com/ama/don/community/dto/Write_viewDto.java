@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Write_viewDto {
-	private int post_id;
+	private Long post_id;
 	private int user_id;
 	private String post_title;
 	private String post_content;

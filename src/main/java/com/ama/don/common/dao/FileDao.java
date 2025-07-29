@@ -8,6 +8,9 @@ import com.ama.don.common.dto.FileDto;
 
 @Mapper
 public interface FileDao {
+	
+	// 파일 업로드
+	void insertFile(FileDto fileDto);
 
 	// 파일 저장
 	void create(FileDto fileDto);

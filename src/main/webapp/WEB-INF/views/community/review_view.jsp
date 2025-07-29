@@ -39,13 +39,17 @@
 							${review.post_title} </a></td>
 					<td><fmt:formatDate value="${review.post_date}"
 							pattern="yyyy-MM-dd HH:mm" /></td>
-					<td><c:if test="${not empty review.post_img}">
-							<img
-								src="${pageContext.request.contextPath}/images/${review.post_img}"
-								alt="썸네일" style="width: 80px;" />
-						</c:if> <c:if test="${empty review.post_img}">
-							<span style="color: gray;">이미지 없음</span>
-						</c:if></td>
+					<td><c:choose>
+							<c:when test="${not empty review.post_images}">
+								<img
+									src="${pageContext.request.contextPath}${review.post_images[0].file_path}"
+									alt="썸네일" style="width: 80px;" />
+							</c:when>
+							<c:otherwise>
+								<span style="color: gray;">이미지 없음</span>
+							</c:otherwise>
+						</c:choose></td>
+
 					<td>${review.post_count}</td>
 					<td>${review.post_like_count}</td>
 				</tr>

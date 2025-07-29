@@ -18,14 +18,31 @@
 		#{filePath}, #{targetType}, #{targetId}
 		)
 	</insert>
+	
+	
+	<!-- 커뮤니티 파일 업로드 -->
+	<insert id="insertFile"
+		parameterType="com.ama.don.common.dto.FileDto">
+		INSERT INTO file (
+		file_name, file_path, target_type,
+		target_id
+		) VALUES (
+		#{file_name}, #{file_path}, #{target_type},
+		#{target_id}
+		)
+	</insert>
+
 	<!-- 조회 -->
 	<select id="findFilesByTarget"
 		resultType="com.ama.don.common.dto.FileDto">
-		select file_id AS fileId, file_uploader AS fileUploader, file_name AS
+		select file_id AS fileId, file_uploader AS fileUploader,
+		file_name AS
 		fileName, file_path AS filePath,
-		target_type AS targetType, target_id AS targetId
+		target_type AS targetType,
+		target_id AS targetId
 		from file
 		where target_type = #{targetType}
-		and target_id = #{targetId}
+		and
+		target_id = #{targetId}
 	</select>
 </mapper>
