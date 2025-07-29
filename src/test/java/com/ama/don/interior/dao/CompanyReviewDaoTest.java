@@ -1,12 +1,10 @@
 package com.ama.don.interior.dao;
 
 import com.ama.don.common.dto.ReviewDto;
-import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
 import com.ama.don.interior.dto.response.CompanyHomeReviewDto;
 import com.ama.don.interior.dto.response.CompanyReviewDto;
 import com.ama.don.interior.dto.response.CompanyScoreAvgDto;
-import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +42,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
     // isExistScoreTable + insertScoreTable
     @DisplayName("리뷰 작성시 첫번째 리뷰면 생성해야 함")
     @Test
-    void insertCompanyReview() {
+    void insert() {
         // 다형성 리뷰 생성 + 업체 리뷰 생성
         CreateReviewSet dto = createPolyReviewAndCompanyReview();
         Long companyId = dto.getCompanyReviewDto().getCompanyId();
@@ -52,7 +50,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         // 무조건 테이블이 비어있다고 가정
         jdbcTemplate.update("DELETE FROM company_score_avg WHERE company_id = ?", companyId);
 
-        companyReviewDao.insertScoreTable(dto.getCompanyReviewDto());
+        companyReviewDao.createScoreTable(dto.getCompanyReviewDto());
 
         boolean exists = companyReviewDao.isExistScoreTable(dto.getCompanyReviewDto().getCompanyId());
 
@@ -73,7 +71,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         CreateReviewSet dto = createPolyReviewAndCompanyReview();
         Long companyId = dto.getCompanyReviewDto().getCompanyId();
         
-        companyReviewDao.insertScoreTable(dto.getCompanyReviewDto());
+        companyReviewDao.createScoreTable(dto.getCompanyReviewDto());
 
         // 첫번째 리뷰의 계산으로 얻은 총 별점
         CompanyScoreAvgDto avgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
@@ -87,7 +85,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         // 다른 회원 업체 리뷰 작성
         CompanyReviewCreateDto forceReviewDto = createCheckCompanyReview(companyId, reviewId);
 
-        int secondReview = companyReviewDao.insertCompanyReview(forceReviewDto);
+        int secondReview = companyReviewDao.insert(forceReviewDto);
         assertThat(secondReview).isEqualTo(1);
 
         int updated = companyReviewDao.updateScoreAvg(forceReviewDto);
@@ -111,7 +109,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         CreateReviewSet dto = createPolyReviewAndCompanyReview();
         Long companyId = dto.getCompanyReviewDto().getCompanyId();
 
-        companyReviewDao.insertScoreTable(dto.getCompanyReviewDto());
+        companyReviewDao.createScoreTable(dto.getCompanyReviewDto());
 
         CompanyScoreAvgDto avgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
         assertThat(avgDto).isNotNull();
@@ -136,7 +134,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         // 다형성 리뷰 + 업체 리뷰
         CreateReviewSet dto = createPolyReviewAndCompanyReview();
 
-        CompanyReviewDto read = companyReviewDao.getDetail(dto.getCompanyReviewDto().getReviewId());
+        CompanyReviewDto read = companyReviewDao.getReviewDetail(dto.getCompanyReviewDto().getReviewId());
         assertThat(read).isNotNull();
 
         assertThat(dto.getCompanyReviewDto().getConstructionField()).isEqualTo(read.getConstructionField());
@@ -146,13 +144,13 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
 
     @DisplayName("홈에서 보는 업체리뷰 리스트들")
     @Test
-    void getHomeCompanyReviews() {
+    void findRecentForHome() {
         jdbcTemplate.update("DELETE FROM company_review");
         jdbcTemplate.update("DELETE FROM review");
 
         // 다형성 리뷰 + 업체 리뷰
         CreateReviewSet dto = createPolyReviewAndCompanyReview();
-        List<CompanyHomeReviewDto> list = companyReviewDao.getHomeCompanyReviews();
+        List<CompanyHomeReviewDto> list = companyReviewDao.findRecentForHome();
 
         assertThat(list).isNotNull();
         assertThat(list.get(0).getReviewContent()).isEqualTo(dto.getCommonReviewDto().getReviewContent());
@@ -178,7 +176,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
 
     @DisplayName("업체 리뷰 개수 구하기")
     @Test
-    void getReviewCountByCompanyId() {
+    void countByCompanyId() {
         jdbcTemplate.update("DELETE FROM company_review");
         jdbcTemplate.update("DELETE FROM review");
         
@@ -186,7 +184,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         CreateReviewSet dto = createPolyReviewAndCompanyReview();
         Long companyId = dto.getCompanyReviewDto().getCompanyId();
 
-        int reviews = companyReviewDao.getReviewCountByCompanyId(companyId);
+        int reviews = companyReviewDao.countByCompanyId(companyId);
 
         assertThat(reviews).isNotNull();
         assertThat(reviews).isEqualTo(1);
