@@ -5,8 +5,9 @@
 
 <mapper namespace="com.ama.don.admin.dao.ManageUserIDao">
     <select id="getAllUsers">
-        SELECT USER_ID, USER_NAME, USER_NICKNAME
-        FROM user_detail
+        SELECT D.USER_ID, D.USER_NAME, D.USER_NICKNAME, D.USER_CREATED_AT, L.ROLES_ID, L.LOGIN_ID
+        FROM user_detail D
+        JOIN user_login L ON D.USER_ID = L.USER_ID
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 
@@ -21,75 +22,79 @@
         LEFT JOIN sanctions S ON D.USER_ID = S.USER_ID
     </select>
 
-    <select id="getUserByUserId">
-        SELECT USER_ID, USER_NAME, USER_NICKNAME, USER_GENDER, USER_BIRTH, USER_CREATED_AT, USER_TEL, USER_ZIPCODE, USER_ADDR, USER_EMAIL, USER_IMG
-        FROM user_detail
-        WHERE USER_ID = #{param1}
+    <select id="getUserByUserId" resultType="com.ama.don.admin.dto.UserTotalDataVO">
+        SELECT D.USER_ID, D.USER_NAME, D.USER_NICKNAME, D.USER_GENDER, D.USER_BIRTH, D.USER_CREATED_AT, D.USER_TEL, D.USER_ZIPCODE, D.USER_ADDR, D.USER_EMAIL, D.USER_IMG,
+        L.ROLES_ID, L.LOGIN_ID,
+        S.SANCTIONS_TYPES
+        FROM user_detail D
+        JOIN user_login L ON D.USER_ID = L.USER_ID
+        LEFT JOIN sanctions S ON D.USER_ID = S.USER_ID
+        WHERE D.USER_ID = #{param1}
     </select>
 
-    <select id="searchUsers">
+    <select id="searchUsers" resultType="com.ama.don.member.dto.MemberDto">
         SELECT USER_ID, USER_NAME, USER_NICKNAME, USER_GENDER, USER_BIRTH, USER_CREATED_AT, USER_TEL, USER_ZIPCODE, USER_ADDR, USER_EMAIL, USER_IMG
         FROM user_detail
         <where>
-            <if test="user_name != null and user_name != ''">
-                AND USER_NAME LIKE CONCAT('%', #{user_name}, '%')
+            <if test="userSearchVO.user_name != null and userSearchVO.user_name != ''">
+                AND USER_NAME LIKE CONCAT('%', #{userSearchVO.user_name}, '%')
             </if>
-            <if test="user_nickname != null and user_nickname != ''">
-                AND USER_NAME LIKE CONCAT('%', #{user_nickname}, '%')
+            <if test="userSearchVO.user_nickname != null and userSearchVO.user_nickname != ''">
+                AND USER_NICKNAME LIKE CONCAT('%', #{userSearchVO.user_nickname}, '%')
             </if>
-            <if test="user_gender != null and user_gender != ''">
-                AND USER_GENDER = #{user_gender}
+            <if test="userSearchVO.user_gender != null and userSearchVO.user_gender != ''">
+                AND USER_GENDER = #{userSearchVO.user_gender}
             </if>
-            <if test="create_start_date != null and create_start_date != ''">
-                AND USER_CREATED_AT &gt;= #{create_start_date}
+            <if test="userSearchVO.create_start_date != null and userSearchVO.create_start_date != ''">
+                AND USER_CREATED_AT &gt;= #{userSearchVO.create_start_date}
             </if>
-            <if test="create_end_date != null and create_end_date != ''">
-                AND USER_CREATED_AT &lt;= #{create_end_date}
+            <if test="userSearchVO.create_end_date != null and userSearchVO.create_end_date != ''">
+                AND USER_CREATED_AT &lt;= #{userSearchVO.create_end_date}
             </if>
-            <if test="user_tel != null and user_tel != ''">
-                AND USER_TEL LIKE CONCAT('%', #{user_tel}, '%')
+            <if test="userSearchVO.user_tel != null and userSearchVO.user_tel != ''">
+                AND USER_TEL LIKE CONCAT('%', #{userSearchVO.user_tel}, '%')
             </if>
-            <if test="user_zipcode != null and user_zipcode != ''">
-                AND USER_ZIPCODE LIKE CONCAT('%', #{search_zipcode}, '%')
+            <if test="userSearchVO.user_zipcode != null and userSearchVO.user_zipcode != ''">
+                AND USER_ZIPCODE LIKE CONCAT('%', #{userSearchVO.user_zipcode}, '%')
             </if>
-            <if test="user_addr != null and user_addr != ''">
-                AND USER_ADDR LIKE CONCAT('%', #{user_addr}, '%')
+            <if test="userSearchVO.user_addr != null and userSearchVO.user_addr != ''">
+                AND USER_ADDR LIKE CONCAT('%', #{userSearchVO.user_addr}, '%')
             </if>
-            <if test="user_email != null and user_email != ''">
-                AND USER_EMAIL LIKE CONCAT('%', #{user_email}, '%')
+            <if test="userSearchVO.user_email != null and userSearchVO.user_email != ''">
+                AND USER_EMAIL LIKE CONCAT('%', #{userSearchVO.user_email}, '%')
             </if>
         </where>
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
-    <select id="countSearchUsers">
+    <select id="countSearchUsers" resultType="int">
         SELECT COUNT(*) FROM user_detail
         <where>
-            <if test="user_name != null and user_name != ''">
-                AND USER_NAME LIKE CONCAT('%', #{user_name}, '%')
+            <if test="userSearchVO.user_name != null and userSearchVO.user_name != ''">
+                AND USER_NAME LIKE CONCAT('%', #{userSearchVO.user_name}, '%')
             </if>
-            <if test="user_nickname != null and user_nickname != ''">
-                AND USER_NAME LIKE CONCAT('%', #{user_nickname}, '%')
+            <if test="userSearchVO.user_nickname != null and userSearchVO.user_nickname != ''">
+                AND USER_NAME LIKE CONCAT('%', #{userSearchVO.user_nickname}, '%')
             </if>
-            <if test="user_gender != null and user_gender != ''">
-                AND USER_GENDER = #{user_gender}
+            <if test="userSearchVO.user_gender != null and userSearchVO.user_gender != ''">
+                AND USER_GENDER = #{userSearchVO.user_gender}
             </if>
-            <if test="create_start_date != null and create_start_date != ''">
-                AND USER_CREATED_AT &gt;= #{create_start_date}
+            <if test="userSearchVO.create_start_date != null and userSearchVO.create_start_date != ''">
+                AND USER_CREATED_AT &gt;= #{userSearchVO.create_start_date}
             </if>
-            <if test="create_end_date != null and create_end_date != ''">
-                AND USER_CREATED_AT &lt;= #{create_end_date}
+            <if test="userSearchVO.create_end_date != null and userSearchVO.create_end_date != ''">
+                AND USER_CREATED_AT &lt;= #{userSearchVO.create_end_date}
             </if>
-            <if test="user_tel != null and user_tel != ''">
-                AND USER_TEL LIKE CONCAT('%', #{user_tel}, '%')
+            <if test="userSearchVO.user_tel != null and userSearchVO.user_tel != ''">
+                AND USER_TEL LIKE CONCAT('%', #{userSearchVO.user_tel}, '%')
             </if>
-            <if test="user_zipcode != null and user_zipcode != ''">
-                AND USER_ZIPCODE LIKE CONCAT('%', #{search_zipcode}, '%')
+            <if test="userSearchVO.user_zipcode != null and userSearchVO.user_zipcode != ''">
+                AND USER_ZIPCODE LIKE CONCAT('%', #{userSearchVO.user_zipcode}, '%')
             </if>
-            <if test="user_addr != null and user_addr != ''">
-                AND USER_ADDR LIKE CONCAT('%', #{user_addr}, '%')
+            <if test="userSearchVO.user_addr != null and userSearchVO.user_addr != ''">
+                AND USER_ADDR LIKE CONCAT('%', #{userSearchVO.user_addr}, '%')
             </if>
-            <if test="user_email != null and user_email != ''">
-                AND USER_EMAIL LIKE CONCAT('%', #{user_email}, '%')
+            <if test="userSearchVO.user_email != null and userSearchVO.user_email != ''">
+                AND USER_EMAIL LIKE CONCAT('%', #{userSearchVO.user_email}, '%')
             </if>
         </where>
     </select>

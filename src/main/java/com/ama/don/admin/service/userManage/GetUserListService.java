@@ -7,6 +7,7 @@ import com.ama.don.member.dto.MemberDto;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +23,7 @@ public class GetUserListService {
     }
 
     public void execute(Model model){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         Map<String, Object> map = model.asMap();
         UserSearchVO userSearchVO = (UserSearchVO) map.get("userSearchVO");
         SearchVO searchVO = (SearchVO) map.get("searchVO");
@@ -36,7 +38,7 @@ public class GetUserListService {
                 (userSearchVO.getUser_email() == null || userSearchVO.getUser_email().isEmpty()) &&
                 (userSearchVO.getUser_gender() == null || userSearchVO.getUser_gender().isEmpty()) &&
                 (userSearchVO.getUser_tel() == null || userSearchVO.getUser_tel().isEmpty()) &&
-                (userSearchVO.getSearch_zipcode() == null || userSearchVO.getSearch_zipcode().isEmpty()) &&
+                (userSearchVO.getUser_zipcode() == null || userSearchVO.getUser_zipcode().isEmpty()) &&
                 (userSearchVO.getCreate_start_date() == null || userSearchVO.getCreate_start_date().isEmpty()) &&
                 (userSearchVO.getCreate_end_date() == null || userSearchVO.getCreate_end_date().isEmpty())) {
             total = manageUserIDao.countAllUsers();
@@ -53,12 +55,18 @@ public class GetUserListService {
             row.put("userId", memberDto.getUser_id());
             row.put("userName", memberDto.getUser_name());
             row.put("userNickname", memberDto.getUser_nickname());
+            row.put("userLoginId", memberDto.getLogin_id());
             row.put("userAddr", memberDto.getUser_addr());
             row.put("userEmail", memberDto.getUser_email());
             row.put("userGender", memberDto.getUser_gender());
             row.put("userTel", memberDto.getUser_tel());
             row.put("userZipcode", memberDto.getUser_zipcode());
-            row.put("userCreatedAt", memberDto.getUser_created_at());
+            if (memberDto.getUser_created_at() != null) {
+                row.put("userCreatedAt", memberDto.getUser_created_at().format(formatter));
+            } else {
+                row.put("userCreatedAt", null);
+            }
+            row.put("roleId", memberDto.getRoles_id());
             mapList.add(row);
         }
 

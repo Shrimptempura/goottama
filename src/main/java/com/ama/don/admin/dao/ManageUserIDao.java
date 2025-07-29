@@ -1,6 +1,7 @@
 package com.ama.don.admin.dao;
 
 import com.ama.don.admin.dto.UserSearchVO;
+import com.ama.don.admin.dto.UserTotalDataVO;
 import com.ama.don.admin.utils.SearchVO;
 import com.ama.don.member.dto.MemberDto;
 import org.apache.ibatis.annotations.Mapper;
@@ -15,7 +16,7 @@ public interface ManageUserIDao {
 
     public int countAllUsers();
 
-    public MemberDto getUserByUserId(String userId);
+    public UserTotalDataVO getUserByUserId(String userId);
 
     public List<MemberDto> searchUsers(@Param("searchVO") SearchVO searchVO,
                                        @Param("userSearchVO")UserSearchVO userSearchVO);

@@ -1,21 +1,24 @@
 package com.ama.don.admin.controller;
 
 import com.ama.don.admin.dto.UserSearchVO;
+import com.ama.don.admin.dto.UserTotalDataVO;
+import com.ama.don.admin.service.userManage.GetUserDataForModal;
 import com.ama.don.admin.service.userManage.GetUserListService;
 import com.ama.don.admin.utils.SearchVO;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserManageController {
 
     private final GetUserListService getUserListService;
+    private final GetUserDataForModal getUserDataForModal;
 
-    public UserManageController(GetUserListService getUserListService) {
+    public UserManageController(GetUserListService getUserListService, GetUserDataForModal getUserDataForModal) {
         this.getUserListService = getUserListService;
+        this.getUserDataForModal = getUserDataForModal;
     }
 
     @RequestMapping("/admin/users/user_manage")
@@ -43,5 +46,12 @@ public class UserManageController {
         getUserListService.execute(model);
 
         return "admin/users/user_list";
+    }
+
+    @GetMapping("/admin/users/user_data_modal")
+    public String userDataModal(Model model, @RequestParam("userId") String userId) {
+        model.addAttribute("userId", userId);
+        getUserDataForModal.execute(model);
+        return "admin/users/user_data_modal";
     }
 }
