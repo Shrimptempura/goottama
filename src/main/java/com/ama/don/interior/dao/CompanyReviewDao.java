@@ -56,11 +56,11 @@ public interface CompanyReviewDao {
     // 뷰단에서(listByCompanyId) review_id를 뿌려줌
     Boolean existByReviewIdAndUserId(Long reviewId, Long userId);
 
-    // 하위 리뷰 삭제(트랜잭션 하위 -> 상위 순)
-    int deleteCompanyReview(Long reviewId);
+    // 하위 리뷰 소프트 삭제(트랜잭션 하위 -> 상위 순)
+    int updateCompanyReview(Long reviewId);
 
-    // 상위 리뷰 삭제
-    int deleteCommonReview(Long reviewId, Long userId);
+    // 상위 리뷰 소프트 삭제
+    int updateCommonReview(Long reviewId, Long userId);
 
     // 리뷰 수정
     int updateReview(CompanyReviewUpdateDto dto);
