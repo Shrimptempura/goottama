@@ -15,6 +15,7 @@ import com.ama.don.shop.dto.OrdersDto;
 import com.ama.don.shop.dto.Orders_productsDto;
 import com.ama.don.shop.dto.PaymentDto;
 import com.ama.don.shop.dto.ProductDto;
+import com.ama.don.shop.dto.ProductFlatDto;
 
 @Mapper
 public interface ShopIDao {
@@ -24,9 +25,24 @@ public interface ShopIDao {
 	public void imgwrite(int pid, String changeFile);
 	public int write(Map<String, Object> map);
 	
-	//ShopHome iDao
-	public ArrayList<ProductDto> product_list();
-	public ProductDto product(String product_id);
+	//Product iDao
+	public ArrayList<ProductFlatDto> product_list();		//전체 상품 리스트
+	public ProductFlatDto product(Long product_id);	//단일 상품 정보
+	public ArrayList<ProductFlatDto> productimgs(Long product_id);	//단일 상품의 이미지 리시트
+	
+	//home에 사용하는 product 일부 조회
+	public ArrayList<ProductFlatDto> product_popular_flat_list();
+	public ArrayList<ProductFlatDto> product_high_sales_flat_list();	
+	
+	//home에 사용하는 product 전부 조회
+	public ArrayList<ProductFlatDto> product_popular_all_list();
+	public ArrayList<ProductFlatDto> product_high_sales_all_list();
+	//상품 카테고리로 특정 상품 리스트 조회
+	public ArrayList<ProductFlatDto> product_category(Long category);
+	
+	
+	
+	
 	
 	
 	//Cart iDao
@@ -59,6 +75,7 @@ public interface ShopIDao {
 	//Deliver iDao
 	public void deliver_update(Long order_id, String deliver_person, 
 			String deliver_recipient_phone, String deliver_loc, String deliver_detail_loc);
+	
 	
 	//주문수정을 하는데 실제로는 배송지 수정정도를 할것 그러니까 주문아이디로 배송지를 찾아서 배송지를 deliver_update를 하면된다.
 	

@@ -239,87 +239,83 @@
 <h2>product_detail</h2>
 
 <div class="main-container">
-	<!-- 왼쪽 섹션: 이미지, 하단바, 상품정보 -->
-	<div class="left-section">
-		<!-- 이미지 영역 -->
-		<div class="imgcontainer">
-			<!-- 왼쪽 썸네일 리스트 -->
-			<div class="thumbnail-column">
-			    <c:forEach var="sub_img" items="${product.product_imgDtoList}">
-			    	<img class="thumbnail" src="/static/uploads/shop/${sub_img.product_imgurl}" alt="썸네일 이미지" onclick="changeMainImage(this)"/>
-			    </c:forEach>
-			</div>
-			
-			<!-- 메인 이미지 -->
-			<div class="main-image-container">
-				<c:if test="${not empty product.product_imgDtoList}">
-	        		<img id="mainImage" class="main-img" src="/static/uploads/shop/${product.product_imgDtoList[0].product_imgurl}" alt="대표 이미지" />
-	    		</c:if>
-			</div>
-		</div>
-		
-		<!-- 하단바 (이미지 아래) -->
-		<div class="bottombar">
-			<ul>
-				<li><a href="#">상품정보</a></li>
-			    <li><a href="#">리뷰</a></li>
-				<li><a href="#">문의</a></li> 
-				<li><a href="#">배송/환불</a></li> 
-			</ul>	
-		</div>
-		
-		<!-- 상품 상세 정보 (하단바 아래) -->
-		<div class="productinfo">
-			<h3>상품 정보제공고시</h3>
-			<div><strong>제조국:</strong> ${product.product_madein }</div>
-			<div><strong>출시 일자:</strong> <fmt:formatDate value="${product.product_release}" pattern="yyyy-MM-dd"/></div>
-			<div><strong>AS책임자 전화번호:</strong> ${product.product_as_manager_phone }</div>
-			<div><strong>제품 종류:</strong> ${product.product_type}</div>
-			<div><strong>제품 색상:</strong> ${product.product_color}</div>
-		</div>
-	</div>
-	
-	<!-- 오른쪽 섹션: 상품 정보 및 구매 옵션 -->	
-	<div class="right-section">		
-		<!-- <p style="color: #666; font-size: 14px;">상품번호: ${product.product_id }</p>	 -->
-		<p class="mallname">${product.product_mall_name }</p>
-		<h1 class="title">${product.product_name }</h1>
-		
-		<!-- 할인 정보 -->
-		<c:set var="hasDiscount" value="${product.product_discountrate != null and product.product_discountrate > 0}" />
-		
-		<c:choose>
-			<c:when test="${hasDiscount}">
-				<!-- 할인이 있는 경우 -->
-				<c:set var="discountPercent" value="${product.product_discountrate * 100}" />
-				<c:set var="discountAmount" value="${product.product_price * product.product_discountrate}" />
-				<c:set var="salePrice" value="${product.product_price - discountAmount}" />
-				
-				<p class="discountrate"><fmt:formatNumber value="${discountPercent}" pattern="#"/>% 할인</p>
-				<p class="original-price">정가: ₩<fmt:formatNumber value="${product.product_price}" pattern="#,###"/></p>
-				<p class="sale-price">할인가: ₩<fmt:formatNumber value="${salePrice}" pattern="#,###"/></p>
-			</c:when>
-			<c:otherwise>
-				<!-- 할인이 없는 경우 -->
-				<p class="sale-price">가격: ₩<fmt:formatNumber value="${product.product_price}" pattern="#,###"/></p>
-			</c:otherwise>
-		</c:choose>
-		
-		<!-- 수량 선택 -->
-		<div class="quantity-controls">
-			<span>수량:</span>
-			<button type="button" onclick="changeCount(-1)">-</button>
-			<span id="count">1</span>
-			<button type="button" onclick="changeCount(1)">+</button>
-		</div>
-		
-		<!-- 구매 버튼들 -->
-		<div class="action-buttons">
-			<button class="cart-btn" onclick="showAlert()">장바구니 담기</button>
-			<button class="order-btn" onclick="location.href='order'">바로 주문하기</button>
-		</div>
-	</div>
-</div>
+    <!-- 왼쪽 섹션: 이미지, 하단바, 상품정보 -->
+    <div class="left-section">
+        <!-- 이미지 영역 -->
+        <div class="imgcontainer">
+            <!-- 왼쪽 썸네일 리스트 -->
+            <div class="thumbnail-column">
+                <c:forEach var="productimg" items="${productimgs}">
+                    <img class="thumbnail" src="/static/uploads/shop/${productimg.product_imgurl}" alt="썸네일 이미지" onclick="changeMainImage(this)"/>
+                </c:forEach>
+            </div>
 
-</body>
-</html>
+            <!-- 메인 이미지 -->
+            <div class="main-image-container">
+                <c:if test="${not empty productimgs}">
+                    <img id="mainImage" class="main-img" src="/static/uploads/shop/${productimgs[0].product_imgurl}" alt="대표 이미지" />
+                </c:if>
+            </div>
+        </div>
+
+        <!-- 하단바 (이미지 아래) -->
+        <div class="bottombar">
+            <ul>
+                <li><a href="#">상품정보</a></li>
+                <li><a href="#">리뷰</a></li>
+                <li><a href="#">문의</a></li>
+                <li><a href="#">배송/환불</a></li>
+            </ul>
+        </div>
+
+        <!-- 상품 상세 정보 (하단바 아래) -->
+        <div class="productinfo">
+            <h3>상품 정보제공고시</h3>
+            <div><strong>제조국:</strong> ${product.product_madein}</div>
+            <div><strong>출시 일자:</strong> <fmt:formatDate value="${product.product_release}" pattern="yyyy-MM-dd"/></div>
+            <div><strong>AS책임자 전화번호:</strong> ${product.product_as_manager_phone}</div>
+            <div><strong>제품 종류:</strong> ${product.product_type}</div>
+            <div><strong>제품 색상:</strong> ${product.product_color}</div>
+        </div>
+    </div>
+
+    <!-- 오른쪽 섹션: 상품 정보 및 구매 옵션 -->
+    <div class="right-section">
+        <p class="mallname">${product.product_mall_name}</p>
+        <h1 class="title">${product.product_name}</h1>
+
+        <!-- 할인 정보 -->
+        <c:set var="hasDiscount" value="${product.product_discountrate != null and product.product_discountrate > 0}" />
+
+        <c:choose>
+            <c:when test="${hasDiscount}">
+                <!-- 할인이 있는 경우 -->
+                <c:set var="discountPercent" value="${product.product_discountrate * 100}" />
+                <c:set var="discountAmount" value="${product.product_price * product.product_discountrate}" />
+                <c:set var="salePrice" value="${product.product_price - discountAmount}" />
+
+                <p class="discountrate"><fmt:formatNumber value="${discountPercent}" pattern="#"/>% 할인</p>
+                <p class="original-price">정가: ₩<fmt:formatNumber value="${product.product_price}" pattern="#,###"/></p>
+                <p class="sale-price">할인가: ₩<fmt:formatNumber value="${salePrice}" pattern="#,###"/></p>
+            </c:when>
+            <c:otherwise>
+                <!-- 할인이 없는 경우 -->
+                <p class="sale-price">가격: ₩<fmt:formatNumber value="${product.product_price}" pattern="#,###"/></p>
+            </c:otherwise>
+        </c:choose>
+
+        <!-- 수량 선택 -->
+        <div class="quantity-controls">
+            <span>수량:</span>
+            <button type="button" onclick="changeCount(-1)">-</button>
+            <span id="count">1</span>
+            <button type="button" onclick="changeCount(1)">+</button>
+        </div>
+
+        <!-- 구매 버튼들 -->
+        <div class="action-buttons">
+            <button class="cart-btn" onclick="showAlert()">장바구니 담기</button>
+            <button class="order-btn" onclick="location.href='order'">바로 주문하기</button>
+        </div>
+    </div>
+</div>

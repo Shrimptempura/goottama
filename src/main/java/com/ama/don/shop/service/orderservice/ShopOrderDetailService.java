@@ -63,7 +63,7 @@ public class ShopOrderDetailService implements ShopServiceinter{
 		        Long orderId = order.getOrder_id();
 		        System.out.println("주문 ID: " + orderId + ", 날짜: " + order.getOrder_date());
 		        
-		        // 2. 주문별 상품
+		        // 2. 주문별 ㅈ
 		        ArrayList<OrderFlatDto> products = iDao.order_products_flat(orderId);
 		        orderProductsMap.put(orderId, products);
 		        

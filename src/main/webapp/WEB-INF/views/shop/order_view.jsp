@@ -3,12 +3,102 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
+
+
+
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>주문하기</title>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <%@ include file="subheader.jsp" %>
+    
+    
+<style>
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table td, table th {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+
+input[type="text"], input[type="email"], input[type="tel"], textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.payment-buttons {
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.payment-btn {
+    padding: 10px 20px;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+    font-weight: normal;
+}
+
+.payment-btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* 선택된 결제 방식 스타일 - 빨간색 */
+.payment-btn.selected {
+    background-color: #dc3545;  /* 빨간색 배경 */
+    color: white;
+    border-color: #dc3545;
+    font-weight: bold;
+}
+
+.order-btn {
+    width: 100%;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.order-btn:hover {
+    background: #218838;
+}
+
+.total-price {
+    font-size: 20px;
+    font-weight: bold;
+    color: #dc3545;
+}
+</style>    
 </head>
 <body>
 	
@@ -105,12 +195,21 @@
         <!-- 총 금액을 hidden으로 저장 -->
         <input type="hidden" name="totalAmount" value="${totalPrice}">
         
-        <!-- 주문 완료 버튼 -->
         <br>
+        <!-- 결제 방식 선택 -->
+		<h3>결제 방식</h3>
+		<div class="payment-buttons">
+		    <input type="hidden" name="payment_method" id="payment_method" required>
+		    <button type="button" class="payment-btn" onclick="selectPayment('카카오페이')">카카오페이</button>
+		    <button type="button" class="payment-btn" onclick="selectPayment('무통장입금')">무통장 입금</button>
+		    <button type="button" class="payment-btn" onclick="selectPayment('카드 결제')">카드 결제</button>
+		    <button type="button" class="payment-btn" onclick="selectPayment('휴대폰 결제')">휴대폰 결제</button>
+		</div>
+         <!-- 주문 완료 버튼 -->
         <button type="submit" style="padding: 15px 30px; font-size: 16px; background: blue; color: white;">
             ₩<fmt:formatNumber value="${totalPrice}" pattern="#,###"/> 주문하기
         </button>
-        
+		
     </c:if>
     
     <c:if test="${empty cart}">
@@ -121,6 +220,22 @@
 </form>
 
 <script>
+
+//결제 방식 선택 함수
+function selectPayment(method) {
+    // 모든 버튼의 selected 클래스 제거
+    document.querySelectorAll('.payment-btn').forEach(btn => {
+        btn.classList.remove('selected');
+    });
+    
+    // 선택된 버튼에 selected 클래스 추가
+    event.target.classList.add('selected');
+    
+    //여기서 결재 방법을 보낸다.
+    // hidden input에 값 설정
+    document.getElementById('payment_method').value = method;
+}
+
 // 주소찾기 함수
 function findAddress() {
     new daum.Postcode({
@@ -194,6 +309,15 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();	
             return false;
         }
+        
+        // 결제 방식 확인
+        const paymentMethod = document.getElementById('payment_method').value;
+        if (!paymentMethod) {
+            alert('결제 방식을 선택해주세요.');
+            e.preventDefault();
+            return false;
+        }
+        
     });
 });
 </script>

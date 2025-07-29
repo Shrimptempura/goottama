@@ -15,17 +15,22 @@ import com.ama.don.shop.dto.OrderFlatDto;
 import com.ama.don.shop.dto.OrdersDto;
 import com.ama.don.shop.dto.Orders_productsDto;
 import com.ama.don.shop.dto.PaymentDto;
+import com.ama.don.shop.dto.PaymentResult;
 import com.ama.don.shop.dto.Product_imgDto;
 import com.ama.don.shop.service.ShopServiceinter;
+import com.ama.don.shop.service.paymentService.KakaoPayService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 public class ShopOrderWriteService implements ShopServiceinter{
 	
 
     private ShopIDao iDao;
-    public ShopOrderWriteService(ShopIDao iDao) {
+    private String paymentmethod;
+    public ShopOrderWriteService(ShopIDao iDao,String paymentmethod) {
         this.iDao=iDao;
+        this.paymentmethod=paymentmethod;
     }
     
     @Override
@@ -52,7 +57,10 @@ public class ShopOrderWriteService implements ShopServiceinter{
         } else {
             throw new IllegalArgumentException("유저 ID가 유효하지 않습니다.");
         }
+        
+
     
+        
         // 주문에 상품을 검색하는데 장바구니에서 가져와야한다.
         int total=0;
         ArrayList<CartFlatDto> cartFlatDtos=iDao.cart_list_flat(userid);
@@ -60,6 +68,10 @@ public class ShopOrderWriteService implements ShopServiceinter{
         	//주문 총가격
             total+=cartitem.getTotalPrice();
         }
+        
+        System.out.println("결재수단:"+paymentmethod);
+       
+        
         
         // ===== 1. 주문 등록 (한 번만!) =====
         OrdersDto ordersDto = new OrdersDto();
@@ -157,4 +169,6 @@ public class ShopOrderWriteService implements ShopServiceinter{
             model.addAttribute("error", "주문 정보 조회 중 오류가 발생했습니다.");
         }
     }
+    
+
 }
