@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -67,7 +66,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
 
     @DisplayName("업체 리뷰후 평균 점수 update 확인")
     @Test
-    void updateCompanyReviewAvgScore () {
+    void softDeleteCompanyReviewAvgScore() {
         // 다형성 리뷰 생성 + 업체 리뷰 생성
         CreateReviewSet dto = createPolyReviewAndCompanyReview();
         Long companyId = dto.getCompanyReviewDto().getCompanyId();
@@ -89,7 +88,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         int secondReview = companyReviewDao.insert(forceReviewDto);
         assertThat(secondReview).isEqualTo(1);
 
-        int updated = companyReviewDao.updateScoreAvg(forceReviewDto);
+        int updated = companyReviewDao.applyScoreOnCreate(forceReviewDto);
         assertThat(updated).isEqualTo(1);
 
         // 첫번째 + 두번째 리뷰의 평균 뽑기
@@ -215,7 +214,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(result).isTrue();
 
         // 하위 리뷰 소프트 삭제
-        companyReviewDao.updateCompanyReview(reviewId);
+        companyReviewDao.softDeleteCompanyReview(reviewId);
 
         // 추가없이 간단하게 검증
         Boolean isSubReviewDeleted = jdbcTemplate.queryForObject(
@@ -226,7 +225,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
 
 
         // 상위 리뷰 소프트 삭제
-        companyReviewDao.updateCommonReview(reviewId, userId);
+        companyReviewDao.softDeletePolyReview(reviewId, userId);
 
         // 추가없이 간단하게 검증
         Boolean isPolyReviewDeleted = jdbcTemplate.queryForObject(

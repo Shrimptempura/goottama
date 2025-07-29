@@ -1,7 +1,6 @@
 package com.ama.don.interior.dao;
 
 import com.ama.don.common.dto.ReviewDto;
-import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
 import com.ama.don.interior.dto.request.CompanyReviewUpdateDto;
 import com.ama.don.interior.dto.response.CompanyHomeReviewDto;
@@ -10,7 +9,6 @@ import com.ama.don.interior.dto.response.CompanyScoreAvgDto;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
-import java.util.Optional;
 
 // 사용자가 업체에 쓰는 리뷰 dao
 @Mapper
@@ -31,7 +29,7 @@ public interface CompanyReviewDao {
 
     // 리뷰 평균 점수 계산 업데이트
     // 사용자가 리뷰를 작성시 무조건 마지막에 실행되어야 함
-    int updateScoreAvg(CompanyReviewCreateDto dto);
+    int applyScoreOnCreate(CompanyReviewCreateDto dto);
 
     // 업체 모든 별점 평균
     CompanyScoreAvgDto getAvgScoreByCompanyId(Long companyId);
@@ -58,13 +56,21 @@ public interface CompanyReviewDao {
     Boolean existByReviewIdAndUserId(Long reviewId, Long userId);
 
     // 하위 리뷰 소프트 삭제(트랜잭션 하위 -> 상위 순)
-    int updateCompanyReview(Long reviewId);
+    int softDeleteCompanyReview(Long reviewId);
 
     // 상위 리뷰 소프트 삭제
-    int updateCommonReview(Long reviewId, Long userId);
+    int softDeletePolyReview(Long reviewId, Long userId);
 
-    // 리뷰 수정
-    int updateReview(CompanyReviewUpdateDto dto);
+    // 리뷰 수정(review + file + company_review) 3개 트랜잭션
+    int updatePolyReview(ReviewDto dto);
+    
+    // 업체 리뷰 수정
+    int updateCompanyReview(CompanyReviewUpdateDto dto);
+    
+    // 파일 수정은 공통 fileDao에서 처리
+
+    // 리뷰 수정 또는 삭제시 점수를 다시 계산해야함
+    int adjustScoreAvg(CompanyReviewUpdateDto dto);
 
     // 리뷰 수정 뷰
     CompanyReviewUpdateDto getEditView(Long reviewId);

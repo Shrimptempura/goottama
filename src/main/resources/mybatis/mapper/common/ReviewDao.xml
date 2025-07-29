@@ -35,17 +35,4 @@
         where review_id = #{reviewId}
     </select>
 
-    <!--    &lt;!&ndash; 파일만 저장 여러장 &ndash;&gt;
-        <insert id="insertReviewFile"
-                parameterType="com.ama.don.common.dto.FileDto"
-                useGeneratedKeys="true"
-                keyProperty="fileId">
-            insert into file (
-                file_uploader, file_name, file_path, target_type, target_id)
-            values (
-                #{fileUploader}, #{fileName}, #{filePath}, #{targetType}, #{targetId}
-            )
-        </insert>-->
-
-
 </mapper>
