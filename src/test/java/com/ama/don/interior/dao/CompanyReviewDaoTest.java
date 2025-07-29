@@ -258,7 +258,13 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         dto.getCommonReviewDto().setReviewContent(newContent);
 
         // sleep 사용 실제로는 자제
-        Thread.sleep(10);
+        Thread.sleep(1000);
+
+        /**
+         * new timestamp로 시간변수 저장하고
+         * jdbcTemplate으로 값을 넣자(추가 테스트 쿼리 안짜도 가능)
+         * now() -> 직접값, 후 비교
+         */
 
         // 다형성 업데이트
         companyReviewDao.updatePolyReview(dto.getCommonReviewDto());
