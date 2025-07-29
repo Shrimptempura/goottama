@@ -189,5 +189,17 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(reviews).isNotNull();
         assertThat(reviews).isEqualTo(1);
     }
+    
+    @DisplayName("다형성 리뷰에서 리뷰아이디로 해당 리뷰 있는지 확인용")
+    @Test
+    void isExistReviewId() {
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        Long reviewId = dto.getCommonReviewDto().getReviewId();
+        Long userId = dto.getCommonReviewDto().getUserId();
+
+        Boolean result = companyReviewDao.existByReviewIdAndUserId(reviewId, userId);
+
+        assertThat(result).isTrue();
+    }
 
 }
