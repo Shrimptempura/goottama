@@ -1,13 +1,13 @@
 package com.ama.don.community.dto;
 
+import java.sql.Timestamp;
+
 import com.ama.don.common.enums.TargetType;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
-
-import java.sql.Timestamp;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -23,6 +23,7 @@ public class Review_viewDto {
 	private int post_count;
 	private int post_like_count;
 	private String post_img;
+
 
 	private TargetType target_type;
 

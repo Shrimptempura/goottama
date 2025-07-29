@@ -27,10 +27,17 @@
 		UPDATE post
 		SET
 		post_title = #{post_title},
-		post_content = #{post_content},
-		post_img = #{post_img} 
+		post_content =
+		#{post_content},
+		post_img = #{post_img}
 		WHERE post_id = #{post_id}
 	</update>
+
+	<delete id="deleteReview"
+		parameterType="com.ama.don.community.dto.Detail_viewDto">
+		DELETE FROM post WHERE post_id = #{post_id}
+	</delete>
+
 
 
 </mapper>

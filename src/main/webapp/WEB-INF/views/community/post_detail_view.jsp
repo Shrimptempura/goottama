@@ -28,7 +28,7 @@
 					class="btn btn-white edit">수정</a>
 
 				<form action="${pageContext.request.contextPath}/community/delete"
-					method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')"
+					method="post" onsubmit="return confirm('삭제하시겠습니까?')"
 					class="d-inline">
 					<input type="hidden" name="post_id" value="${review.post_id}" />
 					<button type="submit" class="btn btn-white delete">삭제</button>
@@ -69,9 +69,12 @@
 				<td><c:if test="${not empty review.post_img}">
 						<img
 							src="${pageContext.request.contextPath}/images/${review.post_img}"
-							width="300" />
-					</c:if></td>
+							alt="첨부 이미지" style="max-width: 300px;" />
+					</c:if> <c:if test="${empty review.post_img}">
+            이미지 없음
+        </c:if></td>
 			</tr>
+
 		</table>
 	</div>
 

@@ -16,6 +16,9 @@ public interface Detail_viewDao {
 
 	List<Detail_viewDto> selectByTargetType(TargetType targetType);
 
-	// 수정 버튼 Dao
+	// 수정
 	void updateReview(Detail_viewDto dto);
+
+	// 삭제
+	void deleteReview(Detail_viewDto dto);
 }

@@ -21,8 +21,6 @@
 			onmouseout="this.style.backgroundColor='white'"> 글작성</a>
 	</div>
 
-
-
 	<table class="table table-hover text-center">
 		<thead class="table-light">
 			<tr>
@@ -44,7 +42,9 @@
 					<td><c:if test="${not empty review.post_img}">
 							<img
 								src="${pageContext.request.contextPath}/images/${review.post_img}"
-								width="80" />
+								alt="썸네일" style="width: 80px;" />
+						</c:if> <c:if test="${empty review.post_img}">
+							<span style="color: gray;">이미지 없음</span>
 						</c:if></td>
 					<td>${review.post_count}</td>
 					<td>${review.post_like_count}</td>
@@ -52,7 +52,5 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	</div>
-
 </body>
 </html>

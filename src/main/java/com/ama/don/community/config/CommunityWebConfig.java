@@ -11,6 +11,7 @@ public class CommunityWebConfig implements WebMvcConfigurer {
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		// 업로드된 파일들이 저장된 포더경로를 서버에 출력
 		registry.addResourceHandler("/upload/**").addResourceLocations("file:///C:/upload/");
+		registry.addResourceHandler("/images/**").addResourceLocations("file:///C:/upload/");
 
 		registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
 		registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
