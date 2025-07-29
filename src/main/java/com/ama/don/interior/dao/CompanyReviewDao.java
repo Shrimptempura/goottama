@@ -67,4 +67,8 @@ public interface CompanyReviewDao {
 
     // 리뷰 수정 뷰
     CompanyReviewUpdateDto getEditView(Long reviewId);
+
+    // 테스트용 where is_deleted 제외
+    CompanyReviewDto getReviewDetailTest(Long reviewId);
+
 }

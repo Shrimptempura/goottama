@@ -202,4 +202,24 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(result).isTrue();
     }
 
+    @DisplayName("하위 리뷰 소프트 삭제")
+    @Test
+    void updateSubReview() {
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        Long reviewId = dto.getCommonReviewDto().getReviewId();
+        Long userId = dto.getCommonReviewDto().getUserId();
+
+        // 상위 리뷰가 존재하는가
+        Boolean result = companyReviewDao.existByReviewIdAndUserId(reviewId, userId);
+        assertThat(result).isTrue();
+
+        // 하위 리뷰 소프트 삭제
+        companyReviewDao.updateCompanyReview(reviewId);
+
+        // getReviewDetailTest는 테스트에서만 사용하는 메서드 실제로는 getReviewDetail을 사용
+        // getReviewDetail은 상위, 하위 is_deleted 체크함
+        CompanyReviewDto checkDeleted = companyReviewDao.getReviewDetailTest(reviewId);
+        assertThat(checkDeleted.isDeleted()).isTrue();
+    }
+
 }

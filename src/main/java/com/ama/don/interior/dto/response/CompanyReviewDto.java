@@ -32,4 +32,7 @@ public class CompanyReviewDto {
     private Timestamp reviewModify;     // 리뷰 수정시간
 
     private int reviewLikes;    // 좋아요 수(단순 클릭, 중복 제거)
+
+    // 테스트 검증용
+    private boolean isDeleted;
 }

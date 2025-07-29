@@ -158,6 +158,16 @@
     <update id="updateReview"></update>
     <select id="getEditView" resultType="com.ama.don.interior.dto.request.CompanyReviewUpdateDto"></select>
 
-
+    <select id="getReviewDetailTest" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
+        select r.review_id AS reviewId, u.user_id AS userId, u.user_nickname AS userNickname,
+        c.structure_type AS structureType, c.area_pyeong AS areaPyeong, c.construction_field AS constructionField,
+        r.review_img AS reviewImg, r.review_content AS reviewContent, r.review_date AS reviewDate,
+        r.review_modify AS reviewModify,
+        c.is_deleted AS isDeleted
+        from company_review c
+        join review r ON r.review_id = c.review_id
+        join user_detail u ON r.user_id = u.user_id
+        where c.review_id = #{reviewId}
+    </select>
 
 </mapper>
