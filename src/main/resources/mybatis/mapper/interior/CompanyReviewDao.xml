@@ -111,7 +111,12 @@
         where company_id = #{companyId}
     </select>
 
-    <select id="getReviewCountByCompanyId" resultType="java.lang.Integer"></select>
+    <!-- 업체 아이디로 업체에 대한 리뷰 수 구하기 -->
+    <select id="getReviewCountByCompanyId" resultType="java.lang.Integer">
+        select count(*)
+        from company_review
+        where company_id = #{companyId}
+    </select>
 
 
 

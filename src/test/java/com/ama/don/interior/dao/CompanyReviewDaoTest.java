@@ -176,4 +176,20 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(list.get(0).getUserNickName()).isNotNull();
     }
 
+    @DisplayName("업체 리뷰 개수 구하기")
+    @Test
+    void getReviewCountByCompanyId() {
+        jdbcTemplate.update("DELETE FROM company_review");
+        jdbcTemplate.update("DELETE FROM review");
+        
+        // 다형성 리뷰 + 업체 리뷰
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        Long companyId = dto.getCompanyReviewDto().getCompanyId();
+
+        int reviews = companyReviewDao.getReviewCountByCompanyId(companyId);
+
+        assertThat(reviews).isNotNull();
+        assertThat(reviews).isEqualTo(1);
+    }
+
 }
