@@ -29,8 +29,17 @@
     </insert>
 
     <!-- default 조회 -->
+    <select id="selectDefaultFieldById" resultType="com.ama.don.common.dto.ReviewDto">
+        select review_id AS reviewId, review_date AS reviewDate, review_modify AS reviewModify,
+            is_deleted AS isDeleted
+        from review
+        where review_id = #{reviewId}
+    </select>
+
     <select id="selectById" resultType="com.ama.don.common.dto.ReviewDto">
-        select review_id AS reviewId, review_date AS reviewDate, review_modify AS reviewModify
+        select review_id AS reviewId, review_title AS reviewTitle, review_content AS reviewContent,
+            review_count AS reviewCount, review_date AS reviewDate, review_modify AS reviewModify,
+            target_id AS targetId, target_type AS targetType, is_deleted AS isDeleted
         from review
         where review_id = #{reviewId}
     </select>

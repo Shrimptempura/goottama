@@ -3,8 +3,6 @@ package com.ama.don.common.dao;
 import com.ama.don.common.dto.ReviewDto;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 // 공통 리뷰 테이블에 대한 dao
@@ -19,6 +17,9 @@ public interface ReviewDao {
      * @param reviewId 조회할 다형성 리뷰의 ID
      * @return 리뷰 정보
      */
+    ReviewDto selectDefaultFieldById(Long reviewId);
+
+    // reviewId 기준 전체 조회
     ReviewDto selectById(Long reviewId);
 
     // 리뷰 작성
