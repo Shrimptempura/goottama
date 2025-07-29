@@ -160,7 +160,7 @@
             parameterType="com.ama.don.common.dto.ReviewDto">
         update review
         set
-            review_content = {reviewContent}, review_modify = now()
+            review_content = #{reviewContent}, review_modify = now()
         where review_id = #{reviewId}
     </update>
 

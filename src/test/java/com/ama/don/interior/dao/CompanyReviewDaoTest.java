@@ -1,5 +1,6 @@
 package com.ama.don.interior.dao;
 
+import com.ama.don.common.dao.ReviewDao;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
 import com.ama.don.interior.dto.response.CompanyHomeReviewDto;
@@ -12,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,6 +27,8 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
 
     @Autowired
     JdbcTemplate jdbcTemplate;
+    @Autowired
+    private ReviewDao reviewDao;
 
     @DisplayName("리뷰 작성 전 공통리뷰 먼저 생성후 업체 리뷰 작성")
     @Test
@@ -234,5 +238,40 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         );
         assertThat(isPolyReviewDeleted).isTrue();
     }
+
+    @DisplayName("다형성 리뷰 수정(내용, 수정일)")
+    @Test
+    void updatePolyReview() throws InterruptedException {
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        Long reviewId = dto.getCommonReviewDto().getReviewId();
+        Long userId = dto.getCommonReviewDto().getUserId();
+
+        Boolean result = companyReviewDao.existByReviewIdAndUserId(reviewId, userId);
+        assertThat(result).isTrue();
+
+        // 기존 리뷰
+        ReviewDto original = reviewDao.selectById(reviewId);
+        Timestamp originDate = original.getReviewDate();
+        String originContent = original.getReviewContent();
+
+        String newContent = "이것은 새로운 리뷰 내용";
+        dto.getCommonReviewDto().setReviewContent(newContent);
+
+        // sleep 사용 실제로는 자제
+        Thread.sleep(10);
+
+        // 다형성 업데이트
+        companyReviewDao.updatePolyReview(dto.getCommonReviewDto());
+
+        ReviewDto updated = reviewDao.selectById(reviewId);
+        
+        // 실제 디비값이랑 비교하는건 아님 잘못된 예시
+//        updated.setReviewModify(new Timestamp(System.currentTimeMillis() - 1000000));
+
+        assertThat(updated.getReviewContent()).isNotEqualTo(originContent);
+        assertThat(updated.getReviewModify()).isNotEqualTo(originDate);
+    }
+
+
 
 }

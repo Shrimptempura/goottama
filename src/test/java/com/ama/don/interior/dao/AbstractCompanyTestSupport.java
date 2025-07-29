@@ -143,7 +143,7 @@ public class AbstractCompanyTestSupport {
         reviewDao.insertPolyReview(dto);
 
         // 새 객체에서 default만 읽고 기존 dto에 넣어줌
-        ReviewDto getDefault = reviewDao.selectById(dto.getReviewId());
+        ReviewDto getDefault = reviewDao.selectDefaultFieldById(dto.getReviewId());
         dto.setReviewDate(getDefault.getReviewDate());
         dto.setReviewModify(getDefault.getReviewModify());
 
