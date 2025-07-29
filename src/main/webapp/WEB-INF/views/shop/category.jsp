@@ -292,7 +292,7 @@ function closeAllSubMenus() {
         </c:otherwise>
     </c:choose>
 </div>
-
+<!--  -->
 </div>
 </div>
 </c:forEach>
