@@ -6,7 +6,7 @@
 <mapper namespace="com.ama.don.interior.dao.CompanyReviewDao">
 
     <!-- 다형성 리뷰 작성된 상태에서 업체 리뷰생성하기 -->
-    <insert id="insertCompanyReview"
+    <insert id="insert"
             parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
         insert into company_review(
             review_id, company_id, communication_rate, price_rate, result_rate,
@@ -17,8 +17,6 @@
         )
     </insert>
 
-
-
     <!-- 점수 테이블 존재 유무 -->
     <select id="isExistScoreTable" resultType="java.lang.Boolean">
         select count(*) > 0
@@ -27,7 +25,7 @@
     </select>
 
     <!-- 첫 리뷰작성후만 실행, 점수 테이블 생성 -->
-    <insert id="insertScoreTable"
+    <insert id="createScoreTable"
             parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
         insert into company_score_avg(
             company_id, company_review_count,
@@ -77,7 +75,7 @@
     </select>
 
     <!-- 유저가 저장한 리뷰 상세보기(user_detail + company_review + review + file(제외) -->
-    <select id="getDetail" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
+    <select id="getReviewDetail" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
         select r.review_id AS reviewId, u.user_id AS userId, u.user_nickname AS userNickname,
             c.structure_type AS structureType, c.area_pyeong AS areaPyeong, c.construction_field AS constructionField,
             r.review_img AS reviewImg, r.review_content AS reviewContent, r.review_date AS reviewDate,
@@ -91,7 +89,7 @@
     <!-- 홈에서 보여주는 최신 업체 리뷰목록들 -->
     <!-- 사진은 추후 file에서 처리 -->
     <!-- 다형성 리뷰테이블에서 type으로 거르고 desc -->
-    <select id="getHomeCompanyReviews" resultType="com.ama.don.interior.dto.response.CompanyHomeReviewDto">
+    <select id="findRecentForHome" resultType="com.ama.don.interior.dto.response.CompanyHomeReviewDto">
         select r.review_id AS reviewId,
             c.area_pyeong AS areaPyeong, c.structure_type AS structureType, r.review_content AS reviewContent
         from company_review c
@@ -112,12 +110,20 @@
     </select>
 
     <!-- 업체 아이디로 업체에 대한 리뷰 수 구하기 -->
-    <select id="getReviewCountByCompanyId" resultType="java.lang.Integer">
+    <select id="countByCompanyId" resultType="java.lang.Integer">
         select count(*)
         from company_review
         where company_id = #{companyId}
     </select>
 
+    <!-- 검증쿼리 다형성 리뷰에 해당 내용 존재하는지 -->
+    <select id="existByReviewIdAndUserId" resultType="java.lang.Boolean">
+        select 1
+        from review
+        where review_id = #{reviewId}
+            and user_id = #{userId}
+        limit 1
+    </select>
 
 
 </mapper>
