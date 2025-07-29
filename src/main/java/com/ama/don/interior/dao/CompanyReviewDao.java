@@ -1,5 +1,6 @@
 package com.ama.don.interior.dao;
 
+import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
 import com.ama.don.interior.dto.request.CompanyReviewUpdateDto;
@@ -67,8 +68,4 @@ public interface CompanyReviewDao {
 
     // 리뷰 수정 뷰
     CompanyReviewUpdateDto getEditView(Long reviewId);
-
-    // 테스트용 where is_deleted 제외
-    CompanyReviewDto getReviewDetailTest(Long reviewId);
-
 }

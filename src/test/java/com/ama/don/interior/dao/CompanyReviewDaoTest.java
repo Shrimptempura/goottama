@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -202,7 +203,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(result).isTrue();
     }
 
-    @DisplayName("하위 리뷰 소프트 삭제")
+    @DisplayName("하위 리뷰 소프트 삭제와 상위 리뷰 소프트 삭제 검증")
     @Test
     void updateSubReview() {
         CreateReviewSet dto = createPolyReviewAndCompanyReview();
@@ -216,10 +217,23 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         // 하위 리뷰 소프트 삭제
         companyReviewDao.updateCompanyReview(reviewId);
 
-        // getReviewDetailTest는 테스트에서만 사용하는 메서드 실제로는 getReviewDetail을 사용
-        // getReviewDetail은 상위, 하위 is_deleted 체크함
-        CompanyReviewDto checkDeleted = companyReviewDao.getReviewDetailTest(reviewId);
-        assertThat(checkDeleted.isDeleted()).isTrue();
+        // 추가없이 간단하게 검증
+        Boolean isSubReviewDeleted = jdbcTemplate.queryForObject(
+                "SELECT is_deleted FROM company_review WHERE review_id = ?",
+                Boolean.class, reviewId
+        );
+        assertThat(isSubReviewDeleted).isTrue();
+
+
+        // 상위 리뷰 소프트 삭제
+        companyReviewDao.updateCommonReview(reviewId, userId);
+
+        // 추가없이 간단하게 검증
+        Boolean isPolyReviewDeleted = jdbcTemplate.queryForObject(
+                "SELECT is_deleted FROM review WHERE review_id = ? AND user_id = ?",
+                Boolean.class, reviewId, userId
+        );
+        assertThat(isPolyReviewDeleted).isTrue();
     }
 
 }
