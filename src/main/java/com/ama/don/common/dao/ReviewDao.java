@@ -14,6 +14,13 @@ public interface ReviewDao {
     // 다형성 리뷰 작성(userId, targetId, targetType만)
     int insertPolyReview(ReviewDto dto);
 
+    /**
+     * 기본값 오류 방지 조회
+     * @param reviewId 조회할 다형성 리뷰의 ID
+     * @return 리뷰 정보
+     */
+    ReviewDto selectById(Long reviewId);
+
     // 리뷰 작성
     int insertCommonReview(ReviewDto dto);
 

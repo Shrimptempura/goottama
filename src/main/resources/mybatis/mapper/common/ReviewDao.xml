@@ -28,17 +28,24 @@
             #{reviewDate}, #{reviewModify}, #{targetId}, #{targetType})
     </insert>
 
-<!--    &lt;!&ndash; 파일만 저장 여러장 &ndash;&gt;
-    <insert id="insertReviewFile"
-            parameterType="com.ama.don.common.dto.FileDto"
-            useGeneratedKeys="true"
-            keyProperty="fileId">
-        insert into file (
-            file_uploader, file_name, file_path, target_type, target_id)
-        values (
-            #{fileUploader}, #{fileName}, #{filePath}, #{targetType}, #{targetId}
-        )
-    </insert>-->
+    <!-- default 조회 -->
+    <select id="selectById" resultType="com.ama.don.common.dto.ReviewDto">
+        select review_id AS reviewId, review_date AS reviewDate, review_modify AS reviewModify
+        from review
+        where review_id = #{reviewId}
+    </select>
+
+    <!--    &lt;!&ndash; 파일만 저장 여러장 &ndash;&gt;
+        <insert id="insertReviewFile"
+                parameterType="com.ama.don.common.dto.FileDto"
+                useGeneratedKeys="true"
+                keyProperty="fileId">
+            insert into file (
+                file_uploader, file_name, file_path, target_type, target_id)
+            values (
+                #{fileUploader}, #{fileName}, #{filePath}, #{targetType}, #{targetId}
+            )
+        </insert>-->
 
 
 </mapper>
