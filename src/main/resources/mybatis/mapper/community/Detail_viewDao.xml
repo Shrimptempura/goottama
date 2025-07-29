@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.community.dao.Detail_viewDao">
+
+	<select id="selectReviewById" parameterType="long"
+		resultType="com.ama.don.community.dto.Detail_viewDto">
+		SELECT
+		post_id,
+		user_id,
+		post_title,
+		post_content,
+		post_date,
+		post_count,
+		post_like_count,
+		post_img,
+		target_type,
+		target_id
+		FROM post
+		WHERE post_id = #{post_id}
+	</select>
+
+	<update id="updateReview"
+		parameterType="com.ama.don.community.dto.Detail_viewDto">
+		UPDATE post
+		SET
+		post_title = #{post_title},
+		post_content = #{post_content},
+		post_img = #{post_img} 
+		WHERE post_id = #{post_id}
+	</update>
+
+
+</mapper>

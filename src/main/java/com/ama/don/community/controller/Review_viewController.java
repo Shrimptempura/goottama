@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.community.dao.Review_viewDao;
@@ -32,13 +31,6 @@ public class Review_viewController {
 	public String writeView() {
 		System.out.println("write_view() controller");
 		return "community/write_view";
-	}
-
-	@GetMapping("/post_detail_view")
-	public String postDetail(@RequestParam("post_id") Long postId, Model model) {
-		Review_viewDto review = review_viewDao.selectReviewById(postId);
-		model.addAttribute("review", review);
-		return "community/post_detail_view";
 	}
 
 }
