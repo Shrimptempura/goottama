@@ -82,15 +82,18 @@ public interface CompanyReviewDao {
     int adjustScoreOnEdit(CompanyScoreAdjustDto dto);
 
     // 리뷰 수정후 평균 점수 계산
-    int averageOnEdit(CompanyScoreAdjustDto dto);
+    int updateAverageScores(CompanyScoreAdjustDto dto);
 
     // 리뷰를 삭제하기전 0으로 나누는 오류를 방지하기 위해
     // int countByCompanyId(Long companyId); 이 메서드로 개수가 만약 1이면
     // resetScoresIfOne 메서드 실행 아니면 adjustDeleteScoreAvg 실행
     int resetScoresIfOne(Long companyId);
 
-    // 리뷰 삭제후 점수를 다시 계산
-    int adjustDeleteScoreAvg(CompanyScoreAdjustDto dto);
+    // 리뷰 삭제후 점수계산을 위한 합산
+    int adjustSumOnDelete(CompanyScoreAdjustDto dto);
+
+    // 리뷰 삭제후 점수의 평균 구하기
+    // adjustSumOnDelete후 updateAverageScores으로 이동
 
     // 리뷰 수정 뷰
     CompanyReviewUpdateDto getEditView(Long reviewId);
