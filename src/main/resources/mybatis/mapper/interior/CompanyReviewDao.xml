@@ -202,8 +202,26 @@
         where company_id = #{companyId}
     </update>
 
+    <!-- 만약 리뷰수가 1개일때 삭제하면 모두 점수를 0으로 초기화 -->
+    <update id="resetScoresIfOne">
+        update company_score_avg
+        set
+            sum_communication = 0,
+            sum_price = 0,
+            sum_result = 0,
+            sum_schedule = 0,
+            company_review_count = 0,
+
+            avg_communication = 0,
+            avg_price = 0,
+            avg_result = 0,
+            avg_schedule = 0,
+            avg_total_rate = 0
+        where company_id = #{companyId}
+    </update>
+
     <!-- 리뷰 삭제시 평균 점수 다시 계산 -->
-    <!-- 리뷰 1개 업체를 삭제시 company_review_count가 0이 되므로 생기는 오류 방지로 0을 넣어줌 -->
+    <!-- 남은 리뷰 개수가 1보다 많을때 -->
     <update id="adjustDeleteScoreAvg"
             parameterType="com.ama.don.interior.dto.request.CompanyScoreAdjustDto">
         update company_score_avg
@@ -214,35 +232,16 @@
             sum_schedule = sum_schedule - #{oldScheduleRate},
             company_review_count = company_review_count - 1,
 
-            avg_communication = CASE
-                WHEN company_review_count - 1 = 0 THEN 0
-                ELSE (sum_communication - #{oldCommunicationRate}) / (company_review_count - 1)
-            END,
-
-            avg_price = CASE
-                WHEN company_review_count - 1 = 0 THEN 0
-                ELSE (sum_price - #{oldPriceRate}) / (company_review_count - 1)
-            END,
-
-            avg_result = CASE
-                WHEN company_review_count - 1 = 0 THEN 0
-                ELSE (sum_result - #{oldResultRate}) / (company_review_count - 1)
-            END,
-
-            avg_schedule = CASE
-                WHEN company_review_count - 1 = 0 THEN 0
-                ELSE (sum_schedule - #{oldScheduleRate}) / (company_review_count - 1)
-            END,
-
-            avg_total_rate = CASE
-                WHEN company_review_count - 1 = 0 THEN 0
-                ELSE (
-                    (sum_communication - #{oldCommunicationRate}) +
-                    (sum_price - #{oldPriceRate}) +
-                    (sum_result - #{oldResultRate}) +
-                    (sum_schedule - #{oldScheduleRate})
-                ) / 4 / (company_review_count - 1)
-            END
+            avg_communication = (sum_communication - #{oldCommunicationRate}) / (company_review_count - 1),
+            avg_price = sum_price - #{oldPriceRate}) / (company_review_count - 1),
+            avg_result = sum_result - #{oldResultRate}) / (company_review_count - 1),
+            avg_schedule = sum_schedule - #{oldScheduleRate}) / (company_review_count - 1),
+            avg_total_rate = (
+                (sum_communication - #{oldCommunicationRate}) +
+                (sum_price - #{oldPriceRate}) +
+                (sum_result - #{oldResultRate}) +
+                (sum_schedule - #{oldScheduleRate})
+            ) / 4 / (company_review_count - 1)
         where company_id = #{companyId}
     </update>
 
