@@ -35,6 +35,8 @@ import com.ama.don.shop.service.orderservice.ShopOrderWriteService;
 import com.ama.don.shop.service.product.ShopProductHighSalesService;
 import com.ama.don.shop.service.product.ShopProductPopularService;
 import com.ama.don.shop.service.product.ShopProductdetailService;
+import com.ama.don.shop.service.reviewservice.ShopReviewWriteService;
+import com.ama.don.shop.service.reviewservice.ShopReviewWriteViewService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -129,6 +131,34 @@ public class ShopController {
 		shopServiceinter.execute(model);
 
 		return "shop/product_detail";
+	}
+	
+	@RequestMapping("/shop/review_write_view")
+	public String review_write_view(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("request",request);
+		shopServiceinter= new ShopReviewWriteViewService(iDao);
+		shopServiceinter.execute(model);
+		
+		return "shop/review_write_view";
+	}
+	
+	@RequestMapping("/shop/review_write")
+	public String review_write(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopReviewWriteService(iDao);
+		shopServiceinter.execute(model);
+		
+		 //
+        String user_id=request.getParameter("user_id");
+        String product_id=request.getParameter("product_id");
+		
+		Long productid=Long.parseLong(product_id);
+		Long userid=Long.parseLong(user_id);
+		
+		return "redirect:/shop/product_detail?product_id="+productid+"?userid="+userid;
+		
 	}
 
 	@RequestMapping("/shop/exhibition")

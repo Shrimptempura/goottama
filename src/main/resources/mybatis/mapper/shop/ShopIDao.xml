@@ -6,7 +6,7 @@
 <mapper namespace="com.ama.don.shop.dao.ShopIDao">
 
 	<!-- 상품 카테고리에 나타내는 다수 상품 -->
-	<select id="product_list" resultType="com.ama.don.shop.dto.ProductFlatDto">
+	<select id=" " resultType="com.ama.don.shop.dto.ProductFlatDto">
 		SELECT P.PRODUCT_ID,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_DISCOUNTRATE, P.PRODUCT_MALL_NAME, PI.PRODUCT_IMGURL,PI.PRODUCT_IMG_TYPE
 		FROM PRODUCT P
 		LEFT OUTER JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID
@@ -123,6 +123,36 @@
 		INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
 		VALUES(#{param1},#{param2},'서브');
 	</insert>
+	
+	
+	<!-- 단일 상품 리뷰 리스트 -->
+	<select id="review_list" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		select r.user_id,r.review_id,r.review_title,r.review_content,r.review_count,
+		r.review_date,r.review_img,r.target_id,r.target_type,
+        u.user_name,u.user_nickname
+        from review r
+        join user_detail u on r.user_id=u.user_id
+        where r.target_id=#{target_id} and
+        target_type='SHOP';
+		
+	
+	</select>
+	
+	
+	
+	<select id="user_info" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		select u.user_id,u.user_name,u.user_nickname
+		from user_detail u
+		where user_id=#{user_id};
+	
+	</select>
+	
+	
+	<insert id="review_write" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		insert into review(review_title,review_content,review_img,target_id,target_type,review_date)
+		values (#{review_title},#{review_content},#{review_img},#{target_id},'SHOP',now());
+	</insert>
+	
 	
 
 	

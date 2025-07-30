@@ -145,15 +145,32 @@ height: 150px;
 </style>
 
 <script>
+
+var category_id=${category_id != null ? category_id:0};
+
+
 function toggleSubMenu(categoryName) {
     const subMenu = document.getElementById('sub-' + categoryName);
     const arrow = document.getElementById('arrow-' + categoryName);
+    //카테고리 아이디를 받아서 카테고리 서브메뉴가 열려있고 파란색이어야함
+    var category_id=${category_id};
     
     if (subMenu.style.display === 'none' || subMenu.style.display === '') {
         // 서브메뉴 열기
         subMenu.style.display = 'block';
         arrow.textContent = '▲';
         arrow.classList.add('rotated');
+    	
+        var category_id=${category_id};
+        //파란새ㄱ이며 열려있게 하기 
+        if(subMenu==category_id){
+			
+	        subMenu.style.color='blue';
+	        subMenu.style.display = 'block';
+        }
+        
+        category_id
+        
     } else {
         // 서브메뉴 닫기
         subMenu.style.display = 'none';
@@ -180,6 +197,7 @@ function closeAllSubMenus() {
 <h2>category</h2>
 
 <div class="main-container">
+
     <div class="category">
 	    <!-- 가구 카테고리 -->
 	    <div class="category-item">
@@ -256,46 +274,47 @@ function closeAllSubMenus() {
 
 
 <div class="card-container">
-<c:forEach items="${list }" var="product">
-<div class="card">
-<div>${product.product_id }</div>
-
-<c:choose>
-<c:when test="${empty product.product_img_id or empty product.product_imgurl}">
-<img class="img" src="/static/uploads/shop/noimages.png" alt="기본 이미지" style="width:150px;">
-</c:when>
-<c:otherwise>
-<img class="img" src="/static/uploads/shop/${product.product_imgurl}" alt="상품 이미지" style="width:150px;">
-</c:otherwise>
-</c:choose>
-
-<div class="card-body">
-<a href="product_detail?product_id=${product.product_id }">${product.product_name}</a> <br />
-
-<!-- 가격 표시 (할인가 적용) -->
-<div class="price-container">
-    <c:set var="hasDiscount" value="${product.product_discountrate != null and product.product_discountrate > 0}" />
-    
-    <c:choose>
-        <c:when test="${hasDiscount}">
-            <!-- 할인이 있는 경우 -->
-            <c:set var="discountPercent" value="${product.product_discountrate * 100}" />
-            <c:set var="salePrice" value="${product.product_price - (product.product_price * product.product_discountrate)}" />
-            
-            <span class="discount-badge"><fmt:formatNumber value="${discountPercent}" pattern="#"/>% 할인</span><br />
-            <span class="original-price">₩<fmt:formatNumber value="${product.product_price}" pattern="#,###"/></span><br />
-            <span class="sale-price">₩<fmt:formatNumber value="${salePrice}" pattern="#,###"/></span>
-        </c:when>
-        <c:otherwise>
-            <!-- 할인이 없는 경우 -->
-            <span class="sale-price">₩<fmt:formatNumber value="${product.product_price}" pattern="#,###"/></span>
-        </c:otherwise>
-    </c:choose>
-</div>
-<!--  -->
-</div>
-</div>
-</c:forEach>
+		
+	<c:forEach items="${list }" var="product">
+		<div class="card">
+		<div>${product.product_id }</div>
+		
+			<c:choose>
+				<c:when test="${empty product.product_img_id or empty product.product_imgurl}">
+					<img class="img" src="/static/uploads/shop/noimages.png" alt="기본 이미지" style="width:150px;">
+				</c:when>
+				<c:otherwise>
+					<img class="img" src="/static/uploads/shop/${product.product_imgurl}" alt="상품 이미지" style="width:150px;">
+				</c:otherwise>
+			</c:choose>
+		
+			<div class="card-body">
+				<a href="product_detail?product_id=${product.product_id }">${product.product_name}</a> <br />
+				
+				<!-- 가격 표시 (할인가 적용) -->
+				<div class="price-container">
+				    <c:set var="hasDiscount" value="${product.product_discountrate != null and product.product_discountrate > 0}" />
+				    
+				    <c:choose>
+				        <c:when test="${hasDiscount}">
+				            <!-- 할인이 있는 경우 -->
+				            <c:set var="discountPercent" value="${product.product_discountrate * 100}" />
+				            <c:set var="salePrice" value="${product.product_price - (product.product_price * product.product_discountrate)}" />
+				            
+				            <span class="discount-badge"><fmt:formatNumber value="${discountPercent}" pattern="#"/>% 할인</span><br />
+				            <span class="original-price">₩<fmt:formatNumber value="${product.product_price}" pattern="#,###"/></span><br />
+				            <span class="sale-price">₩<fmt:formatNumber value="${salePrice}" pattern="#,###"/></span>
+				        </c:when>
+				        <c:otherwise>
+				            <!-- 할인이 없는 경우 -->
+				            <span class="sale-price">₩<fmt:formatNumber value="${product.product_price}" pattern="#,###"/></span>
+				        </c:otherwise>
+				    </c:choose>
+				</div>
+				<!--  -->
+			</div>
+		</div>
+	</c:forEach>
 
 </div>
 

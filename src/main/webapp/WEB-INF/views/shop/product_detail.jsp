@@ -19,22 +19,26 @@
   	padding: 20px;
   	max-width: 1200px;
   	margin: 0 auto;
+  	align-items: flex-start; /* 상단 정렬로 겹침 방지 */
 }
 
 .left-section{
 	flex: 1;
 	display: flex;
 	flex-direction: column;
+	min-width: 0; /* flex 아이템이 너무 작아지지 않게 */
 }
 
 .right-section{
 	width: 350px;
+	min-width: 350px; /* 최소 너비 보장 */
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 	border: 2px solid pink;
 	padding: 20px;
 	height: fit-content;
 	position: sticky;
 	top: 20px;
+	flex-shrink: 0; /* 크기 축소 방지 */
 }
 
 .imgcontainer {
@@ -48,6 +52,7 @@
     flex-direction: column;
     gap: 10px;
     width: 100px;
+    flex-shrink: 0; /* 썸네일 크기 고정 */
 }
 
 .thumbnail {
@@ -63,8 +68,14 @@
     border-color: #007bff;
 }
 
+.main-image-container {
+    flex: 1;
+    max-width: calc(100% - 120px); /* 썸네일 공간 제외 */
+}
+
 .main-img{
-	width: 500px;
+	width: 100%;
+	max-width: 500px;
 	height: 500px;
 	background-color: #fff;
     border: 2px solid #ccc;
@@ -81,6 +92,7 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     margin-bottom: 30px;
+    background-color: #fff;
 }
 
 .bottombar ul{
@@ -89,6 +101,7 @@
 	margin: 0;
 	display: flex;
 	gap: 40px;
+	flex-wrap: wrap; /* 작은 화면에서 줄바꿈 */
 }
 
 .bottombar a{
@@ -124,6 +137,116 @@
 	margin-bottom: 10px;
 	padding: 8px 0;
 	border-bottom: 1px solid #eee;
+}
+
+.review-section {
+    width: 100%;
+    padding: 30px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eee;
+}
+
+.review-title {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.review-write-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.review-write-btn:hover {
+    background-color: #0056b3;
+}
+
+.review-item {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+
+.review-item:last-child {
+    margin-bottom: 0;
+}
+
+.review-content-area {
+    width: 100%;
+}
+
+.review-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.review-item-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    flex: 1;
+}
+
+.review-author {
+    font-size: 14px;
+    color: #666;
+    font-weight: normal;
+    margin-left: 20px;
+}
+
+.review-bottom {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.review-image {
+    flex-shrink: 0;
+    width: 150px;
+    height: 150px;
+}
+
+.review-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.review-text {
+    flex: 1;
+    padding: 10px 0;
+}
+
+.review-text p {
+    margin: 0;
+    line-height: 1.6;
+    color: #333;
+    font-size: 14px;
 }
 
 .title{
@@ -209,6 +332,46 @@
 .action-buttons button:hover{
 	opacity: 0.9;
 }
+
+/* 반응형 대응 */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .right-section {
+        width: 100%;
+        min-width: auto;
+        position: relative;
+        top: 0;
+    }
+    
+    .imgcontainer {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .thumbnail-column {
+        flex-direction: row;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .main-image-container {
+        max-width: 100%;
+    }
+    
+    .main-img {
+        max-width: 400px;
+        height: 400px;
+    }
+    
+    .bottombar ul {
+        justify-content: center;
+        gap: 20px;
+    }
+}
 </style>
 
 <script>
@@ -233,14 +396,40 @@
 	    alert("장바구니에 담았습니다.");
 	    location.href = "cart_write?user_id=" + userId + "&product_id=${product.product_id}&cart_quantity=" + count;
 	}
+	
+	function getuserid(){
+		var userId='${sessionScope.user_id}';
+		if (!userId || userId.trim() === '' || userId === 'null') {
+	        userId = '2'; // 기본값으로 2 사용
+	    }
+	}
+	
+	function reviewwrite() {
+	    
+		//사용자 아이디와 상품아이디를 가지고 폼을 작성하고
+		//폼을 작성한 뒤에 사용자아이디와 상품아이디로 테이블에 삽입해야한다.
+		//폼에 아무것도 없는게 말이될까
+		
+		
+		
+		
+	    var userId='${sessionScope.user_id}';
+		if (!userId || userId.trim() === '' || userId === 'null') {
+	        userId = '2'; // 기본값으로 2 사용
+	    }
+	    // 리뷰 작성 페이지로 이동
+	    location.href = "review_write_view?user_id=" + userId + "&product_id=${product.product_id}";
+	}
 </script>
 
 <body>
 <h2>product_detail</h2>
 
 <div class="main-container">
+
     <!-- 왼쪽 섹션: 이미지, 하단바, 상품정보 -->
     <div class="left-section">
+    	
         <!-- 이미지 영역 -->
         <div class="imgcontainer">
             <!-- 왼쪽 썸네일 리스트 -->
@@ -254,6 +443,9 @@
             <div class="main-image-container">
                 <c:if test="${not empty productimgs}">
                     <img id="mainImage" class="main-img" src="/static/uploads/shop/${productimgs[0].product_imgurl}" alt="대표 이미지" />
+                </c:if>
+                <c:if test="${empty productimgs}">
+                    <img id="mainImage" class="main-img" src="/static/uploads/shop/noimages.png" alt="기본 이미지" />
                 </c:if>
             </div>
         </div>
@@ -276,6 +468,71 @@
             <div><strong>AS책임자 전화번호:</strong> ${product.product_as_manager_phone}</div>
             <div><strong>제품 종류:</strong> ${product.product_type}</div>
             <div><strong>제품 색상:</strong> ${product.product_color}</div>
+        </div>
+        
+        <!-- 리뷰 섹션 -->
+        <div class="review-section">
+        	<div class="review-header">
+        		<h3 class="review-title">리뷰</h3>
+        	<button class="review-write-btn" onclick="reviewwrite()">리뷰 작성하기</button>
+        	</div>
+        	
+        	<!-- 리뷰 목록 (forEach로 반복) -->
+        	<c:forEach var="review" items="${review_list}" varStatus="status">
+        		<div class="review-item">
+        			<div class="review-content-area">
+        				<div class="review-top">
+        					<h4 class="review-item-title">리뷰 제목 ${status.index + 1}</h4>
+        					<span class="review-author">작성자: ${review.user_nickname != null ? review.user_nickname : sessionScope.user_id}</span>
+        				</div>
+        				<div class="review-bottom">
+        					<div class="review-image">
+        						<img src="/static/uploads/review/${review.review_img != null ? review.review_img : 'default-review.jpg'}" alt="리뷰 이미지" />
+        					</div>
+        					<div class="review-text">
+        						<p>${review.review_content != null ? review.review_content : '정말 좋은 상품입니다! 배송도 빠르고 품질도 만족스럽습니다.'}</p>
+        					</div>
+        				</div>
+        			</div>
+        		</div>
+        	</c:forEach>
+        	
+        	<!-- 샘플 리뷰 (reviews가 없을 경우) -->
+        	<c:if test="${empty reviews}">
+        		<div class="review-item">
+        			<div class="review-content-area">
+        				<div class="review-top">
+        					<h4 class="review-item-title">만족스러운 구매</h4>
+        					<span class="review-author">작성자: 구매고객1</span>
+        				</div>
+        				<div class="review-bottom">
+        					<div class="review-image">
+        						<img src="https://via.placeholder.com/150x150/e0e0e0/666?text=Review+Image" alt="리뷰 이미지" />
+        					</div>
+        					<div class="review-text">
+        						<p>정말 좋은 상품입니다! 배송도 빠르고 품질도 만족스럽습니다. 가격 대비 성능이 우수하네요.</p>
+        					</div>
+        				</div>
+        			</div>
+        		</div>
+        		
+        		<div class="review-item">
+        			<div class="review-content-area">
+        				<div class="review-top">
+        					<h4 class="review-item-title">추천합니다</h4>
+        					<span class="review-author">작성자: 구매고객2</span>
+        				</div>
+        				<div class="review-bottom">
+        					<div class="review-image">
+        						<img src="https://via.placeholder.com/150x150/f0f0f0/888?text=Review+Photo" alt="리뷰 이미지" />
+        					</div>
+        					<div class="review-text">
+        						<p>색상도 예쁘고 크기도 딱 맞습니다. 조립도 쉽고 견고해요. 다음에도 이 브랜드 제품을 구매할 예정입니다.</p>
+        					</div>
+        				</div>
+        			</div>
+        		</div>
+        	</c:if>
         </div>
     </div>
 
@@ -319,3 +576,6 @@
         </div>
     </div>
 </div>
+
+</body>
+</html>

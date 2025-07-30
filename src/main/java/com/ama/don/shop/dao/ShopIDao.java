@@ -16,6 +16,7 @@ import com.ama.don.shop.dto.Orders_productsDto;
 import com.ama.don.shop.dto.PaymentDto;
 import com.ama.don.shop.dto.ProductDto;
 import com.ama.don.shop.dto.ProductFlatDto;
+import com.ama.don.shop.dto.ShopReviewFlatDto;
 
 @Mapper
 public interface ShopIDao {
@@ -76,6 +77,17 @@ public interface ShopIDao {
 	public void deliver_update(Long order_id, String deliver_person, 
 			String deliver_recipient_phone, String deliver_loc, String deliver_detail_loc);
 	
+	
+	
+	
+	//Review IDao
+	public ArrayList<ShopReviewFlatDto> review_list(Long target_id);
+	public void review_write(Long user_id, Long target_id, String review_title, String review_content,
+			String review_img);
+	
+	//User_detail IDao
+	public ShopReviewFlatDto user_info(Long user_id);
+
 	
 	//주문수정을 하는데 실제로는 배송지 수정정도를 할것 그러니까 주문아이디로 배송지를 찾아서 배송지를 deliver_update를 하면된다.
 	

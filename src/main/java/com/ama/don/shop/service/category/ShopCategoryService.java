@@ -52,14 +52,14 @@ public class ShopCategoryService implements ShopServiceinter{
 			//카테고리별 상품 리스트
 			ArrayList<ProductFlatDto> categoryproducts=iDao.product_category(categoryid);
 			
-			model.addAttribute("product_category",categoryproducts);
+			model.addAttribute("list",categoryproducts);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		
 		
 		//iDao.intocart(product_id);
-		model.addAttribute("list",iDao.product_list());
+//		model.addAttribute("list",iDao.product_list());
 		
 
 	}
