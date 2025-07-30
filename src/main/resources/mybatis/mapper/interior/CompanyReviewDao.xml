@@ -205,7 +205,26 @@
     <!-- 리뷰 삭제시 평균 점수 다시 계산 -->
     <update id="adjustDeleteScoreAvg"
             parameterType="com.ama.don.interior.dto.request.CompanyScoreAdjustDto">
+        update company_score_avg
+        set
+            sum_communication = sum_communication - #{oldCommunicationRate},
+            sum_price = sum_price - #{oldPriceRate},
+            sum_result = sum_result - #{oldResultRate},
+            sum_schedule = sum_schedule - #{oldScheduleRate},
+            company_review_count = company_review_count - 1,
 
+            avg_communication = (sum_communication - #{oldCommunicationRate}) / company_review_count - 1,
+            avg_price = (sum_price - #{oldPriceRate}) / company_review_count - 1,
+            avg_result = (sum_result - #{oldResultRate}) / company_review_count - 1,
+            avg_schedule = (sum_schedule - #{oldScheduleRate}) / company_review_count - 1,
+
+            avg_total_rate = (
+                (sum_communication - #{oldCommunicationRate}) +
+                (sum_price - #{oldPriceRate}) +
+                (sum_result - #{oldResultRate}) +
+                (sum_schedule - #{oldScheduleRate})
+            ) / 4 / (company_review_count - 1)
+        where company_id = #{companyId}
     </update>
 
 
