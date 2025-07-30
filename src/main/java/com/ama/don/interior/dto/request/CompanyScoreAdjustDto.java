@@ -19,8 +19,8 @@ public class CompanyScoreAdjustDto {
     private int oldResultRate;         // 결과 점수
     private int oldScheduleRate;       // 일정 점수
 
-    private int communicationRate;  // 소통 점수
-    private int priceRate;          // 가격 점수
-    private int resultRate;         // 결과 점수
-    private int scheduleRate;       // 일정 점수
+    private int newCommunicationRate;
+    private int newPriceRate;
+    private int newResultRate;
+    private int newScheduleRate;
 }

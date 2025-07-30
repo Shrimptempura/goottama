@@ -178,10 +178,36 @@
     <!-- 파일 수정(삭제->생성)은 fileDao에서 -->
     <!-- review_img -->
 
-    <!-- 리뷰 수정또는 삭제시 평균점수 다시 계산 필요 -->
-    <update id="updateSubScore">
+    <!-- 리뷰 수정시 평균점수 다시 계산 -->
+    <update id="adjustEditScoreAvg"
+            parameterType="com.ama.don.interior.dto.request.CompanyScoreAdjustDto">
+        update company_score_avg
+        set
+            sum_communication = sum_communication - #{oldCommunicationRate} + #{newCommunicationRate},
+            sum_price = sum_price - #{oldPriceRate} + #{newPriceRate},
+            sum_result = sum_result - #{oldResultRate} + #{newResultRate},
+            sum_schedule = sum_schedule - #{oldScheduleRate} + #{newScheduleRate},
+
+            avg_communication = (sum_communication - #{oldCommunicationRate} + #{newCommunicationRate}) / company_review_count,
+            avg_price = (sum_price - #{oldPriceRate} + #{newPriceRate}) / company_review_count,
+            avg_result = (sum_result - #{oldResultRate} + #{newResultRate}) / company_review_count,
+            avg_schedule = (sum_schedule - #{oldScheduleRate} + #{newScheduleRate}) / company_review_count,
+
+            avg_total_rate = (
+                (sum_communication - #{oldCommunicationRate} + #{newCommunicationRate}) +
+                (sum_price - #{oldPriceRate} + #{newPriceRate}) +
+                (sum_result - #{oldResultRate} + #{newResultRate}) +
+                (sum_schedule - #{oldScheduleRate} + #{newScheduleRate})
+            ) / 4 / company_review_count
+        where company_id = #{companyId}
+    </update>
+
+    <!-- 리뷰 삭제시 평균 점수 다시 계산 -->
+    <update id="adjustDeleteScoreAvg"
+            parameterType="com.ama.don.interior.dto.request.CompanyScoreAdjustDto">
 
     </update>
+
 
     <!-- 리뷰 수정 뷰 -->
     <select id="getEditView" resultType="com.ama.don.interior.dto.request.CompanyReviewUpdateDto">

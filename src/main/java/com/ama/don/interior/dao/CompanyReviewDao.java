@@ -3,6 +3,7 @@ package com.ama.don.interior.dao;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
 import com.ama.don.interior.dto.request.CompanyReviewUpdateDto;
+import com.ama.don.interior.dto.request.CompanyScoreAdjustDto;
 import com.ama.don.interior.dto.response.CompanyHomeReviewDto;
 import com.ama.don.interior.dto.response.CompanyReviewDto;
 import com.ama.don.interior.dto.response.CompanyScoreAvgDto;
@@ -69,8 +70,11 @@ public interface CompanyReviewDao {
     
     // 파일 수정은 공통 fileDao에서 처리
 
-    // 리뷰 수정 또는 삭제시 점수를 다시 계산해야함
-    int adjustScoreAvg(CompanyReviewUpdateDto dto);
+    // 리뷰 수정후 점수를 다시 계산
+    int adjustEditScoreAvg(CompanyScoreAdjustDto dto);
+
+    // 리뷰 삭제후 점수를 다시 계산
+    int adjustDeleteScoreAvg(CompanyScoreAdjustDto dto);
 
     // 리뷰 수정 뷰
     CompanyReviewUpdateDto getEditView(Long reviewId);
