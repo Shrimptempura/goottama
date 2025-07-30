@@ -3,6 +3,7 @@ package com.ama.don.interior.dao;
 import com.ama.don.common.dao.ReviewDao;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
+import com.ama.don.interior.dto.request.CompanyReviewUpdateDto;
 import com.ama.don.interior.dto.response.CompanyHomeReviewDto;
 import com.ama.don.interior.dto.response.CompanyReviewDto;
 import com.ama.don.interior.dto.response.CompanyScoreAvgDto;
@@ -276,6 +277,41 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
 
         assertThat(updated.getReviewContent()).isNotEqualTo(originContent);
         assertThat(updated.getReviewModify()).isNotEqualTo(originDate);
+    }
+
+    @DisplayName("업체 리뷰를 수정")
+    @Test
+    void updateCompanyReview() {
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        Long reviewId = dto.getCommonReviewDto().getReviewId();
+        Long userId = dto.getCommonReviewDto().getUserId();
+
+        Boolean result = companyReviewDao.existByReviewIdAndUserId(reviewId, userId);
+        assertThat(result).isTrue();
+
+        // 수정 전 값
+        String originArea = dto.getCompanyReviewDto().getAreaPyeong();
+
+        // 비교 값
+        int newPrice = 10;
+
+        CompanyReviewUpdateDto updateDto = new CompanyReviewUpdateDto();
+        updateDto.setReviewId(reviewId);
+        updateDto.setPriceRate(newPrice);
+        
+        // not null, 임시로 명시
+        updateDto.setAreaPyeong("테스트");
+        updateDto.setResultRate(9);
+        updateDto.setCommunicationRate(8);
+        updateDto.setScheduleRate(7);
+        updateDto.setConstructionField("테스트");
+        updateDto.setStructureType("테스트");
+
+        int updated = companyReviewDao.updateCompanyReview(updateDto);
+        assertThat(updated).isEqualTo(1);
+
+        assertThat(updateDto.getPriceRate()).isEqualTo(newPrice);
+        assertThat(updateDto.getAreaPyeong()).isNotEqualTo(originArea);
     }
 
 
