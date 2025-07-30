@@ -34,11 +34,11 @@ public interface CompanyReviewDao {
     // 리뷰 평균 점수 계산 업데이트
     // 사용자가 리뷰를 작성시 무조건 마지막에 실행되어야 함
     // 점수 테이블이 있는 회사에 대한 점수 반영
+    // 합산만 하는 계산
+    int addScoreOnCreate(CompanyReviewCreateDto dto);
 
-    // sum과 avg로 다시 모든 쿼리 바꿔야함
-    // addScoreOnCreate -> sum
-    // recalculateOnCreate - > avg
-    int applyScoreOnCreate(CompanyReviewCreateDto dto);
+    // 평균만 구하는 계산
+    int averageOnCreate(CompanyReviewCreateDto dto);
 
     // 업체 모든 별점 평균
     CompanyScoreAvgDto getAvgScoreByCompanyId(Long companyId);

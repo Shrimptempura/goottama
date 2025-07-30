@@ -18,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -95,7 +94,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         int secondReview = companyReviewDao.insert(forceReviewDto);
         assertThat(secondReview).isEqualTo(1);
 
-        int updated = companyReviewDao.applyScoreOnCreate(forceReviewDto);
+        int updated = companyReviewDao.addScoreOnCreate(forceReviewDto);
         assertThat(updated).isEqualTo(1);
 
         // 첫번째 + 두번째 리뷰의 평균 뽑기
@@ -379,7 +378,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         secondReview.setCommunicationRate(10);
 
         companyReviewDao.insert(secondReview);
-        companyReviewDao.applyScoreOnCreate(secondReview);
+        companyReviewDao.addScoreOnCreate(secondReview);
 
         assertThat(companyId).isEqualTo(secondReview.getCompanyId());
         assertThat(secondReviewId).isNotEqualTo(firstReview.getCommonReviewDto().getReviewId());
