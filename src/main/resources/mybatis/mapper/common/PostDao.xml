@@ -5,29 +5,57 @@
 
 <mapper namespace="com.ama.don.common.dao.PostDao">
 
-	<!-- 게시글 목록 조회 -->
+	<!-- 게시글 목록 조회-->
 	<select id="findByTarget"
 		resultType="com.ama.don.common.dto.PostDto">
-		SELECT * FROM post
+		SELECT
+		post_id,
+		user_id,
+		post_title,
+		post_content,
+		post_date,
+		post_count,
+		post_like_count,
+		post_img,
+		target_type AS targetType,
+		target_id AS targetId
+		FROM post
 		WHERE target_type = #{targetType}
 		AND target_id = #{targetId}
 		ORDER BY post_id DESC
 	</select>
 
-	<!-- 게시글 하나 조회 -->
+	<!-- 게시글 상세 조회 -->
 	<select id="findById" parameterType="long"
 		resultType="com.ama.don.common.dto.PostDto">
-		SELECT * FROM post WHERE post_id = #{postId}
+		SELECT
+		post_id,
+		user_id,
+		post_title,
+		post_content,
+		post_date,
+		post_count,
+		post_like_count,
+		post_img,
+		target_type AS targetType,
+		target_id AS targetId
+		FROM post
+		WHERE post_id = #{postId}
 	</select>
 
 	<!-- 게시글 작성 -->
 	<insert id="create"
-		parameterType="com.ama.don.common.dto.PostDto">
-		INSERT INTO post (user_id, post_title, post_content, post_date, post_count,
-		post_like_count, post_img, target_type, target_id)
-		VALUES (#{user_id}, #{post_title}, #{post_content}, CURRENT_TIMESTAMP,
-		#{post_count}, #{post_like_count}, #{post_img}, #{targetType},
-		#{targetId})
+		parameterType="com.ama.don.common.dto.PostDto" useGeneratedKeys="true"
+		keyProperty="post_id">
+		INSERT INTO post (
+		user_id, post_title, post_content,
+		post_date, post_count, post_like_count,
+		post_img, target_type, target_id
+		) VALUES (
+		#{user_id}, #{post_title}, #{post_content},
+		CURRENT_TIMESTAMP, 0, 0,
+		#{post_img}, #{targetType}, #{targetId}
+		)
 	</insert>
 
 	<!-- 게시글 수정 -->

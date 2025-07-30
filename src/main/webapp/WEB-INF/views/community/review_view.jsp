@@ -40,11 +40,12 @@
 					<td><fmt:formatDate value="${review.post_date}"
 							pattern="yyyy-MM-dd HH:mm" /></td>
 					<td><c:choose>
-							<c:when test="${not empty review.post_images}">
+							<c:when test="${not empty review.fileList}">
 								<img
-									src="${pageContext.request.contextPath}${review.post_images[0].file_path}"
+									src="${pageContext.request.contextPath}${review.fileList[0].file_path}"
 									alt="썸네일" style="width: 80px;" />
 							</c:when>
+
 							<c:otherwise>
 								<span style="color: gray;">이미지 없음</span>
 							</c:otherwise>

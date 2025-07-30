@@ -3,12 +3,13 @@ package com.ama.don.common.dao;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ama.don.common.dto.FileDto;
 
 @Mapper
 public interface FileDao {
-	
+
 	// 파일 업로드
 	void insertFile(FileDto fileDto);
 
@@ -19,6 +20,6 @@ public interface FileDao {
 	void delete(long file_id);
 
 	// targetType과 targetId를 이용한 리뷰 목록 조회
-	List<FileDto> findFilesByTarget(String targetType, Long targetId);
+	List<FileDto> findByTarget(@Param("targetType") String targetType, @Param("targetId") Long targetId);
 
 }

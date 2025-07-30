@@ -10,18 +10,18 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ama.don.common.dto.FileDto;
-import com.ama.don.common.enums.TargetType;
-import com.ama.don.community.dao.Write_viewDao;
-import com.ama.don.community.dto.Write_viewDto;
 import com.ama.don.common.dao.FileDao;
+import com.ama.don.common.dao.PostDao;
+import com.ama.don.common.dto.FileDto;
+import com.ama.don.common.dto.PostDto;
+import com.ama.don.common.enums.TargetType;
 
 @Controller
 @RequestMapping("/community")
 public class Write_viewController {
 
 	@Autowired
-	private Write_viewDao write_viewDao;
+	private PostDao postDao;
 
 	@Autowired
 	private FileDao fileDao;
@@ -34,54 +34,61 @@ public class Write_viewController {
 		return "community/write_view";
 	}
 
-	// 이미지 파일 분리 저장
+	// 게시글 저장
 	@PostMapping("/write")
 	public String writePost(@RequestParam("title") String title, @RequestParam("content") String content,
-			@RequestParam("targetType") String targetType, @RequestParam("imgFiles") MultipartFile[] imgFiles,
-			Model model) {
+			@RequestParam("targetType") String targetType,
+			@RequestParam(value = "imgFiles", required = false) MultipartFile[] imgFiles, Model model) {
 
-		Write_viewDto dto = new Write_viewDto();
-		dto.setUser_id(1);
+		PostDto dto = new PostDto();
+		dto.setUser_id(1L); // 임시 아이디 L == Long
 		dto.setPost_title(title);
 		dto.setPost_content(content);
 
+
+		TargetType type;
 		try {
-			dto.setTarget_type(TargetType.valueOf(targetType));
+			type = TargetType.valueOf(targetType);
+			dto.setTargetType(type);
 		} catch (IllegalArgumentException e) {
 			model.addAttribute("msg", "잘못된 게시판 유형입니다.");
 			return "community/write_view";
 		}
-		dto.setTarget_id(1);
 
-		write_viewDao.insertPost(dto);
+		dto.setTargetId(1L); // 임시 아이디 L == Long
+
+		// 게시글 저장
+		postDao.create(dto);
 		Long postId = dto.getPost_id();
 
-		// 이미지들을 file 테이블에 저장
-		for (MultipartFile file : imgFiles) {
-			if (!file.isEmpty()) {
-				try {
-					String saveName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-					File uploadPath = new File(uploadDir);
-					if (!uploadPath.exists())
-						uploadPath.mkdirs();
+		// 이미지 저장
+		if (imgFiles != null) {
+			for (MultipartFile file : imgFiles) {
+				if (!file.isEmpty()) {
+					try {
+						String saveName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+						File uploadPath = new File(uploadDir);
+						if (!uploadPath.exists())
+							uploadPath.mkdirs();
 
-					File destFile = new File(uploadDir + saveName);
-					file.transferTo(destFile);
+						File destFile = new File(uploadDir + saveName);
+						file.transferTo(destFile);
 
-					// file 테이블에 insert
-					FileDto fileDto = new FileDto();
-					fileDto.setFile_name(saveName);
-					fileDto.setFile_path("/images/" + saveName); // URL 경로
-					fileDto.setTarget_type(TargetType.valueOf(targetType));
-					fileDto.setTarget_id(postId);
+						FileDto fileDto = new FileDto();
+						fileDto.setFile_name(saveName);
+						fileDto.setFile_path("/images/" + saveName);
+						fileDto.setTarget_type(type);
+						fileDto.setTarget_id(postId);
 
-					fileDao.insertFile(fileDto);
-				} catch (IOException e) {
-					e.printStackTrace();
+						fileDao.insertFile(fileDto);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
 
 		return "redirect:/community/review_view";
 	}
+	
 }

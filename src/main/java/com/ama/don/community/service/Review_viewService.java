@@ -3,16 +3,16 @@ package com.ama.don.community.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.ama.don.community.dao.Review_viewDao;
-import com.ama.don.community.dto.Review_viewDto;
+import com.ama.don.common.dao.PostDao;
+import com.ama.don.common.dto.PostDto;
 
 @Service
 public class Review_viewService {
 
 	@Autowired
-	private Review_viewDao reviewDao;
+	private PostDao postDao;
 
-	public Review_viewDto getPost(Long postId) {
-		return reviewDao.selectReviewById(postId);
+	public PostDto getPost(Long postId) {
+		return postDao.findById(postId);
 	}
 }
