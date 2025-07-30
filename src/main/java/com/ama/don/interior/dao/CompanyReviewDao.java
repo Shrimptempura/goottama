@@ -19,17 +19,25 @@ public interface CompanyReviewDao {
     //int insertCommonReview(CompanyReviewCreateDto dto);
 
     // 사용자가 작성하는 업체 리뷰
+    // 점수테이블 x, company_review 리뷰만 추가
     int insert(CompanyReviewCreateDto dto);
 
     // 업체 아이디로 company_score_avg 테이블이 존재하는지 확인
+    // 존재하면 -> applyScoreOnCreate, 존재하지 않으면 -> createScoreTable
     Boolean isExistScoreTable(Long companyId);
 
     // 리뷰 점수 계산 테이블 생성
     // 서비스단에서 먼저 테이블이 있는지 체크해야함
+    // 업체의 점수 테이블 최초 생성(1회)
     int createScoreTable(CompanyReviewCreateDto dto);
 
     // 리뷰 평균 점수 계산 업데이트
     // 사용자가 리뷰를 작성시 무조건 마지막에 실행되어야 함
+    // 점수 테이블이 있는 회사에 대한 점수 반영
+
+    // sum과 avg로 다시 모든 쿼리 바꿔야함
+    // addScoreOnCreate -> sum
+    // recalculateOnCreate - > avg
     int applyScoreOnCreate(CompanyReviewCreateDto dto);
 
     // 업체 모든 별점 평균

@@ -233,9 +233,9 @@
             company_review_count = company_review_count - 1,
 
             avg_communication = (sum_communication - #{oldCommunicationRate}) / (company_review_count - 1),
-            avg_price = sum_price - #{oldPriceRate}) / (company_review_count - 1),
-            avg_result = sum_result - #{oldResultRate}) / (company_review_count - 1),
-            avg_schedule = sum_schedule - #{oldScheduleRate}) / (company_review_count - 1),
+            avg_price = (sum_price - #{oldPriceRate}) / (company_review_count - 1),
+            avg_result = (sum_result - #{oldResultRate}) / (company_review_count - 1),
+            avg_schedule = (sum_schedule - #{oldScheduleRate}) / (company_review_count - 1),
             avg_total_rate = (
                 (sum_communication - #{oldCommunicationRate}) +
                 (sum_price - #{oldPriceRate}) +
