@@ -206,6 +206,7 @@ public class AbstractCompanyTestSupport {
         return dto;
     }
 
+    // 업체 리뷰 수정 헬퍼
     protected CompanyReviewUpdateDto updateCompanyDto(Long reviewId) {
         CompanyReviewUpdateDto updateDto = new CompanyReviewUpdateDto();
         updateDto.setReviewId(reviewId);

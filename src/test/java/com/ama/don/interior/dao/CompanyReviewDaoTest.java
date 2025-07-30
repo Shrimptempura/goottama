@@ -354,6 +354,40 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(afterAvgDto.getAvgTotalRate()).isNotEqualTo(firstAvg);
     }
 
+    @DisplayName("리뷰를 삭제시 점수 다시 계산")
+    @Test
+    void recalculateCompanyScoreAfterReviewDelete() {
+        // 다형성 리뷰 생성 + 업체 리뷰 생성
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        Long companyId = dto.getCompanyReviewDto().getCompanyId();
+        Long reviewId = dto.getCommonReviewDto().getReviewId();
+        Long userId = dto.getCommonReviewDto().getUserId();
+
+        companyReviewDao.createScoreTable(dto.getCompanyReviewDto());
+
+        // 첫번째 리뷰의 계산으로 얻은 총 별점
+        CompanyScoreAvgDto avgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
+        assertThat(avgDto).isNotNull();
+
+        // 리뷰 소프트 삭제
+        companyReviewDao.softDeleteCompanyReview(reviewId);
+        companyReviewDao.softDeletePolyReview(reviewId, userId);
+
+        CompanyScoreAdjustDto adjustDto = new CompanyScoreAdjustDto();
+        adjustDto.setCompanyId(companyId);
+        adjustDto.setOldPriceRate(dto.getCompanyReviewDto().getPriceRate());
+        adjustDto.setOldResultRate(dto.getCompanyReviewDto().getResultRate());
+        adjustDto.setOldScheduleRate(dto.getCompanyReviewDto().getScheduleRate());
+        adjustDto.setOldCommunicationRate(dto.getCompanyReviewDto().getCommunicationRate());
+
+        int adjusted = companyReviewDao.adjustDeleteScoreAvg(adjustDto);
+        assertThat(adjusted).isEqualTo(1);
+
+        CompanyScoreAvgDto afterAvgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
+        assertThat(afterAvgDto).isNotNull();
+        assertThat(afterAvgDto.getAvgTotalRate()).isEqualTo(0);
+    }
+
 
 
 }

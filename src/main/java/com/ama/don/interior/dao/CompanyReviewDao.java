@@ -73,6 +73,10 @@ public interface CompanyReviewDao {
     // 리뷰 수정후 점수를 다시 계산
     int adjustEditScoreAvg(CompanyScoreAdjustDto dto);
 
+    // 리뷰를 삭제하기전 0으로 나누는 오류를 방지하기 위해
+    // int countByCompanyId(Long companyId); 이 메서드로 개수가 만약 1이면
+    // adfaf 메서드 실행 아니면 adjustDeleteScoreAvg 실행
+    
     // 리뷰 삭제후 점수를 다시 계산
     int adjustDeleteScoreAvg(CompanyScoreAdjustDto dto);
 
