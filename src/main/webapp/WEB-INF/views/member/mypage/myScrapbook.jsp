@@ -11,7 +11,7 @@
 <a href="/mypage/myProfile"> 프로필 </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="/mypage/myOrderList"> <strong>나의쇼핑</strong> </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="/mypage/myReview">나의활동</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/mypage/editProfile">설정</a> <br />
+<a href="/mypage/editProfile_view">설정</a> <br />
 
 <a href="/mypage/myOrderList"> 주문배송목록 </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="/mypage/myScrapbook"> <strong>상품스크랩북</strong> </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

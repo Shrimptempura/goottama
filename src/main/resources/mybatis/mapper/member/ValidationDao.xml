@@ -17,5 +17,8 @@
 	SELECT COUNT(*) FROM user_detail WHERE USER_EMAIL=#{email}
 	</select> 
 	
+	<select id="nicknameEditCheck" resultType="int">
+	SELECT COUNT(*) FROM user_detail WHERE USER_NICKNAME=#{nickname}
+	</select> 
 
 </mapper>

@@ -12,6 +12,8 @@ public interface MemberProfileServiceInter {
 	
 	boolean resetPw(ResetPwDto resetPwDto,HttpSession session,Model model);
 	
-	void updateProfile(MemberDto memberDto, MemberEditDto memberEditDto);
+	boolean updateProfile(MemberDto memberDto, MemberEditDto memberEditDto, Model model);
+	
+	MemberDto getupdatedMember(String login_id);
 
 }

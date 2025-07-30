@@ -3,6 +3,7 @@ package com.ama.don.member.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -80,11 +81,33 @@ public class MemberController {
 	@PostMapping("/editProfile")
 	public String editProfile(@Valid @ModelAttribute MemberEditDto memberEditDto,BindingResult bindingResult, Model model, HttpSession session) {
 		
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("memberEditDto", memberEditDto);
+			// 검증 결과 콘솔에 에러출력
+			for (FieldError error : bindingResult.getFieldErrors()) {
+				System.out.println("Error in field: " + error.getField());
+				System.out.println("Message: " + error.getDefaultMessage());
+			}
+			return "member/mypage/editProfile_view";
+		}
+		
 		memberEditDto.combineAddress(); // 폼에 입력된 값 하나로 dto에 주입
 		MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
-		memberProfileService.updateProfile(memberDto, memberEditDto);
+		boolean success = memberProfileService.updateProfile(memberDto, memberEditDto, model); //db업데이트
 		
-		return "";
+		if (!success) {
+			model.addAttribute("nickname_error", "이미 사용중인 닉네임입니다.");
+			return "member/mypage/editProfile_view";
+		}
+		MemberDto updated = memberProfileService.getupdatedMember(memberDto.getLogin_id()); //최신정보 조회
+		session.setAttribute("loginMember", updated); //세션 갱신	
+		
+		return "redirect:/mypage/editProfile_view";
+	}
+	
+	@PostMapping("/profileImgUpload")
+	public String profileImgUpload() {
+		return "member/mypage/editProfile_view";
 	}
 	
 	@GetMapping("/mypage/editPassword")

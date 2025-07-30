@@ -20,6 +20,7 @@ public class MemberProfileService implements MemberProfileServiceInter{
 	
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final MemberProfileDao memberProfileDao;
+	private final ValidationService validationService;
 
 	@Override
 	@Transactional
@@ -44,13 +45,24 @@ public class MemberProfileService implements MemberProfileServiceInter{
 	}
 
 	@Override
-	public void updateProfile(MemberDto memberDto, MemberEditDto memberEditDto) {
+	public boolean updateProfile(MemberDto memberDto, MemberEditDto memberEditDto,Model model) {
 		
 		//닉네임 중복확인
+		String nickname = memberEditDto.getChangeNickname();
+		boolean chechNickname = validationService.nicknameEditCheck(nickname);
+		if (chechNickname == false) {
+			return false;
+		}		
 		//db update
-		//세션 정보 갱신
+		memberProfileDao.updateMember(memberDto,memberEditDto);		
 		
-		
+		return true;
+	}
+	
+	@Override
+	public MemberDto getupdatedMember(String login_id) {
+		MemberDto updated = memberProfileDao.updated(login_id);
+		return updated;
 	}
 
 }
