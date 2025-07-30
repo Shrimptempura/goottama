@@ -1,7 +1,7 @@
 package com.ama.don.admin.service.noticeService;
 
 import com.ama.don.admin.dao.NoticesIDao;
-import com.ama.don.admin.dto.NoticeSearchVO;
+import com.ama.don.admin.dto.NoticeSearchDTO;
 import com.ama.don.admin.dto.NoticesDto;
 import com.ama.don.admin.utils.SearchVO;
 import org.springframework.stereotype.Service;
@@ -29,7 +29,7 @@ public class GetNoticeListService implements NoticeServiceInterface{
 
     /**
      * 공지사항 목록 조회 작업을 실행함.<br/>
-     * 모델에서 검색 조건(`NoticeSearchVO`)과 페이지네이션 정보(`SearchVO`)를 추출함.<br/>
+     * 모델에서 검색 조건(`NoticeSearchDTO`)과 페이지네이션 정보(`SearchVO`)를 추출함.<br/>
      * 검색 조건 유무에 따라 전체 공지 또는 검색된 공지를 DB에서 조회하고,<br/>
      * 페이지 계산을 수행한 뒤, 조회된 데이터를 맵 형태로 가공하여 모델에 추가함.
      *
@@ -39,7 +39,7 @@ public class GetNoticeListService implements NoticeServiceInterface{
     @Override
     public void execute(Model model) {
         Map<String, Object> map = model.asMap();
-        NoticeSearchVO noticeSearchVO = (NoticeSearchVO) map.get("noticeSearchVO");
+        NoticeSearchDTO noticeSearchVO = (NoticeSearchDTO) map.get("noticeSearchVO");
         SearchVO searchVO = (SearchVO) map.get("searchVO");
         List<Map<String, Object>> mapList = new ArrayList<>();
         List<NoticesDto> dtoList;

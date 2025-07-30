@@ -1,11 +1,10 @@
 package com.ama.don.admin.controller;
 
-import com.ama.don.admin.dto.UserSearchVO;
-import com.ama.don.admin.dto.UserTotalDataVO;
+import com.ama.don.admin.dto.UserSearchDTO;
 import com.ama.don.admin.service.userManage.GetUserDataForModal;
+import com.ama.don.admin.service.userManage.GetUserDetailData;
 import com.ama.don.admin.service.userManage.GetUserListService;
 import com.ama.don.admin.utils.SearchVO;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,24 +14,26 @@ public class UserManageController {
 
     private final GetUserListService getUserListService;
     private final GetUserDataForModal getUserDataForModal;
+    private final GetUserDetailData getUserDetailData;
 
-    public UserManageController(GetUserListService getUserListService, GetUserDataForModal getUserDataForModal) {
+    public UserManageController(GetUserDetailData getUserDetailData, GetUserListService getUserListService, GetUserDataForModal getUserDataForModal) {
         this.getUserListService = getUserListService;
         this.getUserDataForModal = getUserDataForModal;
+        this.getUserDetailData = getUserDetailData;
     }
 
     @RequestMapping("/admin/users/user_manage")
     public String userPage(Model model,
                            @ModelAttribute SearchVO searchVO,
-                           @ModelAttribute UserSearchVO userSearchVO) {
+                           @ModelAttribute UserSearchDTO userSearchDTO) {
         if (searchVO == null) {
             searchVO = new SearchVO();
         }
-        if (userSearchVO == null) {
-            userSearchVO = new UserSearchVO();
+        if (userSearchDTO == null) {
+            userSearchDTO = new UserSearchDTO();
         }
         model.addAttribute("searchVO", searchVO);
-        model.addAttribute("userSearchVO", userSearchVO);
+        model.addAttribute("userSearchDTO", userSearchDTO);
         getUserListService.execute(model);
         return "admin/users/user_manage";
     }
@@ -40,11 +41,11 @@ public class UserManageController {
     @PostMapping("/admin/users/user_list")
     public String userList(Model model,
                            @ModelAttribute SearchVO searchVO,
-                           @ModelAttribute UserSearchVO userSearchVO) {
+                           @ModelAttribute UserSearchDTO userSearchDTO) {
         model.addAttribute("searchVO", searchVO);
-        model.addAttribute("userSearchVO", userSearchVO);
+        model.addAttribute("userSearchDTO", userSearchDTO);
+        System.out.println("\n>>> userstatus : "+userSearchDTO.getUser_status());
         getUserListService.execute(model);
-
         return "admin/users/user_list";
     }
 
@@ -53,5 +54,12 @@ public class UserManageController {
         model.addAttribute("userId", userId);
         getUserDataForModal.execute(model);
         return "admin/users/user_data_modal";
+    }
+
+    @GetMapping("/admin/users/user_data_detail")
+    public String userDetail(Model model, @RequestParam("user_id") String userId) {
+        model.addAttribute("userId", userId);
+        getUserDetailData.execute(model);
+        return "admin/users/user_data_detail";
     }
 }

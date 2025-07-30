@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-
+<link rel="stylesheet" href="/static/css/admin/ui-snippets/modal.css">
 <title>Admin Dashboard</title>
 </head>
 <body>

@@ -60,7 +60,7 @@
             <td>${user.userId}</td>
             <td>${user.userName}</td>
             <td>${user.userNickname}</td>
-            <td>정상</td>
+            <td>${user.userStatus}</td>
             <td>${user.roleId}</td>
             <td>${user.userCreatedAt}</td>
             <td><button type="button" class="open-modal-btn" data-user-id="${user.userId}"> ▶ </button></td>

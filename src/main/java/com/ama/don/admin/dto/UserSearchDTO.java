@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserSearchVO {
+public class UserSearchDTO {
     private String user_name;
     private String user_nickname;
     private String user_gender;
@@ -19,4 +21,5 @@ public class UserSearchVO {
     private String user_zipcode;
     private String create_start_date;
     private String create_end_date;
+    private List<String> user_status;
 }

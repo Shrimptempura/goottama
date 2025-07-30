@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @Setter
 @Getter
 @AllArgsConstructor
-public class SanctionSearchVO {
+public class SanctionSearchDTO {
     private long userId;
     private String sanctionsTypes;
     private Timestamp searchStartDate;

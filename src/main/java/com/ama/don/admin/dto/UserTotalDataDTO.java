@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserTotalDataVO {
+public class UserTotalDataDTO {
     private long user_id;
     private String user_name;
     private String user_nickname;
@@ -23,5 +23,7 @@ public class UserTotalDataVO {
     private String user_img;
     private long roles_id;
     private String login_id;
-    private String sanctions_types;
+    private String sanctions_types; // sanctions 테이블에서 가지고 옴
+    private String user_status;
+    private String user_sanctions_until;
 }

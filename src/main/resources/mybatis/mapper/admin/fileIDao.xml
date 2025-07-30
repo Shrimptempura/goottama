@@ -5,42 +5,20 @@
 <mapper namespace="com.ama.don.admin.temp.FileIDao">
 
     <insert id="insertFile" parameterType="com.ama.don.common.dto.FileDto" useGeneratedKeys="true" keyProperty="file_id">
-        INSERT INTO file (
-        file_uploader,
-        file_name,
-        file_path,
-        target_type,
-        target_id
-        ) VALUES (
-        #{file_uploader},
-        #{file_name},
-        #{file_path},
-        #{target_type},
-        #{target_id}
-        )
+        INSERT INTO file (file_uploader, file_name, file_path, target_type, target_id)
+        VALUES (#{file_uploader}, #{file_name}, #{file_path}, #{target_type}, #{target_id})
     </insert>
 
     <select id="getFilesByTarget" resultType="com.ama.don.common.dto.FileDto">
-        SELECT
-        file_id,
-        file_uploader,
-        file_name,
-        file_path,
-        target_type,
-        target_id
+        SELECT file_id, file_uploader, file_name, file_path, target_type, target_id
         FROM file
-        WHERE target_type = #{targetType} AND target_id = #{targetId}
+        WHERE target_type = #{targetType}
+        AND target_id = #{targetId}
         ORDER BY file_id ASC
     </select>
 
     <select id="getFileById" resultType="com.ama.don.common.dto.FileDto">
-        SELECT
-        file_id,
-        file_uploader,
-        file_name,
-        file_path,
-        target_type,
-        target_id
+        SELECT file_id, file_uploader, file_name, file_path, target_type, target_id
         FROM file
         WHERE file_id = #{fileId}
     </select>
@@ -52,14 +30,16 @@
 
     <delete id="deleteFilesByTarget">
         DELETE FROM file
-        WHERE target_type = #{targetType} AND target_id = #{targetId}
+        WHERE target_type = #{targetType}
+        AND target_id = #{targetId}
     </delete>
 
     <update id="updateFilesTargetAndUploader">
         UPDATE file
         SET target_id = #{targetId}
         WHERE file_uploader = 'TUI_EDITOR'
-        AND target_type = 'ADMIN'  AND target_id &lt; 0
+        AND target_type = 'ADMIN'
+        AND target_id &lt; 0
         AND file_path IN
         <foreach collection="filePaths" item="filePath" open="(" separator="," close=")">
             #{filePath}
