@@ -349,7 +349,9 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(newPrice).isEqualTo(updateDto.getPriceRate());
 
         int adjusted = companyReviewDao.adjustScoreOnEdit(adjustDto);
+        int averaged = companyReviewDao.averageOnEdit(adjustDto);
         assertThat(adjusted).isEqualTo(1);
+        assertThat(averaged).isEqualTo(1);
 
         CompanyScoreAvgDto afterAvgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
         assertThat(afterAvgDto).isNotNull();
