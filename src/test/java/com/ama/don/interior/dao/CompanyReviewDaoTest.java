@@ -97,6 +97,9 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         int updated = companyReviewDao.addScoreOnCreate(forceReviewDto);
         assertThat(updated).isEqualTo(1);
 
+        updated = companyReviewDao.averageOnCreate(forceReviewDto);
+        assertThat(updated).isEqualTo(1);
+
         // 첫번째 + 두번째 리뷰의 평균 뽑기
         CompanyScoreAvgDto SecondAvgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
         assertThat(SecondAvgDto).isNotNull();
@@ -379,6 +382,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
 
         companyReviewDao.insert(secondReview);
         companyReviewDao.addScoreOnCreate(secondReview);
+        companyReviewDao.averageOnCreate(secondReview);
 
         assertThat(companyId).isEqualTo(secondReview.getCompanyId());
         assertThat(secondReviewId).isNotEqualTo(firstReview.getCommonReviewDto().getReviewId());
