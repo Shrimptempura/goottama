@@ -26,4 +26,10 @@
         where target_type = #{targetType}
         and target_id = #{targetId}
     </select>
+
+    <!-- 파일 삭제 -->
+    <delete id="delete" parameterType="java.lang.Long">
+        delete from file
+        where file_id = #{fileId}
+    </delete>
 </mapper>
