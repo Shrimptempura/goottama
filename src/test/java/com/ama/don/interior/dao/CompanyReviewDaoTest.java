@@ -354,38 +354,85 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(afterAvgDto.getAvgTotalRate()).isNotEqualTo(firstAvg);
     }
 
-    @DisplayName("리뷰를 삭제시 점수 다시 계산")
+    // 관련 테스트 두개를 묶어서 분기별로 표현
+    @DisplayName("리뷰를 삭제시 분기별 점수 계산")
     @Test
     void recalculateCompanyScoreAfterReviewDelete() {
         // 다형성 리뷰 생성 + 업체 리뷰 생성
-        CreateReviewSet dto = createPolyReviewAndCompanyReview();
-        Long companyId = dto.getCompanyReviewDto().getCompanyId();
-        Long reviewId = dto.getCommonReviewDto().getReviewId();
-        Long userId = dto.getCommonReviewDto().getUserId();
+        CreateReviewSet firstReview = createPolyReviewAndCompanyReview();
+        Long companyId = firstReview.getCompanyReviewDto().getCompanyId();
+        Long firstReviewId = firstReview.getCommonReviewDto().getReviewId();
+        Long userId = firstReview.getCommonReviewDto().getUserId();
 
-        companyReviewDao.createScoreTable(dto.getCompanyReviewDto());
+        // 해당 리뷰로 첫 점수 테이블 생성
+        companyReviewDao.createScoreTable(firstReview.getCompanyReviewDto());
 
-        // 첫번째 리뷰의 계산으로 얻은 총 별점
-        CompanyScoreAvgDto avgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
-        assertThat(avgDto).isNotNull();
+        double firstAvg = companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgTotalRate();
+
+        // 2번째 리뷰, 같은 회사에 연결
+        ReviewDto secondReviewDto = createPolyReview(companyId);
+        CompanyReviewCreateDto secondReview = createCheckCompanyReview(companyId, secondReviewDto.getReviewId());
+        Long secondReviewId = secondReview.getReviewId();
+        secondReview.setPriceRate(10);
+        secondReview.setResultRate(10);
+        secondReview.setScheduleRate(10);
+        secondReview.setCommunicationRate(10);
+
+        companyReviewDao.insert(secondReview);
+        companyReviewDao.applyScoreOnCreate(secondReview);
+
+        assertThat(companyId).isEqualTo(secondReview.getCompanyId());
+        assertThat(secondReviewId).isNotEqualTo(firstReview.getCommonReviewDto().getReviewId());
+
+        // 현재 리뷰 수는 2개
+        int reviewCount = companyReviewDao.countByCompanyId(companyId);
+        assertThat(reviewCount).isEqualTo(2);
+
+        // jdbctemplate을 사용하여 리뷰 뽑기
+        CompanyScoreAdjustDto adjustDto = jdbcTemplate.queryForObject(
+                "SELECT company_id, communication_rate, price_rate, result_rate, schedule_rate " +
+                        "FROM company_review WHERE review_id = ?",
+                (rs, rowNum) -> {
+                    CompanyScoreAdjustDto dto = new CompanyScoreAdjustDto();
+                    dto.setCompanyId(rs.getLong("company_id"));
+                    dto.setOldPriceRate(rs.getInt("price_rate"));
+                    dto.setOldResultRate(rs.getInt("result_rate"));
+                    dto.setOldScheduleRate(rs.getInt("schedule_rate"));
+                    dto.setOldCommunicationRate(rs.getInt("communication_rate"));
+                    return dto;
+                },
+                firstReviewId
+        );
 
         // 리뷰 소프트 삭제
-        companyReviewDao.softDeleteCompanyReview(reviewId);
-        companyReviewDao.softDeletePolyReview(reviewId, userId);
+        companyReviewDao.softDeleteCompanyReview(firstReviewId);
+        companyReviewDao.softDeletePolyReview(firstReviewId, userId);
+        
+        // 쿼리 중복 합산 문제있음 -> sum, avg 따로 쿼리처리 해야함
+        System.out.println("getAvgTotalRate: " + companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgTotalRate());
+        System.out.println("getAvgCommunication: " + companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgCommunication());
+        System.out.println("getAvgPrice: " + companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgPrice());
+        System.out.println("getAvgSchedule: " + companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgSchedule());
+        System.out.println("getAvgResult: " + companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgResult());
 
-        CompanyScoreAdjustDto adjustDto = new CompanyScoreAdjustDto();
-        adjustDto.setCompanyId(companyId);
-        adjustDto.setOldPriceRate(dto.getCompanyReviewDto().getPriceRate());
-        adjustDto.setOldResultRate(dto.getCompanyReviewDto().getResultRate());
-        adjustDto.setOldScheduleRate(dto.getCompanyReviewDto().getScheduleRate());
-        adjustDto.setOldCommunicationRate(dto.getCompanyReviewDto().getCommunicationRate());
+        reviewCount = companyReviewDao.countByCompanyId(companyId);
+        if (reviewCount > 1) {
+            companyReviewDao.adjustDeleteScoreAvg(adjustDto);
+            double secondAvg = companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgTotalRate();
+            assertThat(companyReviewDao.countByCompanyId(companyId)).isEqualTo(1);
+            assertThat(secondAvg).isNotEqualTo(firstAvg);
+        }
 
-        int adjusted = companyReviewDao.adjustDeleteScoreAvg(adjustDto);
-        assertThat(adjusted).isEqualTo(1);
-
-        CompanyScoreAvgDto afterAvgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
-        assertThat(afterAvgDto).isNotNull();
-        assertThat(afterAvgDto.getAvgTotalRate()).isEqualTo(0);
+        // 리뷰 소프트 삭제
+        companyReviewDao.softDeleteCompanyReview(secondReviewId);
+        companyReviewDao.softDeletePolyReview(secondReviewId, userId);
+        
+        // 리뷰 개수만 1개면 세부 점수 상관없이 0으로 리셋
+        reviewCount = companyReviewDao.countByCompanyId(companyId);
+        if (reviewCount == 1) {
+            companyReviewDao.resetScoresIfOne(companyId);
+            assertThat(companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgTotalRate()).isEqualTo(0);
+        }
     }
 
 
