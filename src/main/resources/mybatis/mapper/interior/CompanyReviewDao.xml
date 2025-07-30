@@ -165,8 +165,14 @@
     </update>
 
     <!-- 업체 리뷰 수정 -->
-    <update id="updateCompanyReview">
-
+    <update id="updateCompanyReview"
+            parameterType="com.ama.don.interior.dto.request.CompanyReviewUpdateDto">
+        update company_review
+        set
+            communication_rate = #{communicationRate}, price_rate = #{priceRate},
+            result_rate = #{resultRate}, schedule_rate = #{scheduleRate},
+            structure_type = #{structureType}, area_pyeong = #{areaPyeong}, construction_field = #{constructionField}
+        where review_id = #{reviewId}
     </update>
 
     <!-- 파일 수정(삭제->생성)은 fileDao에서 -->

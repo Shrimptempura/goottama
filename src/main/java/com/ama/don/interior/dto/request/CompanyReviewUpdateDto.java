@@ -25,6 +25,6 @@ public class CompanyReviewUpdateDto {
     private List<String> reviewImg;     // 리뷰 사진
 
     private String structureType;       // 건물 유형
-    private String areaInPyeong;           // 평수
+    private String areaPyeong;           // 평수
     private String constructionField;       // 시공 분야
 }
