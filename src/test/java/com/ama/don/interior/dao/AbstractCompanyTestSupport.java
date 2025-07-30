@@ -3,10 +3,7 @@ package com.ama.don.interior.dao;
 import com.ama.don.common.dao.ReviewDao;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.common.enums.TargetType;
-import com.ama.don.interior.dto.request.CompanyCreateDto;
-import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
-import com.ama.don.interior.dto.request.CompanyInsertDto;
-import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
+import com.ama.don.interior.dto.request.*;
 import com.ama.don.member.dto.JoinformDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -207,6 +204,21 @@ public class AbstractCompanyTestSupport {
         reviewDao.insertPolyReview(dto);
 
         return dto;
+    }
+
+    protected CompanyReviewUpdateDto updateCompanyDto(Long reviewId) {
+        CompanyReviewUpdateDto updateDto = new CompanyReviewUpdateDto();
+        updateDto.setReviewId(reviewId);
+
+        updateDto.setAreaPyeong("테스트");
+        updateDto.setResultRate(9);
+        updateDto.setCommunicationRate(8);
+        updateDto.setScheduleRate(7);
+        updateDto.setPriceRate(6);
+        updateDto.setConstructionField("테스트");
+        updateDto.setStructureType("테스트");
+
+        return updateDto;
     }
 
 }

@@ -4,6 +4,7 @@ import com.ama.don.common.dao.ReviewDao;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
 import com.ama.don.interior.dto.request.CompanyReviewUpdateDto;
+import com.ama.don.interior.dto.request.CompanyScoreAdjustDto;
 import com.ama.don.interior.dto.response.CompanyHomeReviewDto;
 import com.ama.don.interior.dto.response.CompanyReviewDto;
 import com.ama.don.interior.dto.response.CompanyScoreAvgDto;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Transactional
@@ -292,26 +294,64 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         // 수정 전 값
         String originArea = dto.getCompanyReviewDto().getAreaPyeong();
 
-        // 비교 값
-        int newPrice = 10;
-
-        CompanyReviewUpdateDto updateDto = new CompanyReviewUpdateDto();
-        updateDto.setReviewId(reviewId);
-        updateDto.setPriceRate(newPrice);
-        
-        // not null, 임시로 명시
-        updateDto.setAreaPyeong("테스트");
-        updateDto.setResultRate(9);
-        updateDto.setCommunicationRate(8);
-        updateDto.setScheduleRate(7);
-        updateDto.setConstructionField("테스트");
-        updateDto.setStructureType("테스트");
+        // 업체 리뷰 수정
+        CompanyReviewUpdateDto updateDto = updateCompanyDto(reviewId);
+        // updateDto.setPriceRate(6);
+        // updateDto.setAreaPyeong("테스트");
 
         int updated = companyReviewDao.updateCompanyReview(updateDto);
         assertThat(updated).isEqualTo(1);
 
-        assertThat(updateDto.getPriceRate()).isEqualTo(newPrice);
+        assertThat(updateDto.getPriceRate()).isEqualTo(6);
         assertThat(updateDto.getAreaPyeong()).isNotEqualTo(originArea);
+    }
+
+    @DisplayName("기존 리뷰 수정시 다시 점수 계산")
+    @Test
+    void recalculateCompanyScoreAfterReviewUpdate() {
+        // 다형성 리뷰 생성 + 업체 리뷰 생성
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        Long companyId = dto.getCompanyReviewDto().getCompanyId();
+        Long reviewId = dto.getCommonReviewDto().getReviewId();
+
+        companyReviewDao.createScoreTable(dto.getCompanyReviewDto());
+
+        // 첫번째 리뷰의 계산으로 얻은 총 별점
+        CompanyScoreAvgDto avgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
+        assertThat(avgDto).isNotNull();
+
+        double firstAvg = avgDto.getAvgTotalRate();
+
+        // 리뷰 수정
+        CompanyReviewUpdateDto updateDto = updateCompanyDto(reviewId);
+        int updated = companyReviewDao.updateCompanyReview(updateDto);
+        assertThat(updated).isEqualTo(1);
+        
+        // 테스트하는 수정후 점수 계산
+        CompanyScoreAdjustDto adjustDto = new CompanyScoreAdjustDto();
+        adjustDto.setCompanyId(companyId);
+        adjustDto.setOldPriceRate(dto.getCompanyReviewDto().getPriceRate());
+        adjustDto.setOldResultRate(dto.getCompanyReviewDto().getResultRate());
+        adjustDto.setOldScheduleRate(dto.getCompanyReviewDto().getScheduleRate());
+        adjustDto.setOldCommunicationRate(dto.getCompanyReviewDto().getCommunicationRate());
+
+        double oldPrice = adjustDto.getOldPriceRate();
+        assertThat(oldPrice).isEqualTo(dto.getCompanyReviewDto().getPriceRate());
+
+        adjustDto.setNewPriceRate(updateDto.getPriceRate());
+        adjustDto.setNewResultRate(updateDto.getResultRate());
+        adjustDto.setNewScheduleRate(updateDto.getScheduleRate());
+        adjustDto.setNewCommunicationRate(updateDto.getCommunicationRate());
+
+        double newPrice = adjustDto.getNewPriceRate();
+        assertThat(newPrice).isEqualTo(updateDto.getPriceRate());
+
+        int adjusted = companyReviewDao.adjustEditScoreAvg(adjustDto);
+        assertThat(adjusted).isEqualTo(1);
+
+        CompanyScoreAvgDto afterAvgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
+        assertThat(afterAvgDto).isNotNull();
+        assertThat(afterAvgDto.getAvgTotalRate()).isNotEqualTo(firstAvg);
     }
 
 
