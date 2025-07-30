@@ -349,7 +349,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(newPrice).isEqualTo(updateDto.getPriceRate());
 
         int adjusted = companyReviewDao.adjustScoreOnEdit(adjustDto);
-        int averaged = companyReviewDao.averageOnEdit(adjustDto);
+        int averaged = companyReviewDao.updateAverageScores(adjustDto);
         assertThat(adjusted).isEqualTo(1);
         assertThat(averaged).isEqualTo(1);
 
@@ -412,20 +412,19 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         // 리뷰 소프트 삭제
         companyReviewDao.softDeleteCompanyReview(firstReviewId);
         companyReviewDao.softDeletePolyReview(firstReviewId, userId);
-        
-        // 쿼리 중복 합산 문제있음 -> sum, avg 따로 쿼리처리 해야함
-        System.out.println("getAvgTotalRate: " + companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgTotalRate());
-        System.out.println("getAvgCommunication: " + companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgCommunication());
-        System.out.println("getAvgPrice: " + companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgPrice());
-        System.out.println("getAvgSchedule: " + companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgSchedule());
-        System.out.println("getAvgResult: " + companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgResult());
 
         reviewCount = companyReviewDao.countByCompanyId(companyId);
         if (reviewCount > 1) {
-            companyReviewDao.adjustDeleteScoreAvg(adjustDto);
+            companyReviewDao.adjustSumOnDelete(adjustDto);
+            companyReviewDao.updateAverageScores(adjustDto);
+
+            // 두 번재 리뷰 점수는 모두 10
             double secondAvg = companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgTotalRate();
+            double secondMatch = 10.0;
+
             assertThat(companyReviewDao.countByCompanyId(companyId)).isEqualTo(1);
             assertThat(secondAvg).isNotEqualTo(firstAvg);
+            assertThat(secondAvg).isEqualTo(secondMatch);
         }
 
         // 리뷰 소프트 삭제
