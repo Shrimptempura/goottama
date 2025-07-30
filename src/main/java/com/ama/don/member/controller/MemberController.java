@@ -7,11 +7,14 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.dto.MemberEditDto;
 import com.ama.don.member.dto.ResetPwDto;
 import com.ama.don.member.service.MemberProfileService;
+import com.ama.don.member.service.ProfileImgUploadService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -22,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	
 	private final MemberProfileService memberProfileService;
+	private final ProfileImgUploadService profileImgUploadService;
 
 	@PostMapping("/resetPw")
 	public String resetPw(@Valid @ModelAttribute ResetPwDto resetPwDto,HttpSession session,Model model) {
@@ -106,7 +110,12 @@ public class MemberController {
 	}
 	
 	@PostMapping("/profileImgUpload")
-	public String profileImgUpload() {
+	public String profileImgUpload(@RequestParam("profileImg") MultipartFile file, HttpSession session, MemberDto memberDto) {
+		
+		memberDto = (MemberDto) session.getAttribute("loginMember");
+		
+		profileImgUploadService.changeProfileImg(memberDto, file);
+		
 		return "member/mypage/editProfile_view";
 	}
 	
