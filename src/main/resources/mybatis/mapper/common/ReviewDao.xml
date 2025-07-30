@@ -36,6 +36,7 @@
         where review_id = #{reviewId}
     </select>
 
+    <!-- review_id로 전체 조회 -->
     <select id="selectById" resultType="com.ama.don.common.dto.ReviewDto">
         select review_id AS reviewId, review_title AS reviewTitle, review_content AS reviewContent,
             review_count AS reviewCount, review_date AS reviewDate, review_modify AS reviewModify,

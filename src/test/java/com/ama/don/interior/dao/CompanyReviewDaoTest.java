@@ -260,19 +260,19 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         // sleep 사용 실제로는 자제
         Thread.sleep(1000);
 
-        /**
-         * new timestamp로 시간변수 저장하고
-         * jdbcTemplate으로 값을 넣자(추가 테스트 쿼리 안짜도 가능)
-         * now() -> 직접값, 후 비교
-         */
+        // 실제 디비값이랑 비교하는건 아님 잘못된 예시
+        // updated.setReviewModify(new Timestamp(System.currentTimeMillis() - 1000000));
+
+        // Timestamp newModify = new Timestamp(System.currentTimeMillis() - 1000000);
+        // 테스트 쿼리 추가 없이 간단한게 사용
+//        jdbcTemplate.update(
+//                "UPDATE review SET review_content = ?, review_modify = ? WHERE review_id = ?",
+//                newContent, newModify, reviewId);
 
         // 다형성 업데이트
         companyReviewDao.updatePolyReview(dto.getCommonReviewDto());
 
         ReviewDto updated = reviewDao.selectById(reviewId);
-        
-        // 실제 디비값이랑 비교하는건 아님 잘못된 예시
-//        updated.setReviewModify(new Timestamp(System.currentTimeMillis() - 1000000));
 
         assertThat(updated.getReviewContent()).isNotEqualTo(originContent);
         assertThat(updated.getReviewModify()).isNotEqualTo(originDate);
