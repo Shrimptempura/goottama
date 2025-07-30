@@ -78,8 +78,11 @@ public interface CompanyReviewDao {
     
     // 파일 수정은 공통 fileDao에서 처리
 
-    // 리뷰 수정후 점수를 다시 계산
-    int adjustEditScoreAvg(CompanyScoreAdjustDto dto);
+    // 리뷰 수정후 점수를 계산할때 사용하는 합연산
+    int adjustScoreOnEdit(CompanyScoreAdjustDto dto);
+
+    // 리뷰 수정후 평균 점수 계산
+    int averageOnEdit(CompanyScoreAdjustDto dto);
 
     // 리뷰를 삭제하기전 0으로 나누는 오류를 방지하기 위해
     // int countByCompanyId(Long companyId); 이 메서드로 개수가 만약 1이면

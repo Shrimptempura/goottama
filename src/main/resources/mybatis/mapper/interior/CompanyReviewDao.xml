@@ -183,26 +183,30 @@
     <!-- 파일 수정(삭제->생성)은 fileDao에서 -->
     <!-- review_img -->
 
-    <!-- 리뷰 수정시 평균점수 다시 계산 -->
-    <update id="adjustEditScoreAvg"
+    <!-- 리뷰 수정시 평균점수 합산만 다시 계산 -->
+    <update id="adjustScoreOnEdit"
             parameterType="com.ama.don.interior.dto.request.CompanyScoreAdjustDto">
         update company_score_avg
         set
             sum_communication = sum_communication - #{oldCommunicationRate} + #{newCommunicationRate},
             sum_price = sum_price - #{oldPriceRate} + #{newPriceRate},
             sum_result = sum_result - #{oldResultRate} + #{newResultRate},
-            sum_schedule = sum_schedule - #{oldScheduleRate} + #{newScheduleRate},
+            sum_schedule = sum_schedule - #{oldScheduleRate} + #{newScheduleRate}
+        where company_id = #{companyId}
+    </update>
 
-            avg_communication = (sum_communication - #{oldCommunicationRate} + #{newCommunicationRate}) / company_review_count,
-            avg_price = (sum_price - #{oldPriceRate} + #{newPriceRate}) / company_review_count,
-            avg_result = (sum_result - #{oldResultRate} + #{newResultRate}) / company_review_count,
-            avg_schedule = (sum_schedule - #{oldScheduleRate} + #{newScheduleRate}) / company_review_count,
+    <!-- 받은 값으로 평균 수정 -->
+    <update id="averageOnEdit"
+            parameterType="com.ama.don.interior.dto.request.CompanyScoreAdjustDto">
+        update company_score_avg
+        set
+            avg_communication = sum_communication / company_review_count,
+            avg_price = sum_price / company_review_count,
+            avg_result = sum_result / company_review_count,
+            avg_schedule = sum_schedule / company_review_count,
 
             avg_total_rate = (
-                (sum_communication - #{oldCommunicationRate} + #{newCommunicationRate}) +
-                (sum_price - #{oldPriceRate} + #{newPriceRate}) +
-                (sum_result - #{oldResultRate} + #{newResultRate}) +
-                (sum_schedule - #{oldScheduleRate} + #{newScheduleRate})
+                sum_communication + sum_price + sum_result + sum_schedule
             ) / 4 / company_review_count
         where company_id = #{companyId}
     </update>
@@ -249,6 +253,7 @@
             ) / 4 / (company_review_count - 1)
         where company_id = #{companyId}
     </update>
+
 
 
 
