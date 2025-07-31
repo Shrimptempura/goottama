@@ -51,6 +51,7 @@
 							</c:otherwise>
 						</c:choose></td>
 
+
 					<td>${review.post_count}</td>
 					<td>${review.post_like_count}</td>
 				</tr>

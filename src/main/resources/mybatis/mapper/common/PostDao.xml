@@ -41,7 +41,7 @@
 		target_id AS
 		targetId
 		FROM post
-		WHERE post_id = #{postId}
+		WHERE post_id = #{post_id}
 	</select>
 
 	<!-- 게시글 작성 -->

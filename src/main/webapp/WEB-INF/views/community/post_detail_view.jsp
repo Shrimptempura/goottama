@@ -68,12 +68,12 @@
 				<th>사진</th>
 				<td><c:if test="${not empty review.fileList}">
 						<c:forEach var="img" items="${review.fileList}">
-							<img
-								src="${pageContext.request.contextPath}/images/${img.file_name}"
+							<img src="${pageContext.request.contextPath}${img.file_path}"
 								style="max-width: 300px;" />
 						</c:forEach>
 					</c:if> <c:if test="${empty review.fileList}">이미지 없음</c:if></td>
 			</tr>
+
 
 
 

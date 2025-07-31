@@ -2,6 +2,8 @@ package com.ama.don.community.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,20 +30,19 @@ public class Write_viewController {
 
 	private final String uploadDir = "C:/upload/";
 
-	// 글쓰기 페이지
 	@GetMapping("/write_view")
 	public String writeForm() {
-		return "community/write_view";
+	    return "community/write_view";
 	}
 
-	// 게시글 저장
+
 	@PostMapping("/write")
 	public String writePost(@RequestParam("title") String title, @RequestParam("content") String content,
 			@RequestParam("targetType") String targetType,
 			@RequestParam(value = "imgFiles", required = false) MultipartFile[] imgFiles, Model model) {
 
 		PostDto dto = new PostDto();
-		dto.setUser_id(1L); // 임시 아이디 L == Long
+		dto.setUser_id(1L); // 임시 값
 		dto.setPost_title(title);
 		dto.setPost_content(content);
 
@@ -54,31 +55,22 @@ public class Write_viewController {
 			return "community/write_view";
 		}
 
-		dto.setTargetId(1L); // 임시 아이디 L == Long
-
-		// 게시글 저장
+		dto.setTargetId(1L); // 임시 값
 		postDao.create(dto);
 		Long postId = dto.getPost_id();
 
-		// 이미지 저장
+		// 업로드 디렉토리 생성
+		File uploadPath = new File(uploadDir);
+		if (!uploadPath.exists())
+			uploadPath.mkdirs();
+
 		if (imgFiles != null) {
 			for (MultipartFile file : imgFiles) {
 				if (!file.isEmpty()) {
 					try {
 						String orgName = file.getOriginalFilename();
-						String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-						String extension = "";
-
-						int lastDot = orgName.lastIndexOf(".");
-						if (lastDot != -1 && lastDot < orgName.length() - 1) {
-							extension = orgName.substring(lastDot + 1);
-						}
-
-						String saveName = extension.isEmpty() ? uuid : uuid + "." + extension;
-
-						File uploadPath = new File(uploadDir);
-						if (!uploadPath.exists())
-							uploadPath.mkdirs();
+						String ext = orgName.substring(orgName.lastIndexOf('.') + 1);
+						String saveName = UUID.randomUUID().toString().replace("-", "") + "." + ext;
 
 						File destFile = new File(uploadDir + saveName);
 						file.transferTo(destFile);
@@ -90,7 +82,7 @@ public class Write_viewController {
 						fileDto.setTarget_type(type);
 						fileDto.setTarget_id(postId);
 
-						fileDao.insertFile(fileDto);
+						fileDao.create(fileDto);
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -100,5 +92,4 @@ public class Write_viewController {
 
 		return "redirect:/community/review_view";
 	}
-
 }

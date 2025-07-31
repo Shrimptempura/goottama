@@ -8,9 +8,6 @@ import java.util.List;
 @Mapper
 public interface FileDao {
 
-	// 파일 업로드
-	void insertFile(FileDto fileDto);
-
 	// 파일 저장
 	void create(FileDto fileDto);
 
@@ -18,5 +15,5 @@ public interface FileDao {
 	void delete(long file_id);
 
 	// targetType과 targetId를 이용한 리뷰 목록 조회
-	List<FileDto> findByTarget(@Param("targetType") String targetType, @Param("targetId") Long targetId);
+	List<FileDto> findByTarget(@Param("target_type") String target_type, @Param("target_id") Long target_id);
 }
