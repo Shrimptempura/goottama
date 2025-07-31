@@ -15,9 +15,11 @@ public class CompanyPostPreviewDto {
     private Long postId;     // 업체 포스트(게시글) 아이디
     private Long companyId;     // 업체 아이디
 
-    private String postImg;             // 게시글 사진(썸네일용)
 
     private String postTitle;           // 게시글 제목
     private int countView;              // 조회수
     private int countScrap;             // 스크랩 수
+
+    // 파일 관련은 다형성 file dto로 서비스에서 해결
+    // private String postImg;             // 게시글 사진(썸네일용)
 }

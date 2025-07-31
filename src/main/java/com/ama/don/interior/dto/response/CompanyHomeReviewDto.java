@@ -18,8 +18,6 @@ public class CompanyHomeReviewDto {
     private Long reviewId;
     private Long companyId;
 
-    private List<String> reviewImg;       // 사진(썸네일용)
-
     // 제목 느낌으로 area + structure 보여줌
     private String areaPyeong;      // 평수
     private String structureType;   // 시공타입
@@ -27,4 +25,7 @@ public class CompanyHomeReviewDto {
     private String reviewContent;   // 리뷰 내용
 
     private String location;        // 위치
+
+    // 파일 관련은 다형성 file dto로 서비스에서 해결
+    private List<String> reviewImg;       // 사진(썸네일용)
 }

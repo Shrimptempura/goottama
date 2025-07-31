@@ -249,6 +249,14 @@
 
     <!-- 리뷰 수정 뷰 -->
     <select id="getEditView" resultType="com.ama.don.interior.dto.request.CompanyReviewUpdateDto">
-
+        select r.review_id AS reviewId, c.communication_rate AS communicationRate, c.price_rate AS priceRate,
+            c.result_rate AS resultRate, c.schedule_rate AS scheduleRate,
+            c.structure_type AS structureType, c.area_pyeong AS areaPyeong, c.construction_field AS constructionField,
+            r.review_content AS reviewContent
+        from company_review c
+        join review r ON c.review_id = r.review_id
+        where review_id = #{reviewId}
+            and r.is_deleted = false
+            and c.is_deleted = false
     </select>
 </mapper>

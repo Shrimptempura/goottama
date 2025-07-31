@@ -21,6 +21,8 @@ public interface CompanyReviewDao {
     // 사용자가 작성하는 업체 리뷰
     // 점수테이블 x, company_review 리뷰만 추가
     int insert(CompanyReviewCreateDto dto);
+    
+    // file mapper로 추가
 
     // 업체 아이디로 company_score_avg 테이블이 존재하는지 확인
     // 존재하면 -> applyScoreOnCreate, 존재하지 않으면 -> createScoreTable
@@ -95,6 +97,7 @@ public interface CompanyReviewDao {
     // 리뷰 삭제후 점수의 평균 구하기
     // adjustSumOnDelete후 updateAverageScores으로 이동
 
-    // 리뷰 수정 뷰
+    // 리뷰 수정 뷰(company_review, review, file)
+    // (company_review + review 조인), file 따로
     CompanyReviewUpdateDto getEditView(Long reviewId);
 }
