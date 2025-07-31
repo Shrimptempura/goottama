@@ -1,0 +1,70 @@
+<!-- user_list.jsp -->
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<div class="info">
+    회원 수 : ${searchVO.totRow} <br>
+    현재 페이지 / 전체 페이지 : ${searchVO.page } / ${searchVO.totPage }
+</div>
+<!-- Pagination -->
+<c:set var="prevPage" value="${searchVO.page - 1}" />
+<c:if test="${prevPage < 1}">
+    <c:set var="prevPage" value="1" />
+</c:if>
+
+<c:set var="nextPage" value="${searchVO.page + 1}" />
+<c:if test="${nextPage > searchVO.totPage}">
+    <c:set var="nextPage" value="${searchVO.totPage}" />
+</c:if>
+
+<div class="pagination-wrapper">
+    <div class="pagination-controls">
+        <!-- 처음/이전 -->
+        <a href="#" class="nav first page-btn <c:if test='${searchVO.page == 1}'>disabled</c:if>'" data-page="1">처음</a>
+        <a href="#" class="nav prev page-btn <c:if test='${searchVO.page == 1}'>disabled</c:if>'" data-page="${prevPage}">이전</a>
+
+        <span class="spacer"></span>
+        <!-- 페이지 숫자 버튼 -->
+        <c:forEach begin="${searchVO.pageStart}" end="${searchVO.pageEnd}" var="i">
+            <c:choose>
+                <c:when test="${i eq searchVO.page}">
+                    <span class="current">${i}</span>
+                </c:when>
+                <c:otherwise>
+                    <a href="#" class="otherpages page-btn" data-page="${i}">${i}</a>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+
+        <span class="spacer"></span>
+        <!-- 다음/맨끝 -->
+        <a href="#" class="nav next page-btn <c:if test='${searchVO.page == searchVO.totPage}'>disabled</c:if>'" data-page="${nextPage}">다음</a>
+        <a href="#" class="nav last page-btn <c:if test='${searchVO.page == searchVO.totPage}'>disabled</c:if>'" data-page="${searchVO.totPage}">맨끝</a>
+    </div>
+</div>
+
+<!-- 유저 목록 출력 -->
+<table>
+    <tr>
+        <td>번호</td>
+        <td>이름</td>
+        <td>닉네임</td>
+        <td>상태</td>
+        <td>권한</td>
+        <td>가입일</td>
+        <td>상세정보</td>
+    </tr>
+    <c:forEach items="${list}" var="user">
+        <tr>
+            <td>${user.userId}</td>
+            <td>${user.userName}</td>
+            <td>${user.userNickname}</td>
+            <td>${user.userStatus}</td>
+            <td>${user.roleId}</td>
+            <td>${user.userCreatedAt}</td>
+            <td><button type="button" class="open-modal-btn" data-user-id="${user.userId}"> ▶ </button></td>
+        </tr>
+    </c:forEach>
+</table>
+

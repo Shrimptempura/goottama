@@ -1,6 +1,6 @@
 package com.ama.don.admin.dao;
 
-import com.ama.don.admin.dto.NoticeSearchVO;
+import com.ama.don.admin.dto.NoticeSearchDTO;
 import com.ama.don.admin.dto.NoticesDto;
 import com.ama.don.admin.utils.SearchVO;
 import org.apache.ibatis.annotations.*;
@@ -40,23 +40,23 @@ public interface NoticesIDao {
 
     /**
      * 검색 조건(제목, 내용, 날짜 범위 등)에 따라 공지사항 목록을 반환한다.
-     * @param noticeSearchVO 검색 조건을 담은 VO <br>
+     * @param noticeSearchDTO 검색 조건을 담은 VO <br>
      *        - title: 검색할 제목 키워드 <br>
      *        - content: 검색할 내용 키워드 <br>
      *        - dateStart, dateEnd: 검색할 날짜 범위
      * @return 검색 결과 공지사항 목록
-     * @see #countSearchNotice(NoticeSearchVO)
+     * @see #countSearchNotice(NoticeSearchDTO)
      */
-    List<NoticesDto> searchNotice(@Param("noticeSearchVO") NoticeSearchVO noticeSearchVO
+    List<NoticesDto> searchNotice(@Param("noticeSearchDTO") NoticeSearchDTO noticeSearchDTO
                                 , @Param("searchVO") SearchVO searchVO);
 
     /**
      * 검색 조건에 해당하는 공지사항 개수를 반환한다.
-     * @param noticeSearchVO 검색 조건 VO
+     * @param noticeSearchDTO 검색 조건 VO
      * @return 검색 결과 개수
-     * @see #searchNotice(NoticeSearchVO, SearchVO)
+     * @see #searchNotice(NoticeSearchDTO, SearchVO)
      */
-    public int countSearchNotice(@Param("noticeSearchVO") NoticeSearchVO noticeSearchVO);
+    public int countSearchNotice(@Param("noticeSearchDTO") NoticeSearchDTO noticeSearchDTO);
 
     /**
      * 공지사항 내용을 수정한다.
@@ -90,10 +90,4 @@ public interface NoticesIDao {
      * @return int, 성공시 1, 실패시 0
      */
     public int deleteNotice(String noticeId);
-
-    /**
-     * 최신 공지 아이디를 가져온다.
-     * @return 공지 아이디
-     */
-    public long getLatestNoticeId();
 }

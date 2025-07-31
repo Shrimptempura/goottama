@@ -1,6 +1,6 @@
 package com.ama.don.admin.controller;
 
-import com.ama.don.admin.dto.NoticeSearchVO;
+import com.ama.don.admin.dto.NoticeSearchDTO;
 import com.ama.don.admin.dto.NoticesDto;
 import com.ama.don.admin.service.noticeService.*;
 import com.ama.don.admin.utils.SearchVO;
@@ -51,8 +51,9 @@ public class AdminNoticeController {
      * - `searchVO`: 페이지네이션 관련 정보 담김.<br/>
      * - `noticeSearchVO`: 공지 검색 조건(제목, 내용 등) 담김.
      * @param searchVO 클라이언트에서 전달되는 {@link com.ama.don.common.CommunitySearchVO} 객체.<br/>
+
      * 페이지네이션 정보를 담고 있음.
-     * @param noticeSearchVO 클라이언트에서 전달되는 {@link com.ama.don.admin.dto.NoticeSearchVO} 객체.<br/>
+     * @param noticeSearchDTO 클라이언트에서 전달되는 {@link NoticeSearchDTO} 객체.<br/>
      * 공지사항 목록에 적용될 검색 조건 담고 있음.
      * @return 공지 목록의 일부만 반환하는 뷰의 경로 ("admin/notices/notice_list") 반환됨.<br/>
      * 이는 비동기 검색(예: Ajax) 결과로 사용될 수 있음.
@@ -60,9 +61,9 @@ public class AdminNoticeController {
     @PostMapping("/admin/notices/notice_list")
     public String noticeList(Model model,
                              @ModelAttribute SearchVO searchVO,
-                             @ModelAttribute NoticeSearchVO noticeSearchVO) {
+                             @ModelAttribute NoticeSearchDTO noticeSearchDTO) {
         model.addAttribute("searchVO", searchVO);
-        model.addAttribute("noticeSearchVO", noticeSearchVO);
+        model.addAttribute("noticeSearchDTO", noticeSearchDTO);
         getNoticeListService.execute(model);
 
         return "admin/notices/notice_list";
@@ -77,27 +78,29 @@ public class AdminNoticeController {
      *
      * @param model Spring UI Model. 뷰로 데이터를 전달하는 데 사용됨.<br/>
      * - `searchVO`: 페이지네이션(현재 페이지, 페이지당 항목 수 등) 관련 정보가 담긴 객체.<br/>
-     * - `noticeSearchVO`: 공지사항 검색 조건(예: 제목 검색어, 내용 검색어 등)이 담긴 객체.
-     * @param searchVO 클라이언트로부터 전달되는 {@link com.ama.don.common.CommunitySearchVO} 객체.<br/>
+ommunitySearchVO} 객체.<br/>
+     * - `noticeSearchDTO`: 공지사항 검색 조건(예: 제목 검색어, 내용 검색어 등)이 담긴 객체.
+     * @param searchVO 클라이언트로부터 전달되는 {@link com.ama.don.admin.utils.SearchVO} 객체.<br/>
+
      * 페이지네이션 정보를 담고 있으며, 요청에 포함되지 않은 경우 기본값으로 초기화됨.
-     * @param noticeSearchVO 클라이언트로부터 전달되는 {@link com.ama.don.admin.dto.NoticeSearchVO} 객체.<br/>
+     * @param noticeSearchDTO 클라이언트로부터 전달되는 {@link NoticeSearchDTO} 객체.<br/>
      * 공지사항 목록에 적용할 검색 조건을 담고 있으며, 요청에 포함되지 않은 경우 기본값으로 초기화됨.
      * @return 공지사항 목록을 표시할 뷰의 경로 ("admin/notices/notice_page")를 반환함.
      */
     @GetMapping("admin/notices/notice_page")
     public String noticePage(Model model,
                              @ModelAttribute SearchVO searchVO,
-                             @ModelAttribute NoticeSearchVO noticeSearchVO){
+                             @ModelAttribute NoticeSearchDTO noticeSearchDTO){
         // 초기화
         if (searchVO == null) {
             searchVO = new SearchVO();
         }
-        if (noticeSearchVO == null) {
-            noticeSearchVO = new NoticeSearchVO();
+        if (noticeSearchDTO == null) {
+            noticeSearchDTO = new NoticeSearchDTO();
         }
 
         model.addAttribute("searchVO", searchVO);
-        model.addAttribute("noticeSearchVO", noticeSearchVO);
+        model.addAttribute("noticeSearchDTO", noticeSearchDTO);
 
         getNoticeListService.execute(model);
         return "admin/notices/notice_page";

@@ -2,10 +2,13 @@ package com.ama.don.member.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.dto.MemberEditDto;
 import com.ama.don.member.dto.ResetPwDto;
 import com.ama.don.member.service.MemberProfileService;
 
@@ -65,9 +68,23 @@ public class MemberController {
 		return "member/mypage/myComment";
 	}
 	
-	@GetMapping("/mypage/editProfile")
-	public String editProfile() {
-		return "member/mypage/editProfile";
+	@GetMapping("/mypage/editProfile_view")
+	public String editProfile_view(HttpSession session, MemberDto memberDto, Model model) {
+		
+		memberDto = (MemberDto) session.getAttribute("loginMember");
+		model.addAttribute("loginMember", memberDto);
+		
+		return "member/mypage/editProfile_view";
+	}
+	
+	@PostMapping("/editProfile")
+	public String editProfile(@Valid @ModelAttribute MemberEditDto memberEditDto,BindingResult bindingResult, Model model, HttpSession session) {
+		
+		memberEditDto.combineAddress(); // 폼에 입력된 값 하나로 dto에 주입
+		MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+		memberProfileService.updateProfile(memberDto, memberEditDto);
+		
+		return "";
 	}
 	
 	@GetMapping("/mypage/editPassword")

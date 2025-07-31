@@ -1,11 +1,9 @@
 package com.ama.don.common.dao;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
 import com.ama.don.common.dto.FileDto;
+import java.util.List;
 
 @Mapper
 public interface FileDao {
@@ -21,5 +19,4 @@ public interface FileDao {
 
 	// targetType과 targetId를 이용한 리뷰 목록 조회
 	List<FileDto> findByTarget(@Param("targetType") String targetType, @Param("targetId") Long targetId);
-
 }

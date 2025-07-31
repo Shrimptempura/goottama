@@ -27,7 +27,7 @@
     <hr />
     </div>
     <button type="button" onclick="location.href='./notice_modify_view?notices_id=${notice.notices_id}'">공지 수정</button>
-    <button type="button" onclick="location.href='./notice_page'">목록 보기</button>
+    <button type="button" onclick="location.href='/admin/admin_index?menu=notices'">목록 보기</button>
     <button type="button" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='./notice_delete?notices_id=${notice.notices_id}'">공지 삭제</button>
 </body>
 </html>

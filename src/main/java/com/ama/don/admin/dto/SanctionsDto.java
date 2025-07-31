@@ -12,12 +12,12 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SanctionsDto {
-    private int sanctionsId;
-    private long userId;
-    private String sanctionsTypes;
-    private Timestamp sanctionsStartDate;
-    private Timestamp sanctionsEndDate;
-    private String sanctionsReason;
-    private int adminAccountId;
-    private Timestamp sanctionsCreatedAt;
+    private int sanctions_id;
+    private long user_id;
+    private String sanctions_types;
+    private Timestamp sanctions_start_date;
+    private Timestamp sanctions_end_date;
+    private String sanctions_reason;
+    private int admin_account_id;
+    private Timestamp sanctions_created_at;
 }
