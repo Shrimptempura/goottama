@@ -52,10 +52,10 @@
             useGeneratedKeys="true"
             keyProperty="companyId">
         insert into company (
-            user_id, company_detail_id, location_id, company_img
+            user_id, company_detail_id, location_id
         )
         values (
-            #{userId}, #{companyDetailId}, #{locationId}, #{companyImg}
+            #{userId}, #{companyDetailId}, #{locationId}
         )
     </insert>
 
@@ -110,13 +110,6 @@
             company_as = #{companyAs}, company_career = #{companyCareer},
             company_intro = #{companyIntro}
         where company_detail_id = #{companyDetailId}
-    </update>
-
-    <!--  업체 정보 수정2, 이미지  -->
-    <update id="updateCompanyImg">
-        update company
-        set company_img = #{companyImg}
-        where company_id = #{companyId}
     </update>
 
     <!-- 업체 정보 수정3, 주소 테이블 -->

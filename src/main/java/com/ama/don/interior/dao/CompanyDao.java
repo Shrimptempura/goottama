@@ -39,12 +39,11 @@ public interface CompanyDao {
     // company_detail, company_score_avg
     CompanySummaryDto selectSummaryCompany(@Param("companyId") Long companyId);
 
-    // 업체 정보 수정(detail + company + location(api->service))
+    // 업체 정보 수정(detail + company + location(api->service)), file
     // company_detail table 수정(대부분)
     int updateCompanyDetail(CompanyUpdateDto dto);
 
-    // company table 수정(이미지만)
-    int updateCompanyImg(CompanyUpdateDto dto);
+    // 이미지는 다형성 file 사용
 
     // 업체의 주소가 바뀌면 company_addr를 가져다 위치 정보 업데이트
     int updateLocation(CompanyUpdateLocationDto dto);

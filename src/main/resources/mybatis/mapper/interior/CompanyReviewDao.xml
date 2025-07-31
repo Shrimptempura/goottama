@@ -149,6 +149,7 @@
         set
             is_deleted = 1
         where review_id = #{reviewId}
+            and is_deleted = false
     </update>
 
     <!-- 상위 리뷰 소프트 삭제 -->
@@ -158,6 +159,7 @@
             is_deleted = 1
         where review_id = #{reviewId}
             and user_id = #{userId}
+            and is_deleted = false
     </update>
 
     <!-- 다형성 리뷰 수정하기 -->
