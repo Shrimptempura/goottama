@@ -5,5 +5,17 @@
 
 <mapper namespace="com.ama.don.interior.dao.CompanyPostDao">
 
-
+    <!-- 다형성 게시글 생성 이후 업체 게시글 생성 -->
+    <insert id="insertCompanyPost"
+            parameterType="com.ama.don.interior.dto.request.CompanyPostCreateDto"
+            useGeneratedKeys="true"
+            keyProperty="companyPostId">
+        insert into company_post (
+            post_id, company_post_title, company_post_content, space_type, area_pyeong,
+            style, construction_detail)
+        values (
+            #{postId}, #{companyPostTitle}, #{companyPostContent}, #{spaceType},
+            #{areaPyeong}, #{style}, #{constructionDetail}
+        )
+    </insert>
 </mapper>
