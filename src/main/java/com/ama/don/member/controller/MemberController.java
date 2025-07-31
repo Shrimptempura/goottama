@@ -121,7 +121,7 @@ public class MemberController {
 		session.setAttribute("loginMember", memberDto);
 		model.addAttribute("loginMember", memberDto);
 		
-		return "member/mypage/editProfile_view";
+		return "redirect:/mypage/editProfile_view";
 	}
 	
 	@GetMapping("/mypage/editPassword")
