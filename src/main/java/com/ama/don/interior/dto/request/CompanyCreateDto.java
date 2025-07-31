@@ -19,7 +19,6 @@ public class CompanyCreateDto {
     @NotBlank
     private String companyName;
 
-    private String companyImg;
 
     @NotBlank
     private String companyAddr;         // location
@@ -47,4 +46,7 @@ public class CompanyCreateDto {
      */
     @NotBlank
     private String companyIntro;
+
+    // 파일 관련은 다형성 file dto로 서비스에서 해결
+    // private String companyImg;
 }

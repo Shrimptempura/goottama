@@ -3,10 +3,7 @@ package com.ama.don.interior.dao;
 import com.ama.don.common.dao.ReviewDao;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.common.enums.TargetType;
-import com.ama.don.interior.dto.request.CompanyCreateDto;
-import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
-import com.ama.don.interior.dto.request.CompanyInsertDto;
-import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
+import com.ama.don.interior.dto.request.*;
 import com.ama.don.member.dto.JoinformDto;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -138,8 +135,14 @@ public class AbstractCompanyTestSupport {
         dto.setUserId(userId);
         dto.setTargetId(companyId);
         dto.setTargetType(TargetType.valueOf("INTERIOR"));
+        dto.setReviewContent("다형성에 적는 리뷰 내용 테스트");
 
         reviewDao.insertPolyReview(dto);
+
+        // 새 객체에서 default만 읽고 기존 dto에 넣어줌
+        ReviewDto getDefault = reviewDao.selectDefaultFieldById(dto.getReviewId());
+        dto.setReviewDate(getDefault.getReviewDate());
+        dto.setReviewModify(getDefault.getReviewModify());
 
         // 업체 리뷰 생성
         CompanyReviewCreateDto companyReviewDto = new CompanyReviewCreateDto();
@@ -150,7 +153,7 @@ public class AbstractCompanyTestSupport {
         companyReviewDto.setResultRate(5);
         companyReviewDto.setScheduleRate(5);
 
-        companyReviewDto.setReviewContent("여기는 업체 리뷰 내용 테스트");
+//        companyReviewDto.setReviewContent("여기는 업체 리뷰 내용 테스트");
 
         List<String> reviewImgList = List.of("interior/images1", "interior/images2",
                 "interior/images3");
@@ -160,7 +163,7 @@ public class AbstractCompanyTestSupport {
         companyReviewDto.setAreaPyeong("30평");
         companyReviewDto.setConstructionField("장판공사");
 
-        companyReviewDao.insertCompanyReview(companyReviewDto);
+        companyReviewDao.insert(companyReviewDto);
 
         // context 방식
         CreateReviewSet result = new CreateReviewSet();
@@ -196,10 +199,27 @@ public class AbstractCompanyTestSupport {
         dto.setUserId(user.getUserId());
         dto.setTargetId(companyId);
         dto.setTargetType(TargetType.valueOf("INTERIOR"));
+        dto.setReviewContent("다형성에 적는 리뷰 내용 테스트");
 
         reviewDao.insertPolyReview(dto);
 
         return dto;
+    }
+
+    // 업체 리뷰 수정 헬퍼
+    protected CompanyReviewUpdateDto updateCompanyDto(Long reviewId) {
+        CompanyReviewUpdateDto updateDto = new CompanyReviewUpdateDto();
+        updateDto.setReviewId(reviewId);
+
+        updateDto.setAreaPyeong("테스트");
+        updateDto.setResultRate(9);
+        updateDto.setCommunicationRate(8);
+        updateDto.setScheduleRate(7);
+        updateDto.setPriceRate(6);
+        updateDto.setConstructionField("테스트");
+        updateDto.setStructureType("테스트");
+
+        return updateDto;
     }
 
 }

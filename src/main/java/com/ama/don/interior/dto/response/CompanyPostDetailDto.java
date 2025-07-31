@@ -15,7 +15,6 @@ import java.util.List;
 @Setter
 public class CompanyPostDetailDto {
 
-    private List<String> companyImgList;    // 게시글 사진들
     private String postTitle;               // 게시글 제목
     private String companyProfileImg;       // 업체 프로필 사진
     private String companyName;             // 업체 이름
@@ -34,4 +33,7 @@ public class CompanyPostDetailDto {
     private int countLikes;     // 좋아요 수
     private int countScrap;     // 스크랩 수
     private int countView;      // 조회수
+
+    // 파일 관련은 다형성 file dto로 서비스에서 해결
+    private List<String> companyImgList;    // 게시글 사진들
 }
