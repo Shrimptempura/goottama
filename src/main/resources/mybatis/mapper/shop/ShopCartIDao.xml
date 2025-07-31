@@ -5,20 +5,23 @@
 	
 <mapper namespace="com.ama.don.shop.dao.ShopIDao">
 
+
 	<insert id="cart_write">
 		INSERT INTO CART(USER_ID,PRODUCT_ID,CART_QUANTITY,CART_DATE) 
 		VALUES(#{param1}, #{param2}, #{param3},now());
 	</insert> 
 	
-	<select id="cart_list" resultMap="CartDto">
+	<select id="cart_list" resultType="com.ama.don.shop.dto.CartFlatDto">
 		SELECT C.CART_ID,C.USER_ID,C.PRODUCT_ID,C.CART_QUANTITY,C.CART_DATE,U.USER_NAME,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_MALL_NAME,P.PRODUCT_ISTODAY,P.PRODUCT_DISCOUNTRATE,PI.PRODUCT_IMGURL
 		FROM CART C 
 		JOIN USER_DETAIL U ON C.USER_ID=U.USER_ID
 		JOIN PRODUCT P ON C.PRODUCT_ID=P.PRODUCT_ID
 		JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID 
 		AND PI.PRODUCT_IMG_TYPE = '메인'
-		WHERE U.USER_ID= #{param1};
+		WHERE U.USER_ID= #{user_id};
+		ORDER BY C.CART_DATE DESC
 	</select>
+	
 	
 	<select id="cart_list_flat" parameterType="Long" resultType="com.ama.don.shop.dto.CartFlatDto">
         SELECT 
@@ -38,7 +41,7 @@
         JOIN PRODUCT P ON C.PRODUCT_ID = P.PRODUCT_ID
         LEFT JOIN PRODUCT_IMG PI ON P.PRODUCT_ID = PI.PRODUCT_ID
             AND PI.PRODUCT_IMG_TYPE = '메인'
-        WHERE U.USER_ID = #{userid}
+        WHERE U.USER_ID = #{user_id}
         ORDER BY C.CART_DATE DESC
     </select>
     

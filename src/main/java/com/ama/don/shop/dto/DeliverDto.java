@@ -23,5 +23,4 @@ public class DeliverDto {
 	String deliver_status;
 	Timestamp deliver_date;
 	
-	
 }
