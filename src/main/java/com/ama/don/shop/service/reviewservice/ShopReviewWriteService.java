@@ -63,7 +63,16 @@ public class ShopReviewWriteService implements ShopServiceinter{
 		//
 		Long userid=Long.parseLong(user_id);
 		Long productid=Long.parseLong(product_id);
-	
+		
+		
+		try {
+			iDao.review_write(userid, productid, review_title, review_content, review_img);
+				
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		
 		
     }
 }

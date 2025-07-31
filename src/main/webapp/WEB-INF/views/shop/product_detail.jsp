@@ -372,6 +372,225 @@
         gap: 20px;
     }
 }
+
+<!-- 상품 문의 -->
+.inquiry-section {
+    width: 100%;
+    padding: 30px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.inquiry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eee;
+}
+
+.inquiry-title {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.inquiry-write-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.inquiry-write-btn:hover {
+    background-color: #218838;
+}
+
+.inquiry-item {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+
+.inquiry-item:last-child {
+    margin-bottom: 0;
+}
+
+.inquiry-content-area {
+    width: 100%;
+}
+
+.inquiry-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.inquiry-item-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    flex: 1;
+}
+
+.inquiry-meta {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.inquiry-author {
+    font-size: 14px;
+    color: #666;
+    font-weight: normal;
+}
+
+.inquiry-date {
+    font-size: 12px;
+    color: #999;
+}
+
+.inquiry-content {
+    margin-bottom: 15px;
+}
+
+.inquiry-text {
+    margin: 0;
+    line-height: 1.6;
+    color: #333;
+    font-size: 14px;
+    padding: 10px 0;
+}
+
+.inquiry-image {
+    margin-top: 10px;
+}
+
+.inquiry-image img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.secret-inquiry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.lock-icon {
+    font-size: 16px;
+}
+
+.inquiry-answer {
+    background-color: #e8f5e8;
+    border: 1px solid #c3e6c3;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.answer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.answer-label {
+    font-weight: bold;
+    color: #28a745;
+    font-size: 14px;
+}
+
+.answer-date {
+    font-size: 12px;
+    color: #666;
+}
+
+.answer-content p {
+    margin: 0;
+    line-height: 1.6;
+    color: #333;
+    font-size: 14px;
+}
+
+.inquiry-status {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+}
+
+.status-waiting {
+    color: #856404;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.no-inquiry {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+}
+
+.no-inquiry-content p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.no-inquiry-content p:first-child {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 반응형 대응 */
+@media (max-width: 768px) {
+    .inquiry-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .inquiry-meta {
+        flex-direction: column;
+        gap: 5px;
+        align-items: flex-start;
+    }
+    
+    .inquiry-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+    
+    .inquiry-write-btn {
+        width: 100%;
+    }
+}
+
 </style>
 
 <script>
@@ -420,7 +639,18 @@
 	    // 리뷰 작성 페이지로 이동
 	    location.href = "review_write_view?user_id=" + userId + "&product_id=${product.product_id}";
 	}
+	
+	
+	function inquirywrite() {
+	    var userId = '${sessionScope.user_id}';
+	    if (!userId || userId.trim() === '' || userId === 'null') {
+	        userId = '2'; // 기본값으로 2 사용
+	    }
+	    // 문의 작성 페이지로 이동
+	    location.href = "inquiry_write_view?user_id=" + userId + "&product_id=${product.product_id}";
+	}
 </script>
+
 
 <body>
 <h2>product_detail</h2>
@@ -478,25 +708,6 @@
         	</div>
         	
         	<!-- 리뷰 목록 (forEach로 반복) -->
-        	
-        	
-        	<c:forEach var="review" items="${review_list }">
-        		
-        		
-        		<p>${review.user_nickname }</p>
-        		<p>${review.user_name }</p>
-        		<p>${review.user_id }</p>
-        		<p>${review.review_content }</p>
-        		<p>${review.review_img }</p>
-        		<p>${product_mall_name }</p>
-        		<p>${product__name }</p>
-  	      	
-        	</c:forEach>
-        	
-        	상품아이디;
-        	<p>${product.product_id }</p>
-        	
-        
         	<c:forEach var="review" items="${review_list}" varStatus="status">
         		<div class="review-item">
         			<div class="review-content-area">
@@ -553,16 +764,108 @@
         		</div>
         	</c:if>
         </div>
+        
+        <!-- 상품 문의 -->
+        <!-- 상품 문의 섹션 (리뷰 섹션 아래에 추가) -->
+		<div class="inquiry-section">
+		    <div class="inquiry-header">
+		        <h3 class="inquiry-title">상품 문의</h3>
+		        <button class="inquiry-write-btn" onclick="inquirywrite()">문의 작성하기</button>
+		    </div>
+		    
+		    <!-- 문의 목록 -->
+		    <c:forEach var="inquiry" items="${inquiry_list}" varStatus="status">
+		        <div class="inquiry-item">
+		            <div class="inquiry-content-area">
+		                <div class="inquiry-top">
+		                    <h4 class="inquiry-item-title">${inquiry.inquiry_title != null ? inquiry.inquiry_title : '상품 문의'}</h4>
+		                    <div class="inquiry-meta">
+		                        <span class="inquiry-author">작성자: ${inquiry.user_nickname != null ? inquiry.user_nickname : '익명'}</span>
+		                        <span class="inquiry-date">
+		                            <fmt:formatDate value="${inquiry.inquiry_date}" pattern="yyyy-MM-dd HH:mm"/>
+		                        </span>
+		                    </div>
+		                </div>
+		                
+		                <div class="inquiry-content">
+		                    <!-- 문의 내용 (비밀글인 경우 처리) -->
+		                    <c:choose>
+		                        <c:when test="${inquiry.is_secret == 1 and (sessionScope.user_id != inquiry.user_id and sessionScope.user_role != 'ADMIN')}">
+		                            <div class="secret-inquiry">
+		                                <i class="lock-icon">🔒</i>
+		                                <span>비밀글입니다. 작성자와 관리자만 확인할 수 있습니다.</span>
+		                            </div>
+		                        </c:when>
+		                        <c:otherwise>
+		                            <p class="inquiry-text">${inquiry.inquiry_content != null ? inquiry.inquiry_content : '문의 내용이 없습니다.'}</p>
+		                            
+		                            <!-- 문의 이미지 (있는 경우) -->
+		                            <c:if test="${inquiry.inquiry_img != null and inquiry.inquiry_img != ''}">
+		                                <div class="inquiry-image">
+		                                    <img src="/static/uploads/inquiry/${inquiry.inquiry_img}" alt="문의 이미지" />
+		                                </div>
+		                            </c:if>
+		                        </c:otherwise>
+		                    </c:choose>
+		                </div>
+		                
+		                <!-- 답변 영역 -->
+		                <c:if test="${inquiry.answer_content != null and inquiry.answer_content != ''}">
+		                    <div class="inquiry-answer">
+		                        <div class="answer-header">
+		                            <span class="answer-label">📋 관리자 답변</span>
+		                            <span class="answer-date">
+		                                <fmt:formatDate value="${inquiry.answer_date}" pattern="yyyy-MM-dd HH:mm"/>
+		                            </span>
+		                        </div>
+		                        <div class="answer-content">
+		                            <p>${inquiry.answer_content}</p>
+		                        </div>
+		                    </div>
+		                </c:if>
+		                
+		                <!-- 답변 대기 상태 표시 -->
+		                <c:if test="${inquiry.answer_content == null or inquiry.answer_content == ''}">
+		                    <div class="inquiry-status">
+		                        <span class="status-waiting">📝 답변 대기 중</span>
+		                    </div>
+		                </c:if>
+		            </div>
+		        </div>
+		    </c:forEach>
+		    
+		    <!-- 문의가 없을 경우 -->
+		    <c:if test="${empty inquiry_list}">
+		        <div class="no-inquiry">
+		            <div class="no-inquiry-content">
+		                <p>💬 아직 등록된 문의가 없습니다.</p>
+		                <p>상품에 대해 궁금한 점이 있으시면 문의를 남겨주세요.</p>
+		            </div>
+		        </div>
+		    </c:if>
+		</div>
     </div>
+    
 
     <!-- 오른쪽 섹션: 상품 정보 및 구매 옵션 -->
     <div class="right-section">
         <p class="mallname">${product.product_mall_name}</p>
         <h1 class="title">${product.product_name}</h1>
-
+		<!-- 상품 정보는 product_id를 전달한다. -->
+		<!-- 바로주문은 product_id를 전달한다. -->
+		
+		<!-- 장바구니 담기는 product_id와 user_id를 반환한다 -->
+			
+		<!--  장바구니 담기와 바로담기 모두 product_id를 반환하니까  -->
+		
+		
+		<!--  그러면 장바구니 담기와 바로구매가 별반 차이가 없는것 아닌가
+		
+		<-- 장바구니 담기와 바로구매 차이가 뭐지 파라미터로 전달  -->
+		
         <!-- 할인 정보 -->
         <c:set var="hasDiscount" value="${product.product_discountrate != null and product.product_discountrate > 0}" />
-
+ 
         <c:choose>
             <c:when test="${hasDiscount}">
                 <!-- 할인이 있는 경우 -->
@@ -591,8 +894,27 @@
         <!-- 구매 버튼들 -->
         <div class="action-buttons">
             <button class="cart-btn" onclick="showAlert()">장바구니 담기</button>
-            <button class="order-btn" onclick="location.href='order'">바로 주문하기</button>
+            <button class="order-btn" onclick="goorder()">바로 주문하기</button>
         </div>
+        
+        <script>
+        
+        
+        
+     	// 바로 주문하기
+        function goorder(){
+            let userId = getUserId();
+            if (!userId) return; // 로그인 안된 경우 함수 종료
+            
+            // 바로 주문: product_id, user_id, quantity 전달
+            location.href = 'order_view?product_id=${product.product_id}' + 
+                           '&user_id=' + userId + 
+                           '&quantity=' + count+
+            			   '&form_cart=false';
+        }
+        
+        </script>
+        
     </div>
 </div>
 

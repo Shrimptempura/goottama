@@ -82,7 +82,7 @@ public interface ShopIDao {
 	
 	//Review IDao
 	public ArrayList<ShopReviewFlatDto> review_list(Long target_id);
-	public void review_write(Long user_id, Long target_id, String review_title, String review_content,
+	public void review_write(Long userid, Long productid, String review_title, String review_content,
 			String review_img);
 	
 	//User_detail IDao
