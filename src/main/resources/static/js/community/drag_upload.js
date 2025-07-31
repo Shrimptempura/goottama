@@ -67,7 +67,7 @@ $(document).ready(function() {
 	}
 
 	function sendFileToServer(formData, status) {
-		const uploadURL = "/community/write_view";
+		const uploadURL = "/file/upload";
 		const jqXHR = $.ajax({
 			xhr: function() {
 				const xhrobj = $.ajaxSettings.xhr();

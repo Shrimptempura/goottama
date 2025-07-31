@@ -5,27 +5,46 @@
 
 <mapper namespace="com.ama.don.common.dao.FileDao">
 
-    <!-- 업체가 사용하기 위한 만든 간단 mapper -->
-    <!-- 다른사람도 가능(아마도) -->
-    <insert id="create"
-            parameterType="com.ama.don.common.dto.FileDto"
-            useGeneratedKeys="true"
-            keyProperty="fileId">
-        insert into file (
-            file_uploader, file_name, file_path, target_type, target_id)
-        values (
-            #{fileUploader}, #{fileName}, #{filePath}, #{targetType}, #{targetId}
-        )
-    </insert>
+	<!-- 파일 저장 -->
+	<insert id="create"
+		parameterType="com.ama.don.common.dto.FileDto" useGeneratedKeys="true"
+		keyProperty="file_id">
+		INSERT INTO file (
+		file_uploader, file_name, file_path,
+		target_type, target_id
+		) VALUES (
+		#{file_uploader}, #{file_name}, #{file_path},
+		#{target_type}, #{target_id}
+		)
+	</insert>
 
-    <!-- 조회 -->
-    <select id="findFilesByTarget" resultType="com.ama.don.common.dto.FileDto">
-        select file_id AS fileId, file_uploader AS fileUploader, file_name AS fileName, file_path AS filePath,
-            target_type AS targetType, target_id AS targetId
-        from file
-        where target_type = #{targetType}
-        and target_id = #{targetId}
-    </select>
+	<!-- 커뮤니티용 파일 업로드 -->
+	<insert id="insertFile"
+		parameterType="com.ama.don.common.dto.FileDto">
+		INSERT INTO file (
+		file_name, file_path, file_uploader,
+		target_type, target_id
+		) VALUES (
+		#{file_name}, #{file_path}, #{file_uploader},
+		#{target_type}, #{target_id}
+		)
+	</insert>
+
+	<!-- 특정 게시글에 연결된 파일 조회 -->
+	<select id="findByTarget"
+		resultType="com.ama.don.common.dto.FileDto">
+		SELECT
+		file_id AS file_id,
+		file_uploader AS file_uploader,
+		file_name AS file_name,
+		file_path AS file_path,
+		target_type AS target_type,
+		target_id AS target_id
+		FROM file
+		WHERE target_type = #{target_type}
+		AND target_id
+		= #{target_id}
+	</select>
 
     <!-- 파일 삭제 -->
     <delete id="delete" parameterType="java.lang.Long">

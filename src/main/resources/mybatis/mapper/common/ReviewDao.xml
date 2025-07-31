@@ -5,6 +5,7 @@
 
 <mapper namespace="com.ama.don.common.dao.ReviewDao">
 
+
     <!-- 다형성 리뷰만 사용시 -->
     <!-- 공통리뷰(userId, targetId, targetType, review_content) -->
     <insert id="insertPolyReview"
@@ -16,18 +17,20 @@
             #{userId}, #{targetId}, #{targetType}, #{reviewContent})
     </insert>
 
-    <!-- 공통 리뷰를 그대로 사용하여 작성, 파일은 여러장 이므로 따로 생성 -->
-    <insert id="insertCommonReview"
-            parameterType="com.ama.don.common.dto.ReviewDto"
-            useGeneratedKeys="true"
-            keyProperty="reviewId">
-        insert into review (user_id, review_title, review_content, review_count,
-            review_date, review_modify, target_id, target_type)
-        values (
-            #{userId}, #{reviewTitle}, #{reviewContent}, #{reviewCount},
-            #{reviewDate}, #{reviewModify}, #{targetId}, #{targetType})
-    </insert>
-
+	<insert id="insertCommonReview"
+		parameterType="com.ama.don.common.dto.ReviewDto"
+		useGeneratedKeys="true" keyProperty="reviewId">
+		insert into review (user_id,
+		review_title, review_content, review_count,
+		review_date, review_modify,
+		target_id, target_type)
+		values (
+		#{userId}, #{reviewTitle},
+		#{reviewContent}, #{reviewCount},
+		#{reviewDate}, #{reviewModify},
+		#{targetId}, #{targetType})
+	</insert>
+  
     <!-- default 조회 -->
     <select id="selectDefaultFieldById" resultType="com.ama.don.common.dto.ReviewDto">
         select review_id AS reviewId, review_date AS reviewDate, review_modify AS reviewModify,
@@ -44,5 +47,4 @@
         from review
         where review_id = #{reviewId}
     </select>
-
 </mapper>
