@@ -15,8 +15,8 @@ public class CompanyHomePostDto {
     private Long companyId;
     private Long postId;
 
-    private String postTitle;       // 게시글 제목
-    private String areaInPyeong;    // 평수
+    private String companyPostTitle;       // 게시글 제목
+    private String areaPyeong;    // 평수
     private String style;           // 스타일(모던, 내추럴..), enum 확장 필요?
 
     private String location;        // 위치

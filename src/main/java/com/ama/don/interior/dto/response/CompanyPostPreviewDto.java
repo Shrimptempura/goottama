@@ -16,7 +16,7 @@ public class CompanyPostPreviewDto {
     private Long companyId;     // 업체 아이디
 
 
-    private String postTitle;           // 게시글 제목
+    private String companyPostTitle;           // 게시글 제목
     private int countView;              // 조회수
     private int countScrap;             // 스크랩 수
 
