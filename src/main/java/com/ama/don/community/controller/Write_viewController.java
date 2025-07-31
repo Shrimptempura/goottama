@@ -45,7 +45,6 @@ public class Write_viewController {
 		dto.setPost_title(title);
 		dto.setPost_content(content);
 
-
 		TargetType type;
 		try {
 			type = TargetType.valueOf(targetType);
@@ -66,7 +65,17 @@ public class Write_viewController {
 			for (MultipartFile file : imgFiles) {
 				if (!file.isEmpty()) {
 					try {
-						String saveName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+						String orgName = file.getOriginalFilename();
+						String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+						String extension = "";
+
+						int lastDot = orgName.lastIndexOf(".");
+						if (lastDot != -1 && lastDot < orgName.length() - 1) {
+							extension = orgName.substring(lastDot + 1);
+						}
+
+						String saveName = extension.isEmpty() ? uuid : uuid + "." + extension;
+
 						File uploadPath = new File(uploadDir);
 						if (!uploadPath.exists())
 							uploadPath.mkdirs();
@@ -75,8 +84,9 @@ public class Write_viewController {
 						file.transferTo(destFile);
 
 						FileDto fileDto = new FileDto();
-						fileDto.setFile_name(saveName);
-						fileDto.setFile_path("/images/" + saveName);
+						fileDto.setFile_name(orgName);
+						fileDto.setFile_path(saveName);
+						fileDto.setFile_uploader(type.name());
 						fileDto.setTarget_type(type);
 						fileDto.setTarget_id(postId);
 
@@ -90,5 +100,5 @@ public class Write_viewController {
 
 		return "redirect:/community/review_view";
 	}
-	
+
 }

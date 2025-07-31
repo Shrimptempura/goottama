@@ -25,13 +25,13 @@ public class Review_viewController {
 	@Autowired
 	private FileDao fileDao;
 
-	// ✅ 글쓰기 페이지 이동
+	// 글쓰기 페이지 이동
 	@GetMapping("/write_con")
 	public String writeView() {
 		return "community/write_view";
 	}
 
-	// ✅ 리뷰 목록 (페이지네이션 포함)
+	// 리뷰 목록
 	@GetMapping("/review_view")
 	public String reviewList(@RequestParam(defaultValue = "1") int page, Model model) {
 		CommunityPageVO pageVO = new CommunityPageVO();

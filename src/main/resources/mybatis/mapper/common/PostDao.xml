@@ -16,13 +16,13 @@
 		post_date,
 		post_count,
 		post_like_count,
-		post_img,
 		target_type AS targetType,
-		target_id AS targetId
+		target_id AS
+		targetId
 		FROM post
 		WHERE target_type = #{targetType}
-		AND
-		target_id = #{targetId}
+		AND target_id =
+		#{targetId}
 		ORDER BY post_id DESC
 	</select>
 
@@ -37,9 +37,9 @@
 		post_date,
 		post_count,
 		post_like_count,
-		post_img,
 		target_type AS targetType,
-		target_id AS targetId
+		target_id AS
+		targetId
 		FROM post
 		WHERE post_id = #{postId}
 	</select>
@@ -51,12 +51,12 @@
 		INSERT INTO post (
 		user_id, post_title, post_content,
 		post_date, post_count, post_like_count,
-		post_img, target_type,
-		target_id
-		) VALUES (
+		target_type, target_id
+		) VALUES
+		(
 		#{user_id}, #{post_title}, #{post_content},
 		CURRENT_TIMESTAMP, 0, 0,
-		#{post_img}, #{targetType}, #{targetId}
+		#{targetType}, #{targetId}
 		)
 	</insert>
 
@@ -67,7 +67,6 @@
 		SET post_title = #{post_title},
 		post_content =
 		#{post_content},
-		post_img = #{post_img},
 		target_type = #{targetType},
 		target_id = #{targetId}
 		WHERE post_id = #{post_id}
@@ -79,7 +78,6 @@
 		= #{postId}
 	</delete>
 
-	<!-- 페이징 처리 -->
 	<!-- 전체 게시글 수 -->
 	<select id="countByTarget" resultType="int">
 		SELECT COUNT(*)
@@ -100,7 +98,5 @@
 		LIMIT #{rowCount} OFFSET
 		#{rowStart}
 	</select>
-
-
 
 </mapper>
