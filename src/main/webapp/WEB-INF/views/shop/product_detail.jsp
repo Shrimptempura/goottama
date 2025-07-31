@@ -478,6 +478,25 @@
         	</div>
         	
         	<!-- 리뷰 목록 (forEach로 반복) -->
+        	
+        	
+        	<c:forEach var="review" items="${review_list }">
+        		
+        		
+        		<p>${review.user_nickname }</p>
+        		<p>${review.user_name }</p>
+        		<p>${review.user_id }</p>
+        		<p>${review.review_content }</p>
+        		<p>${review.review_img }</p>
+        		<p>${product_mall_name }</p>
+        		<p>${product__name }</p>
+  	      	
+        	</c:forEach>
+        	
+        	상품아이디;
+        	<p>${product.product_id }</p>
+        	
+        
         	<c:forEach var="review" items="${review_list}" varStatus="status">
         		<div class="review-item">
         			<div class="review-content-area">

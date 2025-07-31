@@ -139,7 +139,6 @@
 	</select>
 	
 	
-	
 	<select id="user_info" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
 		select u.user_id,u.user_name,u.user_nickname
 		from user_detail u
@@ -149,10 +148,10 @@
 	
 	
 	<insert id="review_write" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto">
-		insert into review(review_title,review_content,review_img,target_id,target_type,review_date)
-		values (#{review_title},#{review_content},#{review_img},#{target_id},'SHOP',now());
-	</insert>
+		insert into review(user_id,review_title,review_content,review_img,target_id,target_type,review_date)
+		values (#{user_id},#{review_title},#{review_content},#{review_img},#{target_id},'SHOP',now());
 	
+	</insert>
 	
 
 	

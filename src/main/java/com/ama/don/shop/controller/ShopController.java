@@ -150,6 +150,8 @@ public class ShopController {
 		shopServiceinter=new ShopReviewWriteService(iDao);
 		shopServiceinter.execute(model);
 		
+		
+		
 		 //
         String user_id=request.getParameter("user_id");
         String product_id=request.getParameter("product_id");
@@ -157,7 +159,11 @@ public class ShopController {
 		Long productid=Long.parseLong(product_id);
 		Long userid=Long.parseLong(user_id);
 		
-		return "redirect:/shop/product_detail?product_id="+productid+"?userid="+userid;
+		System.out.println("userid:"+userid);
+		
+		
+		
+		return "redirect:/shop/product_detail?product_id="+productid+"&userid="+userid;
 		
 	}
 
