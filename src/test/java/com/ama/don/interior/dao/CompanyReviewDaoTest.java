@@ -439,6 +439,16 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         }
     }
 
+    @DisplayName("리뷰를 수정할 때 보이는 뷰")
+    @Test
+    void getEditView() {
+        CreateReviewSet dto = createPolyReviewAndCompanyReview();
+        Long reviewId = dto.getCommonReviewDto().getReviewId();
 
+        CompanyReviewUpdateDto editDto = companyReviewDao.getEditView(reviewId);
 
+        assertThat(editDto).isNotNull();
+        assertThat(editDto.getReviewId()).isEqualTo(reviewId);
+        assertThat(editDto.getReviewContent()).isEqualTo(dto.getCommonReviewDto().getReviewContent());
+    }
 }

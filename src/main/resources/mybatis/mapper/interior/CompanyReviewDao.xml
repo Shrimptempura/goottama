@@ -255,7 +255,7 @@
             r.review_content AS reviewContent
         from company_review c
         join review r ON c.review_id = r.review_id
-        where review_id = #{reviewId}
+        where r.review_id = #{reviewId}
             and r.is_deleted = false
             and c.is_deleted = false
     </select>
