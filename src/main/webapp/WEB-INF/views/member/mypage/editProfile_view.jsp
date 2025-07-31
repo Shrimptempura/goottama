@@ -20,17 +20,40 @@
 	}
 </script>
 
+<script>
+	function previewImg(event) {
+		const input = event.target;
+		const reader = new FileReader();
+		
+		reader.onload = function(){
+			const preview = document.getElementById('preview');
+			preview.src = reader.result;
+			preview.style.display = 'block';
+		};
+		if(input.files && input.files[0]){
+			reader.readAsDataURL(input.files[0]);
+		}
+	}
+</script>
+
 </head>
 <body>
 
 <a href="/mypage/myProfile"> 프로필 </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="/mypage/myOrderList">나의쇼핑</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="/mypage/myReview">나의활동</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/mypage/editProfile"><strong>설정</strong></a> <br />
+<a href="/mypage/editProfile_view"><strong>설정</strong></a> <br />
 
 <a href="/mypage/editProfile_view"><strong>회원정보변경</strong></a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="/mypage/editPassword">비밀번호변경</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/mypage/customerCenter">고객센터</a>
+<a href="/mypage/customerCenter">고객센터</a> <br />
+
+<form action="/profileImgUpload" method="post" enctype="multipart/form-data">
+	<input type="file"  accept="image/*" name="profileImg" onchange="previewImg(event)" />  <br />
+	<img id="preview"  src="#" alt="미리보기 이미지" /> <br />
+	<img src="${pageContext.request.contextPath }/profile/${loginMember.user_img}" alt="프로필 이미지" />
+	<input type="submit" value="사진변경하기" />
+</form>
 
 <form action="/editProfile" method="post">
 
@@ -38,6 +61,7 @@
 	이름:<input type="text" value="${loginMember.user_name }" name="changeName" /> <br />	 
 	닉네임:<input type="text" value="${loginMember.user_nickname }" name="changeNickname"/> 
 	<button>중복확인</button> <br />	 
+	<c:if test="${not empty nickname_error }"><p>${nickname_error }</p></c:if>
 	성별:${loginMember.user_gender } <br />
 	생년월일:${loginMember.user_birth } <br />
 	연락처:<input type="text" value="${loginMember.user_tel } " name="changeTel" /> <br />	 

@@ -89,4 +89,12 @@ public class ValidationService implements ValidationServiceInter {
 		return false;
 	}
 
+	public boolean nicknameEditCheck(String nickname) {
+		if (validationDao.nicknameEditCheck(nickname) > 0) {
+			return false;
+		}
+		return true;
+		
+	}
+
 }
