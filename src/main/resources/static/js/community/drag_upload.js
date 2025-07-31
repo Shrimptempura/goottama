@@ -77,7 +77,7 @@ $(document).ready(function() {
 
 	// 서버로 전송 미리보기 표시
 	function sendFileToServer(formData, status) {
-		const targetType = "COMMUNITY_REVIEW"; // TODO: 상황에 따라 바꾸기
+		const targetType = "COMMUNITY_REVIEW";
 		const uploadURL = `/file/upload?targetType=${targetType}`;
 
 		const jqXHR = $.ajax({
