@@ -26,4 +26,5 @@ public class UserTotalDataDTO {
     private String sanctions_types; // sanctions 테이블에서 가지고 옴
     private String user_status;
     private String user_sanctions_until;
+    private String user_password;
 }

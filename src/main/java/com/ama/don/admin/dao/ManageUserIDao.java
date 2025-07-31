@@ -18,6 +18,8 @@ public interface ManageUserIDao {
 
     public UserTotalDataDTO getUserByUserId(String userId);
 
+    public UserTotalDataDTO getUserByLoginId(String loginId);
+
     public List<UserTotalDataDTO> searchUsers(@Param("searchVO") SearchVO searchVO,
                                        @Param("userSearchDTO") UserSearchDTO userSearchDTO);
 
