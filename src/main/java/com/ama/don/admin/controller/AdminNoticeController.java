@@ -50,7 +50,7 @@ public class AdminNoticeController {
      * @param model Spring UI Model. 뷰로 데이터 전달에 사용됨.<br/>
      * - `searchVO`: 페이지네이션 관련 정보 담김.<br/>
      * - `noticeSearchVO`: 공지 검색 조건(제목, 내용 등) 담김.
-     * @param searchVO 클라이언트에서 전달되는 {@link com.ama.don.common.SearchVO} 객체.<br/>
+     * @param searchVO 클라이언트에서 전달되는 {@link com.ama.don.common.CommunitySearchVO} 객체.<br/>
      * 페이지네이션 정보를 담고 있음.
      * @param noticeSearchVO 클라이언트에서 전달되는 {@link com.ama.don.admin.dto.NoticeSearchVO} 객체.<br/>
      * 공지사항 목록에 적용될 검색 조건 담고 있음.
@@ -78,7 +78,7 @@ public class AdminNoticeController {
      * @param model Spring UI Model. 뷰로 데이터를 전달하는 데 사용됨.<br/>
      * - `searchVO`: 페이지네이션(현재 페이지, 페이지당 항목 수 등) 관련 정보가 담긴 객체.<br/>
      * - `noticeSearchVO`: 공지사항 검색 조건(예: 제목 검색어, 내용 검색어 등)이 담긴 객체.
-     * @param searchVO 클라이언트로부터 전달되는 {@link com.ama.don.common.SearchVO} 객체.<br/>
+     * @param searchVO 클라이언트로부터 전달되는 {@link com.ama.don.common.CommunitySearchVO} 객체.<br/>
      * 페이지네이션 정보를 담고 있으며, 요청에 포함되지 않은 경우 기본값으로 초기화됨.
      * @param noticeSearchVO 클라이언트로부터 전달되는 {@link com.ama.don.admin.dto.NoticeSearchVO} 객체.<br/>
      * 공지사항 목록에 적용할 검색 조건을 담고 있으며, 요청에 포함되지 않은 경우 기본값으로 초기화됨.

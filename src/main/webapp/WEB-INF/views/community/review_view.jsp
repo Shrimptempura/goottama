@@ -56,6 +56,29 @@
 				</tr>
 			</c:forEach>
 		</tbody>
+
 	</table>
+
+	<div class="d-flex justify-content-center mt-4">
+		<nav>
+			<ul class="pagination">
+				<c:if test="${pageVO.pageStart > 1}">
+					<li class="page-item"><a class="page-link"
+						href="?page=${pageVO.pageStart - 1}">&laquo;</a></li>
+				</c:if>
+
+				<c:forEach begin="${pageVO.pageStart}" end="${pageVO.pageEnd}"
+					var="i">
+					<li class="page-item ${i == pageVO.page ? 'active' : ''}"><a
+						class="page-link" href="?page=${i}">${i}</a></li>
+				</c:forEach>
+
+				<c:if test="${pageVO.pageEnd < pageVO.totPage}">
+					<li class="page-item"><a class="page-link"
+						href="?page=${pageVO.pageEnd + 1}">&raquo;</a></li>
+				</c:if>
+			</ul>
+		</nav>
+	</div>
 </body>
 </html>
