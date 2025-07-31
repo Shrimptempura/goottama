@@ -26,7 +26,6 @@ public class CompanyReviewCreateDto {
     private int scheduleRate;       // 일정 점수
     @NotBlank
     private String reviewContent;       // 리뷰 내용
-    private List<String> reviewImg;     // 리뷰 사진
 
     @NotBlank
     private String structureType;       // 건물 유형
@@ -34,4 +33,7 @@ public class CompanyReviewCreateDto {
     private String areaPyeong;           // 평수
     @NotBlank
     private String constructionField;       // 시공 분야
+
+    // 파일 관련은 다형성 file dto로 서비스에서 해결
+    private List<String> reviewImg;     // 리뷰 사진
 }

@@ -16,7 +16,6 @@ public class CompanyUpdateDto {
     private Long locationId;
 
     private String companyName;
-    private String companyImg;
     private String companyAddr;
 
     /**
@@ -35,4 +34,7 @@ public class CompanyUpdateDto {
      * 업체 소개말
      */
     private String companyIntro;
+
+    // 파일 관련은 다형성 file dto로 서비스에서 해결
+    private String companyImg;
 }

@@ -1,0 +1,44 @@
+package com.ama.don.shop.service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.ui.Model;
+
+import com.ama.don.shop.dao.ShopIDao;
+import com.ama.don.shop.dto.ProductDto;
+import com.ama.don.shop.dto.Product_imgDto;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+public class ShopProductdetailService implements ShopServiceinter{
+
+	private ShopIDao iDao;
+	public ShopProductdetailService(ShopIDao iDao) {
+		this.iDao=iDao;
+	}
+	@Override
+	public void execute(Model model) {
+		// TODO Auto-generated method stub
+		Map<String, Object> map=model.asMap();
+		HttpServletRequest request=
+				(HttpServletRequest) map.get("request");
+		
+		//String product_id=request.getParameter("product_id");
+		String product_id=request.getParameter("product_id");
+		System.out.println(product_id);
+		//iDao.product(product_id);
+		
+		ProductDto productDto=iDao.product(product_id);
+		
+		model.addAttribute("product",productDto);
+		
+		//model.addAttribute("list",iDao.product_list());
+		
+//		ArrayList<Product_imgDto> imgList=
+//				iDao.selectImg(bid);
+//		model.addAttribute("imgList",imgList);
+	}
+
+}

@@ -17,7 +17,6 @@ public class CompanyPostUpdateDto {
 
     private Long postId;
 
-    private List<String> companyImgList;    // 게시글 사진들
     private String postTitle;               // 게시글 제목
 
     private String spaceType;               // 공간 종류(아파트, 주택..)
@@ -26,4 +25,7 @@ public class CompanyPostUpdateDto {
     private String constructionDetail;      // 세부 공사(주방리모델링, 도배시공..)
 
     private String postContent;             // 게시글 내용
+
+    // 파일 관련은 다형성 file dto로 서비스에서 해결
+    // private List<String> companyImgList;    // 게시글 사진들
 }

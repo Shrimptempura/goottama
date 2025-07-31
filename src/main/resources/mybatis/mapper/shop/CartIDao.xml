@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ama.don.shop.dao.ShopIDao">
+
+	<insert id="cart_write">
+		INSERT INTO CART(USER_ID,PRODUCT_ID,CART_QUANTITY,CART_DATE) 
+		VALUES(#{param1}, #{param2}, #{param3},now());
+	</insert> 
+	
+	<select id="cart_list" resultMap="CartDto">
+		SELECT C.CART_ID,C.USER_ID,C.PRODUCT_ID,C.CART_QUANTITY,C.CART_DATE,U.USER_NAME,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_MALL_NAME,P.PRODUCT_ISTODAY,P.PRODUCT_DISCOUNTRATE,PI.PRODUCT_IMGURL
+		FROM CART C 
+		JOIN USER_DETAIL U ON C.USER_ID=U.USER_ID
+		JOIN PRODUCT P ON C.PRODUCT_ID=P.PRODUCT_ID
+		JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID 
+		AND PI.PRODUCT_IMG_TYPE = '메인'
+		WHERE U.USER_ID= #{param1};
+	</select>
+	
+	<select id="cart_list_flat" parameterType="Long" resultType="com.ama.don.shop.dto.CartFlatDto">
+        SELECT 
+            C.CART_ID as cart_id,
+            C.CART_QUANTITY as cart_quantity,
+            U.USER_ID as user_id,
+            U.USER_NAME as user_name,
+            P.PRODUCT_ID as product_id,
+            P.PRODUCT_NAME as product_name,
+            P.PRODUCT_MALL_NAME as product_mall_name,
+            P.PRODUCT_PRICE as product_price,
+            P.PRODUCT_DISCOUNTRATE as product_discountrate,
+            PI.PRODUCT_IMGURL as product_imgurl,
+            PI.PRODUCT_IMG_TYPE as product_img_type
+        FROM CART C
+        JOIN USER_DETAIL U ON C.USER_ID = U.USER_ID
+        JOIN PRODUCT P ON C.PRODUCT_ID = P.PRODUCT_ID
+        LEFT JOIN PRODUCT_IMG PI ON P.PRODUCT_ID = PI.PRODUCT_ID
+            AND PI.PRODUCT_IMG_TYPE = '메인'
+        WHERE U.USER_ID = #{userid}
+        ORDER BY C.CART_DATE DESC
+    </select>
+    
+    
+   	<!-- 장바구니 비우기 -->
+    <delete id="cart_clear" parameterType="Long">
+        DELETE FROM cart 
+        WHERE user_id = #{user_id}
+    </delete>
+    
+      <!-- 5-1. 장바구니 단일 품목 지우기 -->
+    <delete id="cart_delete_item" parameterType="map">
+        DELETE FROM cart 
+        WHERE user_id = #{user_id} AND product_id = #{product_id}
+    </delete>
+    
+      <!-- 5-1. 장바구니 단일 품목 지우기 -->
+    <delete id="cart_update" parameterType="map">
+        UPDATE cart 
+    	SET cart_quantity = #{cart_quantity}
+    	WHERE cart_id = #{cart_id}
+    </delete>
+    
+    
+    
+    
+</mapper>	

@@ -28,11 +28,4 @@ public class Review_viewDto {
 
 	private int target_id;
 
-	public void setTarget_type(String type) {
-		this.target_type = TargetType.valueOf(type.toUpperCase());
-	}
-
-	public String getTarget_typeAsString() {
-		return target_type != null ? target_type.name() : null;
-	}
 }

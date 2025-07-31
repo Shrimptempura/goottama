@@ -20,8 +20,11 @@ import java.util.Map;
 public class GetNoticeListService implements NoticeServiceInterface{
 
     private final NoticesIDao noticesIDao;
-    public GetNoticeListService(NoticesIDao noticesIDao) {
+    private final TUIImageControlService tUIImageControlService;
+
+    public GetNoticeListService(NoticesIDao noticesIDao, TUIImageControlService tUIImageControlService) {
         this.noticesIDao = noticesIDao;
+        this.tUIImageControlService = tUIImageControlService;
     }
 
     /**
@@ -71,6 +74,8 @@ public class GetNoticeListService implements NoticeServiceInterface{
             row.put("noticesContent", dto.getNotices_content());
             mapList.add(row);
         }
+
+        tUIImageControlService.removeNegativeTargetIdFiles();
 
         model.addAttribute("list", mapList);
         model.addAttribute("searchVO", searchVO);
