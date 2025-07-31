@@ -24,8 +24,14 @@ public interface CompanyPostDao {
      */
     List<CompanyPostPreviewDto> caseList(Long companyId);
 
-    // 게시글 작성하기
-    void create(CompanyPostCreateDto dto);
+    // 게시글 생성 순서
+    // 1. PostDao의 insertPolyPostForCompany 다형성 생성
+    // 2. PostDao의 findById로 전체 조회
+    // 3. file 관련 다형성 dto 사용하여 생성
+    // 4. 업체 게시글 생성
+    int insertCompanyPost(CompanyPostCreateDto dto);
+
+
 
     // 게시글 상세보기
     CompanyPostDetailDto detail(Long companyPostId);

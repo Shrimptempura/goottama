@@ -41,7 +41,7 @@
 		target_id AS
 		targetId
 		FROM post
-		WHERE post_id = #{postId}
+		WHERE post_id = #{pos_id}
 	</select>
 
 	<!-- 게시글 작성 -->
@@ -98,5 +98,18 @@
 		LIMIT #{rowCount} OFFSET
 		#{rowStart}
 	</select>
+
+	<!-- 업체에서 사용하는 다형성 게시글 생성 -->
+	<insert id="insertPolyPostForCompany"
+			parameterType="com.ama.don.common.dto.PostDto"
+			useGeneratedKeys="true"
+			keyProperty="post_id">
+		insert into post (
+			user_id, post_date, target_id, target_type)
+		values (
+			#{user_id}, #{post_date}, #{targetId}, #{targetType}
+		)
+	</insert>
+
 
 </mapper>
