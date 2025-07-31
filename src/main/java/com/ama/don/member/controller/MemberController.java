@@ -1,5 +1,7 @@
 package com.ama.don.member.controller;
 
+import java.io.IOException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -110,11 +112,14 @@ public class MemberController {
 	}
 	
 	@PostMapping("/profileImgUpload")
-	public String profileImgUpload(@RequestParam("profileImg") MultipartFile file, HttpSession session, MemberDto memberDto) {
+	public String profileImgUpload(@RequestParam("profileImg") MultipartFile file, HttpSession session, MemberDto memberDto, Model model) throws IllegalStateException, IOException {
 		
 		memberDto = (MemberDto) session.getAttribute("loginMember");
 		
 		profileImgUploadService.changeProfileImg(memberDto, file);
+		
+		session.setAttribute("loginMember", memberDto);
+		model.addAttribute("loginMember", memberDto);
 		
 		return "member/mypage/editProfile_view";
 	}

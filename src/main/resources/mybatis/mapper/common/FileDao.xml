@@ -14,7 +14,7 @@
         insert into file (
             file_uploader, file_name, file_path, target_type, target_id)
         values (
-            #{fileUploader}, #{fileName}, #{filePath}, #{targetType}, #{targetId}
+            #{file_uploader}, #{file_name}, #{file_path}, #{target_type}, #{target_id}
         )
     </insert>
 </mapper>

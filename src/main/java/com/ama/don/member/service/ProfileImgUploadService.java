@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.ama.don.common.dao.FileDao;
 import com.ama.don.common.dto.FileDto;
+import com.ama.don.common.enums.TargetType;
 import com.ama.don.member.dto.MemberDto;
 
 import lombok.RequiredArgsConstructor;
@@ -36,9 +37,17 @@ public class ProfileImgUploadService {
 		
 		file.transferTo(new File(fullPath)); //파일 저장
 		
+		memberDto.setUser_img(uuidName);
+		
 		//db에 파일 저장
 		FileDto fileDto = new FileDto();
 		fileDto.setFile_uploader(login_id);
+		fileDto.setFile_name(uuidName);
+		fileDto.setFile_path(fullPath);
+		fileDto.setTarget_type(TargetType.MEMBER);
+		fileDto.setTarget_id(user_id);
+		
+		fileDao.create(fileDto);
 		
 		
 	}

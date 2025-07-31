@@ -51,6 +51,7 @@
 <form action="/profileImgUpload" method="post" enctype="multipart/form-data">
 	<input type="file"  accept="image/*" name="profileImg" onchange="previewImg(event)" />  <br />
 	<img id="preview"  src="#" alt="미리보기 이미지" /> <br />
+	<img src="${pageContext.request.contextPath }/profile/${loginMember.user_img}" alt="프로필 이미지" />
 	<input type="submit" value="사진변경하기" />
 </form>
 
