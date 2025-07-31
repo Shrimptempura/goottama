@@ -16,6 +16,8 @@ public interface LoginDao {
 
 	int findMemberCount(FindPwDto findPwDto);
 
+	String findByOnlyLoginId();
+
 
 
 }

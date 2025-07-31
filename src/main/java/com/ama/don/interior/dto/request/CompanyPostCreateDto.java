@@ -16,8 +16,6 @@ import java.util.List;
 @Setter
 public class CompanyPostCreateDto {
 
-    private List<String> companyImgList;    // 업체가 올린 사진
-
     @NotBlank
     private String postTitle;       // 게시글 제목
 
@@ -32,4 +30,7 @@ public class CompanyPostCreateDto {
 
     @NotBlank
     private String postContent;     // 게시글 내용
+
+    // 파일 관련은 다형성 file dto로 서비스에서 해결
+    // private List<String> companyImgList;    // 업체가 올린 사진
 }

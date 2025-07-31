@@ -1,7 +1,7 @@
 package com.ama.don.admin.dao;
 
-import com.ama.don.admin.dto.ReportSearchVO;
-import com.ama.don.admin.dto.ReportVO;
+import com.ama.don.admin.dto.ReportSearchDTO;
+import com.ama.don.admin.dto.ReportDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * 전체 신고 조회, 상세 조회, 조건 검색 및 개수 조회 기능을 포함함.
  * </p>
  *
- * 검색 조건은 {@link ReportSearchVO}를 통해 전달되며,
+ * 검색 조건은 {@link ReportSearchDTO}를 통해 전달되며,
  * 신고자 ID, 신고 내용, 대상 타입/ID, 처리 상태, 신고일(범위) 등으로 검색 가능하다.
  *
  * @author 정순석
@@ -23,10 +23,10 @@ public interface ManageReportsIDao {
     /**
      * 전체 신고 내역을 반환한다.
      *
-     * @return 신고 목록 (List of {@link ReportVO})
+     * @return 신고 목록 (List of {@link ReportDTO})
      * @see #countAllReports()
      */
-    List<ReportVO> getAllReports();
+    List<ReportDTO> getAllReports();
 
     /**
      * 전체 신고 개수를 반환한다.
@@ -43,7 +43,7 @@ public interface ManageReportsIDao {
      * @return 해당 신고 정보 (없으면 null)
      * @see #getAllReports()
      */
-    ReportVO getReportByReportId(String reportId);
+    ReportDTO getReportByReportId(String reportId);
 
     /**
      * 신고 조건 검색 결과 목록을 반환한다.
@@ -59,16 +59,16 @@ public interface ManageReportsIDao {
      *
      * @param searchVO 검색 조건을 담은 VO
      * @return 조건에 맞는 신고 목록
-     * @see #countSearchReports(ReportSearchVO)
+     * @see #countSearchReports(ReportSearchDTO)
      */
-    List<ReportSearchVO> searchReports(ReportSearchVO searchVO);
+    List<ReportSearchDTO> searchReports(ReportSearchDTO searchVO);
 
     /**
      * 신고 조건 검색 결과의 개수를 반환한다.
      *
      * @param searchVO 검색 조건 VO
      * @return 검색 결과 수
-     * @see #searchReports(ReportSearchVO)
+     * @see #searchReports(ReportSearchDTO)
      */
-    int countSearchReports(ReportSearchVO searchVO);
+    int countSearchReports(ReportSearchDTO searchVO);
 }

@@ -15,10 +15,12 @@ public class CompanyHomePostDto {
     private Long companyId;
     private Long postId;
 
-    private String postImg;         // 사진, 썸네일용
     private String postTitle;       // 게시글 제목
     private String areaInPyeong;    // 평수
     private String style;           // 스타일(모던, 내추럴..), enum 확장 필요?
 
     private String location;        // 위치
+
+    // 파일 관련은 다형성 file dto로 서비스에서 해결
+    // private String postImg;         // 사진, 썸네일용
 }

@@ -6,19 +6,15 @@ import lombok.Setter;
 
 import java.sql.Timestamp;
 
-/**
- * 신고 검색을 위한 전용 VO <br>
- * 신고일 범위 검색을 위해 reportDateStart와 reportDateEnd을 받는다.
- */
 @Setter
 @Getter
 @AllArgsConstructor
-public class ReportSearchVO {
+public class ReportDTO {
+    private long reportId;
     private long userId;
+    private Timestamp reportDate;
     private String reportContent;
-    private String targetType;
+    private int targetType;
     private long targetId;
     private String reportStatus;
-    private Timestamp reportDateStart;
-    private Timestamp reportDateEnd;
 }

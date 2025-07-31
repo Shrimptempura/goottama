@@ -25,6 +25,7 @@ public class ReviewDto {
     private Timestamp reviewDate;       // 리뷰 작성 날짜
     private Timestamp reviewModify;     // 리뷰 수정 일지
     private List<String> reviewImg;           // 리뷰 사진, 여러장
+    private Boolean isDeleted;          // 소프트 삭제 여부
 
     private Long targetId;       // 대상 아이디
     private TargetType targetType;      //  enum: INTERIOR, COMMUNITY, SHOP

@@ -2,7 +2,6 @@ package com.ama.don.community.controller;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,18 +9,22 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.ama.don.common.dao.FileDao;
+import com.ama.don.common.dao.PostDao;
+import com.ama.don.common.dto.FileDto;
+import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.enums.TargetType;
-import com.ama.don.community.dao.Write_viewDao;
-import com.ama.don.community.dto.Write_viewDto;
 
 @Controller
 @RequestMapping("/community")
 public class Write_viewController {
 
 	@Autowired
-	private Write_viewDao write_viewDao;
+	private PostDao postDao;
+
+	@Autowired
+	private FileDao fileDao;
 
 	private final String uploadDir = "C:/upload/";
 
@@ -31,69 +34,71 @@ public class Write_viewController {
 		return "community/write_view";
 	}
 
+	// 게시글 저장
 	@PostMapping("/write")
 	public String writePost(@RequestParam("title") String title, @RequestParam("content") String content,
-			@RequestParam("imgFile") MultipartFile imgFile, Model model) {
+			@RequestParam("targetType") String targetType,
+			@RequestParam(value = "imgFiles", required = false) MultipartFile[] imgFiles, Model model) {
 
-		Write_viewDto dto = new Write_viewDto();
-		dto.setUser_id(1);
+		PostDto dto = new PostDto();
+		dto.setUser_id(1L); // 임시 아이디 L == Long
 		dto.setPost_title(title);
 		dto.setPost_content(content);
-		dto.setTarget_type(TargetType.valueOf("COMMUNITY"));
-		dto.setTarget_id(1);
 
-		if (!imgFile.isEmpty()) {
-			String saveFileName = UUID.randomUUID() + "_" + imgFile.getOriginalFilename();
-			File dir = new File(uploadDir);
-			if (!dir.exists())
-				dir.mkdirs();
-
-			try {
-				File saveFile = new File(uploadDir + saveFileName);
-				imgFile.transferTo(saveFile);
-				dto.setPost_img(saveFileName);
-			} catch (IOException e) {
-				e.printStackTrace();
-				model.addAttribute("msg", "이미지 업로드 실패");
-				return "community/write_view";
-			}
+		TargetType type;
+		try {
+			type = TargetType.valueOf(targetType);
+			dto.setTargetType(type);
+		} catch (IllegalArgumentException e) {
+			model.addAttribute("msg", "잘못된 게시판 유형입니다.");
+			return "community/write_view";
 		}
 
-		write_viewDao.insertPost(dto);
-		return "redirect:/community/review_view";
-	}
+		dto.setTargetId(1L); // 임시 아이디 L == Long
 
-	// 드래그앤드롭 파일 업로드
-	@PostMapping("/write_view")
-	@ResponseBody
-	public String dragAndDropUpload(MultipartHttpServletRequest multipartRequest) {
-		Iterator<String> itr = multipartRequest.getFileNames();
+		// 게시글 저장
+		postDao.create(dto);
+		Long postId = dto.getPost_id();
 
-		while (itr.hasNext()) {
-			MultipartFile mpf = multipartRequest.getFile(itr.next());
+		// 이미지 저장
+		if (imgFiles != null) {
+			for (MultipartFile file : imgFiles) {
+				if (!file.isEmpty()) {
+					try {
+						String orgName = file.getOriginalFilename();
+						String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+						String extension = "";
 
-			if (mpf != null && !mpf.isEmpty()) {
-				String originalFilename = mpf.getOriginalFilename();
-				String saveName = UUID.randomUUID() + "_" + originalFilename;
-				String fileFullPath = uploadDir + saveName;
+						int lastDot = orgName.lastIndexOf(".");
+						if (lastDot != -1 && lastDot < orgName.length() - 1) {
+							extension = orgName.substring(lastDot + 1);
+						}
 
-				try {
-					File dir = new File(uploadDir);
-					if (!dir.exists())
-						dir.mkdirs();
+						String saveName = extension.isEmpty() ? uuid : uuid + "." + extension;
 
-					mpf.transferTo(new File(fileFullPath));
-					System.out.println("업로드 성공: " + fileFullPath);
+						File uploadPath = new File(uploadDir);
+						if (!uploadPath.exists())
+							uploadPath.mkdirs();
 
-					return "/upload/" + saveName;
+						File destFile = new File(uploadDir + saveName);
+						file.transferTo(destFile);
 
-				} catch (Exception e) {
-					System.out.println("파일 업로드 실패 => " + fileFullPath);
-					e.printStackTrace();
+						FileDto fileDto = new FileDto();
+						fileDto.setFile_name(orgName);
+						fileDto.setFile_path(saveName);
+						fileDto.setFile_uploader(type.name());
+						fileDto.setTarget_type(type);
+						fileDto.setTarget_id(postId);
+
+						fileDao.insertFile(fileDto);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
 		}
 
-		return "fail";
+		return "redirect:/community/review_view";
 	}
+
 }
