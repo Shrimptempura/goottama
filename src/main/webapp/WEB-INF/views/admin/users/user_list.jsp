@@ -1,9 +1,10 @@
+<!-- user_list.jsp -->
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <div class="info">
-    전체 글 : ${searchVO.totRow} <br>
+    회원 수 : ${searchVO.totRow} <br>
     현재 페이지 / 전체 페이지 : ${searchVO.page } / ${searchVO.totPage }
 </div>
 <!-- Pagination -->
@@ -43,22 +44,27 @@
     </div>
 </div>
 
-<!-- 공지 목록 출력 -->
-<table class="notice-table">
+<!-- 유저 목록 출력 -->
+<table>
     <tr>
-       <td>제목</td>
-       <td>날자</td>
+        <td>번호</td>
+        <td>이름</td>
+        <td>닉네임</td>
+        <td>상태</td>
+        <td>권한</td>
+        <td>가입일</td>
+        <td>상세정보</td>
     </tr>
-    <c:forEach items="${list}" var="notice">
+    <c:forEach items="${list}" var="user">
         <tr>
-            <td>
-                <a href="/admin/notices/notice_detail?notices_id=${notice.noticesId}">
-                    ${notice.noticesTitle}
-                </a>
-            </td>
-            <td>
-            <fmt:formatDate value="${notice.noticesCreatedAt}" pattern="yyyy-MM-dd"/>
-            </td>
+            <td>${user.userId}</td>
+            <td>${user.userName}</td>
+            <td>${user.userNickname}</td>
+            <td>${user.userStatus}</td>
+            <td>${user.roleId}</td>
+            <td>${user.userCreatedAt}</td>
+            <td><button type="button" class="open-modal-btn" data-user-id="${user.userId}"> ▶ </button></td>
         </tr>
     </c:forEach>
 </table>
+

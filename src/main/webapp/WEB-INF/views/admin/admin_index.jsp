@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-
+<link rel="stylesheet" href="/static/css/admin/ui-snippets/modal.css">
 <title>Admin Dashboard</title>
 </head>
 <body>
@@ -17,6 +17,14 @@
     </div>
     <div class="main-content">
         <!-- AJAX로 컨텐츠가 로드될 영역 -->
+    </div>
+
+    <!-- 모달 -->
+    <div id="userModalOverlay" class="modal-overlay">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-body-content"></div>
+        </div>
     </div>
 </body>
 <script src="/static/js/admin/admin_router.js"></script>
