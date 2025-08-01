@@ -49,7 +49,11 @@ public interface CompanyPostDao {
     CompanyPostUpdateDto getEditView(Long companyPostId);
 
     // 게시글 삭제
-    void delete(Long companyPostId);
+    // 다형성 게시글 먼저 삭제
+    int deletePolyPostById(Long postId);
+
+    // 업체 게시글 삭제
+    int deleteCompanyPostById(Long companyPostId);
 
     // 조회수 증가
     void increaseHit(Long companyPostId);
