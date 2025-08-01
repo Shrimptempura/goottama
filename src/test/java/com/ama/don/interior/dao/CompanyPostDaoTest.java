@@ -143,4 +143,24 @@ class CompanyPostDaoTest extends AbstractCompanyTestSupport {
         assertThat(content).isEqualTo("내용이 수정됨");
     }
 
+    @DisplayName("게시글 수정 뷰")
+    @Test
+    void getCompanyPostUpdateView() {
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 작성
+        CompanyPostCreateDto companyPost = createCompanyPost(userId, companyId);
+        Long companyPostId = companyPost.getCompanyPostId();
+    
+        // 수정 전 조회값 받음
+        CompanyPostUpdateDto updateView = companyPostDao.getEditView(companyPostId);
+
+        assertThat(updateView).isNotNull();
+        assertThat(updateView.getStyle()).isEqualTo(companyPost.getStyle());
+        assertThat(updateView.getSpaceType()).isEqualTo(companyPost.getSpaceType());
+    }
+
+
 }

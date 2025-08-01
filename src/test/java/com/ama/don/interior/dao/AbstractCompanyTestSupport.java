@@ -267,4 +267,20 @@ public class AbstractCompanyTestSupport {
         return companyPost;
     }
 
+    protected CompanyPostUpdateDto updateCompanyPost(Long companyPostId) {
+        CompanyPostUpdateDto updateDto = new CompanyPostUpdateDto();
+        updateDto.setCompanyPostId(companyPostId);
+        updateDto.setCompanyPostId(companyPostId);
+        updateDto.setCompanyPostTitle("제목이 수정됨");
+        updateDto.setCompanyPostContent("내용이 수정됨");
+        updateDto.setSpaceType("공간이 수정됨");
+        updateDto.setAreaPyeong("평수 수정됨");
+        updateDto.setStyle("스타일 수정됨");
+        updateDto.setConstructionDetail("세부내용 수정됨");
+
+        companyPostDao.updatePost(updateDto);
+
+        return updateDto;
+    }
+
 }

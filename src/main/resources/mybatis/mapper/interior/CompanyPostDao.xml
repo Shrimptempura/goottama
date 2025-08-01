@@ -77,6 +77,7 @@
     <!-- 업체 게시글 수정 뷰 -->
     <select id="getEditView" resultType="com.ama.don.interior.dto.request.CompanyPostUpdateDto">
         SELECT
+            company_post_id AS companyPostId,
             company_post_title AS companyPostTitle,
             company_post_content AS companyPostContent,
             space_type AS spaceType,
