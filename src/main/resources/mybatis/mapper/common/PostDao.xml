@@ -52,13 +52,14 @@
 		user_id, post_title, post_content,
 		post_date, post_count, post_like_count,
 		target_type, target_id
-		) VALUES
-		(
+		)
+		VALUES (
 		#{user_id}, #{post_title}, #{post_content},
 		CURRENT_TIMESTAMP, 0, 0,
-		#{targetType}, #{targetId}
+		#{targetType}, NULL
 		)
 	</insert>
+
 
 	<!-- 게시글 수정 -->
 	<update id="update"
@@ -71,6 +72,16 @@
 		target_id = #{targetId}
 		WHERE post_id = #{post_id}
 	</update>
+
+	<!-- 타겟아이디 수정 -->
+	<update id="update_target_id"
+		parameterType="com.ama.don.common.dto.PostDto">
+		UPDATE post
+		SET target_id = #{targetId}
+		WHERE post_id =
+		#{post_id}
+	</update>
+
 
 	<!-- 게시글 삭제 -->
 	<delete id="delete" parameterType="long">

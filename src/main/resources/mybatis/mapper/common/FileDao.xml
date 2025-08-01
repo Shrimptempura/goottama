@@ -38,4 +38,14 @@
 	</select>
 
 
+	<update id="update_target_id">
+		UPDATE file
+		SET target_id = #{new_target_id}
+		WHERE
+		target_type = #{target_type}
+		AND target_id = #{old_target_id}
+	</update>
+
+
+
 </mapper>
