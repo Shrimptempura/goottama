@@ -43,7 +43,7 @@ public interface CompanyPostDao {
     CompanyPostDetailDto getCompanyBasicInfoById(Long companyId);
 
     // 게시글 수정
-    void update(CompanyPostUpdateDto dto);
+    int updatePost(CompanyPostUpdateDto dto);
 
     // 게시글 수정 뷰
     CompanyPostUpdateDto getEditView(Long companyPostId);

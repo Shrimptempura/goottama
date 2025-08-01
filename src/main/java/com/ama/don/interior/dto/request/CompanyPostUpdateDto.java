@@ -13,7 +13,7 @@ import lombok.Setter;
 @Setter
 public class CompanyPostUpdateDto {
 
-    private Long postId;
+    private Long companyPostId;
 
     private String companyPostTitle;               // 게시글 제목
 

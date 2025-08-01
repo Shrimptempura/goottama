@@ -60,4 +60,18 @@
         WHERE company_id = #{companyId}
     </select>
 
+    <!-- 업체 게시글 수정 -->
+    <update id="updatePost"
+            parameterType="com.ama.don.interior.dto.request.CompanyPostUpdateDto">
+        UPDATE company_post
+        SET
+            company_post_title = #{companyPostTitle},
+            company_post_content = #{companyPostContent},
+            space_type = #{spaceType},
+            style = #{style},
+            construction_detail = #{constructionDetail}
+        WHERE company_post_id = #{companyPostId}
+    </update>
+
+
 </mapper>
