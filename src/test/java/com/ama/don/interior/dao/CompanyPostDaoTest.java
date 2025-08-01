@@ -4,6 +4,7 @@ import com.ama.don.common.dao.PostDao;
 import com.ama.don.common.dto.PostDto;
 import com.ama.don.interior.dto.request.CompanyInsertDto;
 import com.ama.don.interior.dto.request.CompanyPostCreateDto;
+import com.ama.don.interior.dto.request.CompanyPostUpdateDto;
 import com.ama.don.interior.dto.response.CompanyPostDetailDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -105,6 +106,41 @@ class CompanyPostDaoTest extends AbstractCompanyTestSupport {
         assertThat(detail).isNotNull();
         assertThat(detail.getCompanyId()).isEqualTo(companyId);
         assertThat(detail.getCompanyName()).isEqualTo(context.getDetail().getCompanyName());
+    }
+
+    @DisplayName("업체 게시글 수정 확인")
+    @Test
+    void updateCompanyPost() {
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 작성
+        CompanyPostCreateDto companyPost = createCompanyPost(userId, companyId);
+        Long companyPostId = companyPost.getCompanyPostId();
+
+        // 게시글 수정
+        CompanyPostUpdateDto updateDto = new CompanyPostUpdateDto();
+        updateDto.setCompanyPostId(companyPostId);
+        updateDto.setCompanyPostTitle("제목이 수정됨");
+        updateDto.setCompanyPostContent("내용이 수정됨");
+        updateDto.setSpaceType("공간이 수정됨");
+        updateDto.setAreaPyeong("평수 수정됨");
+        updateDto.setStyle("스타일 수정됨");
+        updateDto.setConstructionDetail("세부내용 수정됨");
+
+        int updated = companyPostDao.updatePost(updateDto);
+
+        assertThat(updateDto).isNotNull();
+        assertThat(updated).isEqualTo(1);
+
+        // 게시글 읽기
+        CompanyPostDetailDto detail = companyPostDao.getPostAndCompanyPostById(companyPostId);
+        String title = detail.getCompanyPostTitle();
+        String content = detail.getCompanyPostContent();
+
+        assertThat(title).isEqualTo(updateDto.getCompanyPostTitle());
+        assertThat(content).isEqualTo("내용이 수정됨");
     }
 
 }
