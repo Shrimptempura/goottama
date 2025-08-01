@@ -39,6 +39,9 @@ public interface CompanyPostDao {
     // getPostAndCompanyPostById, getCompanyBasicInfoById
     CompanyPostDetailDto getPostAndCompanyPostById(Long companyPostId);
 
+    // 상세보기 부분 조회 (company + company_detail)
+    CompanyPostDetailDto getCompanyBasicInfoById(Long companyId);
+
     // 게시글 수정
     void update(CompanyPostUpdateDto dto);
 

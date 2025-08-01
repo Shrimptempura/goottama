@@ -48,4 +48,15 @@
         JOIN post p ON p.post_id = c.post_id
         WHERE company_post_id = #{companyPostId}
     </select>
+
+    <!-- 업체 게시글 상세보기 중 company + company_detail -->
+    <select id="getCompanyBasicInfoById" resultType="com.ama.don.interior.dto.response.CompanyPostDetailDto">
+        SELECT
+            company_name AS companyName,
+            company_intro AS companyIntro
+        FROM company c
+        JOIN company_detail d ON d.company_detail_id = c.company_detail_id
+        WHERE company_id = #{companyId}
+    </select>
+
 </mapper>
