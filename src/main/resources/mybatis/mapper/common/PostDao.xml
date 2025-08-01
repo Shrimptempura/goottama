@@ -104,10 +104,14 @@
 			parameterType="com.ama.don.common.dto.PostDto"
 			useGeneratedKeys="true"
 			keyProperty="post_id">
-		insert into post (
-			user_id, target_id, target_type)
-		values (
-			#{user_id}, #{targetId}, #{targetType}
+		INSERT INTO post (
+			user_id,
+		    target_id,
+		    target_type)
+		VALUES (
+			#{user_id},
+		    #{targetId},
+		    #{targetType}
 		)
 	</insert>
 

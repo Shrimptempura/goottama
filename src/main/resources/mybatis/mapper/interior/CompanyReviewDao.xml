@@ -8,36 +8,64 @@
     <!-- 다형성 리뷰 작성된 상태에서 업체 리뷰생성하기 -->
     <insert id="insert"
             parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
-        insert into company_review(
-            review_id, company_id, communication_rate, price_rate, result_rate,
-            schedule_rate, structure_type, area_pyeong, construction_field)
-        values (
-            #{reviewId}, #{companyId}, #{communicationRate}, #{priceRate}, #{resultRate},
-            #{scheduleRate}, #{structureType}, #{areaPyeong}, #{constructionField}
+        INSERT INTO company_review (
+            review_id,
+            company_id,
+            communication_rate,
+            price_rate,
+            result_rate,
+            schedule_rate,
+            structure_type,
+            area_pyeong,
+            construction_field)
+        VALUES (
+            #{reviewId},
+            #{companyId},
+            #{communicationRate},
+            #{priceRate},
+            #{resultRate},
+            #{scheduleRate},
+            #{structureType},
+            #{areaPyeong},
+            #{constructionField}
         )
     </insert>
 
     <!-- 점수 테이블 존재 유무 -->
     <select id="isExistScoreTable" resultType="java.lang.Boolean">
-        select 1
-        from company_score_avg
-        where company_id = #{companyId}
-        limit 1
+        SELECT 1
+        FROM company_score_avg
+        WHERE company_id = #{companyId}
+        LIMIT 1
     </select>
 
     <!-- 첫 리뷰작성후만 실행, 점수 테이블 생성 -->
     <insert id="createScoreTable"
             parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
-        insert into company_score_avg(
-            company_id, company_review_count,
-            sum_communication, sum_price, sum_result, sum_schedule,
-            avg_communication, avg_price, avg_result, avg_schedule, avg_total_rate)
-        values (
-            #{companyId}, 1,
-            #{communicationRate}, #{priceRate}, #{resultRate}, #{scheduleRate},
-            #{communicationRate}, #{priceRate}, #{resultRate}, #{scheduleRate},
-            (#{communicationRate} + #{priceRate} + #{resultRate} + #{scheduleRate}
-            ) / 4.0
+        INSERT INTO company_score_avg (
+            company_id,
+            company_review_count,
+            sum_communication,
+            sum_price,
+            sum_result,
+            sum_schedule,
+            avg_communication,
+            avg_price,
+            avg_result,
+            avg_schedule,
+            avg_total_rate)
+        VALUES (
+            #{companyId},
+            1,
+            #{communicationRate},
+            #{priceRate},
+            #{resultRate},
+            #{scheduleRate},
+            #{communicationRate},
+            #{priceRate},
+            #{resultRate},
+            #{scheduleRate},
+            (#{communicationRate} + #{priceRate} + #{resultRate} + #{scheduleRate}) / 4.0
         )
     </insert>
 
@@ -45,22 +73,22 @@
     <!-- parameterType -> companyScoreAvgDto.. 책임분리 추후 생각 -->
     <update id="addScoreOnCreate"
             parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
-        update company_score_avg
-        set
+        UPDATE company_score_avg
+        SET
             sum_communication = sum_communication + #{communicationRate},
             sum_price = sum_price + #{priceRate},
             sum_result = sum_result + #{resultRate},
             sum_schedule = sum_schedule + #{scheduleRate},
             company_review_count = company_review_count + 1
-        where company_id = #{companyId}
+        WHERE company_id = #{companyId}
     </update>
 
     <!-- 점수테이블이 있을시(업체에 대한 리뷰가 있을시) 점수 계산법 -->
     <!-- 합산은 addScoreOnCreate에서 받고 평균만 구하기 -->
     <update id="averageOnCreate"
             parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
-        update company_score_avg
-        set
+        UPDATE company_score_avg
+        SET
             avg_communication = sum_communication / company_review_count,
             avg_price = sum_price / company_review_count,
             avg_result = sum_result / company_review_count,
@@ -69,117 +97,141 @@
             avg_total_rate = (
                 sum_communication + sum_price + sum_result + sum_schedule
             ) / 4 / company_review_count
-        where company_id = #{companyId}
+        WHERE company_id = #{companyId}
     </update>
 
     <!-- 업체아이디로 점수평균 값 빼오기 -->
     <select id="getAvgScoreByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyScoreAvgDto">
-        select company_id AS companyId, avg_communication AS avgCommunication, avg_price AS avgPrice,
-        avg_result AS avgResult, avg_schedule AS avgSchedule, avg_total_rate AS avgTotalRate
-        from company_score_avg
-        where company_id = #{companyId}
+        SELECT
+            company_id AS companyId,
+            avg_communication AS avgCommunication,
+            avg_price AS avgPrice,
+            avg_result AS avgResult,
+            avg_schedule AS avgSchedule,
+            avg_total_rate AS avgTotalRate
+        FROM company_score_avg
+        WHERE company_id = #{companyId}
     </select>
 
     <!-- 유저가 저장한 리뷰 상세보기(user_detail + company_review + review + file(제외) -->
     <select id="getReviewDetail" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
-        select r.review_id AS reviewId, u.user_id AS userId, u.user_nickname AS userNickname,
-            c.structure_type AS structureType, c.area_pyeong AS areaPyeong, c.construction_field AS constructionField,
-            r.review_img AS reviewImg, r.review_content AS reviewContent, r.review_date AS reviewDate,
+        SELECT
+            r.review_id AS reviewId,
+            u.user_id AS userId,
+            u.user_nickname AS userNickname,
+            c.structure_type AS structureType,
+            c.area_pyeong AS areaPyeong,
+            c.construction_field AS constructionField,
+            r.review_content AS reviewContent,
+            r.review_date AS reviewDate,
             r.review_modify AS reviewModify
-        from company_review c
-        join review r ON r.review_id = c.review_id
-        join user_detail u ON r.user_id = u.user_id
-        where c.review_id = #{reviewId}
-            and c.is_deleted = false
-            and r.is_deleted = false
+        FROM company_review c
+        JOIN review r ON r.review_id = c.review_id
+        JOIN user_detail u ON r.user_id = u.user_id
+        WHERE c.review_id = #{reviewId}
+            AND c.is_deleted = false
+            AND r.is_deleted = false
     </select>
 
     <!-- 홈에서 보여주는 최신 업체 리뷰목록들 -->
     <!-- 사진은 추후 file에서 처리 -->
     <!-- 다형성 리뷰테이블에서 type으로 거르고 desc -->
     <select id="findRecentForHome" resultType="com.ama.don.interior.dto.response.CompanyHomeReviewDto">
-        select r.review_id AS reviewId,
-            c.area_pyeong AS areaPyeong, c.structure_type AS structureType, r.review_content AS reviewContent
-        from company_review c
-        join review r ON c.review_id = r.review_id
-        where r.target_type = 'INTERIOR'
-            and r.is_deleted = false
-            and c.is_deleted = false
-        order by r.review_modify desc
+        SELECT
+            r.review_id AS reviewId,
+            c.area_pyeong AS areaPyeong,
+            c.structure_type AS structureType,
+            r.review_content AS reviewContent
+        FROM company_review c
+        JOIN review r ON c.review_id = r.review_id
+        WHERE r.target_type = 'INTERIOR'
+            AND r.is_deleted = false
+            AND c.is_deleted = false
+        ORDER BY r.review_modify desc
     </select>
 
     <!-- 업체 상세정보에서 리뷰탭 보기(사진 제외: userImg, reviewImg) -->
     <select id="listByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
-        select r.review_id AS reviewId, u.user_id AS userId, u.user_nickname AS userNickName,
-            c.structure_type AS structureType, c.area_pyeong AS areaPyeong, c.construction_field AS constructionField,
-            review_content AS reviewContent, review_date AS reviewDate, review_modify AS reviewModify
-        from company_review c
-        join review r ON c.review_id = r.review_id
-        join user_detail u ON r.user_id = u.user_id
-        where company_id = #{companyId}
-            and r.is_deleted = false
-            and c.is_deleted = false
+        SELECT
+            r.review_id AS reviewId,
+            u.user_id AS userId,
+            u.user_nickname AS userNickName,
+            c.structure_type AS structureType,
+            c.area_pyeong AS areaPyeong,
+            c.construction_field AS constructionField,
+            review_content AS reviewContent,
+            review_date AS reviewDate,
+            review_modify AS reviewModify
+        FROM company_review c
+        JOIN review r ON c.review_id = r.review_id
+        JOIN user_detail u ON r.user_id = u.user_id
+        WHERE company_id = #{companyId}
+            AND r.is_deleted = false
+            AND c.is_deleted = false
     </select>
 
     <!-- 업체 아이디로 업체에 대한 리뷰 수 구하기 -->
     <select id="countByCompanyId" resultType="java.lang.Integer">
-        select count(*)
-        from company_review c
-        join review r ON c.review_id = r.review_id
-        where company_id = #{companyId}
-            and c.is_deleted = false
-            and r.is_deleted = false
+        SELECT count(*)
+        FROM company_review c
+        JOIN review r ON c.review_id = r.review_id
+        WHERE company_id = #{companyId}
+            AND c.is_deleted = false
+            AND r.is_deleted = false
     </select>
 
     <!-- 검증쿼리 다형성 리뷰에 해당 내용 존재하는지 -->
     <select id="existByReviewIdAndUserId" resultType="java.lang.Boolean">
-        select 1
-        from review r
-        join company_review c ON c.review_id = r.review_id
-        where r.review_id = #{reviewId}
-            and r.user_id = #{userId}
-            and c.is_deleted = false
-            and r.is_deleted = false
-        limit 1
+        SELECT 1
+        FROM review r
+        JOIN company_review c ON c.review_id = r.review_id
+        WHERE r.review_id = #{reviewId}
+            AND r.user_id = #{userId}
+            AND c.is_deleted = false
+            AND r.is_deleted = false
+        LIMIT 1
     </select>
 
     <!-- 하위 리뷰 소프트 삭제 -->
     <update id="softDeleteCompanyReview">
-        update company_review
-        set
-            is_deleted = 1
-        where review_id = #{reviewId}
-            and is_deleted = false
+        UPDATE company_review
+        SET is_deleted = 1
+        WHERE review_id = #{reviewId}
+            AND is_deleted = false
     </update>
 
     <!-- 상위 리뷰 소프트 삭제 -->
     <update id="softDeletePolyReview">
-        update review
-        set
-            is_deleted = 1
-        where review_id = #{reviewId}
-            and user_id = #{userId}
-            and is_deleted = false
+        UPDATE review
+        SET is_deleted = 1
+        WHERE review_id = #{reviewId}
+            AND user_id = #{userId}
+            AND is_deleted = false
     </update>
 
     <!-- 다형성 리뷰 수정하기 -->
     <update id="updatePolyReview"
             parameterType="com.ama.don.common.dto.ReviewDto">
-        update review
-        set
-            review_content = #{reviewContent}, review_modify = now()
-        where review_id = #{reviewId}
+        UPDATE review
+        SET
+            review_content = #{reviewContent},
+            review_modify = now()
+        WHERE review_id = #{reviewId}
     </update>
 
     <!-- 업체 리뷰 수정 -->
     <update id="updateCompanyReview"
             parameterType="com.ama.don.interior.dto.request.CompanyReviewUpdateDto">
-        update company_review
-        set
-            communication_rate = #{communicationRate}, price_rate = #{priceRate},
-            result_rate = #{resultRate}, schedule_rate = #{scheduleRate},
-            structure_type = #{structureType}, area_pyeong = #{areaPyeong}, construction_field = #{constructionField}
-        where review_id = #{reviewId}
+        UPDATE company_review
+        SET
+            communication_rate = #{communicationRate},
+            price_rate = #{priceRate},
+            result_rate = #{resultRate},
+            schedule_rate = #{scheduleRate},
+            structure_type = #{structureType},
+            area_pyeong = #{areaPyeong},
+            construction_field = #{constructionField}
+        WHERE review_id = #{reviewId}
     </update>
 
     <!-- 파일 수정(삭제->생성)은 fileDao에서 -->
@@ -188,20 +240,20 @@
     <!-- 리뷰 수정시 평균점수 합산만 다시 계산 -->
     <update id="adjustScoreOnEdit"
             parameterType="com.ama.don.interior.dto.request.CompanyScoreAdjustDto">
-        update company_score_avg
-        set
+        UPDATE company_score_avg
+        SET
             sum_communication = sum_communication - #{oldCommunicationRate} + #{newCommunicationRate},
             sum_price = sum_price - #{oldPriceRate} + #{newPriceRate},
             sum_result = sum_result - #{oldResultRate} + #{newResultRate},
             sum_schedule = sum_schedule - #{oldScheduleRate} + #{newScheduleRate}
-        where company_id = #{companyId}
+        WHERE company_id = #{companyId}
     </update>
 
     <!-- 받은 값으로 평균 수정 -->
     <update id="updateAverageScores"
             parameterType="com.ama.don.interior.dto.request.CompanyScoreAdjustDto">
-        update company_score_avg
-        set
+        UPDATE company_score_avg
+        SET
             avg_communication = sum_communication / company_review_count,
             avg_price = sum_price / company_review_count,
             avg_result = sum_result / company_review_count,
@@ -210,13 +262,13 @@
             avg_total_rate = (
                 sum_communication + sum_price + sum_result + sum_schedule
             ) / 4 / company_review_count
-        where company_id = #{companyId}
+        WHERE company_id = #{companyId}
     </update>
 
     <!-- 만약 리뷰수가 1개일때 삭제하면 모두 점수를 0으로 초기화 -->
     <update id="resetScoresIfOne">
-        update company_score_avg
-        set
+        UPDATE company_score_avg
+        SET
             sum_communication = 0,
             sum_price = 0,
             sum_result = 0,
@@ -228,21 +280,21 @@
             avg_result = 0,
             avg_schedule = 0,
             avg_total_rate = 0
-        where company_id = #{companyId}
+        WHERE company_id = #{companyId}
     </update>
 
     <!-- 리뷰 삭제시 합산 점수 다시 계산 -->
     <!-- 남은 리뷰 개수가 1보다 많을때 -->
     <update id="adjustSumOnDelete"
             parameterType="com.ama.don.interior.dto.request.CompanyScoreAdjustDto">
-        update company_score_avg
-        set
+        UPDATE company_score_avg
+        SET
             sum_communication = sum_communication - #{oldCommunicationRate},
             sum_price = sum_price - #{oldPriceRate},
             sum_result = sum_result - #{oldResultRate},
             sum_schedule = sum_schedule - #{oldScheduleRate},
             company_review_count = company_review_count - 1
-        where company_id = #{companyId}
+        WHERE company_id = #{companyId}
     </update>
 
     <!-- 리뷰 삭제후 점수의 평균 구하기 -->
@@ -251,14 +303,20 @@
 
     <!-- 리뷰 수정 뷰 -->
     <select id="getEditView" resultType="com.ama.don.interior.dto.request.CompanyReviewUpdateDto">
-        select r.review_id AS reviewId, c.communication_rate AS communicationRate, c.price_rate AS priceRate,
-            c.result_rate AS resultRate, c.schedule_rate AS scheduleRate,
-            c.structure_type AS structureType, c.area_pyeong AS areaPyeong, c.construction_field AS constructionField,
+        SELECT
+            r.review_id AS reviewId,
+            c.communication_rate AS communicationRate,
+            c.price_rate AS priceRate,
+            c.result_rate AS resultRate,
+            c.schedule_rate AS scheduleRate,
+            c.structure_type AS structureType,
+            c.area_pyeong AS areaPyeong,
+            c.construction_field AS constructionField,
             r.review_content AS reviewContent
-        from company_review c
-        join review r ON c.review_id = r.review_id
-        where r.review_id = #{reviewId}
-            and r.is_deleted = false
-            and c.is_deleted = false
+        FROM company_review c
+        JOIN review r ON c.review_id = r.review_id
+        WHERE r.review_id = #{reviewId}
+            AND r.is_deleted = false
+            AND c.is_deleted = false
     </select>
 </mapper>
