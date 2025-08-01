@@ -68,10 +68,25 @@
             company_post_title = #{companyPostTitle},
             company_post_content = #{companyPostContent},
             space_type = #{spaceType},
+            area_pyeong = #{areaPyeong},
             style = #{style},
             construction_detail = #{constructionDetail}
         WHERE company_post_id = #{companyPostId}
     </update>
+
+    <!-- 업체 게시글 수정 뷰 -->
+    <select id="getEditView" resultType="com.ama.don.interior.dto.request.CompanyPostUpdateDto">
+        SELECT
+            company_post_title AS companyPostTitle,
+            company_post_content AS companyPostContent,
+            space_type AS spaceType,
+            area_pyeong AS areaPyeong,
+            style AS style,
+            construction_detail AS constructionDetail
+        FROM company_post
+        WHERE company_post_id = #{companyPostId}
+    </select>
+
 
 
 </mapper>
