@@ -81,13 +81,30 @@ class CompanyPostDaoTest extends AbstractCompanyTestSupport {
         Long companyPostId = companyPost.getCompanyPostId();
         assertThat(companyPostId).isNotNull();
 
-        // 부분 조회
+        // 게시글 부분 조회
         CompanyPostDetailDto detail = companyPostDao.getPostAndCompanyPostById(companyPostId);
 
         assertThat(detail).isNotNull();
         // default 검사
         assertThat(detail.getPostDate()).isNotNull();
         assertThat(detail.getPostId()).isEqualTo(companyPost.getPostId());
+    }
+    
+    @DisplayName("업체 게시글 상세보기중 업체 정보 부분조회")
+    @Test
+    void getCompanyBasicInfoById() {
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 작성
+        CompanyPostCreateDto companyPost = createCompanyPost(userId, companyId);
+
+        // 업체 부분 조회
+        CompanyPostDetailDto detail = companyPostDao.getCompanyBasicInfoById(companyId);
+        assertThat(detail).isNotNull();
+        assertThat(detail.getCompanyId()).isEqualTo(companyId);
+        assertThat(detail.getCompanyName()).isEqualTo(context.getDetail().getCompanyName());
     }
 
 }

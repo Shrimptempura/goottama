@@ -52,6 +52,7 @@
     <!-- 업체 게시글 상세보기 중 company + company_detail -->
     <select id="getCompanyBasicInfoById" resultType="com.ama.don.interior.dto.response.CompanyPostDetailDto">
         SELECT
+            company_id AS companyId,
             company_name AS companyName,
             company_intro AS companyIntro
         FROM company c
