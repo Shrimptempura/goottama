@@ -49,6 +49,7 @@ public interface CompanyPostDao {
     CompanyPostUpdateDto getEditView(Long companyPostId);
 
     // 게시글 삭제
+    // 댓글, 좋아요, 스크립 존재 시 먼저 지워야함(하위-> 상위)
     // 다형성 게시글 먼저 삭제
     int deletePolyPostById(Long postId);
 
@@ -56,7 +57,7 @@ public interface CompanyPostDao {
     int deleteCompanyPostById(Long companyPostId);
 
     // 조회수 증가
-    void increaseHit(Long companyPostId);
+    int increaseHit(Long companyPostId);
 
     // 좋아요 수
     int getLikeCount(Long companyPostId);

@@ -43,7 +43,8 @@
             c.space_type AS spaceType,
             c.area_pyeong AS areaPyeong,
             c.style AS style,
-            c.construction_detail AS constructionDetail
+            c.construction_detail AS constructionDetail,
+            c.company_view_count AS companyViewCount
         FROM company_post c
         JOIN post p ON p.post_id = c.post_id
         WHERE company_post_id = #{companyPostId}
@@ -96,9 +97,17 @@
 
     <!-- 업체 게시글 삭제 -->
     <delete id="deleteCompanyPostById">
-        delete from company_post
-        where company_post_id = #{companyPostId}
+        DELETE from company_post
+        WHERE company_post_id = #{companyPostId}
     </delete>
+
+    <!-- 업체 게시글 조회수 증가 -->
+    <update id="increaseHit">
+        UPDATE company_post
+        SET company_view_count = company_view_count + 1
+        WHERE company_post_id = #{companyPostId}
+    </update>
+
 
 
 </mapper>
