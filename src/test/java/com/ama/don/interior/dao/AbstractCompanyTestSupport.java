@@ -25,6 +25,9 @@ public class AbstractCompanyTestSupport {
     @Autowired
     protected PostDao postDao;
 
+    @Autowired
+    protected CompanyPostDao companyPostDao;
+
     protected JoinformDto createTestUser() {
         return createTestUser("테스트아이디");
     }
@@ -237,6 +240,31 @@ public class AbstractCompanyTestSupport {
         postDao.insertPolyPostForCompany(dto);
 
         return dto;
+    }
+
+    // 업체 게시글 작성
+    protected CompanyPostCreateDto createCompanyPost(Long userId, Long companyId) {
+        // 다형성 게시글 작성
+        PostDto polyPost = createPolyPost(userId, companyId);
+        Long postId = polyPost.getPost_id();
+        
+        // 다형성 조회, default 오류 방지
+        postDao.findById(postId);
+
+        // 업체 작성
+        CompanyPostCreateDto companyPost = new CompanyPostCreateDto();
+        companyPost.setPostId(postId);
+        companyPost.setCompanyId(companyId);
+        companyPost.setCompanyPostTitle("업체 게시글 제목");
+        companyPost.setCompanyPostContent("업체 게시글 내용");
+        companyPost.setSpaceType("아파트 테스트");
+        companyPost.setAreaPyeong("34평 테스트");
+        companyPost.setStyle("내추럴 테스트");
+        companyPost.setConstructionDetail("도배시공 테스트");
+
+        companyPostDao.insertCompanyPost(companyPost);
+
+        return companyPost;
     }
 
 }

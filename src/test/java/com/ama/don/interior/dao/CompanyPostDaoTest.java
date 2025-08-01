@@ -2,9 +2,9 @@ package com.ama.don.interior.dao;
 
 import com.ama.don.common.dao.PostDao;
 import com.ama.don.common.dto.PostDto;
-import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.request.CompanyInsertDto;
 import com.ama.don.interior.dto.request.CompanyPostCreateDto;
+import com.ama.don.interior.dto.response.CompanyPostDetailDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +67,27 @@ class CompanyPostDaoTest extends AbstractCompanyTestSupport {
 
         assertThat(companyPost.getCompanyPostId()).isNotNull();
         assertThat(companyPost.getPostId()).isEqualTo(postId);
+    }
+
+    @DisplayName("업체 게시글 상세보기 post + company_post 부분조회")
+    @Test
+    void getPostAndCompanyPostById() {
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
+        Long companyId = dto.getCompanyId();
+        Long userId = dto.getUserId();
+
+        // 게시글 작성
+        CompanyPostCreateDto companyPost = createCompanyPost(userId, companyId);
+        Long companyPostId = companyPost.getCompanyPostId();
+        assertThat(companyPostId).isNotNull();
+
+        // 부분 조회
+        CompanyPostDetailDto detail = companyPostDao.getPostAndCompanyPostById(companyPostId);
+
+        assertThat(detail).isNotNull();
+        // default 검사
+        assertThat(detail.getPostDate()).isNotNull();
+        assertThat(detail.getPostId()).isEqualTo(companyPost.getPostId());
     }
 
 }
