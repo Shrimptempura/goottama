@@ -50,15 +50,17 @@
 		keyProperty="post_id">
 		INSERT INTO post (
 		user_id, post_title, post_content,
-		post_date, post_count, post_like_count,
+		post_date, post_count,
+		post_like_count,
 		target_type, target_id
 		)
 		VALUES (
 		#{user_id}, #{post_title}, #{post_content},
 		CURRENT_TIMESTAMP, 0, 0,
-		#{targetType}, NULL
+		#{targetType}, #{targetId}
 		)
 	</insert>
+
 
 
 	<!-- 게시글 수정 -->
@@ -73,7 +75,7 @@
 		WHERE post_id = #{post_id}
 	</update>
 
-	<!-- 타겟아이디 수정 -->
+	<!-- 타겟아이디 업데이트 -->
 	<update id="update_target_id"
 		parameterType="com.ama.don.common.dto.PostDto">
 		UPDATE post
@@ -89,25 +91,21 @@
 		= #{postId}
 	</delete>
 
-	<!-- 전체 게시글 수 -->
-	<select id="countByTarget" resultType="int">
-		SELECT COUNT(*)
-		FROM post
-		WHERE target_type = #{targetType}
-		AND target_id = #{targetId}
+	<!-- 게시글 수 -->
+	<select id="countTargetType" resultType="int">
+		SELECT COUNT(*) FROM post WHERE target_type = #{targetType}
 	</select>
-
-	<!-- 페이징된 게시글 조회 -->
-	<select id="findPagedByTarget"
+	
+	<!-- 페이징된 게시글 목록 -->
+	<select id="findTargetType"
 		resultType="com.ama.don.common.dto.PostDto">
 		SELECT *
 		FROM post
 		WHERE target_type = #{targetType}
-		AND
-		target_id = #{targetId}
-		ORDER BY post_date DESC
-		LIMIT #{rowCount} OFFSET
-		#{rowStart}
+		ORDER BY
+		post_date DESC
+		LIMIT #{start}, #{count}
 	</select>
+
 
 </mapper>
