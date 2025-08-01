@@ -1,6 +1,8 @@
 package com.ama.don.interior.dao;
 
+import com.ama.don.common.dao.PostDao;
 import com.ama.don.common.dao.ReviewDao;
+import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.request.*;
@@ -19,6 +21,9 @@ public class AbstractCompanyTestSupport {
 
     @Autowired
     protected CompanyReviewDao companyReviewDao;
+
+    @Autowired
+    protected PostDao postDao;
 
     protected JoinformDto createTestUser() {
         return createTestUser("테스트아이디");
@@ -220,6 +225,18 @@ public class AbstractCompanyTestSupport {
         updateDto.setStructureType("테스트");
 
         return updateDto;
+    }
+
+    // 게시글 다형성 생성
+    protected PostDto createPolyPost(Long userId, Long companyId) {
+        PostDto dto = new PostDto();
+        dto.setUser_id(userId);
+        dto.setTargetId(companyId);
+        dto.setTargetType(TargetType.valueOf("INTERIOR"));
+
+        postDao.insertPolyPostForCompany(dto);
+
+        return dto;
     }
 
 }

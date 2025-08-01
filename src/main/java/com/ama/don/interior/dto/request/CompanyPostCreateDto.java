@@ -13,7 +13,9 @@ import lombok.Setter;
 @Setter
 public class CompanyPostCreateDto {
 
+    private Long postId;
     private Long companyPostId;
+    private Long companyId;
 
     @NotBlank
     private String companyPostTitle;       // 게시글 제목
