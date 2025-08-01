@@ -46,9 +46,9 @@
 		= #{target_id}
 	</select>
 	
-<!-- 	<delete id="deleteProfileImg">
-	DELETE FROM user_detail WHERE USER_IMG = #{oldFileName}
-	</delete>  이거 업데이트 쿼리로 바꿔야함--> 
+	<update id="deleteProfileImg">
+	update user_detail set user_img = null WHERE USER_IMG = #{oldFileName}
+	</update>  
 	
 	<update id="createProfileImg">
 	update user_detail set user_img = #{fileName} where user_id = #{user_id} 
