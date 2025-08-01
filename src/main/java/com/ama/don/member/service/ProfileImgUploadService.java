@@ -26,7 +26,7 @@ public class ProfileImgUploadService {
 
 		String login_id = memberDto.getLogin_id();
 		long user_id = memberDto.getUser_id();
-		String uploadDir = "C:\\upload\\profile\\"; // 저장디렉토리
+		String uploadDir = "C:\\member\\profile\\"; // 저장디렉토리
 		File dir = new File(uploadDir);
 		if (!dir.exists()) {
 			dir.mkdirs(); // 디렉토리가 없으면 생성
