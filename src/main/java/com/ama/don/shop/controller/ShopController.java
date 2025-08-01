@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.KakaoPayApprovalResponse;
 import com.ama.don.shop.dto.KakaoPayReadyResponse;
 import com.ama.don.shop.dto.ProductFlatDto;
+import com.ama.don.shop.service.ShopBestService;
 import com.ama.don.shop.service.ShopHomeService;
 import com.ama.don.shop.service.ShopProductMallService;
 import com.ama.don.shop.service.ShopListService;
@@ -167,18 +169,23 @@ public class ShopController {
 		
 	}
 
-	@RequestMapping("/shop/exhibition")
+	@RequestMapping("/shop/productmall")
 	public String exhibition(HttpServletRequest request, Model model) {
 
-//		model.addAttribute("request",request);
-//		sServiceinter=new SExhibitionService(iDao);
-//		sServiceinter.execute(model);
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopProductMallService(iDao);
+		shopServiceinter.execute(model);
 
-		return "shop/exhibition";
+		return "shop/productmall";
 	}
 
 	@RequestMapping("/shop/best")
-	public String best() {
+	public String best(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopBestService(iDao);
+		shopServiceinter.execute(model);
+		
 		return "shop/best";
 	}
 

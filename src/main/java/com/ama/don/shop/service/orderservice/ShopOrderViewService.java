@@ -66,10 +66,21 @@ public class ShopOrderViewService implements ShopServiceinter{
         }
         if(form_cart.equals("false")) {
         	String product_id=request.getParameter("product_id");
+        	String quantitystr = request.getParameter("quantity");
+        	 
+        	 
+        	 
         	Long productid=Long.parseLong(product_id);
         	
-        	System.out.println("form-cart=false");
+      
+        	
+        	//
+        	int quantity = Integer.parseInt(quantitystr);
+        	
         	ProductFlatDto productflatDto=iDao.product(productid);
+        	
+        	
+        	productflatDto.setQuantity(quantity);
         	
         	//단일 상품을 가져오기
         

@@ -36,4 +36,24 @@ public class ProductFlatDto {
 	String product_imgurl;
 	String product_img_type;
 	
+	
+	
+	//수량 갯수
+	private int quantity=1;
+	private int discountedPrice;
+	private int totalprice;
+	
+	
+	public int getDiscountedPrice() {
+		if(product_discountrate!=null) {
+			return (int) (product_price*(1-product_discountrate.doubleValue()));
+		}
+		return product_price;
+	}
+	
+    public int getTotalPrice() {
+        return getDiscountedPrice() * quantity;
+    }
+	
+	
 }

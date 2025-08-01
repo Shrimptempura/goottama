@@ -609,7 +609,7 @@
 	    // 세션에서 user_id 가져오기, 없으면 기본값 2
 	    let userId = '${sessionScope.user_id}';
 	    if (!userId || userId.trim() === '' || userId === 'null') {
-	        userId = '2'; // 기본값으로 2 사용
+	        userId = '1'; // 기본값으로 1 사용
 	    }
 	    
 	    alert("장바구니에 담았습니다.");
@@ -619,7 +619,7 @@
 	function getuserid(){
 		var userId='${sessionScope.user_id}';
 		if (!userId || userId.trim() === '' || userId === 'null') {
-	        userId = '2'; // 기본값으로 2 사용
+	        userId = '1'; // 기본값으로 1 사용
 	    }
 	}
 	
@@ -634,7 +634,7 @@
 		
 	    var userId='${sessionScope.user_id}';
 		if (!userId || userId.trim() === '' || userId === 'null') {
-	        userId = '2'; // 기본값으로 2 사용
+	        userId = '1'; // 기본값으로 1 사용
 	    }
 	    // 리뷰 작성 페이지로 이동
 	    location.href = "review_write_view?user_id=" + userId + "&product_id=${product.product_id}";
@@ -644,7 +644,7 @@
 	function inquirywrite() {
 	    var userId = '${sessionScope.user_id}';
 	    if (!userId || userId.trim() === '' || userId === 'null') {
-	        userId = '2'; // 기본값으로 2 사용
+	        userId = '1'; // 기본값으로 1 사용
 	    }
 	    // 문의 작성 페이지로 이동
 	    location.href = "inquiry_write_view?user_id=" + userId + "&product_id=${product.product_id}";
@@ -716,9 +716,6 @@
         					<span class="review-author">작성자: ${review.user_nickname != null ? review.user_nickname : sessionScope.user_id}</span>
         				</div>
         				<div class="review-bottom">
-        					<div class="review-image">
-        						<img src="/static/uploads/review/${review.review_img != null ? review.review_img : 'default-review.jpg'}" alt="리뷰 이미지" />
-        					</div>
         					<div class="review-text">
         						<p>${review.review_content != null ? review.review_content : '정말 좋은 상품입니다! 배송도 빠르고 품질도 만족스럽습니다.'}</p>
         					</div>

@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.shop.dto.CartDto;
 import com.ama.don.shop.dto.CartFlatDto;
 import com.ama.don.shop.dto.DeliverDto;
@@ -82,11 +83,12 @@ public interface ShopIDao {
 	
 	//Review IDao
 	public ArrayList<ShopReviewFlatDto> review_list(Long target_id);
-	public void review_write(Long userid, Long productid, String review_title, String review_content,
-			String review_img);
+	public void review_write(ShopReviewFlatDto shopReviewFlatDto);
+	
 	
 	//User_detail IDao
 	public ShopReviewFlatDto user_info(Long user_id);
+	
 
 	
 	//주문수정을 하는데 실제로는 배송지 수정정도를 할것 그러니까 주문아이디로 배송지를 찾아서 배송지를 deliver_update를 하면된다.

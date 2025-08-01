@@ -10,10 +10,10 @@ import com.ama.don.shop.dto.ProductFlatDto;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class ShopProductMallService implements ShopServiceinter{
+public class ShopBestService implements ShopServiceinter{
 
 	private ShopIDao iDao;
-	public ShopProductMallService(ShopIDao iDao) {
+	public ShopBestService(ShopIDao iDao) {
 		this.iDao=iDao;
 	}
 	@Override
@@ -26,7 +26,7 @@ public class ShopProductMallService implements ShopServiceinter{
 		
 		
 		ArrayList<ProductFlatDto> productFlatDtos=iDao.product_list();
-		//상품을 가져오고 상품 쇼핑몰별로 검색한다.
+		//상품을 가져오고 리뷰수가 많은 상품을 나타낸다.
 		model.addAttribute("product_list",productFlatDtos);
 		
 			

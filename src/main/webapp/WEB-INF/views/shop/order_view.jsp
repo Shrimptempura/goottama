@@ -107,8 +107,8 @@ input[type="text"], input[type="email"], input[type="tel"], textarea {
 <!-- 주문 폼 -->
 <form id="orderForm" action="/shop/order_write" method="post">
 	
-	<!-- 세션에서 user_id 가져오기, 없으면 기본값 2 -->
-	<c:set var="currentUserId" value="${not empty sessionScope.user_id ? sessionScope.user_id : '2'}" />
+	<!-- 세션에서 user_id 가져오기, 없으면 기본값 1 -->
+	<c:set var="currentUserId" value="${not empty sessionScope.user_id ? sessionScope.user_id : '1'}" />
 	<input type="hidden" name="user_id" value="${currentUserId}">
     
     <!-- 주문자 정보 -->
@@ -166,56 +166,87 @@ input[type="text"], input[type="email"], input[type="tel"], textarea {
     
     <!-- 주문 상품 -->
     <h3>주문 상품</h3>
-    <c:if test="${not empty cart}">
-        <table border="1">
-            <tr>
-                <th>상품명</th>
-                <th>수량</th>
-                <th>가격</th>
-                <th>합계</th>
-            </tr>
-            
-            <c:set var="totalPrice" value="0"/>
-            <c:forEach var="item" items="${cart}">
-                <tr>
-                    <td>${item.product_name}</td>
-                    <td>${item.cart_quantity}개</td>
-                    <td>₩<fmt:formatNumber value="${item.discountedPrice}" pattern="#,###"/></td>
-                    <td>₩<fmt:formatNumber value="${item.totalPrice}" pattern="#,###"/></td>
-                </tr>
-                <c:set var="totalPrice" value="${totalPrice + item.totalPrice}"/>
-            </c:forEach>
-            
-            <tr style="font-weight: bold;">
-                <td colspan="3">최종 결제금액</td>
-                <td>₩<fmt:formatNumber value="${totalPrice}" pattern="#,###"/></td>
-            </tr>
-        </table>
-        
-        <!-- 총 금액을 hidden으로 저장 -->
-        <input type="hidden" name="totalAmount" value="${totalPrice}">
-        
-        <br>
-        <!-- 결제 방식 선택 -->
-		<h3>결제 방식</h3>
-		<div class="payment-buttons">
-		    <input type="hidden" name="payment_method" id="payment_method" required>
-		    <button type="button" class="payment-btn" onclick="selectPayment('카카오페이')">카카오페이</button>
-		    <button type="button" class="payment-btn" onclick="selectPayment('무통장입금')">무통장 입금</button>
-		    <button type="button" class="payment-btn" onclick="selectPayment('카드 결제')">카드 결제</button>
-		    <button type="button" class="payment-btn" onclick="selectPayment('휴대폰 결제')">휴대폰 결제</button>
-		</div>
-         <!-- 주문 완료 버튼 -->
-        <button type="submit" style="padding: 15px 30px; font-size: 16px; background: blue; color: white;">
-            ₩<fmt:formatNumber value="${totalPrice}" pattern="#,###"/> 주문하기
-        </button>
-		
-    </c:if>
+    <c:choose>
+	    <c:when test="${not empty cart}">
+	        <!-- 장바구니 상품들 -->
+			<input type="hidden" name="orderType" value="cart" />
+	        <table border="1">
+	            <tr>
+	                <th>상품명</th>
+	                <th>수량</th>
+	                <th>가격</th>
+	                <th>합계</th>
+	            </tr>
+	            
+	            <c:set var="totalPrice" value="0"/>
+	            <c:forEach var="item" items="${cart}">
+	                <tr>
+	                    <td>${item.product_name}</td>
+	                    <td>${item.cart_quantity}개</td>
+	                    <td>₩<fmt:formatNumber value="${item.discountedPrice}" pattern="#,###"/></td>
+	                    <td>₩<fmt:formatNumber value="${item.totalPrice}" pattern="#,###"/></td>
+	                </tr>
+	                <c:set var="totalPrice" value="${totalPrice + item.totalPrice}"/>
+	            </c:forEach>
+	            
+	            <tr style="font-weight: bold;">
+	                <td colspan="3">최종 결제금액</td>
+	                <td>₩<fmt:formatNumber value="${totalPrice}" pattern="#,###"/></td>
+	            </tr>
+	        </table>
+	        
+	        
+	        <input type="hidden" name="totalAmount" value="${totalPrice}">
+	        
+	    </c:when>
+	    
+	    <c:when test="${not empty product}">
+	        <!-- 단일 상품 주문 -->
+	        <input type="hidden" name="orderType" value="direct" />
+	        <table border="1">
+	            <tr>
+	                <th>상품명</th>
+	                <th>수량</th>
+	                <th>가격</th>
+	                <th>합계</th>
+	            </tr>
+	            <tr>
+	                <td>${product.product_name}</td>
+	                <td>${product.quantity}개</td>
+	                <td>₩<fmt:formatNumber value="${product.discountedPrice}" pattern="#,###"/></td>
+	                <td>₩<fmt:formatNumber value="${product.totalPrice}" pattern="#,###"/></td>
+	            </tr>
+	            <tr style="font-weight: bold;">
+	                <td colspan="3">최종 결제금액</td>
+	                <td>₩<fmt:formatNumber value="${product.totalPrice}" pattern="#,###"/></td>
+	            </tr>
+	        </table>
+	        
+	        
+	        <!-- 단일주문 정보 -->
+	        <input type="hidden" name="totalAmount" value="${product.totalPrice}">
+	        <input type="hidden" name="product_id" value="${product.product_id}">
+	        <input type="hidden" name="quantity" value="${product.quantity}">
+	        
+	        
+	    </c:when>
+	    
+	    <c:otherwise>
+	        <div class="empty-order">
+	            <p>주문할 상품이 없습니다.</p>
+	            <a href="/shop/products">상품 보러가기</a>
+	        </div>
+	    </c:otherwise>
+	</c:choose>
     
-    <c:if test="${empty cart}">
-        <p>주문할 상품이 없습니다.</p>
-        <a href="/shop/cart">장바구니로 이동</a>
-    </c:if>
+
+   <!-- 주문 완료 버튼 - choose 밖에서 한 번만 -->
+	<c:if test="${not empty cart or not empty product}">
+	    <c:set var="finalPrice" value="${not empty cart ? totalPrice : product.totalPrice}"/>
+	    <button type="submit" class="order-btn">
+	        ₩<fmt:formatNumber value="${finalPrice}" pattern="#,###"/> 주문하기
+	    </button>
+	</c:if>
     
 </form>
 
@@ -275,7 +306,7 @@ function findAddress() {
 function getUserId() {
     let userId = '${sessionScope.user_id}';
     if (!userId || userId.trim() === '' || userId === 'null') {
-        userId = '2'; // 기본값으로 2 사용
+        userId = '1'; // 기본값으로 1 사용
     }
     return userId;
 }

@@ -105,7 +105,7 @@
         // 세션에서 user_id 가져오기
         let userId = '${sessionScope.user_id}';
         if (!userId || userId.trim() === '' || userId === 'null') {
-            userId = '2'; // 기본값
+            userId = '1'; // 기본값
         }
 
         // 서버에 수량 업데이트 요청
@@ -130,7 +130,7 @@
         // 사용자 ID 가져오기
         let userId = '${sessionScope.user_id}';
         if (!userId || userId.trim() === '' || userId === 'null') {
-            userId = '2'; // 기본값으로 2 사용
+            userId = '1'; // 기본값으로 1 사용
         }
         
         console.log("사용자 ID:", userId);
@@ -150,7 +150,7 @@
     function getUserId() {
         let userId = '${sessionScope.user_id}';
         if (!userId || userId.trim() === '' || userId === 'null') {
-            userId = '2'; // 기본값으로 2 사용
+            userId = '1'; // 기본값으로 1 사용
         }
         return userId;
     }
