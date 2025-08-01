@@ -33,22 +33,28 @@ public class Review_viewController {
 
 	// 리뷰 목록
 	@GetMapping("/review_view")
+	
+	// 페이징 처리 디폴트 번호
 	public String reviewList(@RequestParam(defaultValue = "1") int page, Model model) {
 		CommunityPageVO pageVO = new CommunityPageVO();
 		pageVO.setPage(page);
 
-		int totalCount = postDao.countByTarget(TargetType.COMMUNITY_REVIEW.name(), 1L);
+			
+		int totalCount = postDao.countTargetType(TargetType.COMMUNITY_REVIEW.name());
 		pageVO.pageCalculate(totalCount);
 
-		List<PostDto> list = postDao.findPagedByTarget(TargetType.COMMUNITY_REVIEW.name(), 1L, pageVO.getRowStart(),
+		List<PostDto> list = postDao.findTargetType(TargetType.COMMUNITY_REVIEW.name(), pageVO.getRowStart(),
 				pageVO.getDisplayRowCount());
 
+		// 첨부 이미지 처리
 		for (PostDto post : list) {
 			post.setFileList(fileDao.findByTarget(TargetType.COMMUNITY_REVIEW.name(), post.getPost_id()));
 		}
 
 		model.addAttribute("reviewList", list);
 		model.addAttribute("pageVO", pageVO);
+
 		return "community/review_view";
 	}
+
 }

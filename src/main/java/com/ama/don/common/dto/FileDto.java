@@ -1,6 +1,7 @@
 package com.ama.don.common.dto;
 
 import com.ama.don.common.enums.TargetType;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

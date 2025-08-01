@@ -6,10 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ama.don.common.dao.FileDao;
@@ -25,24 +22,37 @@ public class UploadController {
 	@Autowired
 	private FileDao fileDao;
 
-	@PostMapping("/upload")
+	@PostMapping("/upload_image")
 	@ResponseBody
 	public String uploadImage(@RequestParam("file") MultipartFile file,
-			@RequestParam("targetType") TargetType targetType) throws IOException {
-		String saveName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-		File destFile = new File("C:/upload/" + saveName);
-		file.transferTo(destFile);
+			@RequestParam("target_type") String targetTypeStr, @RequestParam("post_id") Long postId)
+			throws IOException {
 
+		System.out.println("전달받은 targetType: " + targetTypeStr);
+
+		// 실제 저장할 파일 이름
+		String saveName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+		File saveFile = new File(uploadPath + saveName);
+		file.transferTo(saveFile);
+
+		// DB 저장용 DTO 생성
 		FileDto fileDto = new FileDto();
 		fileDto.setFile_name(file.getOriginalFilename());
-		fileDto.setFile_path("/uploadedImages/" + saveName);
-		fileDto.setFile_uploader("community");
-		fileDto.setTarget_type(targetType);
-		fileDto.setTarget_id(1L); 
+		fileDto.setFile_path("/uploaded_images/" + saveName);
+		fileDto.setFile_uploader("테스트유저");
+		fileDto.setTarget_id(postId);
 
+		try {
+			TargetType targetType = TargetType.valueOf(targetTypeStr);
+			fileDto.setTarget_type(targetType);
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+			return "invalid_target_type";
+		}
+
+		// DB 저장
 		fileDao.create(fileDto);
 
-		return fileDto.getFile_path();
+		return "/uploaded_images/" + saveName;
 	}
-
 }
