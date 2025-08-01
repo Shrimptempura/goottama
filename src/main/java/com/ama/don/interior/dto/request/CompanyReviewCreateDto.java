@@ -35,5 +35,5 @@ public class CompanyReviewCreateDto {
     private String constructionField;       // 시공 분야
 
     // 파일 관련은 다형성 file dto로 서비스에서 해결
-    private List<String> reviewImg;     // 리뷰 사진
+    // private List<String> reviewImg;     // 리뷰 사진
 }

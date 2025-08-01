@@ -155,9 +155,9 @@ public class AbstractCompanyTestSupport {
 
 //        companyReviewDto.setReviewContent("여기는 업체 리뷰 내용 테스트");
 
-        List<String> reviewImgList = List.of("interior/images1", "interior/images2",
-                "interior/images3");
-        companyReviewDto.setReviewImg(reviewImgList);
+//        List<String> reviewImgList = List.of("interior/images1", "interior/images2",
+//                "interior/images3");
+//        companyReviewDto.setReviewImg(reviewImgList);
 
         companyReviewDto.setStructureType("아파트 건물유형 테스트");
         companyReviewDto.setAreaPyeong("30평");

@@ -2,7 +2,6 @@ package com.ama.don.interior.dao;
 
 import com.ama.don.interior.dto.request.*;
 import com.ama.don.interior.dto.response.CompanyDetailDto;
-import com.ama.don.interior.dto.response.CompanyReviewDto;
 import com.ama.don.interior.dto.response.CompanySummaryDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;

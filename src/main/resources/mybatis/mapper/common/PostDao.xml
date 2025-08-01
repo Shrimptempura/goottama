@@ -105,9 +105,9 @@
 			useGeneratedKeys="true"
 			keyProperty="post_id">
 		insert into post (
-			user_id, post_date, target_id, target_type)
+			user_id, target_id, target_type)
 		values (
-			#{user_id}, #{post_date}, #{targetId}, #{targetType}
+			#{user_id}, #{targetId}, #{targetType}
 		)
 	</insert>
 
