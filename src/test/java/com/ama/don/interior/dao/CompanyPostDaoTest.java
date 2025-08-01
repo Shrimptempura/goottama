@@ -162,5 +162,29 @@ class CompanyPostDaoTest extends AbstractCompanyTestSupport {
         assertThat(updateView.getSpaceType()).isEqualTo(companyPost.getSpaceType());
     }
 
+    @DisplayName("조회수 증가 확인")
+    @Test
+    void increasePostHit() {
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 작성
+        CompanyPostCreateDto companyPost = createCompanyPost(userId, companyId);
+        Long companyPostId = companyPost.getCompanyPostId();
+
+        CompanyPostDetailDto detail = companyPostDao.getPostAndCompanyPostById(companyPostId);
+        int first = detail.getCompanyPostCount();
+
+        // 조회수 증가
+        companyPostDao.increaseHit(companyPostId);
+
+        // 부분 조회
+        int second = companyPostDao.getPostAndCompanyPostById(companyPostId).getCompanyPostCount();
+
+        assertThat(first).isNotEqualTo(second);
+        assertThat(first).isEqualTo(second - 1);
+    }
+
 
 }

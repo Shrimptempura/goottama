@@ -44,7 +44,7 @@
             c.area_pyeong AS areaPyeong,
             c.style AS style,
             c.construction_detail AS constructionDetail,
-            c.company_view_count AS companyViewCount
+            c.company_post_count AS companyPostCount
         FROM company_post c
         JOIN post p ON p.post_id = c.post_id
         WHERE company_post_id = #{companyPostId}
@@ -104,7 +104,7 @@
     <!-- 업체 게시글 조회수 증가 -->
     <update id="increaseHit">
         UPDATE company_post
-        SET company_view_count = company_view_count + 1
+        SET company_post_count = company_post_count + 1
         WHERE company_post_id = #{companyPostId}
     </update>
 

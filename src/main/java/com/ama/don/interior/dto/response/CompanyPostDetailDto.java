@@ -36,7 +36,7 @@ public class CompanyPostDetailDto {
     
     private int countLikes;     // 좋아요 수
     private int countScrap;     // 스크랩 수
-    private int companyViewCount;      // 조회수
+    private int companyPostCount;      // 조회수
 
     // 파일 관련은 다형성 file dto로 서비스에서 해결
     // private List<String> companyImgList;    // 게시글 사진들
