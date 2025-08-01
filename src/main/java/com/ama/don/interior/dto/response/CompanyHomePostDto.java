@@ -14,6 +14,7 @@ public class CompanyHomePostDto {
 
     private Long companyId;
     private Long postId;
+    private Long companyPostId;
 
     private String companyPostTitle;       // 게시글 제목
     private String areaPyeong;    // 평수

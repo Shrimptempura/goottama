@@ -108,6 +108,23 @@
         WHERE company_post_id = #{companyPostId}
     </update>
 
+    <!-- 홈에서 보는 최신 게시글 -->
+    <select id="findCompanyPostByLatest" resultType="com.ama.don.interior.dto.response.CompanyHomePostDto">
+        SELECT
+            company_id AS companyId,
+            company_post_id AS companyPostId,
+            post_id AS postId
+    </select>
+
+    <!-- 홈에서 보는 랜덤 게시글 -->
+    <select id="findCompanyPostByRandom" resultType="com.ama.don.interior.dto.response.CompanyHomePostDto">
+
+    </select>
+
+    <!-- 홈에서 보는 인기 게시글 -->
+    <select id="findCompanyPostByPopular" resultType="com.ama.don.interior.dto.response.CompanyHomePostDto">
+
+    </select>
 
 
 </mapper>

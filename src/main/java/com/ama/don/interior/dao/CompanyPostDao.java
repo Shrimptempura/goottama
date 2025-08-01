@@ -14,14 +14,21 @@ import java.util.List;
 @Mapper
 public interface CompanyPostDao {
 
-    /**
-     * 홈에서 보는 업체 게시글 목록 뷰, enum(LASTEST, RANDOM, POPULAR)
-     */
-    List<CompanyHomePostDto> findAllCompanyPosts(CompanySortType sortType);
 
-    /**
-     * 업체 상세페이지에서 보는 업체게시글 목록 뷰
-     */
+    // 홈에서 보는 업체 게시글 목록 뷰, enum(LASTEST, RANDOM, POPULAR)
+    // 쿼리를 3가지 조건으로 짜야함: 최신순, 랜덤, 인기순(좋아요 순)
+    // 3가지 방법으로 짜면 enum은 안씀(이건 choose 방법)
+    // 홈에서 최신순
+    List<CompanyHomePostDto> findCompanyPostByLatest();
+
+    // 홈에서 랜덤
+    List<CompanyHomePostDto> findCompanyPostByRandom();
+
+    // 홈에서 인기순
+    List<CompanyHomePostDto> findCompanyPostByPopular();
+
+    // 업체 상세페이지에서 보는 업체게시글 목록 뷰
+    // 여기서는 그냥 보여줌
     List<CompanyPostPreviewDto> caseList(Long companyId);
 
     // 게시글 생성 순서
@@ -59,6 +66,5 @@ public interface CompanyPostDao {
     // 조회수 증가
     int increaseHit(Long companyPostId);
 
-    // 좋아요 수
-    int getLikeCount(Long companyPostId);
+    // 좋아요, 스크랩, 댓글은 다른 dao에서 책임 나누자
 }
