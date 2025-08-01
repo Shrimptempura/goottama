@@ -31,10 +31,13 @@ public interface CompanyPostDao {
     // 4. 업체 게시글 생성
     int insertCompanyPost(CompanyPostCreateDto dto);
 
-
-
     // 게시글 상세보기
-    CompanyPostDetailDto detail(Long companyPostId);
+    // 연관된 테이블과 기능
+    // post, company_post, company, company_detail, file | count(view, like, scrap)
+    // (post + company_post), (company + company_detail) 쿼리 조인처리
+    // file은 맨 마지막, 나머지는 기타 쿼리 및 테이블 확인
+    // getPostAndCompanyPostById, getCompanyBasicInfoById
+    CompanyPostDetailDto getPostAndCompanyPostById(Long companyPostId);
 
     // 게시글 수정
     void update(CompanyPostUpdateDto dto);

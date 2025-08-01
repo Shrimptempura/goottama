@@ -13,6 +13,11 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 public class CompanyPostDetailDto {
+    
+    // 연관된 id들
+    private Long postId;
+    private Long companyId;
+    private Long companyPostId;
 
     private String companyPostTitle;               // 게시글 제목
     private String companyName;             // 업체 이름
@@ -28,6 +33,7 @@ public class CompanyPostDetailDto {
     private String companyPostContent;     // 게시글 내용
 
     private Timestamp postDate;     // 게시글 작성 시간
+    
     private int countLikes;     // 좋아요 수
     private int countScrap;     // 스크랩 수
     private int countView;      // 조회수

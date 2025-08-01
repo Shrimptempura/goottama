@@ -18,4 +18,15 @@
             #{spaceType}, #{areaPyeong}, #{style}, #{constructionDetail}
         )
     </insert>
+
+    <!-- 업체 게시글 상세보기 중 post + company_post만 -->
+    <select id="getPostAndCompanyPostById" resultType="com.ama.don.interior.dto.response.CompanyPostDetailDto">
+        select p.post_id AS postId, p.post_date AS postDate, c.company_id AS companyId,
+            c.company_post_id AS companyPostId, c.company_post_title AS companyPostTitle,
+            c.company_post_content AS companyPostContent, c.space_type AS spaceType,
+            c.area_pyeong AS areaPyeong, c.style AS style, c.construction_detail AS constructionDetail
+        from company_post c
+        join post p ON p.post_id = c.post_id
+        where company_post_id = #{companyPostId}
+    </select>
 </mapper>
