@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -21,15 +22,84 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
+    display: flex;
+    gap: 30px;
+}
+
+/* 왼쪽 사이드바 - 쇼핑몰 카테고리 */
+.sidebar {
+    width: 250px;
+    background: white;
+    border-radius: 15px;
+    padding: 25px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.sidebar h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #007bff;
+}
+
+.mall-category {
+    margin-bottom: 8px;
+}
+
+.mall-category a {
+    display: block;
+    padding: 12px 15px;
+    text-decoration: none;
+    color: #666;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.mall-category a:hover {
+    background-color: #e3f2fd;
+    color: #007bff;
+    padding-left: 20px;
+}
+
+.mall-category a.active {
+    background-color: #007bff;
+    color: white;
+    font-weight: 600;
+}
+
+.mall-category .count {
+    float: right;
+    background-color: #f8f9fa;
+    color: #666;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+}
+
+.mall-category a.active .count {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* 메인 컨텐츠 */
+.main-content {
+    flex: 1;
 }
 
 /* 페이지 헤더 */
 .page-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     padding: 30px 0;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
@@ -50,46 +120,49 @@ body {
     opacity: 0.9;
 }
 
-/* 필터 및 정렬 바 */
-.filter-bar {
+/* 선택된 카테고리 표시 */
+.selected-category {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-left: 4px solid #007bff;
+}
+
+.selected-category h2 {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 20px;
+}
+
+.selected-category p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+/* 정렬 바 */
+.sort-bar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
-    padding: 20px;
+    margin-bottom: 25px;
+    padding: 15px 20px;
     background: white;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
-.filter-left {
-    display: flex;
-    gap: 15px;
-    align-items: center;
+.sort-left {
+    font-weight: 500;
+    color: #333;
 }
 
-.filter-right {
+.sort-right {
     display: flex;
     gap: 10px;
     align-items: center;
-}
-
-.filter-btn {
-    padding: 8px 16px;
-    border: 2px solid #007bff;
-    background: white;
-    color: #007bff;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.filter-btn:hover, .filter-btn.active {
-    background: #007bff;
-    color: white;
-    transform: translateY(-2px);
 }
 
 .sort-select {
@@ -97,6 +170,7 @@ body {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-size: 14px;
+    background: white;
 }
 
 /* 상품 그리드 */
@@ -187,9 +261,9 @@ body {
 
 .product-mall {
     font-size: 12px;
-    color: #6c757d;
+    color: #007bff;
     margin-bottom: 8px;
-    font-weight: 500;
+    font-weight: 600;
     text-transform: uppercase;
 }
 
@@ -284,6 +358,7 @@ body {
     text-align: center;
     padding: 80px 20px;
     color: #6c757d;
+    grid-column: 1 / -1;
 }
 
 .empty-state i {
@@ -319,52 +394,21 @@ body {
     transform: translateY(-2px);
 }
 
-/* 페이지네이션 */
-.pagination {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 40px;
-}
-
-.pagination a {
-    padding: 10px 15px;
-    border: 1px solid #ddd;
-    color: #007bff;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-}
-
-.pagination a:hover {
-    background-color: #007bff;
-    color: white;
-}
-
-.pagination .active {
-    background-color: #007bff;
-    color: white;
-    border-color: #007bff;
-}
-
 /* 반응형 디자인 */
 @media (max-width: 768px) {
     .container {
+        flex-direction: column;
         padding: 15px;
+        gap: 20px;
+    }
+    
+    .sidebar {
+        width: 100%;
+        position: static;
     }
     
     .page-header h1 {
         font-size: 2rem;
-    }
-    
-    .filter-bar {
-        flex-direction: column;
-        gap: 15px;
-        align-items: stretch;
-    }
-    
-    .filter-left, .filter-right {
-        justify-content: center;
     }
     
     .product-grid {
@@ -377,243 +421,248 @@ body {
     .product-grid {
         grid-template-columns: 1fr;
     }
-    
-    .filter-left {
-        flex-wrap: wrap;
-    }
-}
-
-/* 로딩 애니메이션 */
-.loading {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-}
-
-.spinner {
-    width: 40px;
-    height: 40px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #007bff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
 }
 </style>
 </head>
 <body>
 
 <div class="container">
-    <!-- 페이지 헤더 -->
-    <div class="page-header">
-        <h1>🏪 ProductMall</h1>
-        <p>다양한 브랜드의 최고 품질 상품을 만나보세요</p>
-    </div>
+    <!-- 왼쪽 사이드바 - 쇼핑몰 카테고리 -->
+	<div class="sidebar">
+	    <h3>🏪 쇼핑몰별 보기</h3>
+	    
+	    <!-- 전체 보기 -->
+	    <div class="mall-category">
+	        <a href="/shop/productmall" class="${empty param.mall_name ? 'active' : ''}">
+	            전체 쇼핑몰
+	        </a>
+	    </div>
+	    
+	    <!-- 🔧 수정: 중복 제거된 쇼핑몰 목록 -->
+	    <c:if test="${not empty product_list}">
+	        <!-- 이미 처리된 쇼핑몰을 추적 -->
+	        <c:set var="processedMalls" value="," />
+	        
+	        <c:forEach var="product" items="${product_list}">
+	            <c:if test="${not empty product.product_mall_name}">
+	                <!-- 중복 체크 -->
+	                <c:if test="${not fn:contains(processedMalls, ','.concat(product.product_mall_name).concat(','))}">
+	                    
+	                    <!-- 해당 쇼핑몰 상품 개수 계산 -->
+	                    <c:set var="mallCount" value="0" />
+	                    <c:forEach var="countProduct" items="${product_list}">
+	                        <c:if test="${countProduct.product_mall_name == product.product_mall_name}">
+	                            <c:set var="mallCount" value="${mallCount + 1}" />
+	                        </c:if>
+	                    </c:forEach>
+	                    
+	                    <!-- 쇼핑몰 링크 생성 -->
+	                    <div class="mall-category">
+	                        <a href="/shop/productmall?mall_name=${product.product_mall_name}" 
+	                           class="${param.mall_name == product.product_mall_name ? 'active' : ''}">
+	                            ${product.product_mall_name}
+	                            <span class="count">${mallCount}</span>
+	                        </a>
+	                    </div>
+	                    
+	                    <!-- 처리 완료 표시 -->
+	                    <c:set var="processedMalls" value="${processedMalls}${product.product_mall_name}," />
+	                </c:if>
+	            </c:if>
+	        </c:forEach>
+	    </c:if>
+	    
+	    <!-- 상품이 없을 때 -->
+	    <c:if test="${empty product_list}">
+	        <div style="text-align: center; padding: 20px; color: #666;">
+	            <p>등록된 상품이 없습니다.</p>
+	        </div>
+	    </c:if>
+	</div>
 
-    <!-- 필터 및 정렬 바 -->
-    <div class="filter-bar">
-        <div class="filter-left">
-            <button class="filter-btn active" onclick="filterProducts('all')">전체</button>
-            <button class="filter-btn" onclick="filterProducts('discount')">할인상품</button>
-            <button class="filter-btn" onclick="filterProducts('new')">신상품</button>
-            <button class="filter-btn" onclick="filterProducts('popular')">인기상품</button>
+    <!-- 메인 컨텐츠 -->
+    <div class="main-content">
+        <!-- 페이지 헤더 -->
+        <div class="page-header">
+            <h1>🏪 ProductMall</h1>
+            <p>다양한 브랜드의 최고 품질 상품을 만나보세요</p>
         </div>
-        <div class="filter-right">
-            <select class="sort-select" onchange="sortProducts(this.value)">
-                <option value="latest">최신순</option>
-                <option value="price-low">가격 낮은순</option>
-                <option value="price-high">가격 높은순</option>
-                <option value="discount">할인율 높은순</option>
-                <option value="name">상품명순</option>
-            </select>
+
+        <!-- 선택된 카테고리 표시 -->
+        <div class="selected-category">
+            <c:choose>
+                <c:when test="${not empty selected_mall}">
+                    <h2>${selected_mall} 상품</h2>
+                    <p>${selected_mall}에서 판매하는 ${product_list != null ? product_list.size() : 0}개의 상품을 보고 있습니다.</p>
+                </c:when>
+                <c:otherwise>
+                    <h2>전체 상품</h2>
+                    <p>모든 쇼핑몰의 ${product_list != null ? product_list.size() : 0}개 상품을 보고 있습니다.</p>
+                </c:otherwise>
+            </c:choose>
         </div>
-    </div>
 
-    <!-- 상품 그리드 -->
-    <div class="product-grid" id="productGrid">
-        <c:choose>
-            <c:when test="${not empty product_list}">
-                <c:forEach var="product" items="${product_list}" varStatus="status">
-                    <div class="product-card" onclick="goToProduct(${product.product_id})">
-                        <!-- 상품 이미지 -->
-                        <div class="product-image">
-                            <c:choose>
-                                <c:when test="${not empty product.product_imgurl}">
-                                    <img src="/static/uploads/shop/${product.product_imgurl}" alt="${product.product_name}">
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="no-image">📦</div>
-                                </c:otherwise>
-                            </c:choose>
-                            
-                            <!-- 할인 뱃지 -->
-                            <c:if test="${product.product_discountrate != null and product.product_discountrate > 0}">
-                                <div class="discount-badge">
-                                    <fmt:formatNumber value="${product.product_discountrate * 100}" pattern="#"/>% OFF
-                                </div>
-                            </c:if>
-                            
-                            <!-- NEW 뱃지 (최근 7일 내 등록된 상품) -->
-                            <c:if test="${product.product_istoday == 'Y'}">
-                                <div class="new-badge">NEW</div>
-                            </c:if>
-                        </div>
+        <!-- 정렬 바 -->
+        <div class="sort-bar">
+            <div class="sort-left">
+                <strong>${product_list != null ? product_list.size() : 0}</strong>개의 상품
+            </div>
+            <div class="sort-right">
+                <select class="sort-select" onchange="sortProducts(this.value)">
+                    <option value="latest">최신순</option>
+                    <option value="price-low">가격 낮은순</option>
+                    <option value="price-high">가격 높은순</option>
+                    <option value="discount">할인율 높은순</option>
+                    <option value="name">상품명순</option>
+                </select>
+            </div>
+        </div>
 
-                        <!-- 상품 정보 -->
-                        <div class="product-info">
-                            <div class="product-mall">${product.product_mall_name}</div>
-                            <div class="product-name">${product.product_name}</div>
-                            
-                            <!-- 가격 정보 -->
-                            <div class="product-price">
-                                <c:choose>
-                                    <c:when test="${product.product_discountrate != null and product.product_discountrate > 0}">
-                                        <!-- 할인 상품 -->
-                                        <div class="discount-info">
-                                            <div class="discount-rate">
-                                                <fmt:formatNumber value="${product.product_discountrate * 100}" pattern="#"/>%
-                                            </div>
-                                        </div>
-                                        <div class="original-price">
-                                            ₩<fmt:formatNumber value="${product.product_price}" pattern="#,###"/>
-                                        </div>
-                                        <div class="current-price">
-                                            ₩<fmt:formatNumber value="${product.product_price * (1 - product.product_discountrate)}" pattern="#,###"/>
-                                        </div>
-                                    </c:when>
-                                    <c:otherwise>
-                                        <!-- 일반 상품 -->
-                                        <div class="current-price">
-                                            ₩<fmt:formatNumber value="${product.product_price}" pattern="#,###"/>
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
-                            </div>
-
-                            <!-- 액션 버튼들 -->
-                            <div class="product-actions">
-                                <button class="action-btn cart-btn" onclick="event.stopPropagation(); addToCart(${product.product_id})">
-                                    🛒 장바구니
-                                </button>
-                                <button class="action-btn order-btn" onclick="event.stopPropagation(); directOrder(${product.product_id})">
-                                    ⚡ 바로구매
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </c:forEach>
-            </c:when>
-            <c:otherwise>
-                <!-- 빈 상태 -->
-                <div class="empty-state">
-                    <i>📦</i>
-                    <h3>상품이 없습니다</h3>
-                    <p>현재 등록된 상품이 없습니다.<br>곧 다양한 상품들을 만나보실 수 있어요!</p>
-                    <a href="/shop/home" class="btn">홈으로 돌아가기</a>
-                </div>
-            </c:otherwise>
-        </c:choose>
-    </div>
-
-    
-</div>
+        <!-- 상품 그리드 -->
+		<div class="product-grid" id="productGrid">
+		    <c:choose>
+		        <c:when test="${not empty product_list}">
+		            <c:forEach var="product" items="${product_list}" varStatus="status">
+		                <!-- 🔧 수정1: onclick을 더 안전하게 처리 -->
+		                <div class="product-card" data-product-id="${product.product_id}">
+		                    <!-- 상품 이미지 -->
+		                    <div class="product-image">
+		                        <c:choose>
+		                            <c:when test="${not empty product.product_imgurl}">
+		                                <img src="/static/uploads/shop/${product.product_imgurl}" alt="${product.product_name}">
+		                            </c:when>
+		                            <c:otherwise>
+		                                <div class="no-image">📦</div>
+		                            </c:otherwise>
+		                        </c:choose>
+		                        
+		                        <!-- 할인 뱃지 -->
+		                        <c:if test="${product.product_discountrate != null and product.product_discountrate > 0}">
+		                            <div class="discount-badge">
+		                                <fmt:formatNumber value="${product.product_discountrate * 100}" pattern="#"/>% OFF
+		                            </div>
+		                        </c:if>
+		                        
+		                        <!-- NEW 뱃지 -->
+		                        <c:if test="${product.product_istoday == 'Y'}">
+		                            <div class="new-badge">NEW</div>
+		                        </c:if>
+		                    </div>
+		
+		                    <!-- 상품 정보 -->
+		                    <div class="product-info">
+		                        <div class="product-mall">${product.product_mall_name}</div>
+		                        <div class="product-name">${product.product_name}</div>
+		                        
+		                        <!-- 가격 정보 -->
+		                        <div class="product-price">
+		                            <c:choose>
+		                                <c:when test="${product.product_discountrate != null and product.product_discountrate > 0}">
+		                                    <!-- 할인 상품 -->
+		                                    <div class="discount-info">
+		                                        <div class="discount-rate">
+		                                            <fmt:formatNumber value="${product.product_discountrate * 100}" pattern="#"/>%
+		                                        </div>
+		                                    </div>
+		                                    <div class="original-price">
+		                                        ₩<fmt:formatNumber value="${product.product_price}" pattern="#,###"/>
+		                                    </div>
+		                                    <div class="current-price">
+		                                        ₩<fmt:formatNumber value="${product.product_price * (1 - product.product_discountrate)}" pattern="#,###"/>
+		                                    </div>
+		                                </c:when>
+		                                <c:otherwise>
+		                                    <!-- 일반 상품 -->
+		                                    <div class="current-price">
+		                                        ₩<fmt:formatNumber value="${product.product_price}" pattern="#,###"/>
+		                                    </div>
+		                                </c:otherwise>
+		                            </c:choose>
+		                        </div>
+		
+		                        <!-- 🔧 수정2: 액션 버튼들의 이벤트 처리 개선 -->
+		                        <div class="product-actions">
+		                            <button class="action-btn cart-btn" data-product-id="${product.product_id}" data-action="cart">
+		                                🛒 장바구니
+		                            </button>
+		                            <button class="action-btn order-btn" data-product-id="${product.product_id}" data-action="order">
+		                                ⚡ 바로구매
+		                            </button>
+		                        </div>
+		                    </div>
+		                </div>
+		            </c:forEach>
+		        </c:when>
+		        <c:otherwise>
+		            <!-- 빈 상태 -->
+		            <div class="empty-state">
+		                <i>📦</i>
+		                <h3>상품이 없습니다</h3>
+		                <c:choose>
+		                    <c:when test="${not empty selected_mall}">
+		                        <p>${selected_mall}에 등록된 상품이 없습니다.<br>다른 쇼핑몰을 선택해보세요!</p>
+		                    </c:when>
+		                    <c:otherwise>
+		                        <p>현재 등록된 상품이 없습니다.<br>곧 다양한 상품들을 만나보실 수 있어요!</p>
+		                    </c:otherwise>
+		                </c:choose>
+		                <a href="/shop/productmall" class="btn">전체 상품 보기</a>
+		            </div>
+		        </c:otherwise>
+		    </c:choose>
+		</div>
+	</div>
+</div>	
 
 <script>
-// 상품 상세 페이지로 이동
-function goToProduct(productId) {
-    const userId = getUserId(); // subheader.jsp에서 정의된 함수 사용
-    location.href = `/shop/product_detail?product_id=${productId}&userid=${userId}`;
-}
+// 🔧 수정된 JavaScript 코드
 
-// 장바구니에 추가
-function addToCart(productId) {
-    const userId = getUserId();
-    
-    if (confirm('장바구니에 추가하시겠습니까?')) {
-        location.href = `/shop/cart_write?user_id=${userId}&product_id=${productId}&cart_quantity=1`;
+// getUserId 함수가 없을 경우를 대비한 기본 구현
+function getUserId() {
+    // subheader.jsp에서 정의된 함수가 있다면 그것을 사용
+    if (typeof window.getUserId === 'function') {
+        return window.getUserId();
     }
+    
+    // 세션에서 사용자 ID 가져오기 (예시)
+    return '${sessionScope.loginMember != null ? sessionScope.loginMember.user_id : "guest"}';
 }
 
-// 바로 구매
-function directOrder(productId) {
-    const userId = getUserId();
-    location.href = `/shop/order_view?product_id=${productId}&user_id=${userId}&quantity=1&form_cart=false`;
-}
-
-// 상품 필터링
-function filterProducts(type) {
-    // 모든 필터 버튼에서 active 클래스 제거
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.classList.remove('active');
-    });
-    
-    // 클릭된 버튼에 active 클래스 추가
-    event.target.classList.add('active');
-    
-    // 실제 필터링 로직 (서버 요청 또는 클라이언트 필터링)
-    const productCards = document.querySelectorAll('.product-card');
-    
-    productCards.forEach(card => {
-        switch(type) {
-            case 'all':
-                card.style.display = 'block';
-                break;
-            case 'discount':
-                const hasDiscount = card.querySelector('.discount-badge');
-                card.style.display = hasDiscount ? 'block' : 'none';
-                break;
-            case 'new':
-                const isNew = card.querySelector('.new-badge');
-                card.style.display = isNew ? 'block' : 'none';
-                break;
-            default:
-                card.style.display = 'block';
-        }
-    });
-}
-
-// 상품 정렬
-function sortProducts(sortType) {
-    const productGrid = document.getElementById('productGrid');
-    const productCards = Array.from(productGrid.querySelectorAll('.product-card'));
-    
-    productCards.sort((a, b) => {
-        switch(sortType) {
-            case 'price-low':
-                const priceA = parseInt(a.querySelector('.current-price').textContent.replace(/[^\d]/g, ''));
-                const priceB = parseInt(b.querySelector('.current-price').textContent.replace(/[^\d]/g, ''));
-                return priceA - priceB;
-            case 'price-high':
-                const priceHighA = parseInt(a.querySelector('.current-price').textContent.replace(/[^\d]/g, ''));
-                const priceHighB = parseInt(b.querySelector('.current-price').textContent.replace(/[^\d]/g, ''));
-                return priceHighB - priceHighA;
-            case 'name':
-                const nameA = a.querySelector('.product-name').textContent;
-                const nameB = b.querySelector('.product-name').textContent;
-                return nameA.localeCompare(nameB);
-            default:
-                return 0;
-        }
-    });
-    
-    // 정렬된 순서로 다시 배치
-    productCards.forEach(card => productGrid.appendChild(card));
-}
-
-// 더 보기 (무한 스크롤 또는 페이지네이션)
-function loadMore() {
-    // 서버에서 추가 상품 로드
-    console.log('더 많은 상품 로드...');
-}
-
-// 페이지 로딩 애니메이션
+// 🔧 수정1: 이벤트 위임을 사용한 안전한 클릭 처리
 document.addEventListener('DOMContentLoaded', function() {
-    // 상품 카드들에 순차적으로 나타나는 애니메이션 효과
+    const productGrid = document.getElementById('productGrid');
+    
+    // 상품 그리드에 이벤트 위임 적용
+    productGrid.addEventListener('click', function(e) {
+        // 클릭된 요소에서 가장 가까운 product-card 찾기
+        const productCard = e.target.closest('.product-card');
+        if (!productCard) return;
+        
+        // 버튼 클릭인지 확인
+        const actionBtn = e.target.closest('.action-btn');
+        if (actionBtn) {
+            e.stopPropagation(); // 상품 카드 클릭 이벤트 차단
+            
+            const productId = actionBtn.getAttribute('data-product-id');
+            const action = actionBtn.getAttribute('data-action');
+            
+            if (action === 'cart') {
+                addToCart(productId);
+            } else if (action === 'order') {
+                directOrder(productId);
+            }
+            return;
+        }
+        
+        // 상품 카드 클릭 (상세페이지 이동)
+        const productId = productCard.getAttribute('data-product-id');
+        if (productId) {
+            console.log('상품 클릭됨:', productId); // 디버깅용
+            goToProduct(productId);
+        }
+    });
+    
+    // 페이지 로딩 애니메이션
     const productCards = document.querySelectorAll('.product-card');
     productCards.forEach((card, index) => {
         card.style.opacity = '0';
@@ -626,6 +675,108 @@ document.addEventListener('DOMContentLoaded', function() {
         }, index * 100);
     });
 });
+
+// 🔧 수정2: 상품 상세 페이지로 이동 (에러 처리 추가)
+function goToProduct(productId) {
+    try {
+        const userId = getUserId();
+        const url = `/shop/product_detail?product_id=${productId}&userid=${userId}`;
+        
+        console.log('이동할 URL:', url); // 디버깅용
+        location.href = url;
+        
+    } catch (error) {
+        console.error('상품 페이지 이동 오류:', error);
+        // 백업 방법: 간단한 URL로 이동
+        location.href = `/shop/product_detail?product_id=${productId}`;
+    }
+}
+
+// 🔧 수정3: 장바구니 추가 (에러 처리 추가)
+function addToCart(productId) {
+    try {
+        const userId = getUserId();
+        
+        if (confirm('장바구니에 추가하시겠습니까?')) {
+            const url = `/shop/cart_write?user_id=${userId}&product_id=${productId}&cart_quantity=1`;
+            console.log('장바구니 URL:', url); // 디버깅용
+            location.href = url;
+        }
+        
+    } catch (error) {
+        console.error('장바구니 추가 오류:', error);
+        alert('장바구니 추가 중 오류가 발생했습니다.');
+    }
+}
+
+// 🔧 수정4: 바로 구매 (에러 처리 추가)
+function directOrder(productId) {
+    try {
+        const userId = getUserId();
+        const url = `/shop/order_view?product_id=${productId}&user_id=${userId}&quantity=1&form_cart=false`;
+        
+        console.log('주문 URL:', url); // 디버깅용
+        location.href = url;
+        
+    } catch (error) {
+        console.error('바로 구매 오류:', error);
+        alert('주문 처리 중 오류가 발생했습니다.');
+    }
+}
+
+// 🔧 수정5: 상품 정렬 (기존 코드 유지하되 안전성 강화)
+function sortProducts(sortType) {
+    try {
+        const productGrid = document.getElementById('productGrid');
+        const productCards = Array.from(productGrid.querySelectorAll('.product-card'));
+        
+        productCards.sort((a, b) => {
+            switch(sortType) {
+                case 'price-low':
+                    const priceA = parseInt(a.querySelector('.current-price')?.textContent.replace(/[^\d]/g, '') || '0');
+                    const priceB = parseInt(b.querySelector('.current-price')?.textContent.replace(/[^\d]/g, '') || '0');
+                    return priceA - priceB;
+                case 'price-high':
+                    const priceHighA = parseInt(a.querySelector('.current-price')?.textContent.replace(/[^\d]/g, '') || '0');
+                    const priceHighB = parseInt(b.querySelector('.current-price')?.textContent.replace(/[^\d]/g, '') || '0');
+                    return priceHighB - priceHighA;
+                case 'name':
+                    const nameA = a.querySelector('.product-name')?.textContent || '';
+                    const nameB = b.querySelector('.product-name')?.textContent || '';
+                    return nameA.localeCompare(nameB);
+                case 'discount':
+                    const discountA = a.querySelector('.discount-rate')?.textContent || '0';
+                    const discountB = b.querySelector('.discount-rate')?.textContent || '0';
+                    return parseInt(discountB) - parseInt(discountA);
+                default:
+                    return 0;
+            }
+        });
+        
+        // 정렬된 순서로 다시 배치
+        productCards.forEach(card => productGrid.appendChild(card));
+        
+    } catch (error) {
+        console.error('정렬 오류:', error);
+    }
+}
+
+// 🔧 디버깅을 위한 추가 함수
+function debugProductClick() {
+    console.log('상품 클릭 디버깅 정보:');
+    console.log('- 총 상품 개수:', document.querySelectorAll('.product-card').length);
+    console.log('- getUserId 함수 존재:', typeof getUserId === 'function');
+    console.log('- 현재 사용자 ID:', getUserId());
+    
+    // 첫 번째 상품 카드에 강제로 클릭 이벤트 발생
+    const firstCard = document.querySelector('.product-card');
+    if (firstCard) {
+        console.log('- 첫 번째 상품 ID:', firstCard.getAttribute('data-product-id'));
+        // firstCard.click(); // 테스트용 (주석 처리)
+    }
+}
+
+// 브라우저 콘솔에서 debugProductClick() 실행하여 디버깅 가능
 </script>
 
 </body>
