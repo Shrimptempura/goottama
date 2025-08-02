@@ -18,6 +18,8 @@ public interface CompanyPostDao {
     // 홈에서 보는 업체 게시글 목록 뷰, enum(LASTEST, RANDOM, POPULAR)
     // 쿼리를 3가지 조건으로 짜야함: 최신순, 랜덤, 인기순(좋아요 순)
     // 3가지 방법으로 짜면 enum은 안씀(이건 choose 방법)
+    // 리스트 출력은 우리는 위치 서비스가 중요도 떨어지므로
+    // 리스트 출력후 위치로 필터링 할 예정
     // 홈에서 최신순
     List<CompanyHomePostDto> findCompanyPostByLatest();
 

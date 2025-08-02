@@ -5,12 +5,17 @@ import com.ama.don.common.dto.PostDto;
 import com.ama.don.interior.dto.request.CompanyInsertDto;
 import com.ama.don.interior.dto.request.CompanyPostCreateDto;
 import com.ama.don.interior.dto.request.CompanyPostUpdateDto;
+import com.ama.don.interior.dto.response.CompanyHomeDto;
+import com.ama.don.interior.dto.response.CompanyHomePostDto;
 import com.ama.don.interior.dto.response.CompanyPostDetailDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -184,6 +189,34 @@ class CompanyPostDaoTest extends AbstractCompanyTestSupport {
 
         assertThat(first).isNotEqualTo(second);
         assertThat(first).isEqualTo(second - 1);
+    }
+
+    @DisplayName("홈에서 보는 업체 게시글 최신순")
+    @Test
+    void findCompanyPostByLatest() throws InterruptedException {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 생성
+        CompanyPostCreateDto firstCompanyPost = createCompanyPost(userId, companyId);
+        Thread.sleep(1000);
+        CompanyPostCreateDto secondCompanyPost = createCompanyPost(userId, companyId);
+        Thread.sleep(1000);
+        CompanyPostCreateDto thirdCompanyPost = createCompanyPost(userId, companyId);
+        Thread.sleep(1000);
+
+
+        // 홈에서 보는 업체 리스트 최신순 desc postDate
+        List<CompanyHomePostDto> homelist = companyPostDao.findCompanyPostByLatest();
+        LocalDateTime latestPostDate = homelist.get(0).getPostDate();
+        LocalDateTime middlePostDate = homelist.get(1).getPostDate();
+        LocalDateTime oldestPostDate = homelist.get(2).getPostDate();
+
+        assertThat(homelist).isNotNull();
+        assertThat(oldestPostDate).isBefore(middlePostDate);
+        assertThat(middlePostDate).isBefore(latestPostDate);
     }
 
 

@@ -124,7 +124,6 @@
         JOIN post p ON cp.post_id = p.post_id
         JOIN company c ON cp.company_id = c.company_id
         JOIN location l ON c.location_id = l.location_id
-        WHERE company_post_id = #{companyPostId}
         ORDER BY p.post_date DESC
     </select>
 
