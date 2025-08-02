@@ -158,5 +158,19 @@
         WHERE company_post_id = #{companyPostId}
     </select>
 
+    <!-- 게시글 좋아요 수 증가 -->
+    <update id="incrementLikeCount">
+        UPDATE company_post
+        SET company_post_like_count = company_post_like_count + 1
+        WHERE company_post_id = #{companyPostId}
+    </update>
+
+    <!-- 게시글 좋아요 수 감소 -->
+    <update id="decrementLikeCount">
+        UPDATE company_post
+        SET company_post_like_count = company_post_like_count - 1
+        WHERE company_post_id = #{companyPostId}
+    </update>
+
 
 </mapper>

@@ -71,5 +71,11 @@ public interface CompanyPostDao {
     // 좋아요 수 조회
     int countLikeCompanyPost(Long companyPostId);
 
+    // 게시글 좋아요 클릭시 좋아요수 증가
+    int incrementLikeCount(Long companyPostId);
+    
+    // 게시글 좋아요 취소시 좋아요수 감소
+    int decrementLikeCount(Long companyPostId);
+
     // 좋아요, 스크랩, 댓글은 다른 dao에서 책임 나누자
 }
