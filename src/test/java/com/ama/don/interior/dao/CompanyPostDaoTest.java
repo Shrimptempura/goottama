@@ -287,6 +287,33 @@ class CompanyPostDaoTest extends AbstractCompanyTestSupport {
         int canceled = companyPostDao.countLikeCompanyPost(postId);
         assertThat(canceled).isEqualTo(0);
     }
+    
+    @DisplayName("홈에서 보는 같은 지역구 정렬 리스트")
+    @Test
+    void findCompanyPostByRegion() {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 생성
+        CompanyPostCreateDto post = createCompanyPost(userId, companyId);
+        Long postid = post.getPostId();
+
+        List<CompanyHomePostDto> list = companyPostDao.findCompanyPostByRegion("구로구");
+        assertThat(list).isNotEmpty();
+
+        boolean hasMatchRegion = list.stream()
+                .map(CompanyHomePostDto::getRegion)
+                .anyMatch(region -> region.contains("구로구"));
+
+        assertThat(hasMatchRegion).isTrue();
+        assertThat(list.stream()
+                .anyMatch(postDto -> postDto.getPostId().equals(postid)))
+                .isTrue();
+    }
+
+
 
 
 }

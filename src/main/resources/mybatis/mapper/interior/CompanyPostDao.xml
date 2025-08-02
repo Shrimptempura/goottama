@@ -171,7 +171,8 @@
             cp.company_post_title AS companyPostTitle,
             cp.area_pyeong AS areaPyeong,
             cp.style AS style,
-            p.post_date AS postDate
+            p.post_date AS postDate,
+            cd.company_addr AS region
         FROM company_post cp
         JOIN post p ON cp.post_id = p.post_id
         JOIN company c ON cp.company_id = c.company_id

@@ -65,7 +65,7 @@ public class AbstractCompanyTestSupport {
     protected CompanyCreateDto createTestCompanyDetail(String companyName) {
         CompanyCreateDto dto = new CompanyCreateDto();
         dto.setCompanyName(companyName);
-        dto.setCompanyAddr("업체주소");
+        dto.setCompanyAddr("업체주소 구로구 999");
         dto.setCompanyField("업체필드");
         dto.setCompanyLicense("업체라이센스");
         dto.setCompanyAs("업체AS");
