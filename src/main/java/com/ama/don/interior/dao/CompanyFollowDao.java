@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface CompanyFollowDao {
+    // 시간되면 추후 company_post에 like_count로 redis처리
+    // follow 수정 필요
 
     // 회원 -> 업체에게 팔로우 등록
     void insertFollowCompany(CompanyFollowDto companyFollowDto);
