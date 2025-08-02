@@ -93,9 +93,10 @@
 
 	<!-- 게시글 수 -->
 	<select id="countTargetType" resultType="int">
-		SELECT COUNT(*) FROM post WHERE target_type = #{targetType}
+		SELECT COUNT(*) FROM
+		post WHERE target_type = #{targetType}
 	</select>
-	
+
 	<!-- 페이징된 게시글 목록 -->
 	<select id="findTargetType"
 		resultType="com.ama.don.common.dto.PostDto">
@@ -106,6 +107,23 @@
 		post_date DESC
 		LIMIT #{start}, #{count}
 	</select>
+
+	<!-- 조회수 증가 쿼리 -->
+	<update id="increaseViewCount">
+		UPDATE post
+		SET post_count = post_count + 1
+		WHERE
+		post_id = #{postId}
+	</update>
+
+	<!-- 좋아요 수 증가 쿼리 -->
+	<update id="increaseLikeCount">
+		UPDATE post
+		SET post_like_count = post_like_count + 1
+		WHERE post_id = #{postId}
+	</update>
+
+
 
 
 </mapper>
