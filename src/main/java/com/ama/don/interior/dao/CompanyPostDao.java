@@ -34,7 +34,7 @@ public interface CompanyPostDao {
 
     // 업체 상세페이지에서 보는 업체게시글 목록 뷰
     // 여기서는 그냥 보여줌
-    List<CompanyPostPreviewDto> caseList(Long companyId);
+    List<CompanyPostPreviewDto> caseList(@Param("companyId") Long companyId);
 
     // 게시글 생성 순서
     // 1. PostDao의 insertPolyPostForCompany 다형성 생성
@@ -49,36 +49,36 @@ public interface CompanyPostDao {
     // (post + company_post), (company + company_detail) 쿼리 조인처리
     // file은 맨 마지막, 나머지는 기타 쿼리 및 테이블 확인
     // getPostAndCompanyPostById, getCompanyBasicInfoById
-    CompanyPostDetailDto getPostAndCompanyPostById(Long companyPostId);
+    CompanyPostDetailDto getPostAndCompanyPostById(@Param("companyPostId") Long companyPostId);
 
     // 상세보기 부분 조회 (company + company_detail)
-    CompanyPostDetailDto getCompanyBasicInfoById(Long companyId);
+    CompanyPostDetailDto getCompanyBasicInfoById(@Param("companyId") Long companyId);
 
     // 게시글 수정
     int updatePost(CompanyPostUpdateDto dto);
 
     // 게시글 수정 뷰
-    CompanyPostUpdateDto getEditView(Long companyPostId);
+    CompanyPostUpdateDto getEditView(@Param("companyPostId") Long companyPostId);
 
     // 게시글 삭제
     // 댓글, 좋아요, 스크립 존재 시 먼저 지워야함(하위-> 상위)
     // 다형성 게시글 먼저 삭제
-    int deletePolyPostById(Long postId);
+    int deletePolyPostById(@Param("postId") Long postId);
 
     // 업체 게시글 삭제
-    int deleteCompanyPostById(Long companyPostId);
+    int deleteCompanyPostById(@Param("companyPostId") Long companyPostId);
 
     // 조회수 증가
-    int increaseHit(Long companyPostId);
+    int increaseHit(@Param("companyPostId") Long companyPostId);
 
     // 좋아요 수 조회
-    int countLikeCompanyPost(Long companyPostId);
+    int countLikeCompanyPost(@Param("companyPostId") Long companyPostId);
 
     // 게시글 좋아요 클릭시 좋아요수 증가
-    int incrementLikeCount(Long companyPostId);
+    int incrementLikeCount(@Param("companyPostId") Long companyPostId);
     
     // 게시글 좋아요 취소시 좋아요수 감소
-    int decrementLikeCount(Long companyPostId);
+    int decrementLikeCount(@Param("companyPostId") Long companyPostId);
 
     // 스크랩, 댓글은 다른 dao에서 책임 나누자
 }

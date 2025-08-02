@@ -204,5 +204,17 @@
         WHERE company_post_id = #{companyPostId}
     </update>
 
+    <!-- 업체 상세페이지에서 보는 업체 게시글 목록 뷰 -->
+    <select id="caseList" resultType="com.ama.don.interior.dto.response.CompanyPostPreviewDto">
+        SELECT
+            company_post_title AS companyPostTitle,
+            company_post_count AS companyPostCount,
+            scrap_count AS scrapCount
+        FROM company_post
+        WHERE company_id = #{companyId}
+        LIMIT 8
+    </select>
+
+
 
 </mapper>
