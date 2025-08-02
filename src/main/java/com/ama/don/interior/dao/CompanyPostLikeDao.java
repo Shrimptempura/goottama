@@ -1,18 +1,19 @@
 package com.ama.don.interior.dao;
 
+import com.ama.don.interior.dto.response.CompanyPostLikeDto;
 import org.apache.ibatis.annotations.Mapper;
 
 @Mapper
 public interface CompanyPostLikeDao {
 
     // 회원이 게시글 좋아요
-    int insertLikeCompanyPost(Long companyPostId, Long userId);
+    int insertLikeCompanyPost(CompanyPostLikeDto dto);
 
     // 회원이 게시글 좋아요 취소
-    int deleteLikeCompanyPost(Long companyPostId, Long userId);
+    int deleteLikeCompanyPost(CompanyPostLikeDto dto);
 
     // 회원이 게시글에 좋아요 여부 확인
-    boolean isLikedCompanyPost(Long companyPostId, Long userId);
+    boolean isLikedCompanyPost(CompanyPostLikeDto dto);
 
     // 좋아요 수 조회
     int countLikeCompanyPost(Long companyPostId);

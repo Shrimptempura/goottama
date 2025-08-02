@@ -1,5 +1,7 @@
 package com.ama.don.interior.dao;
 
+import com.ama.don.interior.dto.request.CompanyPostCreateDto;
+import com.ama.don.interior.dto.response.CompanyPostLikeDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,21 +21,51 @@ class CompanyPostLikeDaoTest extends AbstractCompanyTestSupport {
 
     @DisplayName("좋아요를 안누른 회원의 false 확인")
     @Test
-    void isLikedCompanyPost() {
+    void shouldReturnFalse_whenNotLiked() {
         // 업체 생성
         TestCompanyContext context = insertTestCompanyContext();
         Long companyId = context.getCompanyId();
         Long userId = context.getUser().getUserId();
 
         // 게시글 생성
-        createCompanyPost(userId, companyId);
+        CompanyPostCreateDto post = createCompanyPost(userId, companyId);
+        Long postId = post.getCompanyPostId();
 
+        // 회원 생성
         JoinformDto user = createTestUser("testUser111");
 
-        boolean isLiked = companyPostLikeDao.isLikedCompanyPost(companyId, user.getUserId());
+        CompanyPostLikeDto likeDto = new CompanyPostLikeDto();
+        likeDto.setUserId(user.getUserId());
+        likeDto.setCompanyPostId(postId);
+
+        boolean isLiked = companyPostLikeDao.isLikedCompanyPost(likeDto);
 
         // 아직 좋아요 안누름
         assertThat(isLiked).isFalse();
     }
 
+    @DisplayName("회원이 게시글에 좋아요를 눌렀을때 확인")
+    @Test
+    void shouldReturnTrue_whenLiked() {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 생성
+        CompanyPostCreateDto post = createCompanyPost(userId, companyId);
+        Long postId = post.getCompanyPostId();
+
+        // 회원 생성
+        JoinformDto user = createTestUser("testUser111");
+
+        // 좋아요 누름
+        CompanyPostLikeDto likeDto = new CompanyPostLikeDto();
+        likeDto.setUserId(user.getUserId());
+        likeDto.setCompanyPostId(postId);
+
+        int liked = companyPostLikeDao.insertLikeCompanyPost(likeDto);
+
+        assertThat(liked).isEqualTo(1);
+    }
 }
