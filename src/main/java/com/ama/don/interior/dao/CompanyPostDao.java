@@ -68,5 +68,8 @@ public interface CompanyPostDao {
     // 조회수 증가
     int increaseHit(Long companyPostId);
 
+    // 좋아요 수 조회
+    int countLikeCompanyPost(Long companyPostId);
+
     // 좋아요, 스크랩, 댓글은 다른 dao에서 책임 나누자
 }

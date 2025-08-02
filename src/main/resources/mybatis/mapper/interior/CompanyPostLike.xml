@@ -36,5 +36,4 @@
             AND user_id = #{userId}
     </delete>
 
-
 </mapper>

@@ -151,5 +151,12 @@
 
     </select>
 
+    <!-- 게시글 좋아요 수 조회 -->
+    <select id="countLikeCompanyPost" resultType="java.lang.Integer">
+        SELECT company_post_like_count
+        FROM company_post
+        WHERE company_post_id = #{companyPostId}
+    </select>
+
 
 </mapper>
