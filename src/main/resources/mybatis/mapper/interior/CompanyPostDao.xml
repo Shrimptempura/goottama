@@ -109,11 +109,23 @@
     </update>
 
     <!-- 홈에서 보는 최신 게시글 -->
+    <!-- 연관된 테이블(post, company_post)-->
+    <!-- 위치 정보를 얻기 위해서는(location - company - company_post) -->
     <select id="findCompanyPostByLatest" resultType="com.ama.don.interior.dto.response.CompanyHomePostDto">
         SELECT
-            company_id AS companyId,
-            company_post_id AS companyPostId,
-            post_id AS postId
+            c.company_id AS companyId,
+            cp.company_post_id AS companyPostId,
+            p.post_id AS postId,
+            cp.company_post_title AS companyPostTitle,
+            cp.area_pyeong AS areaPyeong,
+            cp.style AS style,
+            p.post_date AS postDate
+        FROM company_post cp
+        JOIN post p ON cp.post_id = p.post_id
+        JOIN company c ON cp.company_id = c.company_id
+        JOIN location l ON c.location_id = l.location_id
+        WHERE company_post_id = #{companyPostId}
+        ORDER BY p.post_date DESC
     </select>
 
     <!-- 홈에서 보는 랜덤 게시글 -->
