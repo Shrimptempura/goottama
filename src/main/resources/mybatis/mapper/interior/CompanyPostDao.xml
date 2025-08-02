@@ -125,11 +125,25 @@
         JOIN company c ON cp.company_id = c.company_id
         JOIN location l ON c.location_id = l.location_id
         ORDER BY p.post_date DESC
+        LIMIT 6
     </select>
 
     <!-- 홈에서 보는 랜덤 게시글 -->
     <select id="findCompanyPostByRandom" resultType="com.ama.don.interior.dto.response.CompanyHomePostDto">
-
+        SELECT
+            c.company_id AS companyId,
+            cp.company_post_id AS companyPostId,
+            p.post_id AS postId,
+            cp.company_post_title AS companyPostTitle,
+            cp.area_pyeong AS areaPyeong,
+            cp.style AS style,
+            p.post_date AS postDate
+        FROM company_post cp
+        JOIN post p ON cp.post_id = p.post_id
+        JOIN company c ON cp.company_id = c.company_id
+        JOIN location l ON c.location_id = l.location_id
+        ORDER BY RAND()
+        LIMIT 6
     </select>
 
     <!-- 홈에서 보는 인기 게시글 -->
