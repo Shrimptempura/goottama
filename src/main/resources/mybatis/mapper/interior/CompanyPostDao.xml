@@ -161,9 +161,24 @@
         LIMIT 6
     </select>
 
-
+    <!-- 홈에서 보는 지역구 리스트 -->
+    <!-- region은 서비스에서 넣자 -->
     <select id="findCompanyPostByRegion" resultType="com.ama.don.interior.dto.response.CompanyHomePostDto">
-
+        SELECT
+            c.company_id AS companyId,
+            cp.company_post_id AS companyPostId,
+            p.post_id AS postId,
+            cp.company_post_title AS companyPostTitle,
+            cp.area_pyeong AS areaPyeong,
+            cp.style AS style,
+            p.post_date AS postDate
+        FROM company_post cp
+        JOIN post p ON cp.post_id = p.post_id
+        JOIN company c ON cp.company_id = c.company_id
+        JOIN company_detail cd ON c.company_detail_id = cd.company_detail_id
+        WHERE cd.company_addr LIKE CONCAT ('%', #{region}, '%')
+        ORDER BY p.post_date DESC
+        LIMIT 6
     </select>
 
 

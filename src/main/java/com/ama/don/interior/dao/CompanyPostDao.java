@@ -7,6 +7,7 @@ import com.ama.don.interior.dto.response.CompanyHomePostDto;
 import com.ama.don.interior.dto.response.CompanyPostDetailDto;
 import com.ama.don.interior.dto.response.CompanyPostPreviewDto;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public interface CompanyPostDao {
     List<CompanyHomePostDto> findCompanyPostByPopular();
 
     // 홈에서 지역구만
-    List<CompanyHomePostDto> findCompanyPostByRegion(String region);
+    List<CompanyHomePostDto> findCompanyPostByRegion(@Param("region") String region);
 
     // 업체 상세페이지에서 보는 업체게시글 목록 뷰
     // 여기서는 그냥 보여줌
