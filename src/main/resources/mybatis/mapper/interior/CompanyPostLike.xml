@@ -15,6 +15,7 @@
         ) AS isLiked;
     </select>
 
+    <!-- 회원이 게시글 좋아요 -->
     <insert id="insertLikeCompanyPost"
             parameterType="com.ama.don.interior.dto.response.CompanyPostLikeDto"
             useGeneratedKeys="true"
@@ -27,5 +28,13 @@
             #{userId}
         )
     </insert>
+
+    <!-- 회원이 게시글 좋아요 취소 -->
+    <delete id="deleteLikeCompanyPost">
+        DELETE from company_post_like
+        WHERE company_post_id = #{companyPostId}
+            AND user_id = #{userId}
+    </delete>
+
 
 </mapper>
