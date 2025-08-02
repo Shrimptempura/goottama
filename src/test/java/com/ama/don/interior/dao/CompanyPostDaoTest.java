@@ -5,7 +5,6 @@ import com.ama.don.common.dto.PostDto;
 import com.ama.don.interior.dto.request.CompanyInsertDto;
 import com.ama.don.interior.dto.request.CompanyPostCreateDto;
 import com.ama.don.interior.dto.request.CompanyPostUpdateDto;
-import com.ama.don.interior.dto.response.CompanyHomeDto;
 import com.ama.don.interior.dto.response.CompanyHomePostDto;
 import com.ama.don.interior.dto.response.CompanyPostDetailDto;
 import com.ama.don.interior.dto.response.CompanyPostLikeDto;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
