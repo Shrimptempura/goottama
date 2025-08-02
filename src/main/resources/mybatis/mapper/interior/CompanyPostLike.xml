@@ -15,5 +15,17 @@
         ) AS isLiked;
     </select>
 
+    <insert id="insertLikeCompanyPost"
+            parameterType="com.ama.don.interior.dto.response.CompanyPostLikeDto"
+            useGeneratedKeys="true"
+            keyProperty="companyPostLikeId">
+        INSERT INTO company_post_like (
+            company_post_id,
+            user_id)
+        VALUES (
+            #{companyPostId},
+            #{userId}
+        )
+    </insert>
 
 </mapper>
