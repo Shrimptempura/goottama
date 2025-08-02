@@ -1,6 +1,5 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.common.enums.CompanySortType;
 import com.ama.don.interior.dto.request.CompanyPostCreateDto;
 import com.ama.don.interior.dto.request.CompanyPostUpdateDto;
 import com.ama.don.interior.dto.response.CompanyHomePostDto;
@@ -34,7 +33,7 @@ public interface CompanyPostDao {
 
     // 업체 상세페이지에서 보는 업체게시글 목록 뷰
     // 여기서는 그냥 보여줌
-    List<CompanyPostPreviewDto> caseList(@Param("companyId") Long companyId);
+    List<CompanyPostPreviewDto> getCompanyPostPreview(@Param("companyId") Long companyId);
 
     // 게시글 생성 순서
     // 1. PostDao의 insertPolyPostForCompany 다형성 생성

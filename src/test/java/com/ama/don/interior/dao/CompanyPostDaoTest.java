@@ -8,6 +8,7 @@ import com.ama.don.interior.dto.request.CompanyPostUpdateDto;
 import com.ama.don.interior.dto.response.CompanyHomePostDto;
 import com.ama.don.interior.dto.response.CompanyPostDetailDto;
 import com.ama.don.interior.dto.response.CompanyPostLikeDto;
+import com.ama.don.interior.dto.response.CompanyPostPreviewDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -311,6 +312,24 @@ class CompanyPostDaoTest extends AbstractCompanyTestSupport {
         assertThat(list.stream()
                 .anyMatch(postDto -> postDto.getPostId().equals(postid)))
                 .isTrue();
+    }
+
+    @DisplayName("상세페이지에서 보는 업체 게시글 목록 뷰")
+    @Test
+    void getCompanyPostPreview() {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 생성
+        for (int i = 0; i < 8; i++) {
+            createCompanyPost(userId, companyId);
+        }
+
+        List<CompanyPostPreviewDto> list = companyPostDao.getCompanyPostPreview(companyId);
+        assertThat(list).isNotEmpty();
+        assertThat(list).hasSize(8);
     }
 
 
