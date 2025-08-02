@@ -31,10 +31,17 @@ public class ProductFlatDto {
     String product_istoday;
     Timestamp product_date;
     
+    
+    
     //상품 이미지
     Long product_img_id;
 	String product_imgurl;
 	String product_img_type;
+	
+	//
+	//카테고리 
+	String category_main;
+	String category_sub;
 	
 	
 	
