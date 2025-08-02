@@ -12,9 +12,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -28,6 +32,8 @@ class CompanyPostDaoTest extends AbstractCompanyTestSupport {
 
     @Autowired
     PostDao postDao;
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
 
     @DisplayName("게시글 다형성 작성")
     @Test
@@ -217,6 +223,32 @@ class CompanyPostDaoTest extends AbstractCompanyTestSupport {
         assertThat(homelist).isNotNull();
         assertThat(oldestPostDate).isBefore(middlePostDate);
         assertThat(middlePostDate).isBefore(latestPostDate);
+    }
+
+    @DisplayName("홈에서 보는 랜덤 업체 게시글 - 우연히 정렬되어 실패의 가능성이 있음")
+    @Test
+    void findCompanyPostByRandom() {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 6개 생성
+        for (int i = 0; i < 6; i++) {
+            createCompanyPost(userId, companyId);
+        }
+        
+        // postId 뽑기
+        List<Long> ids = companyPostDao.findCompanyPostByRandom().stream()
+                .map(CompanyHomePostDto::getPostId)
+                .toList();
+
+        // 정렬된 postId
+        List<Long> sortedIds = new ArrayList<>(ids);
+        Collections.sort(sortedIds);
+
+        assertThat(ids).isNotNull();
+        assertThat(ids).isNotEqualTo(sortedIds);
     }
 
 
