@@ -23,7 +23,7 @@ public class CompanyPostDetailDto {
     private String companyName;             // 업체 이름
     private String companyIntro;            // 업체 소개말
 
-    private Boolean isFollowed;               // 팔로우 여부
+    private Boolean isPostLiked;               // 좋아요 여부
 
     private String spaceType;       // 공간 종류(아파트, 주택..)
     private String areaPyeong;    // 평수
@@ -34,8 +34,8 @@ public class CompanyPostDetailDto {
 
     private Timestamp postDate;     // 게시글 작성 시간
     
-    private int countLikes;     // 좋아요 수
-    private int countScrap;     // 스크랩 수
+    private int companyPostLikeCount;     // 좋아요 수
+    private int scrapCount;     // 스크랩 수
     private int companyPostCount;      // 조회수
 
     // 파일 관련은 다형성 file dto로 서비스에서 해결
