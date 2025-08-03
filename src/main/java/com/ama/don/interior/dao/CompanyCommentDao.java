@@ -1,5 +1,6 @@
 package com.ama.don.interior.dao;
 
+import com.ama.don.interior.dto.request.CompanyCommentCreateDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

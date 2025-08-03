@@ -1,13 +1,12 @@
 package com.ama.don.common.dto;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
-
 import com.ama.don.common.enums.TargetType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.time.LocalDateTime;
 
 
 @Getter
