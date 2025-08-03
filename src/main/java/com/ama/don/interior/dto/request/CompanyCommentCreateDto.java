@@ -1,5 +1,6 @@
 package com.ama.don.interior.dto.request;
 
+import com.ama.don.common.enums.TargetType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,9 @@ public class CompanyCommentCreateDto {
     private Long userId;
     private Long companyPostId;
 
-    private String content;
+    private String commentContent;
     private Long parentCommentId;       // 대댓글의 부모 id
+
+    private Long targetId;
+    private TargetType targetType;
 }
