@@ -28,6 +28,9 @@ public class AbstractCompanyTestSupport {
     @Autowired
     protected CompanyPostDao companyPostDao;
 
+    @Autowired
+    protected CompanyCommentDao companyCommentDao;
+
     protected JoinformDto createTestUser() {
         return createTestUser("테스트아이디");
     }
@@ -281,6 +284,23 @@ public class AbstractCompanyTestSupport {
         companyPostDao.updatePost(updateDto);
 
         return updateDto;
+    }
+
+    protected CompanyCommentCreateDto createComment(Long userId, Long companyPostId) {
+        return createComment(userId, companyPostId, "테스트 댓글");
+    }
+
+    protected CompanyCommentCreateDto createComment(Long userId, Long companyPostId, String commentContent) {
+        CompanyCommentCreateDto dto = new CompanyCommentCreateDto();
+        dto.setUserId(userId);
+        dto.setCompanyPostId(companyPostId);
+        dto.setCommentContent(commentContent);
+        dto.setTargetId(companyPostId);
+        dto.setTargetType(TargetType.valueOf("INTERIOR"));
+
+        companyCommentDao.insertCompanyComment(dto);
+
+        return dto;
     }
 
 }

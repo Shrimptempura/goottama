@@ -69,8 +69,8 @@
             ON f.target_type = 'MEMBER'
             AND f.target_id = u.user_id
         WHERE
-            target_type = 'INTERIOR'
-            AND target_id = #{companyPostId}
+            c.target_type = 'INTERIOR'
+            AND c.target_id = #{companyPostId}
         ORDER BY c.parent_comment_id, c.created_at
     </select>
 
