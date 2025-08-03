@@ -167,4 +167,46 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         assertThat(getComment.isDeleted()).isEqualTo(true);
     }
 
+    @DisplayName("업체 게시글에 쓰는 대댓글, 깊이는 1")
+    @Test
+    void createDepthOneReplyComment() {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 생성
+        CompanyPostCreateDto post = createCompanyPost(userId, companyId);
+        Long companyPostId = post.getCompanyPostId();
+
+        JoinformDto parentUser = createTestUser("testUser111");
+        Long parentUserId = parentUser.getUserId();
+
+        JoinformDto childUser = createTestUser("testUser222");
+        Long childUserId = childUser.getUserId();
+
+        // 댓글 생성
+        CompanyCommentCreateDto comment = createComment(parentUserId, companyPostId, "대댓글 부모");
+        Long parentCommentId = comment.getCommentId();
+
+        // 대댓글 생성
+        CompanyCommentCreateDto replyComment = new CompanyCommentCreateDto();
+        replyComment.setUserId(childUserId);
+        replyComment.setCompanyPostId(companyPostId);
+        replyComment.setCommentContent("여기는 대댓글 내용");
+        replyComment.setTargetId(companyPostId);
+        replyComment.setTargetType(TargetType.INTERIOR);
+        replyComment.setParentCommentId(parentCommentId);
+
+        companyCommentDao.insertCompanyComment(replyComment);
+        Long replyCommentId = replyComment.getCommentId();
+
+        // 댓글 단건 읽기
+        CompanyCommentDto getComment = companyCommentDao.findById(replyCommentId);
+
+        assertThat(getComment).isNotNull();
+        assertThat(getComment.getParentCommentId()).isEqualTo(parentCommentId);
+        assertThat(getComment.getCommentContent()).isEqualTo("여기는 대댓글 내용");
+    }
+
 }
