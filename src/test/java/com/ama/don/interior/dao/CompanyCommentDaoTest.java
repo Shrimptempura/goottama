@@ -2,6 +2,7 @@ package com.ama.don.interior.dao;
 
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.request.CompanyCommentCreateDto;
+import com.ama.don.interior.dto.request.CompanyCommentUpdateDto;
 import com.ama.don.interior.dto.request.CompanyPostCreateDto;
 import com.ama.don.interior.dto.response.CompanyCommentDto;
 import com.ama.don.interior.dto.response.CompanyCommentTreeDto;
@@ -12,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -89,6 +92,48 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         assertThat(list)
                 .extracting(CompanyCommentTreeDto::getCommentContent)
                 .contains("첫 번째 댓글", "두 번째 댓글", "세 번째 댓글");
+    }
+
+    @DisplayName("댓글 수정하기")
+    @Test
+    void updateCompanyPostComment() throws InterruptedException {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 생성
+        CompanyPostCreateDto post = createCompanyPost(userId, companyId);
+        Long companyPostId = post.getCompanyPostId();
+
+        JoinformDto otherUser = createTestUser("testUser111");
+        Long otherUserId = otherUser.getUserId();
+
+        // 댓글 생성
+        CompanyCommentCreateDto comment = createComment(otherUserId, companyPostId, "기존의 댓글 내용");
+
+        // 댓글 조회
+        CompanyCommentDto getComment = companyCommentDao.findById(comment.getCommentId());
+        LocalDateTime originTime = getComment.getCreatedAt();
+        assertThat(getComment).isNotNull();
+        
+        // 생성일과 수정일 비교를 위해 1초 대기
+        Thread.sleep(1000);
+
+        CompanyCommentUpdateDto updateComment = new CompanyCommentUpdateDto();
+        updateComment.setCommentContent("수정된 댓글임");
+        updateComment.setCommentId(comment.getCommentId());
+        updateComment.setUserId(otherUserId);
+        
+        // 댓글 내용 수정
+        companyCommentDao.updateCompanyComment(updateComment);
+
+        // 댓글 조회
+        getComment = companyCommentDao.findById(comment.getCommentId());
+        LocalDateTime updatedTime = getComment.getModifiedAt();
+
+        assertThat(getComment.getCommentContent()).isEqualTo("수정된 댓글임");
+        assertThat(originTime.truncatedTo(ChronoUnit.SECONDS)).isNotEqualTo(updatedTime.truncatedTo(ChronoUnit.SECONDS));
     }
 
 }
