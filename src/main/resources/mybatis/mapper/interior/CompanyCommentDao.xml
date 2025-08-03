@@ -74,5 +74,18 @@
         ORDER BY c.parent_comment_id, c.created_at
     </select>
 
+    <!-- 댓글 수정 -->
+    <update id="updateCompanyComment"
+            parameterType="com.ama.don.interior.dto.request.CompanyCommentUpdateDto">
+        UPDATE comments
+        SET
+            comment_content = #{commentContent},
+            modified_at = now()
+        WHERE comment_id = #{commentId}
+            AND user_id = #{userId}
+            AND is_deleted = 0
+    </update>
+
+
 
 </mapper>

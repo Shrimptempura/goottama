@@ -14,5 +14,5 @@ public class CompanyCommentUpdateDto {
 
     private Long commentId;
     private String commentContent;
-    private String userId;
+    private Long userId;
 }
