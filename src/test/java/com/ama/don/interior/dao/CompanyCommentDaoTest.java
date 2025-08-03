@@ -136,4 +136,35 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         assertThat(originTime.truncatedTo(ChronoUnit.SECONDS)).isNotEqualTo(updatedTime.truncatedTo(ChronoUnit.SECONDS));
     }
 
+    @DisplayName("댓글 소프트 삭제, 내용 변경은 서비스에서")
+    @Test
+    void softDeleteCompanyPostComment() {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 생성
+        CompanyPostCreateDto post = createCompanyPost(userId, companyId);
+        Long companyPostId = post.getCompanyPostId();
+
+        JoinformDto otherUser = createTestUser("testUser111");
+        Long otherUserId = otherUser.getUserId();
+
+        // 댓글 생성
+        CompanyCommentCreateDto comment = createComment(otherUserId, companyPostId, "기존의 댓글 내용");
+
+        // 댓글 조회
+        CompanyCommentDto getComment = companyCommentDao.findById(comment.getCommentId());
+        assertThat(getComment).isNotNull();
+        Long commentId = getComment.getCommentId();
+
+        // 댓글 삭제
+        int deleted = companyCommentDao.softDeleteCompanyComment(commentId, otherUserId);
+        getComment = companyCommentDao.findById(commentId);
+
+        assertThat(deleted).isEqualTo(1);
+        assertThat(getComment.isDeleted()).isEqualTo(true);
+    }
+
 }
