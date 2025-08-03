@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 public class CompanyCommentCreateDto {
 
-    private Long companyCommentId;
+    private Long commentId;
     private Long userId;
     private Long companyPostId;
 

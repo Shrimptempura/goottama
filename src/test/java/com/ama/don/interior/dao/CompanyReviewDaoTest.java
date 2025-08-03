@@ -15,7 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -178,7 +179,8 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         List<CompanyReviewDto> list = companyReviewDao.listByCompanyId(companyId);
 
         assertThat(list).isNotNull();
-        assertThat(list.get(0).getReviewDate()).isEqualTo(dto.getCommonReviewDto().getReviewDate());
+        assertThat(list.get(0).getReviewDate().truncatedTo(ChronoUnit.SECONDS))
+                .isEqualTo(dto.getCommonReviewDto().getReviewDate().truncatedTo(ChronoUnit.SECONDS));
         assertThat(list.get(0).getReviewContent()).isEqualTo(dto.getCommonReviewDto().getReviewContent());
         assertThat(list.get(0).getUserNickName()).isNotNull();
     }
@@ -256,7 +258,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
 
         // 기존 리뷰
         ReviewDto original = reviewDao.selectById(reviewId);
-        Timestamp originDate = original.getReviewDate();
+        LocalDateTime originDate = original.getReviewDate();
         String originContent = original.getReviewContent();
 
         String newContent = "이것은 새로운 리뷰 내용";

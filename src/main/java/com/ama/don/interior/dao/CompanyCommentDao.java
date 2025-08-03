@@ -2,6 +2,7 @@ package com.ama.don.interior.dao;
 
 import com.ama.don.interior.dto.request.CompanyCommentCreateDto;
 import com.ama.don.interior.dto.request.CompanyCommentUpdateDto;
+import com.ama.don.interior.dto.response.CompanyCommentDto;
 import com.ama.don.interior.dto.response.CompanyCommentTreeDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -15,7 +16,7 @@ public interface CompanyCommentDao {
     int insertCompanyComment(CompanyCommentCreateDto dto);
 
     // 댓글 단건 조회
-    int findById(@Param("commentId") Long commentId);
+    CompanyCommentDto findById(@Param("commentId") Long commentId);
     
     // 댓글 조회
     List<CompanyCommentTreeDto> findCommentsByPostId(@Param("companyPostId") Long companyPostId);

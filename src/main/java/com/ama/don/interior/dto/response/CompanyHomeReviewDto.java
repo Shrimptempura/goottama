@@ -27,5 +27,5 @@ public class CompanyHomeReviewDto {
     private String location;        // 위치
 
     // 파일 관련은 다형성 file dto로 서비스에서 해결
-    private List<String> reviewImg;       // 사진(썸네일용)
+    // private List<String> reviewImg;       // 사진(썸네일용)
 }

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,5 +17,5 @@ public class CompanyFollowDto {
     private Long followId;
     private Long companyId;
     private Long userId;
-    private Timestamp followAt;
+    private LocalDateTime followAt;
 }

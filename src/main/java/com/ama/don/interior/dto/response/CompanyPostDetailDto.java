@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 // 업체가 작성한 게시글을 상세보는 dto
 @AllArgsConstructor
@@ -32,7 +32,7 @@ public class CompanyPostDetailDto {
 
     private String companyPostContent;     // 게시글 내용
 
-    private Timestamp postDate;     // 게시글 작성 시간
+    private LocalDateTime postDate;     // 게시글 작성 시간
     
     private int companyPostLikeCount;     // 좋아요 수
     private int scrapCount;     // 스크랩 수

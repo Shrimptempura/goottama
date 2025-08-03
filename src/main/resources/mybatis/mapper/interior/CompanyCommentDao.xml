@@ -26,19 +26,25 @@
     </insert>
 
     <!-- 댓글 단건 조회 -->
-    <select id="findById" resultType="java.lang.Integer">
+    <select id="findById" resultType="com.ama.don.interior.dto.response.CompanyCommentDto">
         SELECT
-            comment_id,
-            user_id,
-            parent_comment,
-            comment_content,
-            created_at,
-            modified_at,
-            is_deleted,
-            target_id,
-            target_type
+            c.comment_id AS commentId,
+            c.user_id AS userId,
+            u.user_nickname AS userNickname,
+            c.parent_comment_id AS parentCommentId,
+            c.comment_content AS commentContent,
+            c.created_at AS createdAt,
+            c.modified_at AS modifiedAt,
+            c.is_deleted AS isDeleted,
+            c.target_id AS targetId,
+            c.target_type AS targetType
+        FROM comments c
+        JOIN user_detail u ON c.user_id = u.user_id
         WHERE comment_id = #{commentId}
     </select>
+
+
+
 
 
 </mapper>

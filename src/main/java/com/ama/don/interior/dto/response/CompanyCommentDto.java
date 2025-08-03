@@ -7,17 +7,16 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-// 댓글 조회
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class CompanyCommentTreeDto {
+public class CompanyCommentDto {
 
     private Long commentId;
     private Long parentCommentId;       // 대댓글
     private Long userId;
-    
+
     private String userNickname;
     private String commentContent;
     private LocalDateTime createdAt;

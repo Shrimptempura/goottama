@@ -5,8 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
-import java.util.List;
+import java.time.LocalDateTime;
 
 // 사용자가 쓰는 업체에 대한 리뷰 read dto
 // 업체상세정보 리뷰 탭에 존재
@@ -27,8 +26,8 @@ public class CompanyReviewDto {
     private String constructionField;   // 시공 분야
 
     private String reviewContent;      // 리뷰 내용
-    private Timestamp reviewDate;       // 리뷰 작성시간
-    private Timestamp reviewModify;     // 리뷰 수정시간
+    private LocalDateTime reviewDate;       // 리뷰 작성시간
+    private LocalDateTime reviewModify;     // 리뷰 수정시간
 
     private int reviewLikes;    // 좋아요 수(단순 클릭, 중복 제거)
 
