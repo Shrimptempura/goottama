@@ -23,7 +23,7 @@ public class CommentsDto {
 	private LocalDateTime modifiedAt;
 	private Boolean isDeleted;				// 소프트 삭제
 
-	private Long target_id;
-	private TargetType target_type;
+	private Long targetId;
+	private TargetType targetType;
 }
 
