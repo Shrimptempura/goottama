@@ -13,6 +13,9 @@ public interface CompanyCommentDao {
 
     // 댓글 작성
     int insertCompanyComment(CompanyCommentCreateDto dto);
+
+    // 댓글 단건 조회
+    int findById(@Param("commentId") Long commentId);
     
     // 댓글 조회
     List<CompanyCommentTreeDto> findCommentsByPostId(@Param("companyPostId") Long companyPostId);

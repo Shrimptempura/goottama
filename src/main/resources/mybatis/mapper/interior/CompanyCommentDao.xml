@@ -24,4 +24,21 @@
             #{parentCommentId}
         )
     </insert>
+
+    <!-- 댓글 단건 조회 -->
+    <select id="findById" resultType="java.lang.Integer">
+        SELECT
+            comment_id,
+            user_id,
+            parent_comment,
+            comment_content,
+            created_at,
+            modified_at,
+            is_deleted,
+            target_id,
+            target_type
+        WHERE comment_id = #{commentId}
+    </select>
+
+
 </mapper>
