@@ -37,14 +37,18 @@
 		= #{target_id}
 	</select>
 
-
+	<!-- 타겟 아이디 수정 -->
 	<update id="update_target_id">
 		UPDATE file
-		SET target_id = #{new_target_id}
-		WHERE
-		target_type = #{target_type}
-		AND target_id = #{old_target_id}
+		SET target_id = #{newTargetId}
+		WHERE target_type = #{targetType}
+		AND target_id = #{oldTargetId}
+		AND file_uploader = #{fileUploader}
 	</update>
+
+
+
+
 
 
 
