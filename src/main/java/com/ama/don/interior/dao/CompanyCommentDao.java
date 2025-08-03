@@ -18,7 +18,8 @@ public interface CompanyCommentDao {
     // 댓글 단건 조회
     CompanyCommentDto findById(@Param("commentId") Long commentId);
     
-    // 댓글 조회
+    // 게시글 내 댓글 전체 조회
+    // 일단 모든값을 가져오고 정렬이나 깊이는 프론트에서 처리
     List<CompanyCommentTreeDto> findCommentsByPostId(@Param("companyPostId") Long companyPostId);
 
     // 댓글 수정
@@ -30,6 +31,7 @@ public interface CompanyCommentDao {
 
     // 대댓글
     // insertCompanyComment 사용 예정
+    // 대댓글은 inserCopanyComment.setParentCommentId(댓글id)로 처리
     
     // 대댓글 조회
     // 댓글 조회에서 정렬 생각

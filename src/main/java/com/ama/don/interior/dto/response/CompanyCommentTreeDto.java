@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 // 댓글 조회
 @NoArgsConstructor
@@ -17,10 +18,12 @@ public class CompanyCommentTreeDto {
     private Long commentId;
     private Long parentCommentId;       // 대댓글
     private Long userId;
-    
+
     private String userNickname;
     private String commentContent;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private boolean isDeleted;
+
+    private List<CompanyCommentTreeDto> tree;       // 대댓글
 }
