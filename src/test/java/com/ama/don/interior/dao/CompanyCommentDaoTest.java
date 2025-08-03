@@ -260,4 +260,39 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
                 .orElseThrow(() -> new IllegalStateException("대댓글 없음"));
     }
 
+    @DisplayName("게시글 상세정보 내에서 댓글 숫자 조회")
+    @Test
+    void countCommentsByTarget() {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 생성
+        CompanyPostCreateDto post = createCompanyPost(userId, companyId);
+        Long companyPostId = post.getCompanyPostId();
+
+        // 회원 3명 생성
+        JoinformDto firstUser = createTestUser("testUser111");
+        Long firstUserId = firstUser.getUserId();
+
+        JoinformDto secondUser = createTestUser("testUser222");
+        Long secondUserId = secondUser.getUserId();
+
+        JoinformDto thirdUser = createTestUser("testUser333");
+        Long thirdUserId = thirdUser.getUserId();
+
+        // 댓글 생성
+        CompanyCommentCreateDto fisrtComment = createComment(firstUserId, companyPostId, "첫번째 댓글");
+        CompanyCommentCreateDto secondComment = createComment(secondUserId, companyPostId, "두번째 댓글");
+        CompanyCommentCreateDto thirdComment = createComment(thirdUserId, companyPostId, "세번째 댓글");
+        CompanyCommentCreateDto lastComment = createComment(thirdUserId, companyPostId, "세번째 댓글");
+
+        // 전체 댓글 리스트 조회
+        List<CompanyCommentTreeDto> list = companyCommentDao.findCommentsByPostId(companyPostId);
+        assertThat(list.size()).isEqualTo(4);
+
+        int commentCount = companyCommentDao.countCommentsByTarget(companyPostId, TargetType.INTERIOR);
+        assertThat(commentCount).isEqualTo(4);
+    }
 }
