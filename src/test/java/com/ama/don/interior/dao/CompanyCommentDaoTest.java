@@ -209,4 +209,55 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         assertThat(getComment.getCommentContent()).isEqualTo("여기는 대댓글 내용");
     }
 
+    @DisplayName("게시글 내 전체 댓글 중 대댓글 포함 조회, 깊이는 1")
+    @Test
+    void findDepthOneTreeCommentByPostId() {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 생성
+        CompanyPostCreateDto post = createCompanyPost(userId, companyId);
+        Long companyPostId = post.getCompanyPostId();
+
+        JoinformDto parentUser = createTestUser("testUser111");
+        Long parentUserId = parentUser.getUserId();
+
+        JoinformDto childUser = createTestUser("testUser222");
+        Long childUserId = childUser.getUserId();
+
+        // 댓글 생성
+        CompanyCommentCreateDto comment = createComment(parentUserId, companyPostId, "대댓글 부모");
+        Long parentCommentId = comment.getCommentId();
+
+        // 대댓글 생성
+        CompanyCommentCreateDto replyComment = new CompanyCommentCreateDto();
+        replyComment.setUserId(childUserId);
+        replyComment.setCompanyPostId(companyPostId);
+        replyComment.setCommentContent("여기는 대댓글 내용");
+        replyComment.setTargetId(companyPostId);
+        replyComment.setTargetType(TargetType.INTERIOR);
+        replyComment.setParentCommentId(parentCommentId);
+
+        companyCommentDao.insertCompanyComment(replyComment);
+        Long replyCommentId = replyComment.getCommentId();
+
+        // 전체 댓글 리스트 조회
+        List<CompanyCommentTreeDto> list = companyCommentDao.findCommentsByPostId(companyPostId);
+        assertThat(list.size()).isEqualTo(2);
+
+        // 부모 댓글이 있는지 확인 
+        CompanyCommentTreeDto findParent = list.stream()
+                .filter(c -> c.getCommentId().equals(parentCommentId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("부모 댓글이 존재하지 않음"));
+        
+        // 부모 댓글이 있고 대댓글이 있는지 확인
+        CompanyCommentTreeDto findReply = list.stream()
+                .filter(c -> c.getCommentId().equals(replyCommentId))
+                .findFirst() // 반환값이 Optional<T>라서 후속부터 관련 문법 가능
+                .orElseThrow(() -> new IllegalStateException("대댓글 없음"));
+    }
+
 }

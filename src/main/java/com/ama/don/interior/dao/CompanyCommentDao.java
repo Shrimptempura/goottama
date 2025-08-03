@@ -30,12 +30,13 @@ public interface CompanyCommentDao {
                                  @Param("userId") Long userId);
 
     // 대댓글
-    // insertCompanyComment 사용 예정
+    // insertCompanyComment 사용
     // 대댓글은 inserCopanyComment.setParentCommentId(댓글id)로 처리
+    // 테스트 코드 완료, 쿼리는 동일
     
     // 대댓글 조회
     // 댓글 조회에서 정렬 생각
-
+    // findCommentsByPostId로 테스트 코드 완료, 쿼리는 동일
     
     // 댓글 수 조회(이건 company_post로 생각중)
     int countComentsByCompanyPostId(@Param("companyPostId") Long companyPostId);
