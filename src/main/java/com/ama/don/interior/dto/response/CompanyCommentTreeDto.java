@@ -25,5 +25,9 @@ public class CompanyCommentTreeDto {
     private LocalDateTime modifiedAt;
     private boolean isDeleted;
 
+    // 댓글 이미지
+    private String userProfileImgPath;
+    private String userProfileImgName;
+
     private List<CompanyCommentTreeDto> tree;       // 대댓글
 }

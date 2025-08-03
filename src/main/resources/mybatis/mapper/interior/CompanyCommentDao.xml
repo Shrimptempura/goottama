@@ -37,28 +37,41 @@
             c.modified_at AS modifiedAt,
             c.is_deleted AS isDeleted,
             c.target_id AS targetId,
-            c.target_type AS targetType
+            c.target_type AS targetType,
+            f.file_path AS userProfileImgPath,
+            f.file_name AS userProfileImgName
         FROM comments c
         JOIN user_detail u ON c.user_id = u.user_id
+        LEFT JOIN file f
+            ON f.target_type = 'MEMBER'
+            AND f.target_id = u.user_id
         WHERE comment_id = #{commentId}
     </select>
 
     <!-- 게시글 내 댓글 전체 조회 -->
+    <!-- 댓글 같은 경우는 댓글 조회후 file 조회를 하면 너무 여러번 반복이라 -->
+    <!-- file을 조인함 -->
     <select id="findCommentsByPostId" resultType="com.ama.don.interior.dto.response.CompanyCommentTreeDto">
         SELECT
-            comment_id AS commentId,
-            user_id AS userId,
-            user_nickname AS userNickname,
-            parent_comment_id AS parentCommentId,
-            comment_content AS commentContent,
-            created_at AS createdAt,
-            modified_at AS modifiedAt,
-            is_deleted AS isDeleted
-        FROM comments
+            c.comment_id AS commentId,
+            u.user_id AS userId,
+            u.user_nickname AS userNickname,
+            c.parent_comment_id AS parentCommentId,
+            c.comment_content AS commentContent,
+            c.created_at AS createdAt,
+            c.modified_at AS modifiedAt,
+            c.is_deleted AS isDeleted,
+            f.file_path AS userProfileImgPath,
+            f.file_name AS userProfileImgName
+        FROM comments c
+        JOIN user_detail u ON c.user_id = u.user_id
+        LEFT JOIN file f
+            ON f.target_type = 'MEMBER'
+            AND f.target_id = u.user_id
         WHERE
             target_type = 'INTERIOR'
             AND target_id = #{companyPostId}
-        ORDER BY created_at ASC
+        ORDER BY c.parent_comment_id, c.created_at
     </select>
 
 

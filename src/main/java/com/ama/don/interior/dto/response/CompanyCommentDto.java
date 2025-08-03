@@ -22,4 +22,8 @@ public class CompanyCommentDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private boolean isDeleted;
+    
+    // 댓글 이미지
+    private String userProfileImgPath;
+    private String userProfileImgName;
 }
