@@ -3,11 +3,7 @@ package com.ama.don.interior.dao;
 import com.ama.don.common.dao.PostDao;
 import com.ama.don.common.dto.PostDto;
 import com.ama.don.interior.dto.company.CompanyInsertDto;
-import com.ama.don.interior.dto.post.CompanyPostCreateDto;
-import com.ama.don.interior.dto.post.CompanyPostUpdateDto;
-import com.ama.don.interior.dto.post.CompanyHomePostDto;
-import com.ama.don.interior.dto.post.CompanyPostDetailDto;
-import com.ama.don.interior.dto.post.CompanyPostPreviewDto;
+import com.ama.don.interior.dto.post.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -297,6 +293,34 @@ class CompanyPostDaoTest extends AbstractCompanyTestSupport {
         List<CompanyPostPreviewDto> list = companyPostDao.getCompanyPostPreview(companyId);
         assertThat(list).isNotEmpty();
         assertThat(list).hasSize(8);
+    }
+
+    @DisplayName("게시글 하위 삭제 후 다형성 삭제")
+    @Test
+    void deletePostAndPolyPost() {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 생성
+        CompanyPostCreateDto post = createCompanyPost(userId, companyId);
+        Long companyPostId = post.getCompanyPostId();
+        Long postId = post.getPostId();
+
+        // 하위 먼저 삭제
+        int subDeleted = companyPostDao.deleteCompanyPostById(companyPostId);
+        assertThat(subDeleted).isEqualTo(1);
+
+        CompanyPostDto deletedPost = companyPostDao.findById(companyPostId);
+        assertThat(deletedPost).isNull();
+
+        // 다형성 삭제
+        int parentDeleted = companyPostDao.deletePolyPostById(postId);
+        assertThat(parentDeleted).isEqualTo(1);
+
+        PostDto deletedPolyPost = postDao.findById(postId);
+        assertThat(deletedPolyPost).isNull();
     }
 
 

@@ -207,7 +207,7 @@
             c.style AS style,
             c.company_post_count AS companyPostCount,
             c.company_post_like_count AS companyPostLikeCount
-        FROM company c
+        FROM company_post c
         JOIN post p ON c.post_id = p.post_id
         WHERE company_post_id = #{companyPostId}
     </select>
