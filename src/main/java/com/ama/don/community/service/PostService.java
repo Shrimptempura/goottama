@@ -28,7 +28,7 @@ public class PostService {
 		// target_id를 post_id로 설정
 		if (postDto.getFileList() != null && !postDto.getFileList().isEmpty()) {
 			for (FileDto file : postDto.getFileList()) {
-				file.setTarget_id(generatedPostId);
+				file.setTargetId(generatedPostId);
 				file.setTarget_type(postDto.getTargetType());
 				fileDao.create(file);
 			}

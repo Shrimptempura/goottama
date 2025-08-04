@@ -23,3 +23,18 @@
 	background-color: #ffe0e0;
 	border-color: #ff7c7c;
 }
+
+/* 좋아요 버튼 */
+.like-heart-btn {
+	background: none;
+	border: none;
+	font-size: 20px;
+	color: red;
+	cursor: pointer;
+	padding: 0;
+}
+
+.like-heart-btn:hover {
+	transform: scale(1.2);
+	transition: transform 0.2s ease;
+}

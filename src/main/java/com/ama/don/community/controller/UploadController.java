@@ -6,7 +6,10 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ama.don.common.dao.FileDao;
@@ -17,7 +20,7 @@ import com.ama.don.common.enums.TargetType;
 @RequestMapping("/file")
 public class UploadController {
 
-	private final String uploadPath = "C:/upload/";
+	String uploadPath = "C:/upload/";
 
 	@Autowired
 	private FileDao fileDao;
@@ -25,11 +28,11 @@ public class UploadController {
 	@PostMapping("/upload_image")
 	@ResponseBody
 	public String uploadImage(@RequestParam("file") MultipartFile file,
-			@RequestParam("target_type") String targetTypeStr, @RequestParam("post_id") Long postId)
+			@RequestParam("target_type") String targetTypeStr)
 			throws IOException {
 
-		System.out.println("전달받은 targetType: " + targetTypeStr);
-
+		Long userId = 1L;
+		
 		// 실제 저장할 파일 이름
 		String saveName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 		File saveFile = new File(uploadPath + saveName);
@@ -37,22 +40,18 @@ public class UploadController {
 
 		// DB 저장용 DTO 생성
 		FileDto fileDto = new FileDto();
-		fileDto.setFile_name(file.getOriginalFilename());
-		fileDto.setFile_path("/uploaded_images/" + saveName);
-		fileDto.setFile_uploader("테스트유저");
-		fileDto.setTarget_id(postId);
+		fileDto.setFile_uploader(userId.toString());
+		fileDto.setTarget_type(TargetType.valueOf(targetTypeStr));
+		fileDto.setFile_name(saveName);
+		fileDto.setFile_path("/upload/" + saveName);
+		fileDto.setTargetId(null);
+		System.out.println("파일 업로드 시@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ target_id: " + fileDto.getTargetId());
 
-		try {
-			TargetType targetType = TargetType.valueOf(targetTypeStr);
-			fileDto.setTarget_type(targetType);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			return "invalid_target_type";
-		}
-
-		// DB 저장
+		System.out.println("INSERT @@@@@@@@@@@@@@@@@@@@@@@@@@@@"
+				+ "@@@@@@@@@@@@전 DTO 상태: " + fileDto);
 		fileDao.create(fileDto);
-
-		return "/uploaded_images/" + saveName;
+		
+		return "success";
 	}
+
 }

@@ -39,30 +39,29 @@
 		<!-- 여백 만들기 -->
 		<span style="margin-left: 12px;"></span>
 
-
-
-
 		<table class="table table-bordered">
 			<tr>
 				<th style="width: 120px;">제목</th>
-				<td>${review.post_title}</td>
+				<td>${review.review_title}</td>
 			</tr>
 			<tr>
 				<th>내용</th>
-				<td><c:out value="${review.post_content}" escapeXml="false" /></td>
+				<td><c:out value="${review.review_content}" escapeXml="false" /></td>
 			</tr>
 			<tr>
 				<th>작성일</th>
-				<td><fmt:formatDate value="${review.post_date}"
+				<td><fmt:formatDate value="${review.review_date}"
 						pattern="yyyy-MM-dd HH:mm" /></td>
 			</tr>
 			<tr>
 				<th>조회수</th>
-				<td>${review.post_count}</td>
+				<td>${review.review_count}</td>
 			</tr>
 			<tr>
 				<th>좋아요 수</th>
-				<td>${review.post_like_count}</td>
+				<td><span id="likeCount">${review.review_like_count}</span>
+					<button type="button" class="like-heart-btn"
+						onclick="likePost(${review.post_id})">♥</button></td>
 			</tr>
 			<tr>
 				<th>사진</th>
@@ -74,13 +73,15 @@
 					</c:if> <c:if test="${empty review.fileList}">이미지 없음</c:if></td>
 			</tr>
 
-
-
-
-
-
 		</table>
 	</div>
 
+	<script>
+	const contextPath = "${pageContext.request.contextPath}";
+	const postId = '${review.post_id}';
+</script>
+
+	<script
+		src="${pageContext.request.contextPath}/js/community/like_button.js"></script>
 </body>
 </html>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.community.Dao.CommunityDetailDao">
+
+	<!-- 게시글 상세 조회 -->
+	<select id="findById" parameterType="long"
+		resultType="com.ama.don.community.Dto.Review.ReviewDetailDto">
+		SELECT
+		r.review_id,
+		p.post_id,
+		r.review_title,
+		r.review_content,
+		p.post_date AS review_date,
+		p.post_count AS review_count,
+		p.post_like_count AS review_like_count
+		FROM community_post_review r
+		JOIN post p ON
+		r.post_id = p.post_id
+		WHERE p.post_id = #{post_id}
+	</select>
+
+	<!-- 게시글 수정 -->
+	<update id="update"
+		parameterType="com.ama.don.common.dto.PostDto">
+		UPDATE post
+		SET
+		post_title = #{post_title},
+		post_content = #{post_content},
+		target_type = #{targetType},
+		target_id = #{targetId}
+		WHERE post_id = #{post_id}
+	</update>
+
+	<!-- 타겟 아이디 수정 -->
+	<update id="update_target_id"
+		parameterType="com.ama.don.common.dto.PostDto">
+		UPDATE post
+		SET target_id = #{targetId}
+		WHERE post_id =
+		#{post_id}
+	</update>
+
+	<!-- 게시글 삭제 -->
+	<delete id="delete" parameterType="long">
+		DELETE FROM post
+		WHERE post_id
+		= #{postId}
+	</delete>
+
+	<!-- 게시글 수 -->
+	<select id="countTargetType" resultType="int">
+		SELECT COUNT(*)
+		FROM post
+		WHERE target_type = #{targetType}
+	</select>
+
+	<!-- 조회수 증가 -->
+	<update id="increaseViewCount" parameterType="long">
+		UPDATE post
+		SET
+		post_count = post_count + 1
+		WHERE post_id = #{postId}
+	</update>
+
+	<!-- 좋아요 수 증가 -->
+	<update id="increaseLikeCount" parameterType="long">
+		UPDATE post
+		SET
+		post_like_count = post_like_count + 1
+		WHERE post_id = #{postId}
+	</update>
+
+</mapper>
