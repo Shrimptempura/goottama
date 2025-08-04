@@ -85,8 +85,14 @@
             <if test="userSearchDTO.user_name != null and userSearchDTO.user_name != ''">
                 AND USER_NAME LIKE CONCAT('%', #{userSearchDTO.user_name}, '%')
             </if>
+            <if test="userSearchDTO.user_status != null and userSearchDTO.user_status != ''">
+                AND USER_STATUS IN
+                <foreach collection="userSearchDTO.user_status" item="status" open="(" separator="," close=")">
+                    #{status}
+                </foreach>
+            </if>
             <if test="userSearchDTO.user_nickname != null and userSearchDTO.user_nickname != ''">
-                AND USER_NAME LIKE CONCAT('%', #{userSearchDTO.user_nickname}, '%')
+                AND USER_NICKNAME LIKE CONCAT('%', #{userSearchDTO.user_nickname}, '%')
             </if>
             <if test="userSearchDTO.user_gender != null and userSearchDTO.user_gender != ''">
                 AND USER_GENDER = #{userSearchDTO.user_gender}

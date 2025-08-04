@@ -1,4 +1,3 @@
-<!-- notice_list.jsp -->
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -45,20 +44,20 @@
 </div>
 
 <!-- 공지 목록 출력 -->
-<table class="notice-table">
+<table class="report-table">
     <tr>
        <td>제목</td>
        <td>날자</td>
     </tr>
-    <c:forEach items="${list}" var="notice">
+    <c:forEach items="${list}" var="report">
         <tr>
             <td>
-                <a href="/admin/notices/notice_detail?notices_id=${notice.noticesId}">
-                    ${notice.noticesTitle}
+                <a href="/admin/reports/report_detail?reports_id=${report.reportsId}">
+                    ${report.reportsTitle}
                 </a>
             </td>
             <td>
-            <fmt:formatDate value="${notice.noticesCreatedAt}" pattern="yyyy-MM-dd"/>
+            <fmt:formatDate value="${report.reportsCreatedAt}" pattern="yyyy-MM-dd"/>
             </td>
         </tr>
     </c:forEach>

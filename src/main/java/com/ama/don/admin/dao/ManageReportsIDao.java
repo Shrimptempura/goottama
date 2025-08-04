@@ -46,6 +46,12 @@ public interface ManageReportsIDao {
     ReportDTO getReportByReportId(String reportId);
 
     /**
+     * 진행중인 신고들 반환
+     * @return
+     */
+    List<ReportDTO> inProgressingReports();
+
+    /**
      * 신고 조건 검색 결과 목록을 반환한다.
      * <p>
      * 검색 조건: <br>
