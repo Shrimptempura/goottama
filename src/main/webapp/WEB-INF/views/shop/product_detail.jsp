@@ -937,7 +937,13 @@ function debugInquiries() {
 		                        </div>
 		                    </div>
 		                    
-		                    <button onclick="#">답변달기 </button>
+		                    <button><a href="product_reply_view?pinquiry_id=${inquiry.pinquiry_id }"> 답변달기</a></button>
+		                    <!-- 만약 user의 roles가 관리자이면은 답변달기 버튼이 활성화 -->
+		                    <c:set var="userRole" value="${sessionScope.user_id }"/>
+		                    <c:if test="${sessionScope.user_id }"></c:if>
+
+		                    
+		                    
 		                    <!-- JavaScript로 제어될 버튼 영역 (오른쪽에 위치) -->
 		                    <div class="inquiry-actions" style="display: none;">
 		                        <button class="btn-edit" onclick="editInquiry(${inquiry.pinquiry_id})">수정</button>

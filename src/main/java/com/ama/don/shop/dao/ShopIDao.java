@@ -61,13 +61,14 @@ public interface ShopIDao {
   	public ArrayList<ShopReviewFlatDto> review_list(Long target_id);
   	public void review_write(ShopReviewFlatDto shopReviewFlatDto);
   	
-  	
     //product_inquiry iDao
-	public void product_inquiry_write(Long userid, Long productid, String pinquiry_content);
-	public ArrayList<ShopProductInquiryFlatDto> product_inquiry_list(Long productid);
-    
+	public void product_inquiry_write(Long userid, Long productid, String pinquiry_content);	//상품문의 작성 
+	public ArrayList<ShopProductInquiryFlatDto> product_inquiry_list(Long productid);			//단일 상품 문의 리스트
+	public ShopProductInquiryFlatDto product_inquiry(Long pinquiryid);							//단일 상품 특정 문의 조회
 	
 	
+	//product_reply iDao
+	public void reply_write(Long pinquiryid);
 	
 	//Order iDao
     

@@ -106,7 +106,7 @@
 		
 	<!-- 단일 상품 문의&답글 조회 리스트 -->
 	<select id="product_inquiry_list" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto" resultType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
-		select pi.pinquiry_content,pi.pinquiry_date,pi.pinquiry_status, pr.preply_content
+		select pi.pinquiry_id,pi.pinquiry_content,pi.pinquiry_date,pi.pinquiry_status, pr.preply_content
 		,pr.preply_date,u.user_id,u.user_nickname
 		from product_inquiry pi
 		left join product_reply pr on pi.pinquiry_id=pr.pinquiry_id
@@ -120,6 +120,16 @@
 		insert into product_inquiry(user_id,product_id,pinquiry_content,pinquiry_date,pinquiry_status)
 		values(#{param1},#{param2},#{param3},now(),'미답변');
 	 </insert>
+	 
+	 <!-- 단일 상품 특정 문의 조회 -->
+	 <select id="product_inquiry" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto" resultType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+		select pi.pinquiry_id,pi.pinquiry_content,pi.pinquiry_date,pi.pinquiry_status
+		,u.user_nickname
+		from product_inquiry pi
+		left join user_detail u on u.user_id=pi.user_id		
+		where pi.pinquiry_id=#{pinquiry_id};
+	 </select>
+	 
 	
 	
 	<!-- 상품 쇼핑몰 별 리스트 -->

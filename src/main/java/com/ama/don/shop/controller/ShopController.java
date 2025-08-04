@@ -20,6 +20,7 @@ import com.ama.don.shop.dto.ProductFlatDto;
 import com.ama.don.shop.service.ShopBestService;
 import com.ama.don.shop.service.ShopHomeService;
 import com.ama.don.shop.service.ShopProductMallService;
+import com.ama.don.shop.service.ShopProductReplyViewService;
 import com.ama.don.shop.service.ShopListService;
 import com.ama.don.shop.service.ShopProductInquiryWriteService;
 import com.ama.don.shop.service.ShopProductInquiryWriteViewService;
@@ -200,17 +201,26 @@ public class ShopController {
 	}
 	
 	
+	@RequestMapping("/shop/product_reply_view")
+	public String product_reply_write(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopProductReplyViewService(iDao);
+		shopServiceinter.execute(model);
+		
+		return "shop/product_reply_view";
+	}
 	
 
-		@RequestMapping("/shop/productmall")
-		public String exhibition(HttpServletRequest request, Model model) {
+	@RequestMapping("/shop/productmall")
+	public String exhibition(HttpServletRequest request, Model model) {
 	
-			model.addAttribute("request",request);
-			shopServiceinter=new ShopProductMallService(iDao);
-			shopServiceinter.execute(model);
+	model.addAttribute("request",request);
+	shopServiceinter=new ShopProductMallService(iDao);
+	shopServiceinter.execute(model);
 	
-			return "shop/productmall";
-		}
+	return "shop/productmall";
+	}
 
 	@RequestMapping("/shop/best")
 	public String best(HttpServletRequest request,Model model) {
