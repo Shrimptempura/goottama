@@ -17,7 +17,7 @@
 
     <!-- 회원이 게시글 좋아요 -->
     <insert id="insertLikeCompanyPost"
-            parameterType="com.ama.don.interior.dto.response.CompanyPostLikeDto"
+            parameterType="com.ama.don.interior.dto.post.CompanyPostLikeDto"
             useGeneratedKeys="true"
             keyProperty="companyPostLikeId">
         INSERT INTO company_post_like (

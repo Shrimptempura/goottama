@@ -8,7 +8,7 @@
 
     <!--  회원이 업체 팔로우 생성  -->
     <insert id="insertFollowCompany"
-            parameterType="com.ama.don.interior.dto.request.CompanyFollowDto"
+            parameterType="com.ama.don.interior.dto.follow.CompanyFollowDto"
             useGeneratedKeys="true"
             keyProperty="followId">
         INSERT INTO company_follow (

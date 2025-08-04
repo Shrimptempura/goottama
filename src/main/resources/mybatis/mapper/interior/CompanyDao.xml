@@ -21,7 +21,7 @@
 
     <!--  company_detail 생성  -->
     <insert id="insertCompanyDetail"
-            parameterType="com.ama.don.interior.dto.request.CompanyCreateDto"
+            parameterType="com.ama.don.interior.dto.company.CompanyCreateDto"
             useGeneratedKeys="true"
             keyProperty="companyDetailId">
         INSERT INTO company_detail (
@@ -46,7 +46,7 @@
     <!--  location 테이블  -->
     <!--  일단 주소만 적고 나머지는 추후 계산  -->
     <insert id="insertLocation"
-            parameterType="com.ama.don.interior.dto.request.CompanyCreateLocationDto"
+            parameterType="com.ama.don.interior.dto.company.CompanyCreateLocationDto"
             useGeneratedKeys="true"
             keyProperty="locationId">
         INSERT INTO location (location_addr)
@@ -55,7 +55,7 @@
 
     <!--  업체 테이블 생성  -->
     <insert id="insertCompany"
-            parameterType="com.ama.don.interior.dto.request.CompanyInsertDto"
+            parameterType="com.ama.don.interior.dto.company.CompanyInsertDto"
             useGeneratedKeys="true"
             keyProperty="companyId">
         INSERT INTO company (
@@ -77,7 +77,7 @@
     </select>
 
     <!-- 세션으로 user_id 얻고, findCompanyIdByUserId로 company_id 얻음 -->
-    <select id="selectDetailCompany" resultType="com.ama.don.interior.dto.response.CompanyDetailDto">
+    <select id="selectDetailCompany" resultType="com.ama.don.interior.dto.company.CompanyDetailDto">
         SELECT
             c.company_id AS companyId,
             d.company_addr AS companyAddr,
@@ -92,7 +92,7 @@
     </select>
 
     <!--  업체 상세페이지의 요약상자 중, 업체 정보와 별점 정보 얻기  -->
-    <select id="selectSummaryCompany" resultType="com.ama.don.interior.dto.response.CompanySummaryDto">
+    <select id="selectSummaryCompany" resultType="com.ama.don.interior.dto.company.CompanySummaryDto">
         SELECT
             c.company_id AS companyId,
             d.company_name AS companyName,

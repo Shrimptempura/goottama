@@ -1,10 +1,10 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.interior.dto.request.CompanyPostCreateDto;
-import com.ama.don.interior.dto.request.CompanyPostUpdateDto;
-import com.ama.don.interior.dto.response.CompanyHomePostDto;
-import com.ama.don.interior.dto.response.CompanyPostDetailDto;
-import com.ama.don.interior.dto.response.CompanyPostPreviewDto;
+import com.ama.don.interior.dto.post.CompanyPostCreateDto;
+import com.ama.don.interior.dto.post.CompanyPostUpdateDto;
+import com.ama.don.interior.dto.post.CompanyHomePostDto;
+import com.ama.don.interior.dto.post.CompanyPostDetailDto;
+import com.ama.don.interior.dto.post.CompanyPostPreviewDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -69,6 +69,4 @@ public interface CompanyPostDao {
 
     // 조회수 증가
     int increaseHit(@Param("companyPostId") Long companyPostId);
-
-    // 스크랩, 댓글은 다른 dao에서 책임 나누자
 }

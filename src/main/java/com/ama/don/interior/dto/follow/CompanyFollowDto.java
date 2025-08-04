@@ -1,21 +1,20 @@
-package com.ama.don.interior.dto.request;
+package com.ama.don.interior.dto.follow;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-// 업체 테이블
+import java.time.LocalDateTime;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class CompanyInsertDto {
+public class CompanyFollowDto {
 
+    private Long followId;
     private Long companyId;
-
     private Long userId;
-    private Long locationId;
-    private Long companyDetailId;
-    private String companyImg;
+    private LocalDateTime followAt;
 }

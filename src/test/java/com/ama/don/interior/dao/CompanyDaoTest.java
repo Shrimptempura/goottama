@@ -1,8 +1,8 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.interior.dto.request.*;
-import com.ama.don.interior.dto.response.CompanyDetailDto;
-import com.ama.don.interior.dto.response.CompanySummaryDto;
+import com.ama.don.interior.dto.company.*;
+import com.ama.don.interior.dto.company.CompanyDetailDto;
+import com.ama.don.interior.dto.company.CompanySummaryDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

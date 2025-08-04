@@ -1,7 +1,7 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.interior.dto.request.CompanyPostCreateDto;
-import com.ama.don.interior.dto.response.CompanyPostLikeDto;
+import com.ama.don.interior.dto.post.CompanyPostCreateDto;
+import com.ama.don.interior.dto.post.CompanyPostLikeDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

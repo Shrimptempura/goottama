@@ -1,4 +1,4 @@
-package com.ama.don.interior.dto.response;
+package com.ama.don.interior.dto.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

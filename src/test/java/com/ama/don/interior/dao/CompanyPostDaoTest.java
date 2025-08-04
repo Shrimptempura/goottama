@@ -2,12 +2,12 @@ package com.ama.don.interior.dao;
 
 import com.ama.don.common.dao.PostDao;
 import com.ama.don.common.dto.PostDto;
-import com.ama.don.interior.dto.request.CompanyInsertDto;
-import com.ama.don.interior.dto.request.CompanyPostCreateDto;
-import com.ama.don.interior.dto.request.CompanyPostUpdateDto;
-import com.ama.don.interior.dto.response.CompanyHomePostDto;
-import com.ama.don.interior.dto.response.CompanyPostDetailDto;
-import com.ama.don.interior.dto.response.CompanyPostPreviewDto;
+import com.ama.don.interior.dto.company.CompanyInsertDto;
+import com.ama.don.interior.dto.post.CompanyPostCreateDto;
+import com.ama.don.interior.dto.post.CompanyPostUpdateDto;
+import com.ama.don.interior.dto.post.CompanyHomePostDto;
+import com.ama.don.interior.dto.post.CompanyPostDetailDto;
+import com.ama.don.interior.dto.post.CompanyPostPreviewDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

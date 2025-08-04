@@ -7,7 +7,7 @@
 
     <!-- 업체 게시글에 댓글 작성 -->
     <insert id="insertCompanyComment"
-            parameterType="com.ama.don.interior.dto.request.CompanyCommentCreateDto"
+            parameterType="com.ama.don.interior.dto.comment.CompanyCommentCreateDto"
             useGeneratedKeys="true"
             keyProperty="commentId">
         INSERT INTO comments (
@@ -26,7 +26,7 @@
     </insert>
 
     <!-- 댓글 단건 조회 -->
-    <select id="findById" resultType="com.ama.don.interior.dto.response.CompanyCommentDto">
+    <select id="findById" resultType="com.ama.don.interior.dto.comment.CompanyCommentDto">
         SELECT
             c.comment_id AS commentId,
             c.user_id AS userId,
@@ -51,7 +51,7 @@
     <!-- 게시글 내 댓글 전체 조회 -->
     <!-- 댓글 같은 경우는 댓글 조회후 file 조회를 하면 너무 여러번 반복이라 -->
     <!-- file을 조인함 -->
-    <select id="findCommentsByPostId" resultType="com.ama.don.interior.dto.response.CompanyCommentTreeDto">
+    <select id="findCommentsByPostId" resultType="com.ama.don.interior.dto.comment.CompanyCommentTreeDto">
         SELECT
             c.comment_id AS commentId,
             u.user_id AS userId,
@@ -76,7 +76,7 @@
 
     <!-- 댓글 수정 -->
     <update id="updateCompanyComment"
-            parameterType="com.ama.don.interior.dto.request.CompanyCommentUpdateDto">
+            parameterType="com.ama.don.interior.dto.comment.CompanyCommentUpdateDto">
         UPDATE comments
         SET
             comment_content = #{commentContent},

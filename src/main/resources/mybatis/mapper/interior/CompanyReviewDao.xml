@@ -7,7 +7,7 @@
 
     <!-- 다형성 리뷰 작성된 상태에서 업체 리뷰생성하기 -->
     <insert id="insert"
-            parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
+            parameterType="com.ama.don.interior.dto.review.CompanyReviewCreateDto">
         INSERT INTO company_review (
             review_id,
             company_id,
@@ -41,7 +41,7 @@
 
     <!-- 첫 리뷰작성후만 실행, 점수 테이블 생성 -->
     <insert id="createScoreTable"
-            parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
+            parameterType="com.ama.don.interior.dto.review.CompanyReviewCreateDto">
         INSERT INTO company_score_avg (
             company_id,
             company_review_count,
@@ -72,7 +72,7 @@
     <!-- 회원이 리뷰를 남기면 점수만 따로 계산해서 저장 -->
     <!-- parameterType -> companyScoreAvgDto.. 책임분리 추후 생각 -->
     <update id="addScoreOnCreate"
-            parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
+            parameterType="com.ama.don.interior.dto.review.CompanyReviewCreateDto">
         UPDATE company_score_avg
         SET
             sum_communication = sum_communication + #{communicationRate},
@@ -86,7 +86,7 @@
     <!-- 점수테이블이 있을시(업체에 대한 리뷰가 있을시) 점수 계산법 -->
     <!-- 합산은 addScoreOnCreate에서 받고 평균만 구하기 -->
     <update id="averageOnCreate"
-            parameterType="com.ama.don.interior.dto.request.CompanyReviewCreateDto">
+            parameterType="com.ama.don.interior.dto.review.CompanyReviewCreateDto">
         UPDATE company_score_avg
         SET
             avg_communication = sum_communication / company_review_count,
@@ -101,7 +101,7 @@
     </update>
 
     <!-- 업체아이디로 점수평균 값 빼오기 -->
-    <select id="getAvgScoreByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyScoreAvgDto">
+    <select id="getAvgScoreByCompanyId" resultType="com.ama.don.interior.dto.review.CompanyScoreAvgDto">
         SELECT
             company_id AS companyId,
             avg_communication AS avgCommunication,
@@ -114,7 +114,7 @@
     </select>
 
     <!-- 유저가 저장한 리뷰 상세보기(user_detail + company_review + review + file(제외) -->
-    <select id="getReviewDetail" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
+    <select id="getReviewDetail" resultType="com.ama.don.interior.dto.review.CompanyReviewDto">
         SELECT
             r.review_id AS reviewId,
             u.user_id AS userId,
@@ -136,7 +136,7 @@
     <!-- 홈에서 보여주는 최신 업체 리뷰목록들 -->
     <!-- 사진은 추후 file에서 처리 -->
     <!-- 다형성 리뷰테이블에서 type으로 거르고 desc -->
-    <select id="findRecentForHome" resultType="com.ama.don.interior.dto.response.CompanyHomeReviewDto">
+    <select id="findRecentForHome" resultType="com.ama.don.interior.dto.review.CompanyHomeReviewDto">
         SELECT
             r.review_id AS reviewId,
             c.area_pyeong AS areaPyeong,
@@ -151,7 +151,7 @@
     </select>
 
     <!-- 업체 상세정보에서 리뷰탭 보기(사진 제외: userImg, reviewImg) -->
-    <select id="listByCompanyId" resultType="com.ama.don.interior.dto.response.CompanyReviewDto">
+    <select id="listByCompanyId" resultType="com.ama.don.interior.dto.review.CompanyReviewDto">
         SELECT
             r.review_id AS reviewId,
             u.user_id AS userId,
@@ -221,7 +221,7 @@
 
     <!-- 업체 리뷰 수정 -->
     <update id="updateCompanyReview"
-            parameterType="com.ama.don.interior.dto.request.CompanyReviewUpdateDto">
+            parameterType="com.ama.don.interior.dto.review.CompanyReviewUpdateDto">
         UPDATE company_review
         SET
             communication_rate = #{communicationRate},
@@ -239,7 +239,7 @@
 
     <!-- 리뷰 수정시 평균점수 합산만 다시 계산 -->
     <update id="adjustScoreOnEdit"
-            parameterType="com.ama.don.interior.dto.request.CompanyScoreAdjustDto">
+            parameterType="com.ama.don.interior.dto.review.CompanyScoreAdjustDto">
         UPDATE company_score_avg
         SET
             sum_communication = sum_communication - #{oldCommunicationRate} + #{newCommunicationRate},
@@ -251,7 +251,7 @@
 
     <!-- 받은 값으로 평균 수정 -->
     <update id="updateAverageScores"
-            parameterType="com.ama.don.interior.dto.request.CompanyScoreAdjustDto">
+            parameterType="com.ama.don.interior.dto.review.CompanyScoreAdjustDto">
         UPDATE company_score_avg
         SET
             avg_communication = sum_communication / company_review_count,
@@ -286,7 +286,7 @@
     <!-- 리뷰 삭제시 합산 점수 다시 계산 -->
     <!-- 남은 리뷰 개수가 1보다 많을때 -->
     <update id="adjustSumOnDelete"
-            parameterType="com.ama.don.interior.dto.request.CompanyScoreAdjustDto">
+            parameterType="com.ama.don.interior.dto.review.CompanyScoreAdjustDto">
         UPDATE company_score_avg
         SET
             sum_communication = sum_communication - #{oldCommunicationRate},
@@ -302,7 +302,7 @@
 
 
     <!-- 리뷰 수정 뷰 -->
-    <select id="getEditView" resultType="com.ama.don.interior.dto.request.CompanyReviewUpdateDto">
+    <select id="getEditView" resultType="com.ama.don.interior.dto.review.CompanyReviewUpdateDto">
         SELECT
             r.review_id AS reviewId,
             c.communication_rate AS communicationRate,

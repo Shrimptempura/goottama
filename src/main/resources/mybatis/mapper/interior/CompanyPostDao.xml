@@ -7,7 +7,7 @@
 
     <!-- 다형성 게시글 생성 이후 업체 게시글 생성 -->
     <insert id="insertCompanyPost"
-            parameterType="com.ama.don.interior.dto.request.CompanyPostCreateDto"
+            parameterType="com.ama.don.interior.dto.post.CompanyPostCreateDto"
             useGeneratedKeys="true"
             keyProperty="companyPostId">
         INSERT INTO company_post (
@@ -32,7 +32,7 @@
     </insert>
 
     <!-- 업체 게시글 상세보기 중 post + company_post만 -->
-    <select id="getPostAndCompanyPostById" resultType="com.ama.don.interior.dto.response.CompanyPostDetailDto">
+    <select id="getPostAndCompanyPostById" resultType="com.ama.don.interior.dto.post.CompanyPostDetailDto">
         SELECT
             p.post_id AS postId,
             p.post_date AS postDate,
@@ -51,7 +51,7 @@
     </select>
 
     <!-- 업체 게시글 상세보기 중 company + company_detail -->
-    <select id="getCompanyBasicInfoById" resultType="com.ama.don.interior.dto.response.CompanyPostDetailDto">
+    <select id="getCompanyBasicInfoById" resultType="com.ama.don.interior.dto.post.CompanyPostDetailDto">
         SELECT
             company_id AS companyId,
             company_name AS companyName,
@@ -63,7 +63,7 @@
 
     <!-- 업체 게시글 수정 -->
     <update id="updatePost"
-            parameterType="com.ama.don.interior.dto.request.CompanyPostUpdateDto">
+            parameterType="com.ama.don.interior.dto.post.CompanyPostUpdateDto">
         UPDATE company_post
         SET
             company_post_title = #{companyPostTitle},
@@ -76,7 +76,7 @@
     </update>
 
     <!-- 업체 게시글 수정 뷰 -->
-    <select id="getEditView" resultType="com.ama.don.interior.dto.request.CompanyPostUpdateDto">
+    <select id="getEditView" resultType="com.ama.don.interior.dto.post.CompanyPostUpdateDto">
         SELECT
             company_post_id AS companyPostId,
             company_post_title AS companyPostTitle,
@@ -111,7 +111,7 @@
     <!-- 홈에서 보는 최신 게시글 -->
     <!-- 연관된 테이블(post, company_post)-->
     <!-- 위치 정보를 얻기 위해서는(location - company - company_post) -->
-    <select id="findCompanyPostByLatest" resultType="com.ama.don.interior.dto.response.CompanyHomePostDto">
+    <select id="findCompanyPostByLatest" resultType="com.ama.don.interior.dto.post.CompanyHomePostDto">
         SELECT
             c.company_id AS companyId,
             cp.company_post_id AS companyPostId,
@@ -128,7 +128,7 @@
     </select>
 
     <!-- 홈에서 보는 랜덤 게시글 -->
-    <select id="findCompanyPostByRandom" resultType="com.ama.don.interior.dto.response.CompanyHomePostDto">
+    <select id="findCompanyPostByRandom" resultType="com.ama.don.interior.dto.post.CompanyHomePostDto">
         SELECT
             c.company_id AS companyId,
             cp.company_post_id AS companyPostId,
@@ -145,7 +145,7 @@
     </select>
 
     <!-- 홈에서 보는 인기 게시글 -->
-    <select id="findCompanyPostByPopular" resultType="com.ama.don.interior.dto.response.CompanyHomePostDto">
+    <select id="findCompanyPostByPopular" resultType="com.ama.don.interior.dto.post.CompanyHomePostDto">
         SELECT
             c.company_id AS companyId,
             cp.company_post_id AS companyPostId,
@@ -163,7 +163,7 @@
 
     <!-- 홈에서 보는 지역구 리스트 -->
     <!-- region은 서비스에서 넣자 -->
-    <select id="findCompanyPostByRegion" resultType="com.ama.don.interior.dto.response.CompanyHomePostDto">
+    <select id="findCompanyPostByRegion" resultType="com.ama.don.interior.dto.post.CompanyHomePostDto">
         SELECT
             c.company_id AS companyId,
             cp.company_post_id AS companyPostId,
@@ -183,7 +183,7 @@
     </select>
 
     <!-- 업체 상세페이지에서 보는 업체 게시글 목록 뷰 -->
-    <select id="getCompanyPostPreview" resultType="com.ama.don.interior.dto.response.CompanyPostPreviewDto">
+    <select id="getCompanyPostPreview" resultType="com.ama.don.interior.dto.post.CompanyPostPreviewDto">
         SELECT
             company_post_title AS companyPostTitle,
             company_post_count AS companyPostCount,

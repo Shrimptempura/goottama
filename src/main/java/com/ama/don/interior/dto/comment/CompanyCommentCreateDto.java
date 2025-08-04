@@ -1,4 +1,4 @@
-package com.ama.don.interior.dto.request;
+package com.ama.don.interior.dto.comment;
 
 import com.ama.don.common.enums.TargetType;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.ama.don.interior.dto.request;
+package com.ama.don.interior.dto.review;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,11 +1,9 @@
-package com.ama.don.interior.dto.response;
+package com.ama.don.interior.dto.review;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.List;
 
 // 홈에서 보는 사용자가 작성한 업체에 대한 리뷰 dto
 // 클릭시 업체 상세보기의 리뷰탭의 리뷰 목록으로 이동함(CompanyReviewDto)

@@ -5,11 +5,16 @@ import com.ama.don.common.dao.ReviewDao;
 import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.common.enums.TargetType;
-import com.ama.don.interior.dto.request.*;
+import com.ama.don.interior.dto.comment.CompanyCommentCreateDto;
+import com.ama.don.interior.dto.company.CompanyCreateDto;
+import com.ama.don.interior.dto.company.CompanyCreateLocationDto;
+import com.ama.don.interior.dto.company.CompanyInsertDto;
+import com.ama.don.interior.dto.post.CompanyPostCreateDto;
+import com.ama.don.interior.dto.post.CompanyPostUpdateDto;
+import com.ama.don.interior.dto.review.CompanyReviewCreateDto;
+import com.ama.don.interior.dto.review.CompanyReviewUpdateDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 public class AbstractCompanyTestSupport {
 

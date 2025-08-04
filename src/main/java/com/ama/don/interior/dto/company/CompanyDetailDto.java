@@ -1,22 +1,20 @@
-package com.ama.don.interior.dto.request;
+package com.ama.don.interior.dto.company;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@AllArgsConstructor
+// 업체 상세페이지의 자세한 업체정보 탭
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-public class CompanyUpdateDto {
+public class CompanyDetailDto {
 
     private Long companyId;
-    private Long companyDetailId;
-    private Long locationId;
 
-    private String companyName;
-    private String companyAddr;
+    private String companyAddr;     // 업체 주소
 
     /**
      * 업체 분야
@@ -29,12 +27,4 @@ public class CompanyUpdateDto {
      */
     private String companyAs;
     private String companyCareer;       // 업체 경력
-
-    /**
-     * 업체 소개말
-     */
-    private String companyIntro;
-
-    // 파일 관련은 다형성 file dto로 서비스에서 해결
-    private String companyImg;
 }

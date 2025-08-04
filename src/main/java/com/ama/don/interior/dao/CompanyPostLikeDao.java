@@ -1,6 +1,6 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.interior.dto.response.CompanyPostLikeDto;
+import com.ama.don.interior.dto.post.CompanyPostLikeDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

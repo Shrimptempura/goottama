@@ -1,10 +1,10 @@
 package com.ama.don.interior.dao;
 
 import com.ama.don.common.enums.TargetType;
-import com.ama.don.interior.dto.request.CompanyCommentCreateDto;
-import com.ama.don.interior.dto.request.CompanyCommentUpdateDto;
-import com.ama.don.interior.dto.response.CompanyCommentDto;
-import com.ama.don.interior.dto.response.CompanyCommentTreeDto;
+import com.ama.don.interior.dto.comment.CompanyCommentCreateDto;
+import com.ama.don.interior.dto.comment.CompanyCommentUpdateDto;
+import com.ama.don.interior.dto.comment.CompanyCommentDto;
+import com.ama.don.interior.dto.comment.CompanyCommentTreeDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

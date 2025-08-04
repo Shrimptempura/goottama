@@ -1,6 +1,6 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.interior.dto.request.CompanyFollowDto;
+import com.ama.don.interior.dto.follow.CompanyFollowDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
