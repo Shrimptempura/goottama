@@ -193,6 +193,25 @@
         LIMIT 8
     </select>
 
+    <!-- 게시글 단건 조회 -->
+    <select id="findById" resultType="com.ama.don.interior.dto.post.CompanyPostDto">
+        SELECT
+            p.post_id AS postId,
+            p.post_date AS postDate,
+            c.company_post_id AS companyPostId,
+            c.company_id AS companyId,
+            c.company_post_content AS companyPostContent,
+            c.company_post_title AS companyPostTitle,
+            c.space_type AS spaceType,
+            c.construction_detail AS constructionDetail,
+            c.style AS style,
+            c.company_post_count AS companyPostCount,
+            c.company_post_like_count AS companyPostLikeCount
+        FROM company c
+        JOIN post p ON c.post_id = p.post_id
+        WHERE company_post_id = #{companyPostId}
+    </select>
+
 
 
 </mapper>

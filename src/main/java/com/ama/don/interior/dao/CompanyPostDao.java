@@ -1,10 +1,6 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.interior.dto.post.CompanyPostCreateDto;
-import com.ama.don.interior.dto.post.CompanyPostUpdateDto;
-import com.ama.don.interior.dto.post.CompanyHomePostDto;
-import com.ama.don.interior.dto.post.CompanyPostDetailDto;
-import com.ama.don.interior.dto.post.CompanyPostPreviewDto;
+import com.ama.don.interior.dto.post.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,6 +9,9 @@ import java.util.List;
 // 업체가 작성한 게시글
 @Mapper
 public interface CompanyPostDao {
+
+    // 게시글 단건 조회
+    CompanyPostDto findById(@Param("companyPostId") Long companyPostId);
 
     // 홈에서 보는 업체 게시글 목록 뷰, enum(LASTEST, RANDOM, POPULAR)
     // 쿼리를 3가지 조건으로 짜야함: 최신순, 랜덤, 인기순(좋아요 순)
@@ -60,11 +59,13 @@ public interface CompanyPostDao {
 
     // 게시글 삭제
     // 댓글, 좋아요, 스크립 존재 시 먼저 지워야함(하위-> 상위)
-    // 다형성 게시글 먼저 삭제
+    // 업체 게시글 삭제, 하위 먼저 삭제
+    int deleteCompanyPostById(@Param("companyPostId") Long companyPostId);
+    
+    
+    // 다형성 게시글 삭제
     int deletePolyPostById(@Param("postId") Long postId);
 
-    // 업체 게시글 삭제
-    int deleteCompanyPostById(@Param("companyPostId") Long companyPostId);
 
     // 조회수 증가
     int increaseHit(@Param("companyPostId") Long companyPostId);
