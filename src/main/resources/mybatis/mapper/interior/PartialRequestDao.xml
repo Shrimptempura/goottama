@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.interior.dao.PartialRequestDao">
+
+    <!-- 부분시공 설문조사 생성 -->
+    <insert id="insertPartialRequest">
+        INSERT INTO partial_request (
+            user_id,
+            partial_type,
+            partial_kind,
+            partial_area,
+            partial_addr,
+            partial_friend,
+            created_at,
+            status)
+        VALUES (
+            #{userId},
+            #{partialType},
+            #{partialKind},
+            #{partialArea},
+            #{partialAddr},
+            #{partialFriend},
+            #{createdAt},
+            #{status}
+        )
+    </insert>
+
+    <!-- partialRequestId로 부분시공 전체 조회 -->
+    <select id="findById" resultType="com.ama.don.interior.dto.partialrequest.PartialRequestDto">
+        SELECT
+            partial_request_id AS partialRequestId,
+            user_id AS userId,
+            partial_type AS partialType,
+            partial_kind AS partialKind,
+            partial_area AS partialArea,
+            partial_addr AS partialAddr,
+            partial_friend AS partialFriend,
+            created_at AS createdAt,
+            status AS status
+        FROM partial_request
+        WHERE partial_request_id = #{partialRequestId}
+    </select>
+</mapper>
