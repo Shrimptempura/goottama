@@ -33,7 +33,8 @@ public interface CompanyCommentDao {
                                  @Param("userId") Long userId);
 
     // 게시글이 삭제될 때 해당 게시글 댓글 전부 소프트 삭제
-    int softDeleteCommentsByPostId(@Param("companyPostId") Long companyPostId);
+    int softDeleteCommentsByPostId(@Param("companyPostId") Long companyPostId,
+                                   @Param("targetType") TargetType targetType);
 
     // 대댓글 -> insertCompanyComment 사용
     // 대댓글은 inserCopanyComment.setParentCommentId(댓글id)로 처리

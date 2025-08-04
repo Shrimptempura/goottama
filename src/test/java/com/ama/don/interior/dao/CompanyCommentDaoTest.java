@@ -1,11 +1,13 @@
 package com.ama.don.interior.dao;
 
+import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.comment.CompanyCommentCreateDto;
 import com.ama.don.interior.dto.comment.CompanyCommentUpdateDto;
 import com.ama.don.interior.dto.post.CompanyPostCreateDto;
 import com.ama.don.interior.dto.comment.CompanyCommentDto;
 import com.ama.don.interior.dto.comment.CompanyCommentTreeDto;
+import com.ama.don.interior.dto.post.CompanyPostDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -294,5 +296,40 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
 
         int commentCount = companyCommentDao.countCommentsByTarget(companyPostId, TargetType.INTERIOR);
         assertThat(commentCount).isEqualTo(4);
+    }
+
+    @DisplayName("게시글 삭제 해당 댓글들 전체 소프트 삭제")
+    @Test
+    void softDeleteCommentsByPostId() {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 생성
+        CompanyPostCreateDto post = createCompanyPost(userId, companyId);
+        Long companyPostId = post.getCompanyPostId();
+
+        // 회원 생성
+        JoinformDto otherUser = createTestUser("testUser111");
+        Long otherUserId = otherUser.getUserId();
+
+        // 댓글 3개 작성
+        CompanyCommentCreateDto fisrtComment = createComment(otherUserId, companyPostId, "첫번째 댓글");
+        CompanyCommentCreateDto secondComment = createComment(otherUserId, companyPostId, "두번째 댓글");
+        CompanyCommentCreateDto thirdComment = createComment(otherUserId, companyPostId, "세번째 댓글");
+
+        // 댓글 조회
+        List<CompanyCommentTreeDto> list = companyCommentDao.findCommentsByPostId(companyPostId);
+        assertThat(list).hasSize(3);
+
+        // 게시글 삭제전 댓글 전체 삭제 경우
+        int allDeleted = companyCommentDao.softDeleteCommentsByPostId(companyPostId, TargetType.INTERIOR);
+        assertThat(allDeleted).isEqualTo(3);
+
+        // 댓글 조회 및 확인
+        for (CompanyCommentTreeDto comment : companyCommentDao.findCommentsByPostId(companyPostId)) {
+            assertThat(comment.isDeleted()).isTrue();
+        }
     }
 }

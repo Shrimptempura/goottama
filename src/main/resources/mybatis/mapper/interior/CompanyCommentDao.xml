@@ -100,8 +100,8 @@
     <!-- 게시글 삭제시 해당 게시글 댓글 전체 소프트 삭제 -->
     <update id="softDeleteCommentsByPostId">
         UPDATE comments
-        SET is_deleted = 1,
-        WHERE target_id = #{targetId}
+        SET is_deleted = 1
+        WHERE target_id = #{companyPostId}
             AND target_type = #{targetType}
     </update>
 
