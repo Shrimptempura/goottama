@@ -97,6 +97,14 @@
             AND user_id = #{userId}
     </update>
 
+    <!-- 게시글 삭제시 해당 게시글 댓글 전체 소프트 삭제 -->
+    <update id="softDeleteCommentsByPostId">
+        UPDATE comments
+        SET is_deleted = 1,
+        WHERE target_id = #{targetId}
+            AND target_type = #{targetType}
+    </update>
+
     <!-- 게시글 상세정보 내 댓글 수 확인 -->
     <!-- 추후 확장을 고려해 target_id와 target_type까지 사용 -->
     <select id="countCommentsByTarget" resultType="java.lang.Integer">
