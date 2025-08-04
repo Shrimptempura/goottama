@@ -6,25 +6,24 @@
 <mapper namespace="com.ama.don.interior.dao.PartialRequestDao">
 
     <!-- 부분시공 설문조사 생성 -->
-    <insert id="insertPartialRequest">
+    <insert id="insertPartialRequest"
+            parameterType="com.ama.don.interior.dto.partialrequest.PartialRequestCreateDto"
+            useGeneratedKeys="true"
+            keyProperty="partialRequestId">
         INSERT INTO partial_request (
             user_id,
             partial_type,
             partial_kind,
             partial_area,
             partial_addr,
-            partial_friend,
-            created_at,
-            status)
+            partial_friend)
         VALUES (
             #{userId},
             #{partialType},
             #{partialKind},
             #{partialArea},
             #{partialAddr},
-            #{partialFriend},
-            #{createdAt},
-            #{status}
+            #{partialFriend}
         )
     </insert>
 
