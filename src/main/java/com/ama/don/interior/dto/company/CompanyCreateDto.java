@@ -18,7 +18,6 @@ public class CompanyCreateDto {
     @NotBlank
     private String companyName;
 
-
     @NotBlank
     private String companyAddr;         // location
 

@@ -51,5 +51,5 @@ public interface CompanyDao {
     // 업체 탈퇴(is_deleted), company table
     int deleteCompany(Long companyId);
 
-    // api location lat, lng, code 추후 변경 메서드 필요
+    // api location -> 정렬로 대체
 }
