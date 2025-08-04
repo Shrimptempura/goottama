@@ -31,10 +31,12 @@
 
     <!--  회원이 업체를 팔로우 했는지  -->
     <select id="isFollowedCompany" resultType="java.lang.Boolean">
-        SELECT count(*) > 0
-        FROM company_follow
-        WHERE company_id = #{companyId}
-            AND user_id = #{userId}
+        SELECT EXISTS (
+            SELECT 1
+            FROM company_follow
+            WHERE company_id = #{companyId}
+                AND user_id = #{userId}
+        ) AS Followed
     </select>
 
     <!--  업체의 팔로워 수 구하기  -->

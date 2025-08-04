@@ -12,7 +12,7 @@
             FROM company_post_like
             WHERE company_post_id = #{companyPostId}
                 AND user_id = #{userId}
-        ) AS isLiked;
+        ) AS isLiked
     </select>
 
     <!-- 회원이 게시글 좋아요 -->

@@ -14,7 +14,6 @@ import java.util.List;
 @Mapper
 public interface CompanyPostDao {
 
-
     // 홈에서 보는 업체 게시글 목록 뷰, enum(LASTEST, RANDOM, POPULAR)
     // 쿼리를 3가지 조건으로 짜야함: 최신순, 랜덤, 인기순(좋아요 순)
     // 3가지 방법으로 짜면 enum은 안씀(이건 choose 방법)
