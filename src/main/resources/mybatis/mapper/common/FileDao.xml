@@ -19,20 +19,20 @@
 	</insert>
 
 	<!-- 특정 게시글에 연결된 파일 조회 -->
-	<select id="findByTarget"
+	<select id="findByTargetId"
 		resultType="com.ama.don.common.dto.FileDto">
 		SELECT
-		file_id AS file_id,
-		file_uploader AS file_uploader,
-		file_name AS file_name,
-		file_path AS file_path,
-		target_type AS target_type,
-		target_id AS targetId
+		file_id,
+		target_type,
+		target_id,
+		file_name,
+		file_path,
+		file_uploader
 		FROM file
-		WHERE target_type = #{target_type}
-		AND target_id =
-		#{targetId}
+		WHERE target_type = #{targetType}
+		AND target_id = #{targetId}
 	</select>
+
 
 	<!-- 타겟 아이디 수정 -->
 	<update id="updateTargetId">
