@@ -21,6 +21,8 @@ import com.ama.don.shop.service.ShopBestService;
 import com.ama.don.shop.service.ShopHomeService;
 import com.ama.don.shop.service.ShopProductMallService;
 import com.ama.don.shop.service.ShopListService;
+import com.ama.don.shop.service.ShopProductInquiryWriteService;
+import com.ama.don.shop.service.ShopProductInquiryWriteViewService;
 import com.ama.don.shop.service.ShopServiceinter;
 import com.ama.don.shop.service.ShopWriteService;
 import com.ama.don.shop.service.Kakaopay.ShopKakaopayService;
@@ -61,6 +63,7 @@ public class ShopController {
 		return "shop/subheader";
 	}
 
+	//상품 홈
 	@RequestMapping("/shop/home")
 	public String home(HttpServletRequest request, Model model) {
 		
@@ -94,21 +97,20 @@ public class ShopController {
 		return "shop/product_high_sales";
 	}
 
-	@RequestMapping("/shop/write_view")
-	public String write_view() {
-		return "shop/write_view";
-	}
-
-	@RequestMapping("/shop/write")
-	public String write(HttpServletRequest request, Model model) {
-
-		model.addAttribute("request", request);
-		shopServiceinter = new ShopWriteService(iDao);
-		shopServiceinter.execute(model);
-
-		return "shop/home";
-	}
-
+	/*
+	 * @RequestMapping("/shop/write_view") public String write_view() { return
+	 * "shop/write_view"; }
+	 * 
+	 * @RequestMapping("/shop/write") public String write(HttpServletRequest
+	 * request, Model model) {
+	 * 
+	 * model.addAttribute("request", request); shopServiceinter = new
+	 * ShopWriteService(iDao); shopServiceinter.execute(model);
+	 * 
+	 * return "shop/home"; }
+	 */
+	
+	//카테고리
 	@RequestMapping("/shop/category")
 	public String category(HttpServletRequest request, Model model) {
 
@@ -162,22 +164,53 @@ public class ShopController {
 		Long userid=Long.parseLong(user_id);
 		
 		System.out.println("userid:"+userid);
-		
-		
-		
+			
 		return "redirect:/shop/product_detail?product_id="+productid+"&userid="+userid;
 		
 	}
-
-	@RequestMapping("/shop/productmall")
-	public String exhibition(HttpServletRequest request, Model model) {
-
+	
+	@RequestMapping("/shop/product_inquiry_write_view")
+	public String product_inquiry_view(HttpServletRequest request,Model model) {
+		
 		model.addAttribute("request",request);
-		shopServiceinter=new ShopProductMallService(iDao);
+		shopServiceinter=new ShopProductInquiryWriteViewService(iDao);
 		shopServiceinter.execute(model);
-
-		return "shop/productmall";
+		
+		return "shop/product_inquiry_write_view";
 	}
+	
+	
+	@RequestMapping("/shop/product_inquiry_write")
+	public String product_inquiry_write(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopProductInquiryWriteService(iDao);
+		shopServiceinter.execute(model);
+		
+		//
+        String user_id=request.getParameter("user_id");
+        String product_id=request.getParameter("product_id");
+		
+		Long productid=Long.parseLong(product_id);
+		Long userid=Long.parseLong(user_id);
+		
+		System.out.println("userid:"+userid);
+		
+		return "redirect:/shop/product_detail?product_id="+productid;
+	}
+	
+	
+	
+
+		@RequestMapping("/shop/productmall")
+		public String exhibition(HttpServletRequest request, Model model) {
+	
+			model.addAttribute("request",request);
+			shopServiceinter=new ShopProductMallService(iDao);
+			shopServiceinter.execute(model);
+	
+			return "shop/productmall";
+		}
 
 	@RequestMapping("/shop/best")
 	public String best(HttpServletRequest request,Model model) {

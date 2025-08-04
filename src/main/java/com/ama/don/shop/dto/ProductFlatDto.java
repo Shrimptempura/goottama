@@ -44,6 +44,18 @@ public class ProductFlatDto {
 	String category_sub;
 	
 	
+	//리뷰 
+	Long review_id; 
+	String review_title; 
+	String review_content; 
+	int review_count; 
+	Timestamp review_date; 
+	Timestamp review_modify; 
+	Long target_id; 
+	String target_type; 
+	int is_deleted;
+
+	
 	
 	//수량 갯수
 	private int quantity=1;

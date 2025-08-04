@@ -23,11 +23,20 @@ public class ShopBestService implements ShopServiceinter{
 		HttpServletRequest request=
 				(HttpServletRequest) map.get("request");
 		
+		try {
 		
+			//상품 중 리뷰 내역이 많은 상품을 리스트로 조회
+			ArrayList<ProductFlatDto> productFlatDtos=iDao.product_best_list();
+			
+			model.addAttribute("product_list",productFlatDtos);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}	
 		
-		ArrayList<ProductFlatDto> productFlatDtos=iDao.product_list();
-		//상품을 가져오고 리뷰수가 많은 상품을 나타낸다.
-		model.addAttribute("product_list",productFlatDtos);
+//		ArrayList<ProductFlatDto> productFlatDtos=iDao.product_list();
+//		//상품을 가져오고 리뷰수가 많은 상품을 나타낸다.
+//		model.addAttribute("product_list",productFlatDtos);
 		
 			
 	}

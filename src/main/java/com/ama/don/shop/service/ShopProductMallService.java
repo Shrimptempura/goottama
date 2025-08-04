@@ -27,6 +27,7 @@ public class ShopProductMallService implements ShopServiceinter{
 		
 		ArrayList<ProductFlatDto> productFlatDtos=iDao.product_list();
 		//상품을 가져오고 상품 쇼핑몰별로 검색한다.
+		
 		model.addAttribute("product_list",productFlatDtos);
 		
 			

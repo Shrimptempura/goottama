@@ -590,65 +590,211 @@
         width: 100%;
     }
 }
+/* 문의 관련 추가 스타일 */
+.inquiry-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.inquiry-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.btn-edit, .btn-delete {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-edit {
+    background: #28a745;
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #218838;
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #c82333;
+}
+
+.my-inquiry {
+    background-color: #e3f2fd !important;
+    border-left: 4px solid #2196f3 !important;
+}
+
+.my-inquiry-text {
+    color: #2196f3;
+    font-weight: bold;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* 반응형 대응 */
+@media (max-width: 768px) {
+    .inquiry-top {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .inquiry-actions {
+        align-self: flex-end;
+    }
+    
+    .btn-edit, .btn-delete {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
 
 </style>
 
 <script>
-    function changeMainImage(thumbnailElement) {
-        const newSrc = thumbnailElement.getAttribute("src");
-        document.getElementById("mainImage").setAttribute("src", newSrc);
+//========== 누락된 함수들 추가 ==========
+function changeMainImage(thumbnailElement) {
+    const newSrc = thumbnailElement.getAttribute("src");
+    document.getElementById("mainImage").setAttribute("src", newSrc);
+}
+
+let count = 1;
+function changeCount(value){
+    count += value;
+    if (count < 1) count = 1;
+    document.getElementById("count").innerText = count;
+}
+
+// ========== getuserid() 함수 정의 ==========
+function getuserid() {
+    var userId = '${sessionScope.user_id}';
+    if (!userId || userId.trim() === '' || userId === 'null') {
+        userId = '1'; // 기본값으로 1 사용
     }
-	
-    let count = 1;
-	function changeCount(value){
-		count+=value;
-		if (count < 1 ) count=1;
-		 document.getElementById("count").innerText = count;
-	}
-	function showAlert(){
-	    // 세션에서 user_id 가져오기, 없으면 기본값 2
-	    let userId = '${sessionScope.user_id}';
-	    if (!userId || userId.trim() === '' || userId === 'null') {
-	        userId = '1'; // 기본값으로 1 사용
-	    }
-	    
-	    alert("장바구니에 담았습니다.");
-	    location.href = "cart_write?user_id=" + userId + "&product_id=${product.product_id}&cart_quantity=" + count;
-	}
-	
-	function getuserid(){
-		var userId='${sessionScope.user_id}';
-		if (!userId || userId.trim() === '' || userId === 'null') {
-	        userId = '1'; // 기본값으로 1 사용
-	    }
-	}
-	
-	function reviewwrite() {
-	    
-		//사용자 아이디와 상품아이디를 가지고 폼을 작성하고
-		//폼을 작성한 뒤에 사용자아이디와 상품아이디로 테이블에 삽입해야한다.
-		//폼에 아무것도 없는게 말이될까
-		
-		
-		
-		
-	    var userId='${sessionScope.user_id}';
-		if (!userId || userId.trim() === '' || userId === 'null') {
-	        userId = '1'; // 기본값으로 1 사용
-	    }
-	    // 리뷰 작성 페이지로 이동
-	    location.href = "review_write_view?user_id=" + userId + "&product_id=${product.product_id}";
-	}
-	
-	
-	function inquirywrite() {
-	    var userId = '${sessionScope.user_id}';
-	    if (!userId || userId.trim() === '' || userId === 'null') {
-	        userId = '1'; // 기본값으로 1 사용
-	    }
-	    // 문의 작성 페이지로 이동
-	    location.href = "inquiry_write_view?user_id=" + userId + "&product_id=${product.product_id}";
-	}
+    return userId;
+}
+
+// ========== 기존 함수들 수정 ==========
+function showAlert(){
+    let userId = getuserid();
+    alert("장바구니에 담았습니다.");
+    location.href = "cart_write?user_id=" + userId + "&product_id=${product.product_id}&cart_quantity=" + count;
+}
+
+function reviewwrite() {
+    var userId = getuserid();
+    // 리뷰 작성 페이지로 이동
+    location.href = "review_write_view?user_id=" + userId + "&product_id=${product.product_id}";
+}
+
+function inquirywrite() {
+    var userId = getuserid();
+    // 문의 작성 페이지로 이동
+    location.href = "product_inquiry_write_view?user_id=" + userId + "&product_id=${product.product_id}";
+}
+
+// 바로 주문하기도 getuserid() 사용하도록 수정
+function goorder(){
+    let userId = getuserid();
+    // 바로 주문: product_id, user_id, quantity 전달
+    location.href = 'order_view?product_id=${product.product_id}' + 
+                   '&user_id=' + userId + 
+                   '&quantity=' + count+
+                   '&form_cart=false';
+}
+
+// ========== 문의 관련 새로운 함수들 ==========
+// 페이지 로드 시 문의 항목들 확인
+function checkMyInquiries() {
+    var currentUserId = getuserid();
+    console.log('현재 사용자 ID:', currentUserId);
+    
+    // 모든 문의 아이템 확인
+    document.querySelectorAll('.inquiry-item').forEach(function(item) {
+        var inquiryUserId = item.dataset.userId;
+        
+        console.log('문의 확인:', {
+            inquiryId: item.dataset.inquiryId,
+            inquiryUserId: inquiryUserId,
+            currentUserId: currentUserId,
+            isMatch: currentUserId === inquiryUserId
+        });
+        
+        if (currentUserId === inquiryUserId) {
+            // 내 문의인 경우
+            console.log('내 문의 발견:', item.dataset.inquiryId);
+            
+            // 내 문의 표시
+            var myInquirySection = item.querySelector('.my-inquiry-section');
+            if (myInquirySection) {
+                myInquirySection.style.display = 'block';
+                console.log('내 문의 섹션 표시됨');
+            }
+            
+            // 수정/삭제 버튼 표시 (오른쪽에)
+            var actions = item.querySelector('.inquiry-actions');
+            if (actions) {
+                actions.style.display = 'flex';
+                console.log('수정/삭제 버튼 표시됨');
+            }
+            
+            // 내 문의 스타일 적용
+            item.classList.add('my-inquiry');
+            console.log('내 문의 스타일 적용됨');
+        } else {
+            console.log('다른 사용자의 문의:', inquiryUserId);
+        }
+    });
+}
+
+// 문의 수정
+function editInquiry(inquiryId) {
+    var userId = getuserid();
+    console.log('문의 수정:', inquiryId, 'by user:', userId);
+    location.href = 'inquiry_edit_view?inquiry_id=' + inquiryId + '&user_id=' + userId;
+}
+
+// 문의 삭제
+function deleteInquiry(inquiryId) {
+    if (confirm('정말 이 문의를 삭제하시겠습니까?')) {
+        var userId = getuserid();
+        console.log('문의 삭제:', inquiryId, 'by user:', userId);
+        location.href = 'inquiry_delete?inquiry_id=' + inquiryId + '&user_id=' + userId;
+    }
+}
+
+// 페이지 로드 시 실행
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('페이지 로드 완료, 문의 확인 시작');
+    checkMyInquiries();
+});
+
+// 디버깅용 함수
+function debugInquiries() {
+    var currentUserId = getuserid();
+    console.log('=== 문의 디버깅 ===');
+    console.log('현재 사용자 ID:', currentUserId);
+    
+    document.querySelectorAll('.inquiry-item').forEach(function(item, index) {
+        console.log(`문의 ${index + 1}:`, {
+            inquiryId: item.dataset.inquiryId,
+            userId: item.dataset.userId,
+            isMyInquiry: currentUserId === item.dataset.userId
+        });
+    });
+}
 </script>
 
 
@@ -771,60 +917,51 @@
 		    </div>
 		    
 		    <!-- 문의 목록 -->
-		    <c:forEach var="inquiry" items="${inquiry_list}" varStatus="status">
-		        <div class="inquiry-item">
+		    <c:forEach var="inquiry" items="${product_inquiry_list}" varStatus="status">
+		        <!-- ✅ 중요: data-user-id와 data-inquiry-id 속성 추가 -->
+		        <div class="inquiry-item" data-user-id="${inquiry.user_id}" data-inquiry-id="${inquiry.pinquiry_id}">
 		            <div class="inquiry-content-area">
 		                <div class="inquiry-top">
-		                    <h4 class="inquiry-item-title">${inquiry.inquiry_title != null ? inquiry.inquiry_title : '상품 문의'}</h4>
 		                    <div class="inquiry-meta">
 		                        <span class="inquiry-author">작성자: ${inquiry.user_nickname != null ? inquiry.user_nickname : '익명'}</span>
 		                        <span class="inquiry-date">
-		                            <fmt:formatDate value="${inquiry.inquiry_date}" pattern="yyyy-MM-dd HH:mm"/>
+		                            <fmt:formatDate value="${inquiry.pinquiry_date}" pattern="yyyy-MM-dd HH:mm"/>
 		                        </span>
+		                        <p>${inquiry.pinquiry_status}</p>  
+		                       	 <!-- 이거 문의하는데 시간이 필요하네 -->
+		                        <!-- 보다 중요한건 카카오페이결제인데 -->
+		                        
+		                        <!-- JavaScript로 제어될 내 문의 영역 -->
+		                        <div class="my-inquiry-section" style="display: none;">
+		                            <p class="my-inquiry-text">내 문의: ${inquiry.user_id}</p>
+		                        </div>
+		                    </div>
+		                    
+		                    <button onclick="#">답변달기 </button>
+		                    <!-- JavaScript로 제어될 버튼 영역 (오른쪽에 위치) -->
+		                    <div class="inquiry-actions" style="display: none;">
+		                        <button class="btn-edit" onclick="editInquiry(${inquiry.pinquiry_id})">수정</button>
+		                        <button class="btn-delete" onclick="deleteInquiry(${inquiry.pinquiry_id})">삭제</button>
 		                    </div>
 		                </div>
 		                
 		                <div class="inquiry-content">
-		                    <!-- 문의 내용 (비밀글인 경우 처리) -->
-		                    <c:choose>
-		                        <c:when test="${inquiry.is_secret == 1 and (sessionScope.user_id != inquiry.user_id and sessionScope.user_role != 'ADMIN')}">
-		                            <div class="secret-inquiry">
-		                                <i class="lock-icon">🔒</i>
-		                                <span>비밀글입니다. 작성자와 관리자만 확인할 수 있습니다.</span>
-		                            </div>
-		                        </c:when>
-		                        <c:otherwise>
-		                            <p class="inquiry-text">${inquiry.inquiry_content != null ? inquiry.inquiry_content : '문의 내용이 없습니다.'}</p>
-		                            
-		                            <!-- 문의 이미지 (있는 경우) -->
-		                            <c:if test="${inquiry.inquiry_img != null and inquiry.inquiry_img != ''}">
-		                                <div class="inquiry-image">
-		                                    <img src="/static/uploads/inquiry/${inquiry.inquiry_img}" alt="문의 이미지" />
-		                                </div>
-		                            </c:if>
-		                        </c:otherwise>
-		                    </c:choose>
+		                    <!-- 문의 내용 -->
+		                    <p class="inquiry-text">${inquiry.pinquiry_content != null ? inquiry.pinquiry_content : '문의 내용이 없습니다.'}</p>
 		                </div>
 		                
 		                <!-- 답변 영역 -->
-		                <c:if test="${inquiry.answer_content != null and inquiry.answer_content != ''}">
+		                <c:if test="${inquiry.preply_content != null and inquiry.preply_content != ''}">
 		                    <div class="inquiry-answer">
 		                        <div class="answer-header">
 		                            <span class="answer-label">📋 관리자 답변</span>
 		                            <span class="answer-date">
-		                                <fmt:formatDate value="${inquiry.answer_date}" pattern="yyyy-MM-dd HH:mm"/>
+		                                <fmt:formatDate value="${inquiry.preply_date}" pattern="yyyy-MM-dd HH:mm"/>
 		                            </span>
 		                        </div>
 		                        <div class="answer-content">
-		                            <p>${inquiry.answer_content}</p>
+		                            <p>${inquiry.preply_content}</p>
 		                        </div>
-		                    </div>
-		                </c:if>
-		                
-		                <!-- 답변 대기 상태 표시 -->
-		                <c:if test="${inquiry.answer_content == null or inquiry.answer_content == ''}">
-		                    <div class="inquiry-status">
-		                        <span class="status-waiting">📝 답변 대기 중</span>
 		                    </div>
 		                </c:if>
 		            </div>
@@ -832,7 +969,7 @@
 		    </c:forEach>
 		    
 		    <!-- 문의가 없을 경우 -->
-		    <c:if test="${empty inquiry_list}">
+		    <c:if test="${empty product_inquiry_list}">
 		        <div class="no-inquiry">
 		            <div class="no-inquiry-content">
 		                <p>💬 아직 등록된 문의가 없습니다.</p>
