@@ -7,9 +7,7 @@ import com.ama.don.interior.dto.request.CompanyPostCreateDto;
 import com.ama.don.interior.dto.request.CompanyPostUpdateDto;
 import com.ama.don.interior.dto.response.CompanyHomePostDto;
 import com.ama.don.interior.dto.response.CompanyPostDetailDto;
-import com.ama.don.interior.dto.response.CompanyPostLikeDto;
 import com.ama.don.interior.dto.response.CompanyPostPreviewDto;
-import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -256,38 +254,7 @@ class CompanyPostDaoTest extends AbstractCompanyTestSupport {
         assertThat(ids).isNotEqualTo(sortedIds);
     }
 
-    @DisplayName("게시글 좋아요 증가 감소 숫자확인")
-    @Test
-    void companyPostLikeCountUpdate() {
-        // 업체 생성
-        TestCompanyContext context = insertTestCompanyContext();
-        Long companyId = context.getCompanyId();
-        Long userId = context.getUser().getUserId();
 
-        // 게시글 생성
-        CompanyPostCreateDto post = createCompanyPost(userId, companyId);
-        Long postId = post.getCompanyPostId();
-
-        // 회원 생성
-        JoinformDto user = createTestUser("testUesr111");
-
-        CompanyPostLikeDto likeDto = new CompanyPostLikeDto();
-        likeDto.setUserId(user.getUserId());
-        likeDto.setCompanyPostId(postId);
-
-        // 회원이 좋아요을 누름
-        companyPostLikeDao.insertLikeCompanyPost(likeDto);
-        // 좋아요 증가
-        companyPostDao.incrementLikeCount(postId);
-        // 해당 게시글 좋아요 숫자 확인
-        int liked = companyPostDao.countLikeCompanyPost(postId);
-        assertThat(liked).isEqualTo(1);
-
-        // 좋아요 취소
-        companyPostDao.decrementLikeCount(postId);
-        int canceled = companyPostDao.countLikeCompanyPost(postId);
-        assertThat(canceled).isEqualTo(0);
-    }
     
     @DisplayName("홈에서 보는 같은 지역구 정렬 리스트")
     @Test

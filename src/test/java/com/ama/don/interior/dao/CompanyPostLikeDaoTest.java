@@ -99,4 +99,37 @@ class CompanyPostLikeDaoTest extends AbstractCompanyTestSupport {
         boolean check = companyPostLikeDao.isLikedCompanyPost(likeDto);
         assertThat(check).isFalse();
     }
+
+    @DisplayName("게시글 좋아요 증가 감소 숫자확인")
+    @Test
+    void companyPostLikeCountUpdate() {
+        // 업체 생성
+        TestCompanyContext context = insertTestCompanyContext();
+        Long companyId = context.getCompanyId();
+        Long userId = context.getUser().getUserId();
+
+        // 게시글 생성
+        CompanyPostCreateDto post = createCompanyPost(userId, companyId);
+        Long postId = post.getCompanyPostId();
+
+        // 회원 생성
+        JoinformDto user = createTestUser("testUesr111");
+
+        CompanyPostLikeDto likeDto = new CompanyPostLikeDto();
+        likeDto.setUserId(user.getUserId());
+        likeDto.setCompanyPostId(postId);
+
+        // 회원이 좋아요을 누름
+        companyPostLikeDao.insertLikeCompanyPost(likeDto);
+        // 좋아요 증가
+        companyPostLikeDao.incrementLikeCount(postId);
+        // 해당 게시글 좋아요 숫자 확인
+        int liked = companyPostLikeDao.countLikeCompanyPost(postId);
+        assertThat(liked).isEqualTo(1);
+
+        // 좋아요 취소
+        companyPostLikeDao.decrementLikeCount(postId);
+        int canceled = companyPostLikeDao.countLikeCompanyPost(postId);
+        assertThat(canceled).isEqualTo(0);
+    }
 }
