@@ -1,7 +1,14 @@
 package com.ama.don.member.controller;
 
-import java.io.IOException;
-
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.dto.MemberEditDto;
+import com.ama.don.member.dto.ResetPwDto;
+import com.ama.don.member.service.MemberProfileService;
+import com.ama.don.member.service.ProfileImgUploadService;
+import com.ama.don.member.service.WithdrawalService;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,17 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ama.don.member.dto.MemberDto;
-import com.ama.don.member.dto.MemberEditDto;
-import com.ama.don.member.dto.ResetPwDto;
-import com.ama.don.member.service.LoginService;
-import com.ama.don.member.service.MemberProfileService;
-import com.ama.don.member.service.ProfileImgUploadService;
-import com.ama.don.member.service.WithdrawalService;
-
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import java.io.IOException;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,7 +28,6 @@ public class MemberController {
 	private final MemberProfileService memberProfileService;
 	private final ProfileImgUploadService profileImgUploadService;
 	private final WithdrawalService withdrawalService;
-	private final LoginService loginService;
 
 	@PostMapping("/resetPw")
 	public String resetPw(@Valid @ModelAttribute ResetPwDto resetPwDto,HttpSession session,Model model) {
@@ -146,7 +142,6 @@ public class MemberController {
 		
 		MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
 		withdrawalService.deletedMember(agree, reason, memberDto);
-		loginService.logout(session); //세션 제거
 		
 		return "member/withdrawalSuccess_view";
 	}

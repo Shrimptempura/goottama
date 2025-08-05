@@ -10,11 +10,11 @@ import java.sql.Timestamp;
 @Getter
 @AllArgsConstructor
 public class ReportDTO {
-    private long reportId;
-    private long userId;
+    private Long reportId;
+    private Long userId;
     private Timestamp reportDate;
     private String reportContent;
-    private int targetType;
-    private long targetId;
+    private String targetType;
+    private Long targetId;
     private String reportStatus;
 }

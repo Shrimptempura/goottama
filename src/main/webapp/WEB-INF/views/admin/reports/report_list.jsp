@@ -46,19 +46,26 @@
 <!-- 공지 목록 출력 -->
 <table class="report-table">
     <tr>
-       <td>제목</td>
+       <td>번호</td>
+       <td>처리 상태</td>
        <td>날자</td>
+       <td>타겟 타입</td>
+       <td>타겟 아이디</td>
+       <td>유저 아이디</td>
+       <td>보기</td>
     </tr>
     <c:forEach items="${list}" var="report">
         <tr>
-            <td>
-                <a href="/admin/reports/report_detail?reports_id=${report.reportsId}">
-                    ${report.reportsTitle}
-                </a>
-            </td>
+            <td>${report.reportId}</td>
+            <td>${report.reportStatus}</td>
             <td>
             <fmt:formatDate value="${report.reportsCreatedAt}" pattern="yyyy-MM-dd"/>
             </td>
+            <td>${report.targetType}</td>
+            <td>${report.targetId}</td>
+            <td>${report.userId}</td>
+            <td><button type="button" class="open-modal-btn" data-modal-target="/admin/reports/report_data_modal"
+                        data-param-name="report_id" data-param-value="${report.reportId}"> ▶ </button></td>
         </tr>
     </c:forEach>
 </table>
