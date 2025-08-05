@@ -44,7 +44,6 @@ public class UserManageController {
                            @ModelAttribute UserSearchDTO userSearchDTO) {
         model.addAttribute("searchVO", searchVO);
         model.addAttribute("userSearchDTO", userSearchDTO);
-        System.out.println("\n>>> userstatus : "+userSearchDTO.getUser_status());
         getUserListService.execute(model);
         return "admin/users/user_list";
     }

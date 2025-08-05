@@ -372,55 +372,438 @@
         gap: 20px;
     }
 }
+
+<!-- 상품 문의 -->
+.inquiry-section {
+    width: 100%;
+    padding: 30px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.inquiry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #eee;
+}
+
+.inquiry-title {
+    margin: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.inquiry-write-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.inquiry-write-btn:hover {
+    background-color: #218838;
+}
+
+.inquiry-item {
+    margin-bottom: 25px;
+    padding: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+
+.inquiry-item:last-child {
+    margin-bottom: 0;
+}
+
+.inquiry-content-area {
+    width: 100%;
+}
+
+.inquiry-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.inquiry-item-title {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    flex: 1;
+}
+
+.inquiry-meta {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+
+.inquiry-author {
+    font-size: 14px;
+    color: #666;
+    font-weight: normal;
+}
+
+.inquiry-date {
+    font-size: 12px;
+    color: #999;
+}
+
+.inquiry-content {
+    margin-bottom: 15px;
+}
+
+.inquiry-text {
+    margin: 0;
+    line-height: 1.6;
+    color: #333;
+    font-size: 14px;
+    padding: 10px 0;
+}
+
+.inquiry-image {
+    margin-top: 10px;
+}
+
+.inquiry-image img {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+}
+
+.secret-inquiry {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    color: #6c757d;
+    font-style: italic;
+}
+
+.lock-icon {
+    font-size: 16px;
+}
+
+.inquiry-answer {
+    background-color: #e8f5e8;
+    border: 1px solid #c3e6c3;
+    border-radius: 6px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.answer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.answer-label {
+    font-weight: bold;
+    color: #28a745;
+    font-size: 14px;
+}
+
+.answer-date {
+    font-size: 12px;
+    color: #666;
+}
+
+.answer-content p {
+    margin: 0;
+    line-height: 1.6;
+    color: #333;
+    font-size: 14px;
+}
+
+.inquiry-status {
+    margin-top: 15px;
+    padding: 8px 15px;
+    background-color: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 6px;
+}
+
+.status-waiting {
+    color: #856404;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.no-inquiry {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+}
+
+.no-inquiry-content p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.no-inquiry-content p:first-child {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 반응형 대응 */
+@media (max-width: 768px) {
+    .inquiry-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .inquiry-meta {
+        flex-direction: column;
+        gap: 5px;
+        align-items: flex-start;
+    }
+    
+    .inquiry-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+    }
+    
+    .inquiry-write-btn {
+        width: 100%;
+    }
+}
+/* 문의 관련 추가 스타일 */
+.inquiry-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.inquiry-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.btn-edit, .btn-delete {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.btn-edit {
+    background: #28a745;
+    color: white;
+}
+
+.btn-edit:hover {
+    background: #218838;
+}
+
+.btn-delete {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #c82333;
+}
+
+.my-inquiry {
+    background-color: #e3f2fd !important;
+    border-left: 4px solid #2196f3 !important;
+}
+
+.my-inquiry-text {
+    color: #2196f3;
+    font-weight: bold;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* 반응형 대응 */
+@media (max-width: 768px) {
+    .inquiry-top {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .inquiry-actions {
+        align-self: flex-end;
+    }
+    
+    .btn-edit, .btn-delete {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
 </style>
 
 <script>
-    function changeMainImage(thumbnailElement) {
-        const newSrc = thumbnailElement.getAttribute("src");
-        document.getElementById("mainImage").setAttribute("src", newSrc);
+//사진 클릭 시 이미지 전환
+function changeMainImage(element){
+	const src= element.getAttribute("src");
+	document.getElementById("main=img").setAttribute("src", src);
+}
+
+
+//========== 누락된 함수들 추가 ==========
+function changeMainImage(thumbnailElement) {
+    const newSrc = thumbnailElement.getAttribute("src");
+    document.getElementById("mainImage").setAttribute("src", newSrc);
+}
+
+let count = 1;
+function changeCount(value){
+    count += value;
+    if (count < 1) count = 1;
+    document.getElementById("count").innerText = count;
+}
+
+// ========== getuserid() 함수 정의 ==========
+function getuserid() {
+    var userId = '${sessionScope.user_id}';
+    if (!userId || userId.trim() === '' || userId === 'null') {
+        userId = '1'; // 기본값으로 1 사용
     }
-	
-    let count = 1;
-	function changeCount(value){
-		count+=value;
-		if (count < 1 ) count=1;
-		 document.getElementById("count").innerText = count;
-	}
-	function showAlert(){
-	    // 세션에서 user_id 가져오기, 없으면 기본값 2
-	    let userId = '${sessionScope.user_id}';
-	    if (!userId || userId.trim() === '' || userId === 'null') {
-	        userId = '2'; // 기본값으로 2 사용
-	    }
-	    
-	    alert("장바구니에 담았습니다.");
-	    location.href = "cart_write?user_id=" + userId + "&product_id=${product.product_id}&cart_quantity=" + count;
-	}
-	
-	function getuserid(){
-		var userId='${sessionScope.user_id}';
-		if (!userId || userId.trim() === '' || userId === 'null') {
-	        userId = '2'; // 기본값으로 2 사용
-	    }
-	}
-	
-	function reviewwrite() {
-	    
-		//사용자 아이디와 상품아이디를 가지고 폼을 작성하고
-		//폼을 작성한 뒤에 사용자아이디와 상품아이디로 테이블에 삽입해야한다.
-		//폼에 아무것도 없는게 말이될까
-		
-		
-		
-		
-	    var userId='${sessionScope.user_id}';
-		if (!userId || userId.trim() === '' || userId === 'null') {
-	        userId = '2'; // 기본값으로 2 사용
-	    }
-	    // 리뷰 작성 페이지로 이동
-	    location.href = "review_write_view?user_id=" + userId + "&product_id=${product.product_id}";
-	}
+    return userId;
+}
+
+// ========== 기존 함수들 수정 ==========
+function showAlert(){
+    let userId = getuserid();
+    alert("장바구니에 담았습니다.");
+    location.href = "cart_write?user_id=" + userId + "&product_id=${product.product_id}&cart_quantity=" + count;
+}
+
+function reviewwrite() {
+    var userId = getuserid();
+    // 리뷰 작성 페이지로 이동
+    location.href = "review_write_view?user_id=" + userId + "&product_id=${product.product_id}";
+}
+
+function inquirywrite() {
+    var userId = getuserid();
+    // 문의 작성 페이지로 이동
+    location.href = "product_inquiry_write_view?user_id=" + userId + "&product_id=${product.product_id}";
+}
+
+// 바로 주문하기도 getuserid() 사용하도록 수정
+function goorder(){
+    let userId = getuserid();
+    // 바로 주문: product_id, user_id, quantity 전달
+    location.href = 'order_view?product_id=${product.product_id}' + 
+                   '&user_id=' + userId + 
+                   '&quantity=' + count+
+                   '&form_cart=false';
+}
+
+// ========== 문의 관련 새로운 함수들 ==========
+// 페이지 로드 시 문의 항목들 확인
+function checkMyInquiries() {
+    var currentUserId = getuserid();
+    console.log('현재 사용자 ID:', currentUserId);
+    
+    // 모든 문의 아이템 확인
+    document.querySelectorAll('.inquiry-item').forEach(function(item) {
+        var inquiryUserId = item.dataset.userId;
+        
+        console.log('문의 확인:', {
+            inquiryId: item.dataset.inquiryId,
+            inquiryUserId: inquiryUserId,
+            currentUserId: currentUserId,
+            isMatch: currentUserId === inquiryUserId
+        });
+        
+        if (currentUserId === inquiryUserId) {
+            // 내 문의인 경우
+            console.log('내 문의 발견:', item.dataset.inquiryId);
+            
+            // 내 문의 표시
+            var myInquirySection = item.querySelector('.my-inquiry-section');
+            if (myInquirySection) {
+                myInquirySection.style.display = 'block';
+                console.log('내 문의 섹션 표시됨');
+            }
+            
+            // 수정/삭제 버튼 표시 (오른쪽에)
+            var actions = item.querySelector('.inquiry-actions');
+            if (actions) {
+                actions.style.display = 'flex';
+                console.log('수정/삭제 버튼 표시됨');
+            }
+            
+            // 내 문의 스타일 적용
+            item.classList.add('my-inquiry');
+            console.log('내 문의 스타일 적용됨');
+        } else {
+            console.log('다른 사용자의 문의:', inquiryUserId);
+        }
+    });
+}
+
+// 문의 수정
+function editInquiry(inquiryId) {
+    var userId = getuserid();
+    console.log('문의 수정:', inquiryId, 'by user:', userId);
+    location.href = 'inquiry_edit_view?inquiry_id=' + inquiryId + '&user_id=' + userId;
+}
+
+// 문의 삭제
+function deleteInquiry(inquiryId) {
+    if (confirm('정말 이 문의를 삭제하시겠습니까?')) {
+        var userId = getuserid();
+        console.log('문의 삭제:', inquiryId, 'by user:', userId);
+        location.href = 'inquiry_delete?inquiry_id=' + inquiryId + '&user_id=' + userId;
+    }
+}
+
+// 페이지 로드 시 실행
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('페이지 로드 완료, 문의 확인 시작');
+    checkMyInquiries();
+});
+
+// 디버깅용 함수
+function debugInquiries() {
+    var currentUserId = getuserid();
+    console.log('=== 문의 디버깅 ===');
+    console.log('현재 사용자 ID:', currentUserId);
+    
+    document.querySelectorAll('.inquiry-item').forEach(function(item, index) {
+        console.log(`문의 ${index + 1}:`, {
+            inquiryId: item.dataset.inquiryId,
+            userId: item.dataset.userId,
+            isMyInquiry: currentUserId === item.dataset.userId
+        });
+    });
+}
 </script>
+
 
 <body>
 <h2>product_detail</h2>
@@ -429,6 +812,14 @@
 
     <!-- 왼쪽 섹션: 이미지, 하단바, 상품정보 -->
     <div class="left-section">
+    	
+    	<!-- 이미지 -->
+    	<div>
+    		<c:forEach var="productimg" items="${productimgs }">
+    			<img class="main-img" src="/static/uploads/shop/${productimg.product_imgurl }" alt="" onclick="changeMainImage(this)" />
+    			<img class="sub-img" src="/static/uploads/shop/${productimg.product_imgurl }" onclick="changeMainImage(this)"/>    		
+    		</c:forEach>
+    	</div>
     	
         <!-- 이미지 영역 -->
         <div class="imgcontainer">
@@ -478,25 +869,6 @@
         	</div>
         	
         	<!-- 리뷰 목록 (forEach로 반복) -->
-        	
-        	
-        	<c:forEach var="review" items="${review_list }">
-        		
-        		
-        		<p>${review.user_nickname }</p>
-        		<p>${review.user_name }</p>
-        		<p>${review.user_id }</p>
-        		<p>${review.review_content }</p>
-        		<p>${review.review_img }</p>
-        		<p>${product_mall_name }</p>
-        		<p>${product__name }</p>
-  	      	
-        	</c:forEach>
-        	
-        	상품아이디;
-        	<p>${product.product_id }</p>
-        	
-        
         	<c:forEach var="review" items="${review_list}" varStatus="status">
         		<div class="review-item">
         			<div class="review-content-area">
@@ -505,9 +877,6 @@
         					<span class="review-author">작성자: ${review.user_nickname != null ? review.user_nickname : sessionScope.user_id}</span>
         				</div>
         				<div class="review-bottom">
-        					<div class="review-image">
-        						<img src="/static/uploads/review/${review.review_img != null ? review.review_img : 'default-review.jpg'}" alt="리뷰 이미지" />
-        					</div>
         					<div class="review-text">
         						<p>${review.review_content != null ? review.review_content : '정말 좋은 상품입니다! 배송도 빠르고 품질도 만족스럽습니다.'}</p>
         					</div>
@@ -553,16 +922,105 @@
         		</div>
         	</c:if>
         </div>
+        
+        <!-- 상품 문의 -->
+        <!-- 상품 문의 섹션 (리뷰 섹션 아래에 추가) -->
+		<div class="inquiry-section">
+		    <div class="inquiry-header">
+		        <h3 class="inquiry-title">상품 문의</h3>
+		        <button class="inquiry-write-btn" onclick="inquirywrite()">문의 작성하기</button>
+		    </div>
+		    
+		    <!-- 문의 목록 -->
+		    <c:forEach var="inquiry" items="${product_inquiry_list}" varStatus="status">
+		        <!-- ✅ 중요: data-user-id와 data-inquiry-id 속성 추가 -->
+		        <div class="inquiry-item" data-user-id="${inquiry.user_id}" data-inquiry-id="${inquiry.pinquiry_id}">
+		            <div class="inquiry-content-area">
+		                <div class="inquiry-top">
+		                    <div class="inquiry-meta">
+		                        <span class="inquiry-author">작성자: ${inquiry.user_nickname != null ? inquiry.user_nickname : '익명'}</span>
+		                        <span class="inquiry-date">
+		                            <fmt:formatDate value="${inquiry.pinquiry_date}" pattern="yyyy-MM-dd HH:mm"/>
+		                        </span>
+		                        <p>${inquiry.pinquiry_status}</p>  
+		                       	 <!-- 이거 문의하는데 시간이 필요하네 -->
+		                        <!-- 보다 중요한건 카카오페이결제인데 -->
+		                        
+		                        <!-- JavaScript로 제어될 내 문의 영역 -->
+		                        <div class="my-inquiry-section" style="display: none;">
+		                            <p class="my-inquiry-text">내 문의: ${inquiry.user_id}</p>
+		                        </div>
+		                    </div>
+		                    
+		                    <button><a href="product_reply_view?pinquiry_id=${inquiry.pinquiry_id }"> 답변달기</a></button>
+		                    <!-- 만약 user의 roles가 관리자이면은 답변달기 버튼이 활성화 -->
+		                    <c:set var="userRole" value="${sessionScope.user_id }"/>
+		                    <c:if test="${sessionScope.user_id }"></c:if>
+
+		                    
+		                    
+		                    <!-- JavaScript로 제어될 버튼 영역 (오른쪽에 위치) -->
+		                    <div class="inquiry-actions" style="display: none;">
+		                        <button class="btn-edit" onclick="editInquiry(${inquiry.pinquiry_id})">수정</button>
+		                        <button class="btn-delete" onclick="deleteInquiry(${inquiry.pinquiry_id})">삭제</button>
+		                    </div>
+		                </div>
+		                
+		                <div class="inquiry-content">
+		                    <!-- 문의 내용 -->
+		                    <p class="inquiry-text">${inquiry.pinquiry_content != null ? inquiry.pinquiry_content : '문의 내용이 없습니다.'}</p>
+		                </div>
+		                
+		                <!-- 답변 영역 -->
+		                <c:if test="${inquiry.preply_content != null and inquiry.preply_content != ''}">
+		                    <div class="inquiry-answer">
+		                        <div class="answer-header">
+		                            <span class="answer-label">📋 관리자 답변</span>
+		                            <span class="answer-date">
+		                                <fmt:formatDate value="${inquiry.preply_date}" pattern="yyyy-MM-dd HH:mm"/>
+		                            </span>
+		                        </div>
+		                        <div class="answer-content">
+		                            <p>${inquiry.preply_content}</p>
+		                        </div>
+		                    </div>
+		                </c:if>
+		            </div>
+		        </div>
+		    </c:forEach>
+		    
+		    <!-- 문의가 없을 경우 -->
+		    <c:if test="${empty product_inquiry_list}">
+		        <div class="no-inquiry">
+		            <div class="no-inquiry-content">
+		                <p>💬 아직 등록된 문의가 없습니다.</p>
+		                <p>상품에 대해 궁금한 점이 있으시면 문의를 남겨주세요.</p>
+		            </div>
+		        </div>
+		    </c:if>
+		</div>
     </div>
+    
 
     <!-- 오른쪽 섹션: 상품 정보 및 구매 옵션 -->
     <div class="right-section">
         <p class="mallname">${product.product_mall_name}</p>
         <h1 class="title">${product.product_name}</h1>
-
+		<!-- 상품 정보는 product_id를 전달한다. -->
+		<!-- 바로주문은 product_id를 전달한다. -->
+		
+		<!-- 장바구니 담기는 product_id와 user_id를 반환한다 -->
+			
+		<!--  장바구니 담기와 바로담기 모두 product_id를 반환하니까  -->
+		
+		
+		<!--  그러면 장바구니 담기와 바로구매가 별반 차이가 없는것 아닌가
+		
+		<-- 장바구니 담기와 바로구매 차이가 뭐지 파라미터로 전달  -->
+		
         <!-- 할인 정보 -->
         <c:set var="hasDiscount" value="${product.product_discountrate != null and product.product_discountrate > 0}" />
-
+ 
         <c:choose>
             <c:when test="${hasDiscount}">
                 <!-- 할인이 있는 경우 -->
@@ -591,8 +1049,27 @@
         <!-- 구매 버튼들 -->
         <div class="action-buttons">
             <button class="cart-btn" onclick="showAlert()">장바구니 담기</button>
-            <button class="order-btn" onclick="location.href='order'">바로 주문하기</button>
+            <button class="order-btn" onclick="goorder()">바로 주문하기</button>
         </div>
+        
+        <script>
+        
+        
+        
+     	// 바로 주문하기
+        function goorder(){
+            let userId = getUserId();
+            if (!userId) return; // 로그인 안된 경우 함수 종료
+            
+            // 바로 주문: product_id, user_id, quantity 전달
+            location.href = 'order_view?product_id=${product.product_id}' + 
+                           '&user_id=' + userId + 
+                           '&quantity=' + count+
+            			   '&form_cart=false';
+        }
+        
+        </script>
+        
     </div>
 </div>
 

@@ -39,24 +39,24 @@ public class GetNoticeListService implements NoticeServiceInterface{
     @Override
     public void execute(Model model) {
         Map<String, Object> map = model.asMap();
-        NoticeSearchDTO noticeSearchVO = (NoticeSearchDTO) map.get("noticeSearchVO");
+        NoticeSearchDTO noticeSearchDTO = (NoticeSearchDTO) map.get("noticeSearchDTO");
         SearchVO searchVO = (SearchVO) map.get("searchVO");
         List<Map<String, Object>> mapList = new ArrayList<>();
         List<NoticesDto> dtoList;
         int total;
 
         // 검색 조건이 없거나 비어있으므로 전체 공지사항을 가져옴
-        if (noticeSearchVO == null ||
-                (noticeSearchVO.getNoticeTitle() == null || noticeSearchVO.getNoticeTitle().isEmpty()) &&
-                (noticeSearchVO.getNoticeContent() == null || noticeSearchVO.getNoticeContent().isEmpty()) &&
-                (noticeSearchVO.getNoticeDateStart() == null || noticeSearchVO.getNoticeDateStart().isEmpty()) &&
-                (noticeSearchVO.getNoticeDateEnd() == null || noticeSearchVO.getNoticeDateEnd().isEmpty())) {
+        if (noticeSearchDTO == null ||
+                (noticeSearchDTO.getNoticeTitle() == null || noticeSearchDTO.getNoticeTitle().isEmpty()) &&
+                (noticeSearchDTO.getNoticeContent() == null || noticeSearchDTO.getNoticeContent().isEmpty()) &&
+                (noticeSearchDTO.getNoticeDateStart() == null || noticeSearchDTO.getNoticeDateStart().isEmpty()) &&
+                (noticeSearchDTO.getNoticeDateEnd() == null || noticeSearchDTO.getNoticeDateEnd().isEmpty())) {
             total = noticesIDao.countAllNotices();
             dtoList = noticesIDao.getAllNotices(searchVO);
         // 검색 조건이 있으면 검색 된 공지사항을 가져옴
         } else {
-            total = noticesIDao.countSearchNotice(noticeSearchVO);
-            dtoList = noticesIDao.searchNotice(noticeSearchVO, searchVO);
+            total = noticesIDao.countSearchNotice(noticeSearchDTO);
+            dtoList = noticesIDao.searchNotice(noticeSearchDTO, searchVO);
         }
 
         searchVO.pageCalculate(total);

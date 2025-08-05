@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.shop.dto.CartDto;
 import com.ama.don.shop.dto.CartFlatDto;
 import com.ama.don.shop.dto.DeliverDto;
@@ -16,6 +17,7 @@ import com.ama.don.shop.dto.Orders_productsDto;
 import com.ama.don.shop.dto.PaymentDto;
 import com.ama.don.shop.dto.ProductDto;
 import com.ama.don.shop.dto.ProductFlatDto;
+import com.ama.don.shop.dto.ShopProductInquiryFlatDto;
 import com.ama.don.shop.dto.ShopReviewFlatDto;
 
 @Mapper
@@ -41,9 +43,11 @@ public interface ShopIDao {
 	//상품 카테고리로 특정 상품 리스트 조회
 	public ArrayList<ProductFlatDto> product_category(Long category);
 	
+	////상품 쇼핑몰로 특정 상품 리스트 조히
+	public ArrayList<ProductFlatDto> product_mall(String product_mall_name);
 	
-	
-	
+	//상품 리뷰수가 많은 상품 리스트로 조회
+	public ArrayList<ProductFlatDto> product_best_list();
 	
 	
 	//Cart iDao
@@ -53,10 +57,19 @@ public interface ShopIDao {
     public void cart_delete_item(Long user_id,Long product_id);
     public void cart_update(Long cart_id, int cart_quantity);
     
-    
-    //
-    
-    
+    //Review IDao
+  	public ArrayList<ShopReviewFlatDto> review_list(Long target_id);
+  	public void review_write(ShopReviewFlatDto shopReviewFlatDto);
+  	
+    //product_inquiry iDao
+	public void product_inquiry_write(Long userid, Long productid, String pinquiry_content);	//상품문의 작성 
+	public ArrayList<ShopProductInquiryFlatDto> product_inquiry_list(Long productid);			//단일 상품 문의 리스트
+	public ShopProductInquiryFlatDto product_inquiry(Long pinquiryid);							//단일 상품 특정 문의 조회
+	
+	
+	//product_reply iDao
+	public void reply_write(Long pinquiryid);
+	
 	//Order iDao
     
     public void order_write(OrdersDto ordersDto);
@@ -78,16 +91,9 @@ public interface ShopIDao {
 			String deliver_recipient_phone, String deliver_loc, String deliver_detail_loc);
 	
 	
-	
-	
-	//Review IDao
-	public ArrayList<ShopReviewFlatDto> review_list(Long target_id);
-	public void review_write(Long user_id, Long target_id, String review_title, String review_content,
-			String review_img);
-	
 	//User_detail IDao
 	public ShopReviewFlatDto user_info(Long user_id);
-
+	
 	
 	//주문수정을 하는데 실제로는 배송지 수정정도를 할것 그러니까 주문아이디로 배송지를 찾아서 배송지를 deliver_update를 하면된다.
 	

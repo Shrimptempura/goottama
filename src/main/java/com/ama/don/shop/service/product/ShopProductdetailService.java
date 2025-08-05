@@ -10,6 +10,7 @@ import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.ProductDto;
 import com.ama.don.shop.dto.ProductFlatDto;
 import com.ama.don.shop.dto.Product_imgDto;
+import com.ama.don.shop.dto.ShopProductInquiryFlatDto;
 import com.ama.don.shop.dto.ShopReviewFlatDto;
 import com.ama.don.shop.service.ShopServiceinter;
 
@@ -63,16 +64,21 @@ public class ShopProductdetailService implements ShopServiceinter{
 			ArrayList<ShopReviewFlatDto> reviewFlatDtos=iDao.review_list(targetid);
 			
 			// 4. 문의 정보
+			ArrayList<ShopProductInquiryFlatDto> inquiryFlatDtos=iDao.product_inquiry_list(productid);
 			
-			
-			
+			// 5. 사용자의 권한 확인 (관리자면 문의에 답글 가능, )
+				
 			model.addAttribute("product",productFlatDto);
 			model.addAttribute("productimgs",productimgs);
 			model.addAttribute("review_list",reviewFlatDtos);
+			model.addAttribute("product_inquiry_list",inquiryFlatDtos);
+			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 		
+		
+		//
 	}
 
 }

@@ -1,3 +1,4 @@
+// NoticePageScript.js
 function initNoticePage() {
     const form = document.getElementById("noticeSearchForm");
     const container = document.getElementById("noticeListContainer");
@@ -27,7 +28,6 @@ function initNoticePage() {
             }
             const html = await response.text();
             container.innerHTML = html;
-
             bindPageButtons(); // 새롭게 로드된 HTML의 페이지 버튼에 이벤트 다시 연결
         } catch (error) {
             console.error("공지 목록을 불러오는 중 오류 발생:", error);

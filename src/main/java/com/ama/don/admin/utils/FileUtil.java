@@ -50,7 +50,7 @@ public class FileUtil {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         String extension = "";
         int lastDotIndex = originalFilename.lastIndexOf(".");
-        if (lastDotIndex != -1 && lastDotIndex < originalFilename.length() -1) {
+        if (lastDotIndex != -1 && lastDotIndex < originalFilename.length() - 1) {
             extension = originalFilename.substring(lastDotIndex + 1);
         }
         String savedFilename = uuid;
@@ -69,7 +69,7 @@ public class FileUtil {
      * 파일 경로를 받아 해당 파일을 물리적으로 제거함.
      *
      * @param savedFilename 삭제할 파일의 서버 절대 경로.
-     * @param fileUploader file_uploader. 파일 결로 구분을 위함.
+     * @param fileUploader  file_uploader. 파일 결로 구분을 위함.
      * @return 삭제 성공 시 `true`, 실패 시 `false` 반환됨.<br/>
      * 파일이 존재하지 않거나 삭제 권한이 없는 경우 `false` 반환될 수 있음.
      */
@@ -77,7 +77,7 @@ public class FileUtil {
         String baseUploadLocation;
         if (fileUploader.equals("TUI_EDITOR")) {
             baseUploadLocation = tuiEditorUploadLocation;
-        } else{
+        } else {
             baseUploadLocation = attachmentUploadLocation;
         }
         if (baseUploadLocation == null || baseUploadLocation.isEmpty()) {
