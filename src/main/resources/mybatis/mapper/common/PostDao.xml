@@ -24,22 +24,6 @@
 		ORDER BY post_id DESC
 	</select>
 
-	<!-- 게시글 상세 조회 -->
-	<select id="findById" parameterType="long"
-		resultType="com.ama.don.common.dto.PostDto">
-		SELECT
-		post_id,
-		user_id,
-		post_title,
-		post_content,
-		post_date,
-		post_count,
-		post_like_count,
-		target_type AS targetType,
-		FROM post
-		WHERE post_id = #{post_id}
-	</select>
-
 	<!-- 게시글 작성 -->
 	<insert id="create"
 		parameterType="com.ama.don.common.dto.PostDto" useGeneratedKeys="true"
@@ -100,6 +84,29 @@
 		    #{targetType}
 		)
 	</insert>
+
+	<!-- 다형성 조회 id, target, date -->
+	<select id="polyFindById" resultType="java.lang.Integer">
+		SELECT
+		    post_id,
+		    target_id,
+		    target_type,
+		    post_date
+		FROM post
+		WHERE post_id = #{post_id}
+	</select>
+
+	<!-- 게시글 상세 조회 -->
+	<select id="findById" resultType="com.ama.don.common.dto.PostDto">
+		SELECT
+			post_id,
+			user_id,
+			post_title,
+			post_content,
+			post_date
+		FROM post
+		WHERE post_id = #{post_id}
+	</select>
 
 
 </mapper>

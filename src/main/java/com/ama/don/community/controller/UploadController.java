@@ -44,8 +44,8 @@ public class UploadController {
 		fileDto.setTarget_type(TargetType.valueOf(targetTypeStr));
 		fileDto.setFile_name(saveName);
 		fileDto.setFile_path("/upload/" + saveName);
-		fileDto.setTargetId(null);
-		System.out.println("파일 업로드 시@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ target_id: " + fileDto.getTargetId());
+		fileDto.setTarget_id(null);
+		System.out.println("파일 업로드 시@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ target_id: " + fileDto.getTarget_id());
 
 		System.out.println("INSERT @@@@@@@@@@@@@@@@@@@@@@@@@@@@"
 				+ "@@@@@@@@@@@@전 DTO 상태: " + fileDto);
