@@ -1,4 +1,4 @@
-package com.ama.don.interior.dto.service;
+package com.ama.don.interior.service;
 
 import com.ama.don.interior.dto.company.CompanyCreateDto;
 import com.ama.don.interior.dto.company.CompanyCreateLocationDto;

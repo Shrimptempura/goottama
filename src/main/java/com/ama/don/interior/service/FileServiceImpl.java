@@ -1,4 +1,4 @@
-package com.ama.don.interior.dto.service;
+package com.ama.don.interior.service;
 
 import com.ama.don.common.dao.FileDao;
 import com.ama.don.common.dto.FileDto;
