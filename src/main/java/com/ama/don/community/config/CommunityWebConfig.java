@@ -10,7 +10,7 @@ public class CommunityWebConfig implements WebMvcConfigurer {
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		// 업로드 이미지 접근용 매핑
-		registry.addResourceHandler("/uploadedImages/**").addResourceLocations("file:///C:/upload/");
+		registry.addResourceHandler("/upload/**").addResourceLocations("file:///C:/upload/");
 
 		// 정적 리소스 (CSS, JS)
 		registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");

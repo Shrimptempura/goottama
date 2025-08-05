@@ -36,27 +36,27 @@
 				<tr>
 					<td><a
 						href="${pageContext.request.contextPath}/community/post_detail_view?post_id=${review.post_id}">
-							${review.post_title} </a></td>
-					<td><fmt:formatDate value="${review.post_date}"
+							${review.review_title} </a></td>
+					<td><fmt:formatDate value="${review.review_date}"
 							pattern="yyyy-MM-dd HH:mm" /></td>
+
 					<td><c:choose>
 							<c:when test="${not empty review.fileList}">
-								<img
-									src="${pageContext.request.contextPath}${review.fileList[0].file_path}"
-									alt="썸네일" style="width: 80px;" />
-							</c:when>
+								<img src="${review.fileList[0].file_path}" alt="썸네일"
+									style="width: 80px; height: 80px; object-fit: cover;" />
 
+							</c:when>
 							<c:otherwise>
 								<span style="color: gray;">이미지 없음</span>
 							</c:otherwise>
 						</c:choose></td>
 
-					<td>${review.post_count}</td>
-					<td>${review.post_like_count}</td>
+
+					<td>${review.review_count}</td>
+					<td>${review.review_like_count}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
-
 	</table>
 
 	<div class="d-flex justify-content-center mt-4">

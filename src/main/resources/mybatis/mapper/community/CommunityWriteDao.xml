@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.community.Dao.CommunityWriteDao">
+
+	<insert id="createReview" useGeneratedKeys="true"
+		parameterType="com.ama.don.community.Dto.Review.ReviewWriteDto"
+		keyProperty="review_id">
+		INSERT INTO community_post_review (
+		post_id,
+		user_id,
+		review_title,
+		review_content
+		)
+		VALUES (
+		#{post_id},
+		#{user_id},
+		#{review_title},
+		#{review_content}
+		)
+	</insert>
+
+	<update id="updatePostId">
+		UPDATE community_post_review
+		SET post_id = #{post_id}
+		WHERE review_id = #{review_id}
+	</update>
+
+</mapper>

@@ -8,13 +8,11 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class CommentsDto {
-
 	private Long commentId;
 	private Long userId;
 
@@ -25,5 +23,5 @@ public class CommentsDto {
 
 	private Long targetId;
 	private TargetType targetType;
-}
 
+}

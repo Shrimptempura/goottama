@@ -1,113 +1,145 @@
 $(document).ready(function() {
+	console.log("✅ drag_upload.js 로드됨");
+
 	const objDragAndDrop = $(".dragAndDropDiv");
+	const fileInput = $('#hiddenFileInput');
+	const preview = $("#preview");
+	const selectedFiles = [];
 
-	objDragAndDrop.on('click', function() {
-		$('#hiddenFileInput').trigger('click');
+	// 클릭하면 파일 선택창 열기
+	objDragAndDrop.on('click', () => {
+		console.log("✅ 드래그박스 클릭됨 → 파일선택창 열림");
+		fileInput.trigger('click');
 	});
 
-	$('#hiddenFileInput').on('change', function(e) {
-		const files = e.target.files;
-		handleFileUpload(files, objDragAndDrop);
+	// 파일 선택 시 처리
+	fileInput.on('change', function(e) {
+		console.log("✅ 파일 선택됨", e.target.files);
+		handleFileUpload(e.target.files);
 	});
 
+	// 드래그/드롭 기본 동작 방지
 	$(document).on("dragenter dragover drop", function(e) {
 		e.preventDefault();
 		e.stopPropagation();
 	});
 
+	// 드롭 처리
 	objDragAndDrop.on("drop", function(e) {
-		$(this).css('border', '2px dotted #0B85A1');
-		const files = e.originalEvent.dataTransfer.files;
-		handleFileUpload(files, objDragAndDrop);
+		e.preventDefault();
+		e.stopPropagation();
+		console.log("✅ 드래그된 파일 drop됨", e.originalEvent.dataTransfer.files);
+		handleFileUpload(e.originalEvent.dataTransfer.files);
 	});
 
-	function handleFileUpload(files, obj) {
-		for (let i = 0; i < files.length; i++) {
-			const fd = new FormData();
-			fd.append('file', files[i]);
+	function handleFileUpload(files) {
+		console.log("📂 handleFileUpload 실행됨", files);
 
-			const status = new createStatusbar(obj);
-			status.setFileNameSize(files[i].name, files[i].size);
-			sendFileToServer(fd, status);
-		}
-	}
+		preview.empty();
+		selectedFiles.length = 0;
 
-	let rowCount = 0;
+		Array.from(files).forEach(file => {
+			selectedFiles.push(file);
+			console.log("📥 파일 추가됨:", file.name);
 
-	function createStatusbar(obj) {
-		rowCount++;
-		const row = (rowCount % 2 === 0) ? "even" : "odd";
-		this.statusbar = $("<div class='statusbar " + row + "'></div>");
-		this.filename = $("<div class='filename'></div>").appendTo(this.statusbar);
-		this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
-		this.progressBar = $("<div class='progressBar'><div></div></div>").appendTo(this.statusbar);
-		this.abort = $("<div class='abort'>중지</div>").appendTo(this.statusbar);
-		obj.after(this.statusbar);
+			// 이미지 업로드 즉시 실행
+			const formData = new FormData();
+			formData.append("file", file);
+			formData.append("target_type", "COMMUNITY_REVIEW");
+			formData.append("user_id", 1); // 백엔드용
 
-		this.setFileNameSize = function(name, size) {
-			const sizeKB = size / 1024;
-			const sizeStr = (sizeKB > 1024) ? (sizeKB / 1024).toFixed(2) + " MB" : sizeKB.toFixed(2) + " KB";
-			this.filename.html(name);
-			this.size.html(sizeStr);
-		};
+			fetch("/file/upload_image", {
+				method: "POST",
+				body: formData
+			})
+				.then(response => response.text())
+				.then(result => {
+					console.log("📤 즉시 업로드 성공:", file.name, result);
+				})
+				.catch(err => {
+					console.error("❌ 즉시 업로드 실패:", file.name, err);
+				});
 
-		this.setProgress = function(progress) {
-			const progressBarWidth = progress * this.progressBar.width() / 100;
-			this.progressBar.find('div').animate({ width: progressBarWidth }, 10).html(progress + "% ");
-			if (parseInt(progress) >= 100) this.abort.hide();
-		};
-
-		this.setAbort = function(jqxhr) {
-			const sb = this.statusbar;
-			this.abort.click(function() {
-				jqxhr.abort();
-				sb.hide();
-			});
-		};
-	}
-
-	function sendFileToServer(formData, status) {
-		const uploadURL = "/file/upload";
-		const jqXHR = $.ajax({
-			xhr: function() {
-				const xhrobj = $.ajaxSettings.xhr();
-				if (xhrobj.upload) {
-					xhrobj.upload.addEventListener('progress', function(event) {
-						if (event.lengthComputable) {
-							const percent = Math.ceil((event.loaded / event.total) * 100);
-							status.setProgress(percent);
-						}
-					}, false);
-				}
-				return xhrobj;
-			},
-			url: uploadURL,
-			type: "POST",
-			contentType: false,
-			processData: false,
-			cache: false,
-			data: formData,
-			success: function(data) {
-				status.setProgress(100);
-
-				// 이미지 미리보기
-				if (data && typeof data === 'string' && data.startsWith('/')) {
+			// 이미지 미리보기
+			if (file.type.startsWith("image/")) {
+				const reader = new FileReader();
+				reader.onload = function(e) {
 					const img = document.createElement("img");
-					img.src = data;
-					img.alt = "업로드된 이미지";
-					img.style.maxWidth = "100px";
-					img.style.maxHeight = "100px";
-					img.style.border = "1px solid #ccc";
-					img.style.marginTop = "10px";
-					img.style.objectFit = "cover";
-
-					document.getElementById("preview").appendChild(img);
-				} else {
-					console.warn("Invalid image path:", data);
-				}
+					img.src = e.target.result;
+					img.alt = "미리보기";
+					Object.assign(img.style, {
+						maxWidth: "100px",
+						maxHeight: "100px",
+						border: "1px solid #ccc",
+						marginTop: "10px",
+						objectFit: "cover"
+					});
+					preview.append(img);
+				};
+				reader.readAsDataURL(file);
+			} else {
+				console.warn("🚫 이미지 파일이 아님:", file.name);
 			}
 		});
+	}
 
-		status.setAbort(jqXHR);
+
+	// 글쓰기 버튼 클릭 시
+	$("#submitPostBtn").on("click", function() {
+		const reviewTitle = $("#title").val();
+		const reviewContent = $("#content").val();
+		const targetType = $("select[name='target_type']").val();
+
+		if (!reviewTitle.trim() || !reviewContent.trim()) {
+			alert("제목과 내용을 모두 입력해주세요.");
+			return;
+		}
+
+		console.log("📝 글 작성 요청 시작");
+		fetch("/community/write", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			body: new URLSearchParams({
+				review_title: reviewTitle,
+				review_content: reviewContent,
+				target_type: targetType
+				// user_id는 백엔드에서 1L로 고정
+			})
+		})
+			.then(response => response.json())
+			.then(data => {
+				const postId = data.post_id;
+				console.log("✅ 글 작성 성공 post_id:", postId);
+				window.location.href = "/community/review_view";
+			})
+			.catch(error => {
+				console.error("❌ 글 작성 실패:", error);
+				alert("서버와 통신 중 오류가 발생했습니다.");
+			});
+	});
+
+	// 이미지 업로드
+	function uploadFiles(postId, targetType) {
+		selectedFiles.forEach(file => {
+			const formData = new FormData();
+			formData.append("file", file);
+			formData.append("target_type", targetType);
+			formData.append("post_id", postId);
+			formData.append("user_id", 1); // 백엔드에서 이미 고정되어 있어도 서버 로그 확인용
+
+			fetch("/file/upload_image", {
+				method: "POST",
+				body: formData
+			})
+				.then(response => response.text())
+				.then(result => {
+					console.log("📤 파일 업로드 성공:", file.name, result);
+				})
+				.catch(err => {
+					console.error("❌ 파일 업로드 실패:", file.name, err);
+				});
+		});
 	}
 });

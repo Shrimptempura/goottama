@@ -1,104 +1,54 @@
 package com.ama.don.community.controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ama.don.common.dao.FileDao;
-import com.ama.don.common.dao.PostDao;
-import com.ama.don.common.dto.FileDto;
-import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.enums.TargetType;
+import com.ama.don.community.Dto.Review.ReviewWriteDto;
+import com.ama.don.community.service.Write_viewService;
 
 @Controller
 @RequestMapping("/community")
 public class Write_viewController {
 
 	@Autowired
-	private PostDao postDao;
+	private Write_viewService write_viewService;
 
-	@Autowired
-	private FileDao fileDao;
-
-	private final String uploadDir = "C:/upload/";
-
-	// 글쓰기 페이지
 	@GetMapping("/write_view")
-	public String writeForm() {
+	public String write_form() {
+
 		return "community/write_view";
 	}
 
-	// 게시글 저장
 	@PostMapping("/write")
-	public String writePost(@RequestParam("title") String title, @RequestParam("content") String content,
-			@RequestParam("targetType") String targetType,
-			@RequestParam(value = "imgFiles", required = false) MultipartFile[] imgFiles, Model model) {
+	@ResponseBody
+	public Map<String, Object> write_post(@RequestParam("review_title") String reviewTitle,
+			@RequestParam("review_content") String reviewContent, @RequestParam("target_type") String targetTypeStr) {
 
-		PostDto dto = new PostDto();
-		dto.setUser_id(1L); // 임시 아이디 L == Long
-		dto.setPost_title(title);
-		dto.setPost_content(content);
+		Long userId = 1L;
+		
+		ReviewWriteDto dto = new ReviewWriteDto();
+		dto.setReview_title(reviewTitle);
+		dto.setReview_content(reviewContent);
+		dto.setTargetType(TargetType.valueOf(targetTypeStr));
 
-		TargetType type;
-		try {
-			type = TargetType.valueOf(targetType);
-			dto.setTargetType(type);
-		} catch (IllegalArgumentException e) {
-			model.addAttribute("msg", "잘못된 게시판 유형입니다.");
-			return "community/write_view";
-		}
+		// 서비스 호출
+		ReviewWriteDto savedDto = write_viewService.createReviewWithPost(userId, dto);
+		Long postId = savedDto.getPost_id();
 
-		dto.setTargetId(1L); // 임시 아이디 L == Long
-
-		// 게시글 저장
-		postDao.create(dto);
-		Long postId = dto.getPost_id();
-
-		// 이미지 저장
-		if (imgFiles != null) {
-			for (MultipartFile file : imgFiles) {
-				if (!file.isEmpty()) {
-					try {
-						String orgName = file.getOriginalFilename();
-						String uuid = UUID.randomUUID().toString().replaceAll("-", "");
-						String extension = "";
-
-						int lastDot = orgName.lastIndexOf(".");
-						if (lastDot != -1 && lastDot < orgName.length() - 1) {
-							extension = orgName.substring(lastDot + 1);
-						}
-
-						String saveName = extension.isEmpty() ? uuid : uuid + "." + extension;
-
-						File uploadPath = new File(uploadDir);
-						if (!uploadPath.exists())
-							uploadPath.mkdirs();
-
-						File destFile = new File(uploadDir + saveName);
-						file.transferTo(destFile);
-
-						FileDto fileDto = new FileDto();
-						fileDto.setFile_name(orgName);
-						fileDto.setFile_path(saveName);
-						fileDto.setFile_uploader(type.name());
-						fileDto.setTarget_type(type);
-						fileDto.setTarget_id(postId);
-
-						fileDao.insertFile(fileDto);
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-
-		return "redirect:/community/review_view";
+		// JSON 응답
+		Map<String, Object> result = new HashMap<>();
+		result.put("post_id", postId);
+		return result;
 	}
 
 }

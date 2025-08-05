@@ -28,7 +28,7 @@ public class PostDto {
 	private Long targetId; // 대상 아이디
 	private TargetType targetType; // enum: INTERIOR, COMMUNITY
 
-	// 커뮤니티 이미지
+	// 커뮤니티 이미지 (파일은 파일 공통 Dto에서 처리)
 	private List<FileDto> fileList;
 
 }

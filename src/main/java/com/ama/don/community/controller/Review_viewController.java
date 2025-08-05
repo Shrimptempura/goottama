@@ -10,17 +10,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ama.don.common.dao.FileDao;
-import com.ama.don.common.dao.PostDao;
-import com.ama.don.common.dto.PostDto;
+import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.common.utils.CommunityPageVO;
+import com.ama.don.community.Dao.CommunityPostDao;
+import com.ama.don.community.Dto.Review.ReviewPostDto;
 
 @Controller
 @RequestMapping("/community")
 public class Review_viewController {
 
 	@Autowired
-	private PostDao postDao;
+	private CommunityPostDao CommunityPostDao;
 
 	@Autowired
 	private FileDao fileDao;
@@ -37,18 +38,23 @@ public class Review_viewController {
 		CommunityPageVO pageVO = new CommunityPageVO();
 		pageVO.setPage(page);
 
-		int totalCount = postDao.countByTarget(TargetType.COMMUNITY_REVIEW.name(), 1L);
+		String targetType = TargetType.COMMUNITY_REVIEW.name();
+
+		int totalCount = CommunityPostDao.countTargetType(targetType);
 		pageVO.pageCalculate(totalCount);
 
-		List<PostDto> list = postDao.findPagedByTarget(TargetType.COMMUNITY_REVIEW.name(), 1L, pageVO.getRowStart(),
+		List<ReviewPostDto> list = CommunityPostDao.findTargetType(targetType, pageVO.getRowStart(),
 				pageVO.getDisplayRowCount());
 
-		for (PostDto post : list) {
-			post.setFileList(fileDao.findByTarget(TargetType.COMMUNITY_REVIEW.name(), post.getPost_id()));
+		for (ReviewPostDto review : list) {
+			List<FileDto> fileList = fileDao.findByTargetId(TargetType.COMMUNITY_REVIEW, review.getPost_id());
+			review.setFileList(fileList);
 		}
 
 		model.addAttribute("reviewList", list);
 		model.addAttribute("pageVO", pageVO);
+
 		return "community/review_view";
 	}
+
 }
