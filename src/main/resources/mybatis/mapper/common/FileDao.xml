@@ -14,7 +14,7 @@
 		target_type, target_id
 		) VALUES (
 		#{file_uploader}, #{file_name},
-		#{file_path}, #{target_type}, #{targetId}
+		#{file_path}, #{target_type}, #{target_id}
 		)
 	</insert>
 
@@ -29,20 +29,30 @@
 		file_path,
 		file_uploader
 		FROM file
-		WHERE target_type = #{targetType}
-		AND target_id = #{targetId}
+		WHERE target_type = #{target_type}
+		AND target_id
+		=
+		#{target_id}
 	</select>
-
 
 	<!-- 타겟 아이디 수정 -->
 	<update id="updateTargetId">
 		UPDATE file
-		SET target_id = #{newTargetId}
+		SET target_id = #{new_target_id}
 		WHERE
-		target_type = #{targetType}
-		AND file_uploader = #{fileUploader}
+		target_type = #{target_type}
+		AND file_uploader = #{file_uploader}
 		AND
 		target_id IS NULL
 	</update>
+
+	<!--임시 업로드된 파일삭제 -->
+	<delete id="deleteTempFiles">
+		DELETE FROM file
+		WHERE target_type = #{target_type}
+		AND file_uploader = #{file_uploader}
+		AND target_id IS NULL
+	</delete>
+
 
 </mapper>

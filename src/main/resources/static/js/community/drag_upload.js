@@ -6,6 +6,22 @@ $(document).ready(function() {
 	const preview = $("#preview");
 	const selectedFiles = [];
 
+	// ⭐ 기존 임시 이미지 삭제 함수
+	function deleteTemporaryImages() {
+		fetch("/file/delete_temp", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-www-form-urlencoded"
+			},
+			body: new URLSearchParams({
+				user_id: 1, // 실제 로그인 유저 정보로 대체
+				target_type: "COMMUNITY_REVIEW"
+			})
+		})
+			.then(res => console.log("🧹 기존 임시 이미지 삭제 요청 보냄"))
+			.catch(err => console.error("❌ 임시 이미지 삭제 실패:", err));
+	}
+
 	// 클릭하면 파일 선택창 열기
 	objDragAndDrop.on('click', () => {
 		console.log("✅ 드래그박스 클릭됨 → 파일선택창 열림");
@@ -32,9 +48,14 @@ $(document).ready(function() {
 		handleFileUpload(e.originalEvent.dataTransfer.files);
 	});
 
+	// 파일 업로드 처리 함수
 	function handleFileUpload(files) {
 		console.log("📂 handleFileUpload 실행됨", files);
 
+		// ⭐ 기존 임시 파일 서버에서 삭제
+		deleteTemporaryImages();
+
+		// 프리뷰와 선택 파일 초기화
 		preview.empty();
 		selectedFiles.length = 0;
 
@@ -83,7 +104,6 @@ $(document).ready(function() {
 		});
 	}
 
-
 	// 글쓰기 버튼 클릭 시
 	$("#submitPostBtn").on("click", function() {
 		const reviewTitle = $("#title").val();
@@ -120,7 +140,7 @@ $(document).ready(function() {
 			});
 	});
 
-	// 이미지 업로드
+	// 이미지 업로드 (글쓰기 완료 후 업로드용)
 	function uploadFiles(postId, targetType) {
 		selectedFiles.forEach(file => {
 			const formData = new FormData();

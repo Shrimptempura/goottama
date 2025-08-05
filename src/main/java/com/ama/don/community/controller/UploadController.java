@@ -28,11 +28,10 @@ public class UploadController {
 	@PostMapping("/upload_image")
 	@ResponseBody
 	public String uploadImage(@RequestParam("file") MultipartFile file,
-			@RequestParam("target_type") String targetTypeStr)
-			throws IOException {
+			@RequestParam("target_type") String targetTypeStr) throws IOException {
 
 		Long userId = 1L;
-		
+
 		// 실제 저장할 파일 이름
 		String saveName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 		File saveFile = new File(uploadPath + saveName);
@@ -47,11 +46,18 @@ public class UploadController {
 		fileDto.setTarget_id(null);
 		System.out.println("파일 업로드 시@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ target_id: " + fileDto.getTarget_id());
 
-		System.out.println("INSERT @@@@@@@@@@@@@@@@@@@@@@@@@@@@"
-				+ "@@@@@@@@@@@@전 DTO 상태: " + fileDto);
+		System.out.println("INSERT @@@@@@@@@@@@@@@@@@@@@@@@@@@@" + "@@@@@@@@@@@@전 DTO 상태: " + fileDto);
 		fileDao.create(fileDto);
-		
+
 		return "success";
+	}
+
+	@PostMapping("/delete_temp")
+	@ResponseBody
+	public void deleteTempFiles(@RequestParam("user_id") Long userId,
+			@RequestParam("target_type") String targetTypeStr) {
+		TargetType targetType = TargetType.valueOf(targetTypeStr);
+		fileDao.deleteTempFiles(targetType, userId);
 	}
 
 }

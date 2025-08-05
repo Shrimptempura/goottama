@@ -42,13 +42,14 @@
 		LIMIT #{start}, #{count}
 	</select>
 
+
 	<select id="countTargetType" resultType="int"
 		parameterType="string">
 		SELECT COUNT(*)
 		FROM post
-		WHERE target_type = #{targetType}
+		WHERE target_type =
+		#{targetType}
 	</select>
-
 
 
 

@@ -21,5 +21,7 @@ public class Like_CountController {
 		int likeCount = communityDetailDao.findById(reviewId).getReview_like_count();
 		return String.valueOf(likeCount);
 	}
+	
+	
 
 }

@@ -9,56 +9,56 @@
 <title>커뮤니티 게시판</title>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/community/review_view.css">
+
 </head>
-<body>
-	<h3>리뷰 뷰 게시글 목록</h3>
+<body class="container mt-4">
+
+	<h3>리뷰 게시글 목록</h3>
 
 	<div class="mb-3 d-flex justify-content-end">
 		<a href="${pageContext.request.contextPath}/community/write_view"
-			class="btn btn-outline-primary fw-bold"
-			style="color: black; border: none;"
-			onmouseover="this.style.backgroundColor='#f0f0f0'"
-			onmouseout="this.style.backgroundColor='white'"> 글작성</a>
+			class="btn btn-outline-primary fw-bold write-button">글작성</a>
 	</div>
 
-	<table class="table table-hover text-center">
-		<thead class="table-light">
-			<tr>
-				<th>제목</th>
-				<th>작성일</th>
-				<th>사진</th>
-				<th>조회수</th>
-				<th>좋아요</th>
-			</tr>
-		</thead>
-		<tbody>
-			<c:forEach var="review" items="${reviewList}" varStatus="status">
-				<tr>
-					<td><a
-						href="${pageContext.request.contextPath}/community/post_detail_view?post_id=${review.post_id}">
-							${review.review_title} </a></td>
-					<td><fmt:formatDate value="${review.review_date}"
-							pattern="yyyy-MM-dd HH:mm" /></td>
+	<!-- 게시글 리스트 -->
+	<c:forEach var="post" items="${reviewList}">
+		<div class="post-card">
+			<div class="post-content">
+				<div class="title">
+					<a
+						href="${pageContext.request.contextPath}/community/post_detail_view?post_id=${post.post_id}">
+						${post.review_title} </a>
+				</div>
 
-					<td><c:choose>
-							<c:when test="${not empty review.fileList}">
-								<img src="${review.fileList[0].file_path}" alt="썸네일"
-									style="width: 80px; height: 80px; object-fit: cover;" />
+				<div class="summary">${post.review_content}</div>
 
-							</c:when>
-							<c:otherwise>
-								<span style="color: gray;">이미지 없음</span>
-							</c:otherwise>
-						</c:choose></td>
+				<div class="meta">
+					<%-- <span class="writer">${post.nickname}</span> --%> <span class="date"><fmt:formatDate
+							value="${post.review_date}" pattern="yyyy.MM.dd" /></span> <span
+						class="views">조회 ${post.review_count}</span> <span class="likes">좋아요
+						${post.review_like_count}</span> <%-- <span class="comments">댓글
+						${post.comment_count}</span> --%>
+				</div>
+			</div>
 
+			<c:choose>
+				<c:when test="${not empty post.fileList}">
+					<div class="thumbnail">
+						<img src="${post.fileList[0].file_path}" alt="썸네일" />
+					</div>
+				</c:when>
+				<c:otherwise>
+					<div class="thumbnail">
+						<img src="/img/no-image.png" alt="이미지 없음" />
+					</div>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</c:forEach>
 
-					<td>${review.review_count}</td>
-					<td>${review.review_like_count}</td>
-				</tr>
-			</c:forEach>
-		</tbody>
-	</table>
-
+	<!-- 페이지네이션 -->
 	<div class="d-flex justify-content-center mt-4">
 		<nav>
 			<ul class="pagination">
@@ -80,5 +80,6 @@
 			</ul>
 		</nav>
 	</div>
+
 </body>
 </html>

@@ -17,10 +17,14 @@ public interface FileDao {
 	// 파일 삭제
 	void delete(long file_id);
 
-	void updateTargetId(@Param("targetType") TargetType targetType, @Param("fileUploader") String fileUploader,
-			@Param("oldTargetId") Long oldTargetId, @Param("newTargetId") Long newTargetId);
-	
-	// 특정 타겟타입과 타겟ID로 파일 리스트 조회(커뮤니티)
-	List<FileDto> findByTargetId(@Param("targetType") TargetType targetType, @Param("targetId") Long targetId);
+	// 타겟 아이디 업데이트
+	void updateTargetId(@Param("target_type") TargetType targetType, @Param("file_uploader") String fileUploader,
+			@Param("old_target_id") Long oldTargetId, @Param("new_target_id") Long newTargetId);
+
+	// 타겟타입과 타겟ID로 파일 리스트 조회(커뮤니티)
+	List<FileDto> findByTargetId(@Param("target_type") TargetType targetType, @Param("target_id") Long targetId);
+
+	// 유저가 업로드한 target_id가 없는 임시 이미지 삭제
+	void deleteTempFiles(@Param("target_type") TargetType targetType, @Param("file_uploader") Long userId);
 
 }
