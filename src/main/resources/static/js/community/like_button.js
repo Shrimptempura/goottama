@@ -1,11 +1,11 @@
 // 좋아요 버튼 클릭 시 좋아요수 증가
-function likePost(postId) {
-	fetch(`${contextPath}/community/like/toggle`, {
+function likePost(reviewId) {
+	fetch("/community/like/toggle", {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/x-www-form-urlencoded"
 		},
-		body: "post_id=" + postId
+		body: "review_id=" + reviewId
 	})
 		.then(response => response.text())
 		.then(updatedCount => {

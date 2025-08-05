@@ -9,7 +9,9 @@ import com.ama.don.community.Dto.Review.ReviewDetailDto;
 @Mapper
 public interface CommunityDetailDao {
 
-	ReviewDetailDto findById(@Param("post_id") Long postId);
+	Long findReviewIdByPostId(Long postId);
+
+	ReviewDetailDto findById(@Param("reviewId") Long reviewId);
 
 	// 게시글 수정
 	void update(PostDto dto);
@@ -18,11 +20,13 @@ public interface CommunityDetailDao {
 	void delete(Long postId);
 
 	// 조회수 증가
-	void increaseViewCount(Long postId);
+	void increaseViewCount(@Param("review_id") Long reviewId);
 
 	// 좋아요 수 증가
-	void increaseLikeCount(Long postId);
+	void increaseLikeCount(@Param("reviewId") Long reviewId);
+
 
 	// 타겟 아이디 수정
 	void update_target_id(PostDto dto);
+
 }

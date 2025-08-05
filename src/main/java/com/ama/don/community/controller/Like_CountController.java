@@ -15,11 +15,11 @@ public class Like_CountController {
 	@Autowired
 	private CommunityDetailDao communityDetailDao;
 
-
 	@PostMapping("/toggle")
-	public String toggleLike(@RequestParam("post_id") Long postId) {
-		communityDetailDao.increaseLikeCount(postId);
-		int likeCount = communityDetailDao.findById(postId).getReview_like_count();
+	public String toggleLike(@RequestParam("review_id") Long reviewId) {
+		communityDetailDao.increaseLikeCount(reviewId);
+		int likeCount = communityDetailDao.findById(reviewId).getReview_like_count();
 		return String.valueOf(likeCount);
 	}
+
 }

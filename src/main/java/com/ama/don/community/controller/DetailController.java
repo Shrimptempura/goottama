@@ -38,15 +38,18 @@ public class DetailController {
 //			session.setAttribute(viewKey, true); // 본 글로 기록
 //		}
 
+		// post_id로부터 review_id 조회
+		Long reviewId = communityDetailDao.findReviewIdByPostId(postId);
+
 		// 기본 조회수 증가(임시 조치)
-		communityDetailDao.increaseViewCount(postId);
+		communityDetailDao.increaseViewCount(reviewId);
 
 		// 게시글 조회
-		ReviewDetailDto review = communityDetailDao.findById(postId);
+		ReviewDetailDto review = communityDetailDao.findById(reviewId);
 
 		// 이미지 조회
 		if (review != null) {
-			review.setFileList(fileDao.findByTargetId(TargetType.COMMUNITY_REVIEW, postId));
+			review.setFileList(fileDao.findByTargetId(TargetType.COMMUNITY_REVIEW, review.getPost_id()));
 		}
 
 		model.addAttribute("review", review);

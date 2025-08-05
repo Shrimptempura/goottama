@@ -61,7 +61,7 @@
 				<th>좋아요 수</th>
 				<td><span id="likeCount">${review.review_like_count}</span>
 					<button type="button" class="like-heart-btn"
-						onclick="likePost(${review.post_id})">♥</button></td>
+						onclick="likePost(${review.review_id})">♥</button></td>
 			</tr>
 			<tr>
 				<th>사진</th>
