@@ -20,6 +20,13 @@
         WHERE REPORT_ID = #{param1}
     </select>
 
+    <select id="inProgressingReports">
+        SELECT REPORT_ID, USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID, REPORT_STATUS
+        FROM report
+        WHERE REPORT_STATUS = 'PENDING'
+        OR REPORT_STATUS = 'IN_REVIEW'
+    </select>
+
     <select id="searchReports">
         SELECT REPORT_ID, USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID, REPORT_STATUS FROM report
         <where>
