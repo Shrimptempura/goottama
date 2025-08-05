@@ -40,9 +40,10 @@ public interface FileDao {
 	// 유저가 업로드한 target_id가 없는 임시 이미지 삭제
 	void deleteTempFiles(@Param("target_type") TargetType targetType, @Param("file_uploader") Long userId);
 
-	// 인테리어 삭제
+	// 인테리어사용, 단건 삭제
 	int interiorDeletedById(@Param("fileId") Long fileId);
 
+	// 인테리어사용, 단건 조회
 	FileDto interiorFindById(@Param("fileId") Long fileId);
 
 }
