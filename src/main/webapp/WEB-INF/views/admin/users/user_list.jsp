@@ -63,7 +63,8 @@
             <td>${user.userStatus}</td>
             <td>${user.roleId}</td>
             <td>${user.userCreatedAt}</td>
-            <td><button type="button" class="open-modal-btn" data-user-id="${user.userId}"> ▶ </button></td>
+            <td><button type="button" class="open-modal-btn" data-modal-target="/admin/users/user_data_modal"
+                        data-param-name="userId" data-param-value="${user.userId}"> ▶ </button></td>
         </tr>
     </c:forEach>
 </table>

@@ -1,7 +1,7 @@
 //userModalOverlay.js
 (function() {
-    const overlay = document.getElementById('userModalOverlay');
-    const modalContentArea = document.querySelector('#userModalOverlay .modal .modal-body-content');
+    const overlay = document.getElementById('ModalOverlay');
+    const modalContentArea = document.querySelector('#ModalOverlay .modal .modal-body-content');
 
     const userListContainer = document.getElementById('userListContainer');
 

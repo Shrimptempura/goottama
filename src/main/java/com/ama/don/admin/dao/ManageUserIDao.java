@@ -1,9 +1,8 @@
 package com.ama.don.admin.dao;
 
-import com.ama.don.admin.dto.UserSearchDTO;
-import com.ama.don.admin.dto.UserTotalDataDTO;
+import com.ama.don.admin.dto.userDTO.UserSearchDTO;
+import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
 import com.ama.don.admin.utils.SearchVO;
-import com.ama.don.member.dto.MemberDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 

@@ -64,8 +64,7 @@ function loadContent(menuType) {
 async function callSpecificPageJSFunction(menuType) {
     const scriptMap = {
         'notices' : '/static/js/admin/NoticePageScript.js',
-        'users' : '/static/js/admin/UserPageScript.js',
-        'usermodal': '/static/js/admin/ui-snippets/userDataModal.js'
+        'users' : '/static/js/admin/UserPageScript.js'
     };
 
     const scriptPath = scriptMap[menuType];
@@ -89,10 +88,6 @@ async function callSpecificPageJSFunction(menuType) {
     } else {
         console.warn(`No JS file for ${menuType}`);
     };
-
-   //const modalScript = document.createElement('script');
-   //modalScript.src = "/static/js/admin/ui-snippets/userDataModal.js";
-   //document.head.appendChild(modalScript);
 }
 
 // 페이지 별 초기화 함수 실행 함수
@@ -115,8 +110,6 @@ function callSpecificPageInitFunction(menuType) {
             break;
     }
 }
-
-
 
 // 페이지 초기 설정
 document.addEventListener('DOMContentLoaded', () => {

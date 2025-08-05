@@ -1,18 +1,11 @@
 package com.ama.don.admin.controller;
 
-import com.ama.don.admin.dto.NoticeSearchDTO;
-import com.ama.don.admin.dto.NoticesDto;
-import com.ama.don.admin.dto.ReportSearchDTO;
-import com.ama.don.admin.service.noticeService.*;
+import com.ama.don.admin.dto.reportDTO.ReportSearchDTO;
 import com.ama.don.admin.service.reportService.GetReportListService;
 import com.ama.don.admin.utils.SearchVO;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-
-import java.util.List;
 
 @Controller
 public class ReportController {

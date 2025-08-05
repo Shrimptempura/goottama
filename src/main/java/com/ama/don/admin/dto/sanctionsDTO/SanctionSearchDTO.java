@@ -1,4 +1,4 @@
-package com.ama.don.admin.dto;
+package com.ama.don.admin.dto.sanctionsDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
