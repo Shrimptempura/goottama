@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,7 +10,7 @@
 <body>
 <h3>login view</h3>
 
-<form action="/login" method="post">
+<form action="/authenticate" method="post">
     ID : <input type="text" name="loginId" /><br />
     PW : <input type="password" name="pw" /><br />
 

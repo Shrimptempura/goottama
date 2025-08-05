@@ -5,7 +5,10 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
+/**
+ * @deprecated security config의 도입으로 사용 중지
+ */
+//@Configuration
 public class LoginWebConfig  implements WebMvcConfigurer{
 	
 	@Override

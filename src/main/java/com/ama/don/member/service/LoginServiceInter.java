@@ -5,6 +5,9 @@ import com.ama.don.member.dto.MemberDto;
 
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * @deprecated security config의 도입으로 사용 중지
+ */
 public interface LoginServiceInter {
 	
 	MemberDto login(LoginformDto loginformDto,HttpSession session); //로그인 처리(세션생성)

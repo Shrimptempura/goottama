@@ -6,6 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * @deprecated security config의 도입으로 사용 중지
+ */
 public class LoginCheckInterceptor implements HandlerInterceptor{
 	
 	@Override

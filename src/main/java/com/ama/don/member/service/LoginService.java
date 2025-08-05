@@ -1,17 +1,17 @@
 package com.ama.don.member.service;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import com.ama.don.member.dao.LoginDao;
 import com.ama.don.member.dto.LoginformDto;
 import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.dto.MemberDto.Status;
-
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@Service
+/**
+ * @deprecated security config의 도입으로 사용 중지
+ */
+//@Service
 @RequiredArgsConstructor
 public class LoginService implements LoginServiceInter{
 	
