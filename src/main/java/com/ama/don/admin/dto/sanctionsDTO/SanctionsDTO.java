@@ -1,4 +1,4 @@
-package com.ama.don.admin.dto;
+package com.ama.don.admin.dto.sanctionsDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SanctionsDto {
+public class SanctionsDTO {
     private int sanctions_id;
     private long user_id;
     private String sanctions_types;

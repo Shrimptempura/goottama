@@ -1,7 +1,7 @@
 package com.ama.don.admin.service.userManage;
 
 import com.ama.don.admin.dao.ManageUserIDao;
-import com.ama.don.admin.dto.UserTotalDataDTO;
+import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 

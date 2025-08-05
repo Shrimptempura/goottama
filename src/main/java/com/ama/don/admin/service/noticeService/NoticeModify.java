@@ -1,7 +1,7 @@
 package com.ama.don.admin.service.noticeService;
 
 import com.ama.don.admin.dao.NoticesIDao;
-import com.ama.don.admin.dto.NoticesDto;
+import com.ama.don.admin.dto.noticeDTO.NoticesDto;
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.admin.temp.FileIDao;
 import com.ama.don.admin.utils.FileUtil;
@@ -37,7 +37,7 @@ public class NoticeModify implements NoticeServiceInterface{
 
     /**
      * 공지사항 수정 작업을 실행함.<br/>
-     * 모델에서 수정될 공지 정보({@link com.ama.don.admin.dto.NoticesDto}),<br/>
+     * 모델에서 수정될 공지 정보({@link NoticesDto}),<br/>
      * 삭제할 첨부파일 ID 목록({@link java.util.List}<{@link java.lang.Long}>),<br/>
      * 그리고 새로 추가될 파일 데이터({@link org.springframework.web.multipart.MultipartHttpServletRequest})를 받아 처리함.<br/>
      * 공지사항 본문 수정, 기존 파일 삭제, 새 파일 저장 순으로 작업 진행됨.

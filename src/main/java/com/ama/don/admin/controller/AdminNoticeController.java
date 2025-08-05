@@ -1,9 +1,8 @@
 package com.ama.don.admin.controller;
 
-import com.ama.don.admin.dto.NoticeSearchDTO;
-import com.ama.don.admin.dto.NoticesDto;
+import com.ama.don.admin.dto.noticeDTO.NoticeSearchDTO;
+import com.ama.don.admin.dto.noticeDTO.NoticesDto;
 import com.ama.don.admin.service.noticeService.*;
-import com.ama.don.admin.service.userManage.GetUserDataForModal;
 import com.ama.don.admin.utils.SearchVO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;

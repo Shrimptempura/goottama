@@ -6,7 +6,7 @@
 <mapper namespace="com.ama.don.admin.dao.NoticesIDao">
 
     <!--  공지 모든 공지 추출  -->
-    <select id="getAllNotices" resultType="com.ama.don.admin.dto.NoticesDto">
+    <select id="getAllNotices" resultType="com.ama.don.admin.dto.noticeDTO.NoticesDto">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_CONTENT
         FROM notices ORDER BY NOTICES_CREATED_AT DESC
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
@@ -18,12 +18,12 @@
     </select>
 
     <!--  아이디로 공지 검색  -->
-    <select id="getNoticeById" resultType="com.ama.don.admin.dto.NoticesDto">
+    <select id="getNoticeById" resultType="com.ama.don.admin.dto.noticeDTO.NoticesDto">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_CONTENT
         FROM notices WHERE NOTICES_ID=#{param1}
     </select>
 
-    <select id="searchNotice" resultType="com.ama.don.admin.dto.NoticesDto" >
+    <select id="searchNotice" resultType="com.ama.don.admin.dto.noticeDTO.NoticesDto" >
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_CONTENT
         FROM notices
         <where>

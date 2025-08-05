@@ -1,7 +1,7 @@
 package com.ama.don.admin.dao;
 
-import com.ama.don.admin.dto.ReportSearchDTO;
-import com.ama.don.admin.dto.ReportDTO;
+import com.ama.don.admin.dto.reportDTO.ReportSearchDTO;
+import com.ama.don.admin.dto.reportDTO.ReportDTO;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

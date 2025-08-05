@@ -1,7 +1,7 @@
 package com.ama.don.admin.service.noticeService;
 
 import com.ama.don.admin.dao.NoticesIDao;
-import com.ama.don.admin.dto.NoticesDto;
+import com.ama.don.admin.dto.noticeDTO.NoticesDto;
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.admin.temp.FileIDao;
 import com.ama.don.admin.utils.FileUtil;
@@ -40,7 +40,7 @@ public class WriteNotice implements NoticeServiceInterface{
 
     /**
      * 새로운 공지사항 작성 작업을 실행함.<br/>
-     * 모델에서 공지사항 정보({@link com.ama.don.admin.dto.NoticesDto})와<br/>
+     * 모델에서 공지사항 정보({@link NoticesDto})와<br/>
      * 첨부된 파일 데이터({@link org.springframework.web.multipart.MultipartHttpServletRequest})를 받아 처리함.<br/>
      * 먼저 공지사항 본문을 DB에 저장하고, 이어서 첨부파일들을 물리적으로 저장하고 DB에 파일 정보 기록함.<br/>
      *

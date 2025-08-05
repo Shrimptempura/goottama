@@ -1,8 +1,8 @@
 package com.ama.don.admin.service.reportService;
 
 import com.ama.don.admin.dao.ManageReportsIDao;
-import com.ama.don.admin.dto.ReportDTO;
-import com.ama.don.admin.dto.ReportSearchDTO;
+import com.ama.don.admin.dto.reportDTO.ReportDTO;
+import com.ama.don.admin.dto.reportDTO.ReportSearchDTO;
 import com.ama.don.admin.utils.SearchVO;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
