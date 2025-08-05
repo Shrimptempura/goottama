@@ -201,24 +201,25 @@ body {
     </div>
 
     <c:choose>
+
         <c:when test="${not empty userOrders}">
             <c:forEach var="order" items="${userOrders}">
                 <div class="order-container">
                     <div class="order-header">
                         <div class="header-flex">
                             <div>
-                                <h3>#${order.orderId}</h3>
-                                <p><fmt:formatDate value="${order.orderDate}" pattern="MM/dd HH:mm"/> | ${order.orderStatus}</p>
+                                <h3>#${order.order_id}</h3>
+                                <p><fmt:formatDate value="${order.order_date}" pattern="MM/dd HH:mm"/> | ${order.order_status}</p>
                             </div>
                             <div class="total-price">
-                                ₩<fmt:formatNumber value="${order.orderTotalprice}" pattern="#,###"/>
+                                ₩<fmt:formatNumber value="${order.order_totalprice}" pattern="#,###"/>
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="order-products">
-                        <h4>주문 상품 (${orderProductsMap[order.orderId].size()}개)</h4>
-                        <c:set var="orderProducts" value="${orderProductsMap[order.orderId]}" />
+                        <h4>주문 상품 (${orderProductsMap[order.order_id].size()}개)</h4>
+                        <c:set var="orderProducts" value="${orderProductsMap[order.order_id]}" />
                         
                         <c:choose>
                             <c:when test="${not empty orderProducts}">
@@ -242,12 +243,12 @@ body {
                                 </c:forEach>
                                  <!-- 주문 수정 버튼 - forEach 밖으로 이동하고 order_id 전달 -->
 						        <div class="order-actions">
-						            <a href="order_modify_view?order_id=${orderProducts[0].orderId}">
+						            <a href="order_modify_view?order_id=${order.order_id}">
 						                <button id="update_orders" class="btn btn-primary">주문 수정하기</button>
 						            </a>
 						            
 						            <!-- 추가 버튼들 (필요시) -->
-						            <a href="cancel_order?order_id=${orderProducts[0].orderId}">
+						            <a href="cancel_order?order_id=${order.order_id}">
 						                <button class="btn btn-danger">주문 취소</button>
 						            </a>
 						        </div>

@@ -1,13 +1,20 @@
 package com.ama.don.interior.dao;
 
+import com.ama.don.common.dao.PostDao;
 import com.ama.don.common.dao.ReviewDao;
+import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.common.enums.TargetType;
-import com.ama.don.interior.dto.request.*;
+import com.ama.don.interior.dto.comment.CompanyCommentCreateDto;
+import com.ama.don.interior.dto.company.CompanyCreateDto;
+import com.ama.don.interior.dto.company.CompanyCreateLocationDto;
+import com.ama.don.interior.dto.company.CompanyInsertDto;
+import com.ama.don.interior.dto.post.CompanyPostCreateDto;
+import com.ama.don.interior.dto.post.CompanyPostUpdateDto;
+import com.ama.don.interior.dto.review.CompanyReviewCreateDto;
+import com.ama.don.interior.dto.review.CompanyReviewUpdateDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.List;
 
 public class AbstractCompanyTestSupport {
 
@@ -19,6 +26,15 @@ public class AbstractCompanyTestSupport {
 
     @Autowired
     protected CompanyReviewDao companyReviewDao;
+
+    @Autowired
+    protected PostDao postDao;
+
+    @Autowired
+    protected CompanyPostDao companyPostDao;
+
+    @Autowired
+    protected CompanyCommentDao companyCommentDao;
 
     protected JoinformDto createTestUser() {
         return createTestUser("테스트아이디");
@@ -57,7 +73,7 @@ public class AbstractCompanyTestSupport {
     protected CompanyCreateDto createTestCompanyDetail(String companyName) {
         CompanyCreateDto dto = new CompanyCreateDto();
         dto.setCompanyName(companyName);
-        dto.setCompanyAddr("업체주소");
+        dto.setCompanyAddr("업체주소 구로구 999");
         dto.setCompanyField("업체필드");
         dto.setCompanyLicense("업체라이센스");
         dto.setCompanyAs("업체AS");
@@ -155,9 +171,9 @@ public class AbstractCompanyTestSupport {
 
 //        companyReviewDto.setReviewContent("여기는 업체 리뷰 내용 테스트");
 
-        List<String> reviewImgList = List.of("interior/images1", "interior/images2",
-                "interior/images3");
-        companyReviewDto.setReviewImg(reviewImgList);
+//        List<String> reviewImgList = List.of("interior/images1", "interior/images2",
+//                "interior/images3");
+//        companyReviewDto.setReviewImg(reviewImgList);
 
         companyReviewDto.setStructureType("아파트 건물유형 테스트");
         companyReviewDto.setAreaPyeong("30평");
@@ -220,6 +236,76 @@ public class AbstractCompanyTestSupport {
         updateDto.setStructureType("테스트");
 
         return updateDto;
+    }
+
+    // 게시글 다형성 생성
+    protected PostDto createPolyPost(Long userId, Long companyId) {
+        PostDto dto = new PostDto();
+        dto.setUser_id(userId);
+        dto.setTargetId(companyId);
+        dto.setTargetType(TargetType.valueOf("INTERIOR"));
+
+        postDao.insertPolyPostForCompany(dto);
+
+        return dto;
+    }
+
+    // 업체 게시글 작성
+    protected CompanyPostCreateDto createCompanyPost(Long userId, Long companyId) {
+        // 다형성 게시글 작성
+        PostDto polyPost = createPolyPost(userId, companyId);
+        Long postId = polyPost.getPost_id();
+        
+        // 다형성 조회, default 오류 방지
+        postDao.findById(postId);
+
+        // 업체 작성
+        CompanyPostCreateDto companyPost = new CompanyPostCreateDto();
+        companyPost.setPostId(postId);
+        companyPost.setCompanyId(companyId);
+        companyPost.setCompanyPostTitle("업체 게시글 제목");
+        companyPost.setCompanyPostContent("업체 게시글 내용");
+        companyPost.setSpaceType("아파트 테스트");
+        companyPost.setAreaPyeong("34평 테스트");
+        companyPost.setStyle("내추럴 테스트");
+        companyPost.setConstructionDetail("도배시공 테스트");
+
+        companyPostDao.insertCompanyPost(companyPost);
+
+        return companyPost;
+    }
+
+    protected CompanyPostUpdateDto updateCompanyPost(Long companyPostId) {
+        CompanyPostUpdateDto updateDto = new CompanyPostUpdateDto();
+        updateDto.setCompanyPostId(companyPostId);
+        updateDto.setCompanyPostId(companyPostId);
+        updateDto.setCompanyPostTitle("제목이 수정됨");
+        updateDto.setCompanyPostContent("내용이 수정됨");
+        updateDto.setSpaceType("공간이 수정됨");
+        updateDto.setAreaPyeong("평수 수정됨");
+        updateDto.setStyle("스타일 수정됨");
+        updateDto.setConstructionDetail("세부내용 수정됨");
+
+        companyPostDao.updatePost(updateDto);
+
+        return updateDto;
+    }
+
+    protected CompanyCommentCreateDto createComment(Long userId, Long companyPostId) {
+        return createComment(userId, companyPostId, "테스트 댓글");
+    }
+
+    protected CompanyCommentCreateDto createComment(Long userId, Long companyPostId, String commentContent) {
+        CompanyCommentCreateDto dto = new CompanyCommentCreateDto();
+        dto.setUserId(userId);
+        dto.setCompanyPostId(companyPostId);
+        dto.setCommentContent(commentContent);
+        dto.setTargetId(companyPostId);
+        dto.setTargetType(TargetType.valueOf("INTERIOR"));
+
+        companyCommentDao.insertCompanyComment(dto);
+
+        return dto;
     }
 
 }

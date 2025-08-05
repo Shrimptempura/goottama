@@ -5,80 +5,105 @@
 	
 <mapper namespace="com.ama.don.shop.dao.ShopIDao">
 
-			<!--id로 pk  -->
-			<!-- productimgDto map -->
-	<resultMap type="com.ama.don.shop.dto.Product_imgDto" id="Product_imgDto">
-		
-		<result column="product_id" property="product_id"/>
-		<result column="product_img_id" property="product_img_id"/>
-		<result column="product_imgurl" property="product_imgurl"/>
-		<result column="product_img_type" property="product_img_type"></result>
-	</resultMap>   
-    		<!-- productDto map -->
-    <resultMap type="com.ama.don.shop.dto.ProductDto" id="ProductDto">
-		<result column="product_id" property="product_id"/>
-		<result column="category_id" property="category_id"/>
-		<result column="product_name" property="product_name"/>
-		<result column="product_price" property="product_price"/>
-		<result column="product_discountrate" property="product_discountrate"/>
-		<result column="product_mall_name" property="product_mall_name"/>
-		<result column="product_madein" property="product_madein"/>
-		<result column="product_release" property="product_release"/>
-		<result column="product_as_manager_phone" property="product_as_manager_phone"/>
-		<result column="product_type" property="product_type"/>
-		<result column="product_color" property="product_color"/>
-		<result column="product_istoday" property="product_istoday"/>
-		<result column="product_date" property="product_date"/>
-		
-		<!-- property란 객체를 연결하는 변수 -->
-		<!-- collection은 단일 객체와 list 모두 가능하다. -->
-		<collection property="product_imgDto" resultMap="Product_imgDto"/>	<!-- resultMap이름과 위의 resultMap 아이디이름이 같아야한다. -->
-		<collection property="product_imgDtoList" ofType="com.ama.don.shop.dto.Product_imgDto">
-   			 <id column="product_img_id" property="product_img_id"/>
-    	     <result column="product_imgurl" property="product_imgurl"/>
-   			 <result column="product_img_type" property="product_img_type"/>
-		</collection>
-	</resultMap>  
-	
-			<!-- cartDto map -->
-	<resultMap id="CartDto" type="com.ama.don.shop.dto.CartDto">
-	    <id property="cart_id" column="cart_id"/>
-	    <result property="user_id" column="user_id"/>
-	    <result property="product_id" column="product_id"/>
-	    <result property="cart_quantity" column="cart_quantity"/>
-	    <result property="cart_date" column="cart_date"/>
-	    
-	    <association property="productDto" javaType="com.ama.don.shop.dto.ProductDto">
-	        <result property="product_name" column="product_name"/>
-	        <result property="product_price" column="product_price"/>
-	        <result property="product_mall_name" column="product_mall_name"/>
-	    	<result property="product_istoday" column="product_istoday"/>
-	    	<result column="product_discountrate" property="product_discountrate"/>
-	    </association>
-	
-	    <association property="product_imgDto" javaType="com.ama.don.shop.dto.Product_imgDto">
-	        <result property="product_imgurl" column="product_imgurl"/>
-	    </association>
-	</resultMap>
-
-
-	<select id="product_list" parameterType="com.ama.don.shop.dto.ProductDto" resultMap="ProductDto">
+	<!-- 상품 카테고리에 나타내는 다수 상품 -->
+	<select id=" " resultType="com.ama.don.shop.dto.ProductFlatDto">
 		SELECT P.PRODUCT_ID,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_DISCOUNTRATE, P.PRODUCT_MALL_NAME, PI.PRODUCT_IMGURL,PI.PRODUCT_IMG_TYPE
 		FROM PRODUCT P
 		LEFT OUTER JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID
 		AND PI.PRODUCT_IMG_TYPE='메인';
 	</select>
 	
-	<select id="product" resultMap="ProductDto">
+	<!-- 상품 상세에 나타내는 단일 상품 (이미지는 다수)-->			<!-- 별칭추가하면 mybatis가 dto와 1:1매칭을 잘한다. -->
+	<select id="product" parameterType="Long" resultType="com.ama.don.shop.dto.ProductFlatDto">
 		SELECT P.PRODUCT_ID,P.CATEGORY_ID,P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_DISCOUNTRATE,P.PRODUCT_MALL_NAME,
 		P.PRODUCT_MADEIN,P.PRODUCT_RELEASE,P.PRODUCT_AS_MANAGER_PHONE,P.PRODUCT_TYPE,P.PRODUCT_COLOR,
 		P.PRODUCT_ISTODAY,P.PRODUCT_DATE,
 		PI.PRODUCT_IMG_ID,PI.PRODUCT_IMGURL,PI.PRODUCT_IMG_TYPE
 		FROM PRODUCT P
-		LEFT OUTER JOIN PRODUCT_IMG PI ON P.PRODUCT_ID=PI.PRODUCT_ID
-		WHERE P.PRODUCT_ID=#{param1};
+		LEFT OUTER JOIN PRODUCT_IMG PI ON P.PRODUCT_ID = PI.PRODUCT_ID
+		                                   AND PI.PRODUCT_IMG_TYPE = '메인'
+		WHERE P.PRODUCT_ID=#{product_id};
 	</select>
 	
+	<!-- 단일의 상품을 받아서 이미지를 상품의 이미지를 가져오는 리스트 -->
+	<select id="productimgs" parameterType="Long" resultType="com.ama.don.shop.dto.ProductFlatDto">
+		select pi.product_imgurl,pi.product_img_type,pi.product_img_id,p.product_id
+		from product_img pi
+		join product p on pi.product_id=p.product_id
+		where p.product_id=#{product_id};
+	</select>
+	
+	<!-- 특정 상품을 검색 (주문내역이 많은 상품) 8개 리스트 -->
+	<select id="product_popular_flat_list" resultType="com.ama.don.shop.dto.ProductFlatDto">
+	    SELECT 
+	        P.PRODUCT_ID, P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_DISCOUNTRATE,P.PRODUCT_MALL_NAME,
+	        PI.PRODUCT_IMGURL,PI.PRODUCT_IMG_TYPE
+	        FROM PRODUCT P
+	        LEFT JOIN PRODUCT_IMG PI ON P.PRODUCT_ID = PI.PRODUCT_ID
+	        WHERE PI.PRODUCT_IMG_TYPE = '메인'
+	        ORDER BY P.PRODUCT_ID DESC
+	        LIMIT 8
+	</select>
+	
+	<!-- 특정 상품을 검색 주문 내역이 많은 상품  전체 내림차순 -->
+	<select id="product_popular_all_list" resultType="com.ama.don.shop.dto.ProductFlatDto">
+	    SELECT 
+	        P.PRODUCT_ID, P.PRODUCT_NAME,P.PRODUCT_PRICE,P.PRODUCT_DISCOUNTRATE,P.PRODUCT_MALL_NAME,
+	        PI.PRODUCT_IMGURL,PI.PRODUCT_IMG_TYPE,
+	        COUNT(OP.PRODUCT_ID) as order_count
+	        FROM PRODUCT P
+	        LEFT JOIN PRODUCT_IMG PI ON P.PRODUCT_ID = PI.PRODUCT_ID
+	        LEFT JOIN ORDERS_PRODUCTS OP ON P.PRODUCT_ID = P.PRODUCT_ID
+	        WHERE PI.PRODUCT_IMG_TYPE = '메인'
+	        ORDER BY order_count DESC, P.PRODUCT_ID DESC
+	        
+	</select>
+	
+	<!-- 특정 상품을 검색 (세일 비율이 높은 상품) 8개 리스트 -->
+	<select id="product_high_sales_flat_list" resultType="com.ama.don.shop.dto.ProductFlatDto">
+	    SELECT p.product_id as product_id,
+	           p.product_name as product_name,
+	           p.product_price as product_price,
+	           p.product_discountrate as product_discountrate,
+	           p.product_mall_name as product_mall_name,
+	           pi.product_imgurl as product_imgurl,
+	           pi.product_img_type as product_img_type
+	    FROM product p
+	    LEFT JOIN product_img pi ON p.product_id = pi.product_id 
+	                             AND pi.product_img_type = '메인'
+	    WHERE p.product_discountrate > 0
+	    ORDER BY p.product_discountrate DESC
+	    LIMIT 8
+	</select>
+	
+	<!-- 특정 상품을 검색 (세일 비율이 높은 상품) 전체 내림차순 -->
+	<select id="product_high_sales_all_list" resultType="com.ama.don.shop.dto.ProductFlatDto">
+	    SELECT p.product_id as product_id,
+	           p.product_name as product_name,
+	           p.product_price as product_price,
+	           p.product_discountrate as product_discountrate,
+	           p.product_mall_name as product_mall_name,
+	           pi.product_imgurl as product_imgurl,
+	           pi.product_img_type as product_img_type
+	    FROM product p
+	    LEFT JOIN product_img pi ON p.product_id = pi.product_id 
+	                             AND pi.product_img_type = '메인'
+	    WHERE p.product_discountrate > 0
+	    ORDER BY p.product_discountrate DESC
+	</select>	
+	
+	<!-- 상품 카테고리별 리스트 -->
+	<!-- 특정 상품을 검색 (세일 비율이 높은 상품) 전체 내림차순 -->
+	<select id="product_category" resultType="com.ama.don.shop.dto.ProductFlatDto">
+	 
+		SELECT p.product_id,p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
+		    pi.product_imgurl,pi.product_img_type,c.category_main,c.category_sub
+		FROM product p
+		LEFT JOIN product_img pi ON p.product_id = pi.product_id
+		                         AND pi.product_img_type = '메인'
+		LEFT JOIN category c ON p.category_id = c.category_id 
+		WHERE p.category_id = #{param1};
+	</select>		
 								<!-- primary key를 가져온다. -->
 	<insert id="write" parameterType="map" useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id">
 		INSERT INTO PRODUCT(CATEGORY_ID,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DISCOUNTRATE,PRODUCT_MALL_NAME,
@@ -97,6 +122,35 @@
 	<insert id="imgwrite">
 		INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
 		VALUES(#{param1},#{param2},'서브');
+	</insert>
+	
+	
+	<!-- 단일 상품 리뷰 리스트 -->
+	<select id="review_list" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		select r.user_id,r.review_id,r.review_title,r.review_content,r.review_count,
+		r.review_date,r.review_img,r.target_id,r.target_type,
+        u.user_name,u.user_nickname
+        from review r
+        join user_detail u on r.user_id=u.user_id
+        where r.target_id=#{target_id} and
+        target_type='SHOP';
+		
+	
+	</select>
+	
+	
+	<select id="user_info" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		select u.user_id,u.user_name,u.user_nickname
+		from user_detail u
+		where user_id=#{user_id};
+	
+	</select>
+	
+	
+	<insert id="review_write" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		insert into review(user_id,review_title,review_content,review_img,target_id,target_type,review_date)
+		values (#{user_id},#{review_title},#{review_content},#{review_img},#{target_id},'SHOP',now());
+	
 	</insert>
 	
 

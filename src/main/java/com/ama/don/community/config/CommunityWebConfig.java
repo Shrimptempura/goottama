@@ -9,9 +9,10 @@ public class CommunityWebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
-		// 업로드된 파일들이 저장된 포더경로를 서버에 출력
-		registry.addResourceHandler("/upload/**").addResourceLocations("file:///C:/upload/");
+		// 업로드 이미지 접근용 매핑
+		registry.addResourceHandler("/uploadedImages/**").addResourceLocations("file:///C:/upload/");
 
+		// 정적 리소스 (CSS, JS)
 		registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
 		registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
 	}

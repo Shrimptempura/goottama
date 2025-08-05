@@ -13,127 +13,143 @@
 
     <!-- 시작전에 세션아이디(user_id)로 company_id 찾기 -->
     <select id="findCompanyIdByUserId" resultType="java.lang.Long">
-        select company_id
-        from company
-        where user_id = #{userId}
-        and is_deleted = false
+        SELECT company_id
+        FROM company
+        WHERE user_id = #{userId}
+            AND is_deleted = false
     </select>
 
     <!--  company_detail 생성  -->
     <insert id="insertCompanyDetail"
-            parameterType="com.ama.don.interior.dto.request.CompanyCreateDto"
+            parameterType="com.ama.don.interior.dto.company.CompanyCreateDto"
             useGeneratedKeys="true"
             keyProperty="companyDetailId">
-        insert into company_detail (
-            company_name, company_addr, company_field, company_license, company_as,
-            company_career, company_intro)
-        values (
-            #{companyName}, #{companyAddr}, #{companyField}, #{companyLicense}, #{companyAs},
-            #{companyCareer}, #{companyIntro}
+        INSERT INTO company_detail (
+            company_name,
+            company_addr,
+            company_field,
+            company_license,
+            company_as,
+            company_career,
+            company_intro)
+        VALUES (
+            #{companyName},
+            #{companyAddr},
+            #{companyField},
+            #{companyLicense},
+            #{companyAs},
+            #{companyCareer},
+            #{companyIntro}
         )
     </insert>
 
     <!--  location 테이블  -->
     <!--  일단 주소만 적고 나머지는 추후 계산  -->
     <insert id="insertLocation"
-            parameterType="com.ama.don.interior.dto.request.CompanyCreateLocationDto"
+            parameterType="com.ama.don.interior.dto.company.CompanyCreateLocationDto"
             useGeneratedKeys="true"
             keyProperty="locationId">
-        insert into location (
-            location_addr)
-        values (
-            #{locationAddr}
-        )
+        INSERT INTO location (location_addr)
+        VALUES (#{locationAddr})
     </insert>
 
     <!--  업체 테이블 생성  -->
     <insert id="insertCompany"
-            parameterType="com.ama.don.interior.dto.request.CompanyInsertDto"
+            parameterType="com.ama.don.interior.dto.company.CompanyInsertDto"
             useGeneratedKeys="true"
             keyProperty="companyId">
-        insert into company (
-            user_id, company_detail_id, location_id, company_img
-        )
-        values (
-            #{userId}, #{companyDetailId}, #{locationId}, #{companyImg}
+        INSERT INTO company (
+            user_id,
+            company_detail_id,
+            location_id)
+        VALUES (
+            #{userId},
+            #{companyDetailId},
+            #{locationId}
         )
     </insert>
 
     <!-- 업체등록 시 중복 이름 검사 -->
     <select id="isDuplicateCompanyName" resultType="java.lang.Boolean">
-        select count(*) > 0
-        from company_detail
-        where company_name = #{companyName}
+        SELECT count(*) > 0
+        FROM company_detail
+        WHERE company_name = #{companyName}
     </select>
 
     <!-- 세션으로 user_id 얻고, findCompanyIdByUserId로 company_id 얻음 -->
-    <select id="selectDetailCompany" resultType="com.ama.don.interior.dto.response.CompanyDetailDto">
-        select c.company_id AS companyId,
+    <select id="selectDetailCompany" resultType="com.ama.don.interior.dto.company.CompanyDetailDto">
+        SELECT
+            c.company_id AS companyId,
             d.company_addr AS companyAddr,
             d.company_field AS companyField,
             d.company_license AS companyLicense,
             d.company_as AS companyAs,
             d.company_career AS companyCareer
-        from company c
-        join company_detail d ON c.company_detail_id = d.company_detail_id
-        where c.company_id = #{companyId}
-        and c.is_deleted = false
+        FROM company c
+        JOIN company_detail d ON c.company_detail_id = d.company_detail_id
+        WHERE c.company_id = #{companyId}
+            AND c.is_deleted = false
     </select>
 
     <!--  업체 상세페이지의 요약상자 중, 업체 정보와 별점 정보 얻기  -->
-    <select id="selectSummaryCompany" resultType="com.ama.don.interior.dto.response.CompanySummaryDto">
-        select c.company_id AS companyId, d.company_name AS companyName, d.company_intro AS companyIntro,
-        d.company_addr AS companyAddr, d.company_license AS companyLicense, d.company_field AS companyField,
-        s.avg_total_rate AS companyRate
-        from company c
-        join company_detail d ON c.company_detail_id = d.company_detail_id
-        left join company_score_avg s ON c.company_id = s.company_id
-        where c.company_id = #{companyId}
-        and c.is_deleted = false
+    <select id="selectSummaryCompany" resultType="com.ama.don.interior.dto.company.CompanySummaryDto">
+        SELECT
+            c.company_id AS companyId,
+            d.company_name AS companyName,
+            d.company_intro AS companyIntro,
+            d.company_addr AS companyAddr,
+            d.company_license AS companyLicense,
+            d.company_field AS companyField,
+            s.avg_total_rate AS companyRate
+        FROM company c
+        JOIN company_detail d ON c.company_detail_id = d.company_detail_id
+        LEFT JOIN company_score_avg s ON c.company_id = s.company_id
+        WHERE c.company_id = #{companyId}
+            AND c.is_deleted = false
     </select>
 
     <!--  업체 팔로우 여부 확인  -->
     <select id="isFollowedCompany" resultType="java.lang.Boolean">
-        select count(*) > 0
-        from company_follow f
-        join company c ON f.company_id = c.company_id
-        where f.company_id = #{companyId}
-        and f.user_id = #{userId}
-        and c.is_deleted = false
+        SELECT count(*) > 0
+        FROM company_follow f
+        JOIN company c ON f.company_id = c.company_id
+        WHERE f.company_id = #{companyId}
+            AND f.user_id = #{userId}
+            AND c.is_deleted = false
     </select>
 
     <!-- 업체 정보수정1, company_detail 테이블 -->
     <update id="updateCompanyDetail">
-        update company_detail
-        set company_name = #{companyName}, company_addr = #{companyAddr},
-            company_field = #{companyField}, company_license = #{companyLicense},
-            company_as = #{companyAs}, company_career = #{companyCareer},
+        UPDATE company_detail
+        SET
+            company_name = #{companyName},
+            company_addr = #{companyAddr},
+            company_field = #{companyField},
+            company_license = #{companyLicense},
+            company_as = #{companyAs},
+            company_career = #{companyCareer},
             company_intro = #{companyIntro}
-        where company_detail_id = #{companyDetailId}
-    </update>
-
-    <!--  업체 정보 수정2, 이미지  -->
-    <update id="updateCompanyImg">
-        update company
-        set company_img = #{companyImg}
-        where company_id = #{companyId}
+        WHERE company_detail_id = #{companyDetailId}
     </update>
 
     <!-- 업체 정보 수정3, 주소 테이블 -->
     <!-- company_deatil의 주소 변경시 수정 -->
     <update id="updateLocation">
-        update location
-        set location_addr = #{locationAddr}, location_lat = #{locationLat},
-            location_lng = #{locationLng}, location_ac = #{locationAc},
+        UPDATE location
+        SET
+            location_addr = #{locationAddr},
+            location_lat = #{locationLat},
+            location_lng = #{locationLng},
+            location_ac = #{locationAc},
             location_limit = #{locationLimit}
-        where location_id = #{locationId}
+        WHERE location_id = #{locationId}
     </update>
 
     <!-- 업체 비활성화 -->
     <update id="deleteCompany">
-        update company
-        set is_deleted = 1
-        where company_id = #{companyId}
+        UPDATE company
+        SET is_deleted = 1
+        WHERE company_id = #{companyId}
     </update>
 
 </mapper>

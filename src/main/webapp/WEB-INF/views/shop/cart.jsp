@@ -137,17 +137,29 @@
 			alert("장바구니에 담았습니다.");
 			location.href="cart_write?user_id=2&product_id=${product.product_id }&cart_quantity="+count;
 		}
+	
+	function getuseridt(){
+		
+		   let userId = '${sessionScope.user_id}';
+		   	    if (!userId || userId.trim() === '' || userId === 'null') {
+		   	    userId = '2'; // 기본값으로 2 사용
+		   } 
+	}
 </script>	
 	
-	
-	
+	<!-- 리스트버튼 삭제 -->	
+	<!-- 멀티삭제 -->
+	<!-- 데이터를 여러개의 id -->
+	<!-- 서비스로 보냄 -->
+	<!-- 여러개 -->
+	<!-- sql에서는 여러개로 처리 foreach sql에서 collection으로받아서로 (10) -->
 </head>
 <body>
 
 <h2>cart</h2>
  
 <div class="maincontainer">
-    
+   
     <!-- 장바구니 아이템들 -->
     <div class="cart-items-container">
         <c:choose>

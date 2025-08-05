@@ -1,6 +1,7 @@
 package com.ama.don.shop.controller;
 
 import java.net.http.HttpRequest;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,26 +15,34 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.KakaoPayApprovalResponse;
 import com.ama.don.shop.dto.KakaoPayReadyResponse;
-import com.ama.don.shop.service.ShopCartDeleteService;
-import com.ama.don.shop.service.ShopCartService;
-import com.ama.don.shop.service.ShopCartUpdateService;
-import com.ama.don.shop.service.ShopCartWriteService;
+import com.ama.don.shop.dto.ProductFlatDto;
+import com.ama.don.shop.service.ShopHomeService;
 import com.ama.don.shop.service.ShopProductMallService;
 import com.ama.don.shop.service.ShopListService;
-import com.ama.don.shop.service.ShopOrderDetailService;
-import com.ama.don.shop.service.ShopOrderViewService;
-import com.ama.don.shop.service.ShopOrderWriteService;
-import com.ama.don.shop.service.ShopProductdetailService;
 import com.ama.don.shop.service.ShopServiceinter;
 import com.ama.don.shop.service.ShopWriteService;
 import com.ama.don.shop.service.Kakaopay.ShopKakaopayService;
+import com.ama.don.shop.service.cart.ShopCartDeleteService;
+import com.ama.don.shop.service.cart.ShopCartService;
+import com.ama.don.shop.service.cart.ShopCartUpdateService;
+import com.ama.don.shop.service.cart.ShopCartWriteService;
+import com.ama.don.shop.service.category.ShopCategoryService;
+import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
+import com.ama.don.shop.service.orderservice.ShopOrderModifyViewService;
+import com.ama.don.shop.service.orderservice.ShopOrderUpdateSerivce;
+import com.ama.don.shop.service.orderservice.ShopOrderViewService;
+import com.ama.don.shop.service.orderservice.ShopOrderWriteService;
+import com.ama.don.shop.service.product.ShopProductHighSalesService;
+import com.ama.don.shop.service.product.ShopProductPopularService;
+import com.ama.don.shop.service.product.ShopProductdetailService;
+import com.ama.don.shop.service.reviewservice.ShopReviewWriteService;
+import com.ama.don.shop.service.reviewservice.ShopReviewWriteViewService;
 
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class ShopController {
 
-	ShopServiceinter sServiceinter;
 	ShopServiceinter shopServiceinter;
 
 	private final ShopKakaopayService kakaoPayService;
@@ -51,8 +60,36 @@ public class ShopController {
 	}
 
 	@RequestMapping("/shop/home")
-	public String home() {
+	public String home(HttpServletRequest request, Model model) {
+		
+		model.addAttribute("request", request);
+		shopServiceinter = new ShopHomeService(iDao);
+		shopServiceinter.execute(model);
+		
+		
 		return "shop/home";
+	}
+	
+	@RequestMapping("/shop/product_popular")
+	public String product_popular(HttpServletRequest request, Model model) {
+		
+		model.addAttribute("request", request);
+		shopServiceinter=new ShopProductPopularService(iDao);
+		shopServiceinter.execute(model);
+		
+		
+		return "shop/product_popular";
+	}
+	
+	@RequestMapping("/shop/product_high_sales")
+	public String product_high_sales(HttpServletRequest request, Model model) {
+		
+		model.addAttribute("request", request);
+		shopServiceinter=new ShopProductHighSalesService(iDao);
+		shopServiceinter.execute(model);
+		
+		
+		return "shop/product_high_sales";
 	}
 
 	@RequestMapping("/shop/write_view")
@@ -73,9 +110,15 @@ public class ShopController {
 	@RequestMapping("/shop/category")
 	public String category(HttpServletRequest request, Model model) {
 
-		model.addAttribute("request", request);
-		shopServiceinter = new ShopListService(iDao);
+		/*
+		 * model.addAttribute("request", request); shopServiceinter = new
+		 * ShopListService(iDao); shopServiceinter.execute(model);
+		 */
+		
+		model.addAttribute("request", request); 
+		shopServiceinter = new ShopCategoryService(iDao); 
 		shopServiceinter.execute(model);
+	
 
 		return "shop/category";
 	}
@@ -88,6 +131,40 @@ public class ShopController {
 		shopServiceinter.execute(model);
 
 		return "shop/product_detail";
+	}
+	
+	@RequestMapping("/shop/review_write_view")
+	public String review_write_view(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("request",request);
+		shopServiceinter= new ShopReviewWriteViewService(iDao);
+		shopServiceinter.execute(model);
+		
+		return "shop/review_write_view";
+	}
+	
+	@RequestMapping("/shop/review_write")
+	public String review_write(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopReviewWriteService(iDao);
+		shopServiceinter.execute(model);
+		
+		
+		
+		 //
+        String user_id=request.getParameter("user_id");
+        String product_id=request.getParameter("product_id");
+		
+		Long productid=Long.parseLong(product_id);
+		Long userid=Long.parseLong(user_id);
+		
+		System.out.println("userid:"+userid);
+		
+		
+		
+		return "redirect:/shop/product_detail?product_id="+productid+"&userid="+userid;
+		
 	}
 
 	@RequestMapping("/shop/exhibition")
@@ -165,35 +242,41 @@ public class ShopController {
 
 	@RequestMapping("/shop/order_write")
 	public String order_complete(HttpServletRequest request, Model model) {
-
+		
+		
+		String paymentMethod = request.getParameter("payment_method");
+		
+        System.out.println("선택된 결제 방식: " + paymentMethod);
+		
 		model.addAttribute("request", request);
-		shopServiceinter = new ShopOrderWriteService(iDao);
+		shopServiceinter = new ShopOrderWriteService(iDao,paymentMethod);
 		shopServiceinter.execute(model);
 		return "shop/order_complete";
 	}
 
-	/*
-	 * @RequestMapping("/shop/order_modify_view") public String
-	 * order_modify_view(HttpServletRequest request, Model model) {
-	 * 
-	 * 
-	 * model.addAttribute("request", request); shopServiceinter= new
-	 * ShopOrderModifyViewService(iDao); shopServiceinter.execute(model); return
-	 * "shop/order_modify_view";
-	 * 
-	 * 
-	 * }
-	 */
+	
+	 @RequestMapping("/shop/order_modify_view") 
+	 public String order_modify_view(HttpServletRequest request, Model model) {
+	
+	
+		model.addAttribute("request", request); 
+		shopServiceinter= new ShopOrderModifyViewService(iDao); 
+		shopServiceinter.execute(model); 
+		return "shop/order_modify_view";
+	
+	}
+	 
 
 	@RequestMapping("/shop/order_update")
 	public String order_update(HttpServletRequest request, Model model) {
 
-		/*
-		 * model.addAttribute("request",request); shopServiceinter=new
-		 * ShopOrderUpdateService(iDao); shopServiceinter.execute(model);
-		 */
-
-		return "shop/order_complete";
+		
+		model.addAttribute("request",request); 
+		shopServiceinter=new ShopOrderUpdateSerivce(iDao); 
+		shopServiceinter.execute(model);
+		String order_id = request.getParameter("order_id");
+	
+		return "redirect:/shop/order_details?user_id="+request.getParameter("user_id");
 	}
 
 	@RequestMapping("/shop/order_details")
@@ -204,6 +287,9 @@ public class ShopController {
 		shopServiceinter.execute(model);
 		return "shop/order_details";
 	}
+	
+	
+	
 
 	/*
 	 * @PostMapping("/kakaopay") public ResponseEntity<?>

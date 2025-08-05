@@ -14,17 +14,23 @@
         FROM sanctions
     </select>
 
-    <select id="getSanctionsBySanctionId">
+    <select id="getSanctionsBySanctionId" resultType="com.ama.don.admin.dto.SanctionsDto">
         SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
         FROM sanctions
         WHERE SANCTIONS_ID = #{param1}
+    </select>
+
+    <select id="getSanctionsByUserId" resultType="com.ama.don.admin.dto.SanctionsDto">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        WHERE USER_ID = #{param1}
     </select>
 
     <select id="searchSanctions">
         SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
         FROM sanctions
         <where>
-            <if test="userId != null">
+            <if test="userId != null and userId != ''">
                 AND USER_ID = #{userId}
             </if>
             <if test="sanctionsTypes != null and sanctionsTypes != ''">
@@ -33,32 +39,30 @@
             <if test="sanctionsReason != null and sanctionsReason != ''">
                 AND SANCTIONS_REASON LIKE CONCAT('%', #{sanctionsReason}, '%')
             </if>
-            <if test="adminAccountId != null">
+            <if test="adminAccountId != null and adminAccountId != ''">
                 AND ADMIN_ACCOUNT_ID = #{adminAccountId}
             </if>
-
             <if test="searchStartDate != null and searchEndDate != null">
                 AND (
-                (SANCTIONS_START_DATE BETWEEN #{searchStartDate} AND #{searchEndDate}) OR
-                (SANCTIONS_END_DATE BETWEEN #{searchStartDate} AND #{searchEndDate}) OR
-                (SANCTIONS_CREATED_AT BETWEEN #{searchStartDate} AND #{searchEndDate})
+                (SANCTIONS_START_DATE BETWEEN #{searchStartDate} AND #{searchEndDate})
+                OR (SANCTIONS_END_DATE BETWEEN #{searchStartDate} AND #{searchEndDate})
+                OR (SANCTIONS_CREATED_AT BETWEEN #{searchStartDate} AND #{searchEndDate})
                 )
             </if>
             <if test="searchStartDate != null and searchEndDate == null">
                 AND (
-                SANCTIONS_START_DATE &gt;= #{searchStartDate} OR
-                SANCTIONS_END_DATE &gt;= #{searchStartDate} OR
-                SANCTIONS_CREATED_AT &gt;= #{searchStartDate}
+                SANCTIONS_START_DATE &gt;= #{searchStartDate}
+                OR SANCTIONS_END_DATE &gt;= #{searchStartDate}
+                OR SANCTIONS_CREATED_AT &gt;= #{searchStartDate}
                 )
             </if>
             <if test="searchStartDate == null and searchEndDate != null">
                 AND (
-                SANCTIONS_START_DATE &lt;= #{searchEndDate} OR
-                SANCTIONS_END_DATE &lt;= #{searchEndDate} OR
-                SANCTIONS_CREATED_AT &lt;= #{searchEndDate}
+                SANCTIONS_START_DATE &lt;= #{searchEndDate}
+                OR SANCTIONS_END_DATE &lt;= #{searchEndDate}
+                OR SANCTIONS_CREATED_AT &lt;= #{searchEndDate}
                 )
             </if>
-
             <if test="durationMin != null and durationMax != null">
                 AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) BETWEEN #{durationMin} AND #{durationMax}
             </if>
@@ -75,7 +79,7 @@
         SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
         FROM sanctions
         <where>
-            <if test="userId != null">
+            <if test="userId != null and userId != ''">
                 AND USER_ID = #{userId}
             </if>
             <if test="sanctionsTypes != null and sanctionsTypes != ''">
@@ -84,32 +88,30 @@
             <if test="sanctionsReason != null and sanctionsReason != ''">
                 AND SANCTIONS_REASON LIKE CONCAT('%', #{sanctionsReason}, '%')
             </if>
-            <if test="adminAccountId != null">
+            <if test="adminAccountId != null and adminAccountId != ''">
                 AND ADMIN_ACCOUNT_ID = #{adminAccountId}
             </if>
-
             <if test="searchStartDate != null and searchEndDate != null">
                 AND (
-                (SANCTIONS_START_DATE BETWEEN #{searchStartDate} AND #{searchEndDate}) OR
-                (SANCTIONS_END_DATE BETWEEN #{searchStartDate} AND #{searchEndDate}) OR
-                (SANCTIONS_CREATED_AT BETWEEN #{searchStartDate} AND #{searchEndDate})
+                (SANCTIONS_START_DATE BETWEEN #{searchStartDate} AND #{searchEndDate})
+                OR (SANCTIONS_END_DATE BETWEEN #{searchStartDate} AND #{searchEndDate})
+                OR (SANCTIONS_CREATED_AT BETWEEN #{searchStartDate} AND #{searchEndDate})
                 )
             </if>
             <if test="searchStartDate != null and searchEndDate == null">
                 AND (
-                SANCTIONS_START_DATE &gt;= #{searchStartDate} OR
-                SANCTIONS_END_DATE &gt;= #{searchStartDate} OR
-                SANCTIONS_CREATED_AT &gt;= #{searchStartDate}
+                SANCTIONS_START_DATE &gt;= #{searchStartDate}
+                OR SANCTIONS_END_DATE &gt;= #{searchStartDate}
+                OR SANCTIONS_CREATED_AT &gt;= #{searchStartDate}
                 )
             </if>
             <if test="searchStartDate == null and searchEndDate != null">
                 AND (
-                SANCTIONS_START_DATE &lt;= #{searchEndDate} OR
-                SANCTIONS_END_DATE &lt;= #{searchEndDate} OR
-                SANCTIONS_CREATED_AT &lt;= #{searchEndDate}
+                SANCTIONS_START_DATE &lt;= #{searchEndDate}
+                OR SANCTIONS_END_DATE &lt;= #{searchEndDate}
+                OR SANCTIONS_CREATED_AT &lt;= #{searchEndDate}
                 )
             </if>
-
             <if test="durationMin != null and durationMax != null">
                 AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) BETWEEN #{durationMin} AND #{durationMax}
             </if>
@@ -125,19 +127,19 @@
 
     <insert id="makeSanction">
         INSERT INTO sanctions(USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT)
-        VALUES(#{params1}, #{params2}, #{params3}, #{params4}, #{params5}, #{params6}, #{params7})
+        VALUES(#{userId}, #{sanctionsType}, #{sanctionsStartDate}, #{sanctionsEndDate}, #{sanctionsReason}, #{adminAccountId}, NOW())
     </insert>
 
-    <update id="modifySanction">
+    <update id="modifySanctionByUserId">
         UPDATE sanctions
         SET
-        SANCTIONS_TYPES = #{param2},
-        SANCTIONS_START_DATE = #{param3},
-        SANCTIONS_END_DATE = #{param4},
-        SANCTIONS_REASON = #{param5},
-        ADMIN_ACCOUNT_ID = #{param6},
-        SANCTIONS_CREATED_AT = #{param7}
-        WHERE USER_ID = #{param1}
+        SANCTIONS_TYPES = #{sanctionsType},
+        SANCTIONS_START_DATE = #{sanctionsStartDate},
+        SANCTIONS_END_DATE = #{sanctionsEndDate},
+        SANCTIONS_REASON = #{sanctionsReason},
+        ADMIN_ACCOUNT_ID = #{adminAccountId},
+        SANCTIONS_CREATED_AT = #{sanctionsCreatedAt}
+        WHERE USER_ID = #{userId}
     </update>
 
     <delete id="deleteSanction">

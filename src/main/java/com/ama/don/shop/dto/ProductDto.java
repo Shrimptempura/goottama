@@ -35,4 +35,6 @@ public class ProductDto {
 	// ✅ 이미지 여러 개 담는 리스트
 	private List<Product_imgDto> product_imgDtoList; //여기와 collection properties가 같은 이름이어야한다. 
 	
+	
+	
 }

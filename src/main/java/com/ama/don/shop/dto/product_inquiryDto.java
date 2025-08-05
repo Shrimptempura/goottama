@@ -13,12 +13,10 @@ import lombok.Setter;
 @AllArgsConstructor
 public class product_inquiryDto {
 	long pinquiry_id;
+	long user_id;
 	long product_id;
 	String pinquiry_content;
 	Timestamp pinquiry_date;
-	int pinquiry_group;
-	int pinquiry_step;
-	int pinquiry_indent;
-	
+	String pinquiry_status;
 	
 }

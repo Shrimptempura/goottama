@@ -29,6 +29,7 @@ public class ShopListService implements ShopServiceinter{
 		
 		String product_id=request.getParameter("product_id");
 		
+		
 		//iDao.intocart(product_id);
 		model.addAttribute("list",iDao.product_list());
 		

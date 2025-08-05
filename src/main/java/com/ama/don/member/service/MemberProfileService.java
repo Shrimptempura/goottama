@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 
 import com.ama.don.member.dao.MemberProfileDao;
 import com.ama.don.member.dto.FindPwDto;
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.dto.MemberEditDto;
 import com.ama.don.member.dto.ResetPwDto;
 
 import jakarta.servlet.http.HttpSession;
@@ -18,6 +20,7 @@ public class MemberProfileService implements MemberProfileServiceInter{
 	
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	private final MemberProfileDao memberProfileDao;
+	private final ValidationService validationService;
 
 	@Override
 	@Transactional
@@ -39,6 +42,27 @@ public class MemberProfileService implements MemberProfileServiceInter{
 		
 		return true;
 		
+	}
+
+	@Override
+	public boolean updateProfile(MemberDto memberDto, MemberEditDto memberEditDto,Model model) {
+		
+		//닉네임 중복확인
+		String nickname = memberEditDto.getChangeNickname();
+		boolean chechNickname = validationService.nicknameEditCheck(nickname);
+		if (chechNickname == false) {
+			return false;
+		}		
+		//db update
+		memberProfileDao.updateMember(memberDto,memberEditDto);		
+		
+		return true;
+	}
+	
+	@Override
+	public MemberDto getupdatedMember(String login_id) {
+		MemberDto updated = memberProfileDao.updated(login_id);
+		return updated;
 	}
 
 }

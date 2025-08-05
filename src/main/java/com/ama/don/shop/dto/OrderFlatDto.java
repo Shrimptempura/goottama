@@ -13,25 +13,27 @@ import lombok.Setter;
 @NoArgsConstructor
 public class OrderFlatDto {
     // orders 테이블 필드
-    private Long orderId;
-    private Long userId;
-    private Timestamp orderDate;
-    private String orderStatus;
-    private Integer orderTotalprice;
+	private long order_id;
+	private long user_id;
+	private Timestamp order_date;
+	private String order_status;
+	private int order_totalprice;
+    //사용자가 입력
     private String orderName;
     private String orderEmail;
     private String orderPhone;
+    
+    //deliver 테이블 필드
+    private long deliver_id;
+	private String deliver_name;
+	private String deliver_person;
+	private String deliver_recipient_phone;
+	private String deliver_loc;
+	private String deliver_detail_loc;
+	private String deliver_request;
+	private String deliver_status;
+	private Timestamp deliver_date;
 
-    // deliver 테이블 필드
-    private Long deliverId;
-    private String deliverName;
-    private String deliverPerson;
-    private String deliverRecipientPhone;
-    private String deliverLoc;
-    private String deliverDetailLoc;
-    private String deliverRequest;
-    private String deliverStatus;
-    private Timestamp deliverDate;
 
     // payment 테이블 필드
     private Long payment_id;
@@ -48,9 +50,12 @@ public class OrderFlatDto {
     private Integer op_totalprice ; // 합계 (이 필드 추가!)
 
     // 상품 관련 필드들
+    private String product_id;
     private String product_name;     // 실제 컬럼명
 
     // 상품 이미지 관련 필드들
     private String product_imgurl;   // 상품 이미지
     private String product_img_type;
 }
+
+

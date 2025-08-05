@@ -11,7 +11,7 @@
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-	<h3>게시글 목록</h3>
+	<h3>리뷰 뷰 게시글 목록</h3>
 
 	<div class="mb-3 d-flex justify-content-end">
 		<a href="${pageContext.request.contextPath}/community/write_view"
@@ -21,12 +21,9 @@
 			onmouseout="this.style.backgroundColor='white'"> 글작성</a>
 	</div>
 
-
-
 	<table class="table table-hover text-center">
 		<thead class="table-light">
 			<tr>
-				<th>번호</th>
 				<th>제목</th>
 				<th>작성일</th>
 				<th>사진</th>
@@ -37,24 +34,51 @@
 		<tbody>
 			<c:forEach var="review" items="${reviewList}" varStatus="status">
 				<tr>
-					<td>${status.count}</td>
 					<td><a
 						href="${pageContext.request.contextPath}/community/post_detail_view?post_id=${review.post_id}">
 							${review.post_title} </a></td>
 					<td><fmt:formatDate value="${review.post_date}"
 							pattern="yyyy-MM-dd HH:mm" /></td>
-					<td><c:if test="${not empty review.post_img}">
-							<img
-								src="${pageContext.request.contextPath}/images/${review.post_img}"
-								width="80" />
-						</c:if></td>
+					<td><c:choose>
+							<c:when test="${not empty review.fileList}">
+								<img
+									src="${pageContext.request.contextPath}${review.fileList[0].file_path}"
+									alt="썸네일" style="width: 80px;" />
+							</c:when>
+
+							<c:otherwise>
+								<span style="color: gray;">이미지 없음</span>
+							</c:otherwise>
+						</c:choose></td>
+
 					<td>${review.post_count}</td>
 					<td>${review.post_like_count}</td>
 				</tr>
 			</c:forEach>
 		</tbody>
-	</table>
-	</div>
 
+	</table>
+
+	<div class="d-flex justify-content-center mt-4">
+		<nav>
+			<ul class="pagination">
+				<c:if test="${pageVO.pageStart > 1}">
+					<li class="page-item"><a class="page-link"
+						href="?page=${pageVO.pageStart - 1}">&laquo;</a></li>
+				</c:if>
+
+				<c:forEach begin="${pageVO.pageStart}" end="${pageVO.pageEnd}"
+					var="i">
+					<li class="page-item ${i == pageVO.page ? 'active' : ''}"><a
+						class="page-link" href="?page=${i}">${i}</a></li>
+				</c:forEach>
+
+				<c:if test="${pageVO.pageEnd < pageVO.totPage}">
+					<li class="page-item"><a class="page-link"
+						href="?page=${pageVO.pageEnd + 1}">&raquo;</a></li>
+				</c:if>
+			</ul>
+		</nav>
+	</div>
 </body>
 </html>

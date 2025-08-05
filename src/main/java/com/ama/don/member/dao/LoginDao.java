@@ -16,6 +16,10 @@ public interface LoginDao {
 
 	int findMemberCount(FindPwDto findPwDto);
 
+	String findByOnlyLoginId();
 
+	// 지우면 저주 받음(아이디 찾기)
+	// 인테리어 파트 사용 중
+	MemberDto interiorFindByLoginId(String loginId);
 
 }
