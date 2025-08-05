@@ -21,27 +21,7 @@
 		targetId
 		FROM post
 		WHERE target_type = #{targetType}
-		AND target_id =
-		#{targetId}
 		ORDER BY post_id DESC
-	</select>
-
-	<!-- 게시글 상세 조회 -->
-	<select id="findById" parameterType="long"
-		resultType="com.ama.don.common.dto.PostDto">
-		SELECT
-		post_id,
-		user_id,
-		post_title,
-		post_content,
-		post_date,
-		post_count,
-		post_like_count,
-		target_type AS targetType,
-		target_id AS
-		targetId
-		FROM post
-		WHERE post_id = #{postId}
 	</select>
 
 	<!-- 게시글 작성 -->
@@ -50,15 +30,17 @@
 		keyProperty="post_id">
 		INSERT INTO post (
 		user_id, post_title, post_content,
-		post_date, post_count, post_like_count,
-		target_type, target_id
-		) VALUES
-		(
+		post_date, post_count,
+		post_like_count,
+		target_type
+		)
+		VALUES (
 		#{user_id}, #{post_title}, #{post_content},
 		CURRENT_TIMESTAMP, 0, 0,
-		#{targetType}, #{targetId}
+		#{targetType}
 		)
 	</insert>
+
 
 	<!-- 게시글 수정 -->
 	<update id="update"
@@ -72,31 +54,59 @@
 		WHERE post_id = #{post_id}
 	</update>
 
-	<!-- 게시글 삭제 -->
-	<delete id="delete" parameterType="long">
-		DELETE FROM post WHERE post_id
-		= #{postId}
-	</delete>
+	<!-- 게시글 작성 -->
+	<insert id="polyTest" parameterType="com.ama.don.common.dto.PostDto"
+		useGeneratedKeys="true" keyProperty="post_id">
+		INSERT INTO post (
+		user_id,
+		target_type
+		)
+		VALUES (
+		#{user_id},
+		#{targetType}
+		)
+	</insert>
 
-	<!-- 전체 게시글 수 -->
-	<select id="countByTarget" resultType="int">
-		SELECT COUNT(*)
+
+
+	<!-- 업체에서 사용하는 다형성 게시글 생성 -->
+	<insert id="insertPolyPostForCompany"
+			parameterType="com.ama.don.common.dto.PostDto"
+			useGeneratedKeys="true"
+			keyProperty="post_id">
+		INSERT INTO post (
+			user_id,
+		    target_id,
+		    target_type)
+		VALUES (
+			#{user_id},
+		    #{targetId},
+		    #{targetType}
+		)
+	</insert>
+
+	<!-- 다형성 조회 id, target, date -->
+	<select id="polyFindById" resultType="java.lang.Integer">
+		SELECT
+		    post_id,
+		    target_id,
+		    target_type,
+		    post_date
 		FROM post
-		WHERE target_type = #{targetType}
-		AND target_id = #{targetId}
+		WHERE post_id = #{post_id}
 	</select>
 
-	<!-- 페이징된 게시글 조회 -->
-	<select id="findPagedByTarget"
-		resultType="com.ama.don.common.dto.PostDto">
-		SELECT *
+	<!-- 게시글 상세 조회 -->
+	<select id="findById" resultType="com.ama.don.common.dto.PostDto">
+		SELECT
+			post_id,
+			user_id,
+			post_title,
+			post_content,
+			post_date
 		FROM post
-		WHERE target_type = #{targetType}
-		AND
-		target_id = #{targetId}
-		ORDER BY post_date DESC
-		LIMIT #{rowCount} OFFSET
-		#{rowStart}
+		WHERE post_id = #{post_id}
 	</select>
+
 
 </mapper>

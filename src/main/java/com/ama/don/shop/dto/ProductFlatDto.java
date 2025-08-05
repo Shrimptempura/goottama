@@ -31,9 +31,48 @@ public class ProductFlatDto {
     String product_istoday;
     Timestamp product_date;
     
+    
+    
     //상품 이미지
     Long product_img_id;
 	String product_imgurl;
 	String product_img_type;
+	
+	//
+	//카테고리 
+	String category_main;
+	String category_sub;
+	
+	
+	//리뷰 
+	Long review_id; 
+	String review_title; 
+	String review_content; 
+	int review_count; 
+	Timestamp review_date; 
+	Timestamp review_modify; 
+	Long target_id; 
+	String target_type; 
+	int is_deleted;
+
+	
+	
+	//수량 갯수
+	private int quantity=1;
+	private int discountedPrice;
+	private int totalprice;
+	
+	
+	public int getDiscountedPrice() {
+		if(product_discountrate!=null) {
+			return (int) (product_price*(1-product_discountrate.doubleValue()));
+		}
+		return product_price;
+	}
+	
+    public int getTotalPrice() {
+        return getDiscountedPrice() * quantity;
+    }
+	
 	
 }

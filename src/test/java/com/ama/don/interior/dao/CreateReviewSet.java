@@ -1,7 +1,7 @@
 package com.ama.don.interior.dao;
 
 import com.ama.don.common.dto.ReviewDto;
-import com.ama.don.interior.dto.request.CompanyReviewCreateDto;
+import com.ama.don.interior.dto.review.CompanyReviewCreateDto;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -30,20 +30,20 @@
 	DELETE FROM file WHERE FILE_UPLOADER = #{file_uploader} AND TARGET_TYPE = #{targetType} AND TARGET_ID = #{targetId}
 	</delete>
 
+
 	<!-- 특정 게시글에 연결된 파일 조회 -->
-	<select id="findByTarget"
+	<select id="findByTargetId"
 		resultType="com.ama.don.common.dto.FileDto">
 		SELECT
-		file_id AS file_id,
-		file_uploader AS file_uploader,
-		file_name AS file_name,
-		file_path AS file_path,
-		target_type AS target_type,
-		target_id AS target_id
+		file_id,
+		target_type,
+		target_id,
+		file_name,
+		file_path,
+		file_uploader
 		FROM file
-		WHERE target_type = #{target_type}
-		AND target_id
-		= #{target_id}
+		WHERE target_type = #{targetType}
+		AND target_id = #{targetId}
 	</select>
 	
 	<update id="deleteProfileImg">
@@ -54,5 +54,15 @@
 	update user_detail set user_img = #{fileName} where user_id = #{user_id} 
 	</update>
 
+	<!-- 타겟 아이디 수정 -->
+	<update id="updateTargetId">
+		UPDATE file
+		SET target_id = #{newTargetId}
+		WHERE
+		target_type = #{targetType}
+		AND file_uploader = #{fileUploader}
+		AND
+		target_id IS NULL
+	</update>
 
 </mapper>

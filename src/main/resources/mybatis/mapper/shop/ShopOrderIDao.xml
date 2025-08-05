@@ -8,15 +8,15 @@
     <!-- 1. 주문 등록 (orders 테이블) -->
     <insert id="order_write" parameterType="com.ama.don.shop.dto.OrdersDto">
         <selectKey keyProperty="order_id" resultType="long" order="AFTER">
-            SELECT LAST_INSERT_ID()
+            select last_insert_id()
         </selectKey>
-        INSERT INTO orders (user_id, order_date, order_status, order_totalprice)
-        VALUES (#{user_id}, NOW(), '주문 완료', #{order_totalprice})
+        insert into orders (user_id, order_date, order_status, order_totalprice)
+        values (#{user_id}, now(), '주문 완료', #{order_totalprice})
     </insert>
 
     <!-- 2. 배송 정보 등록 (deliver 테이블) -->
     <insert id="deliver_write" parameterType="com.ama.don.shop.dto.DeliverDto">
-        INSERT INTO deliver(
+        insert into deliver(
             order_id,
             deliver_name,
             deliver_person,
@@ -27,7 +27,7 @@
             deliver_status,
             deliver_date
         )
-        VALUES(
+        values(
             #{order_id},
             #{deliver_name},
             #{deliver_person},
@@ -36,13 +36,13 @@
             #{deliver_detail_loc},
             #{deliver_request},
             '배송 준비중',
-            NOW()
+            now()
         )
     </insert>
 
     <!-- 3. 주문 상품 등록 (orders_products 테이블) -->
     <insert id="orders_products_write" parameterType="com.ama.don.shop.dto.Orders_productsDto">
-        INSERT INTO orders_products(
+        insert into orders_products(
             order_id,
             product_id,
             op_quantity,
@@ -50,29 +50,29 @@
             op_date,
             op_totalprice
         )
-        VALUES(
+        values(
             #{order_id},
             #{product_id},
             #{op_quantity},
             #{op_price},
-            NOW(),
+            now(),
             #{op_totalprice}
         )
     </insert>
 
     <!-- 4. 결제 정보 등록 (payment 테이블) -->
     <insert id="payment_write" parameterType="com.ama.don.shop.dto.PaymentDto">
-        INSERT INTO payment(
+        insert into payment(
             order_id,
             payment_type,
             payment_date,
             payment_status,
             payment_price
         )
-        VALUES(
+        values(
             #{order_id},
             '카카오결제',
-            NOW(),
+            now(),
             '결재완료',
             #{payment_price}
         )

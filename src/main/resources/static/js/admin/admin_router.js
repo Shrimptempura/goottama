@@ -1,3 +1,4 @@
+// admin_router.js
 // 관리자 메인 페이지 주소 할당
 function loadContent(menuType) {
     const mainContainer = document.querySelector(".main-content");
@@ -89,9 +90,9 @@ async function callSpecificPageJSFunction(menuType) {
         console.warn(`No JS file for ${menuType}`);
     };
 
-   const modalScript = document.createElement('script');
-   modalScript.src = "/static/js/admin/ui-snippets/userDataModal.js";
-   document.head.appendChild(modalScript);
+   //const modalScript = document.createElement('script');
+   //modalScript.src = "/static/js/admin/ui-snippets/userDataModal.js";
+   //document.head.appendChild(modalScript);
 }
 
 // 페이지 별 초기화 함수 실행 함수

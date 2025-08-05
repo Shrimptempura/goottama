@@ -84,68 +84,84 @@
 
 	
 <script>
-	//장바구니 개별 상품 삭제
-	function deleteCartItem(userId, productId) {
-	    if (confirm('이 상품을 장바구니에서 삭제하시겠습니까?')) {
-	        location.href = 'cart_delete?user_id=' + userId + '&product_id=' + productId;
-	    }
-	}
-	
-	// 방법 1: 각 아이템마다 user_id를 전달하는 방식 (권장)
-	function changeCount(cartId, value) {
-	    const span = document.getElementById('count_' + cartId);
-	    let count = parseInt(span.innerText);
-	    const newCount = count + value;
+    // 장바구니 개별 상품 삭제
+    function deleteCartItem(userId, productId) {
+        if (confirm('이 상품을 장바구니에서 삭제하시겠습니까?')) {
+            location.href = 'cart_delete?user_id=' + userId + '&product_id=' + productId;
+        }
+    }
+    
+    // 수량 변경
+    function changeCount(cartId, value) {
+        const span = document.getElementById('count_' + cartId);
+        let count = parseInt(span.innerText);
+        const newCount = count + value;
 
-	    if (newCount < 1) {
-	        alert('수량은 1개 이상이어야 합니다.');
-	        return;
-	    }
-	    
-	 	// 세션에서 user_id 가져오기
-	    let userId = '${sessionScope.user_id}';
-	    if (!userId || userId.trim() === '' || userId === 'null') {
-	        userId = '2'; // 기본값
-	    }
-	    
+        if (newCount < 1) {
+            alert('수량은 1개 이상이어야 합니다.');
+            return;
+        }
+        
+        // 세션에서 user_id 가져오기
+        let userId = '${sessionScope.user_id}';
+        if (!userId || userId.trim() === '' || userId === 'null') {
+            userId = '1'; // 기본값
+        }
 
-	    // 서버에 수량 업데이트 요청
-	    if (confirm('수량을 변경하시겠습니까?')) {
-	        location.href = 'cart_update?cart_id=' + cartId + '&cart_quantity=' + newCount + '&user_id=' + userId;
-	    }
-	}
-	function goToOrder(){
-		// 장바구니에 상품이 있는지 확인
-		const cartItems = document.querySelectorAll('.container').length;
-		
+        // 서버에 수량 업데이트 요청
+        if (confirm('수량을 변경하시겠습니까?')) {
+            location.href = 'cart_update?cart_id=' + cartId + '&cart_quantity=' + newCount + '&user_id=' + userId;
+        }
+    }
+    
+    // 🔥 수정된 주문하기 함수
+    function goToOrder() {
+        console.log("주문하기 버튼 클릭됨");
+        
+        // 장바구니에 상품이 있는지 확인
+        const cartItems = document.querySelectorAll('.container').length;
+        console.log("장바구니 상품 수:", cartItems);
 
-		if (cartItems === 0) {
-		       alert('장바구니에 상품이 없습니다.');
-		       return;
-		   }
+        if (cartItems === 0) {
+            alert('장바구니에 상품이 없습니다.');
+            return;
+        }
 
-		
-		   let userId = '${sessionScope.user_id}';
-		   	    if (!userId || userId.trim() === '' || userId === 'null') {
-		   	    userId = '2'; // 기본값으로 2 사용
-		   } 
-		  	
-		   location.href = "order_view?user_id=" + userId;
-	}
-	
-	function showAlert(){
-			alert("장바구니에 담았습니다.");
-			location.href="cart_write?user_id=2&product_id=${product.product_id }&cart_quantity="+count;
-		}
-	
-	function getuseridt(){
-		
-		   let userId = '${sessionScope.user_id}';
-		   	    if (!userId || userId.trim() === '' || userId === 'null') {
-		   	    userId = '2'; // 기본값으로 2 사용
-		   } 
-	}
-</script>	
+        // 사용자 ID 가져오기
+        let userId = '${sessionScope.user_id}';
+        if (!userId || userId.trim() === '' || userId === 'null') {
+            userId = '1'; // 기본값으로 1 사용
+        }
+        
+        console.log("사용자 ID:", userId);
+        
+        // 🔥 수정: 문법 오류 수정
+        // 기존: form_cart=="true" (잘못된 문법)
+        // 수정: form_cart=true (올바른 파라미터)
+        // 기존: product_id=${product_id} (불필요한 파라미터)
+        
+        const orderUrl = "order_view?user_id=" + userId + "&form_cart=true";
+        console.log("이동할 URL:", orderUrl);
+        
+        location.href = orderUrl;
+    }
+    
+    // 사용자 ID 가져오기 (유틸리티 함수)
+    function getUserId() {
+        let userId = '${sessionScope.user_id}';
+        if (!userId || userId.trim() === '' || userId === 'null') {
+            userId = '1'; // 기본값으로 1 사용
+        }
+        return userId;
+    }
+    
+    // 장바구니 담기 (참고용 - 다른 페이지에서 사용)
+    function showAlert() {
+        alert("장바구니에 담았습니다.");
+        let userId = getUserId();
+        location.href = "cart_write?user_id=" + userId + "&product_id=${product.product_id}&cart_quantity=" + count;
+    }
+</script>
 	
 	<!-- 리스트버튼 삭제 -->	
 	<!-- 멀티삭제 -->

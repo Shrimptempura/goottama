@@ -26,7 +26,8 @@ public class ShopProductPopularService implements ShopServiceinter{
 		HttpServletRequest request=
 				(HttpServletRequest) map.get("request");
 
-		model.addAttribute("product_popular",iDao.product_popular_all_list());
+		//PorductFlatDto 리스트형식으로 사용한다.
+		model.addAttribute("product_popular",iDao.product_popular_all_list());	
 
 	}
 

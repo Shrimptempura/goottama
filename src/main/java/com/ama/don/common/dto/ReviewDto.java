@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 // 공통 리뷰 테이블에 대한 dto
@@ -22,8 +22,8 @@ public class ReviewDto {
     private String reviewTitle;         // 리뷰 제목
     private String reviewContent;       // 리뷰 내용
     private int reviewCount;            // 조회수
-    private Timestamp reviewDate;       // 리뷰 작성 날짜
-    private Timestamp reviewModify;     // 리뷰 수정 일지
+    private LocalDateTime reviewDate;       // 리뷰 작성 날짜
+    private LocalDateTime reviewModify;     // 리뷰 수정 일지
     private List<String> reviewImg;           // 리뷰 사진, 여러장
     private Boolean isDeleted;          // 소프트 삭제 여부
 

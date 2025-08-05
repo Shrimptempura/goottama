@@ -1,4 +1,4 @@
-
+// UserPageScript.js
 function initUserPage() {
     const form = document.getElementById("userSearchForm");
     const container = document.getElementById("userListContainer");

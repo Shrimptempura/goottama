@@ -315,15 +315,6 @@ body {
                 </td>
             </tr>
             			
-            <tr>
-                <td>이미지 첨부</td>
-                <td>
-                    <input type="file" name="review_image" accept="image/*" />
-                    <small style="color: #666; display: block; margin-top: 5px;">
-                        * JPG, PNG, GIF 파일만 업로드 가능합니다. (최대 5MB)
-                    </small>
-                </td>
-            </tr>
         </table>
         
         <div class="submit-section">
