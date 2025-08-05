@@ -191,6 +191,9 @@ body {
 </head>
 <body>
 
+
+<!-- 사용자 세션을 받아서 처리 -->
+
 <div class="main-content">
     <h2 class="page-header">주문 내역</h2>
 

@@ -19,8 +19,7 @@ public class ShopReviewFlatDto {
 	String review_content; 
 	int review_count; 
 	Timestamp review_date; 
-	Timestamp review_modify; 
-	String review_img; 
+	Timestamp review_modify;
 	Long target_id; 
 	String target_type;	// enum('SHOP','COMMUNITY','INTERIOR')
 	

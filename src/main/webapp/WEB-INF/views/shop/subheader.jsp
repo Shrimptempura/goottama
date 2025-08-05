@@ -4,6 +4,8 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<%@ include file="../list.jsp" %>
+
 <title>Insert title here</title>
 
 <style>
@@ -35,6 +37,25 @@
 </head>
 <body>
 
+
+<!-- 사용자 정보 표시 -->
+<div class="user-info">
+    <c:choose>
+        <c:when test="${not empty sessionScope.user_id}">
+            <!-- 로그인된 경우 -->
+            <span>현재 사용자: 
+                <span class="current-user" id="currentUserId">${sessionScope.user_id}</span>
+            </span>
+        </c:when>
+        <c:otherwise>
+            <!-- 비로그인인 경우 -->
+            <span>현재 사용자: 
+                <span class="current-user" id="currentUserId">비로그인 (기본값: 1)</span>
+            </span>
+        </c:otherwise>
+    </c:choose>
+</div>
+
 <h2>subheader</h2>
 
 <script>
@@ -42,7 +63,7 @@
 function getUserId() {
     let userId = '${sessionScope.user_id}';
     if (!userId || userId.trim() === '' || userId === 'null') {
-        userId = '2'; // 기본값으로 2 사용
+        userId = '1'; // 기본값으로 1 사용
     }
     return userId;
 }
@@ -63,7 +84,7 @@ function goToOrderDetails() {
 <div class="subheader">
     <a href="home">Home</a>
     <a href="category">Category</a>
-    <a href="exhibition">ProductMall</a>
+    <a href="productmall">ProductMall</a>
     <a href="best">Best</a>
     <a href="todaydeliver">Today Delivery</a>
     <a href="javascript:void(0)" onclick="goToCart()">Cart</a>
