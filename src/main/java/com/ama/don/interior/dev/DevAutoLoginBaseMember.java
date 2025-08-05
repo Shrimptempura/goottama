@@ -29,7 +29,7 @@ public class DevAutoLoginBaseMember implements Filter {
 
             // 실제 디비에 저장된 로그인 id 입력
             // user_login, user_detail 둘다 생성되어있어야 함
-            MemberDto member = loginDao.interiorFindByLoginId("test1");
+            MemberDto member = loginDao.interiorFindByLoginId("aaaaa");
             session.setAttribute("loginMember", member);
         }
 
