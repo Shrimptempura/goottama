@@ -1,9 +1,8 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.interior.dto.request.*;
-import com.ama.don.interior.dto.response.CompanyDetailDto;
-import com.ama.don.interior.dto.response.CompanyReviewDto;
-import com.ama.don.interior.dto.response.CompanySummaryDto;
+import com.ama.don.interior.dto.company.*;
+import com.ama.don.interior.dto.company.CompanyDetailDto;
+import com.ama.don.interior.dto.company.CompanySummaryDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -131,23 +129,6 @@ class CompanyDaoTest extends AbstractCompanyTestSupport {
         assertThat(result.getCompanyLicense()).isEqualTo(ctx.getDetail().getCompanyLicense());
         assertThat(result.getCompanyField()).isEqualTo(ctx.getDetail().getCompanyField());
         assertThat(result.getCompanyRate()).isNull();
-    }
-
-    @DisplayName("업체 정보 수정에서 업체 이미지 수정")
-    @Test
-    void updateCompanyImage() {
-        // 업체 생성, 사진 설정
-        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
-        dto.setCompanyImg("testCompanyImg");
-        Long companyId = dto.getCompanyId();
-
-        CompanyUpdateDto updateDto = new CompanyUpdateDto();
-        updateDto.setCompanyId(companyId);
-        updateDto.setCompanyImg("testCompanyImg2");
-
-        int updateCount = companyDao.updateCompanyImg(updateDto);
-
-        assertThat(updateCount).isEqualTo(1);
     }
 
     @DisplayName("업체 수정, company_deatil 테이블 수정")

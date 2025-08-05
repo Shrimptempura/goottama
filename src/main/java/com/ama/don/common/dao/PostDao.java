@@ -18,4 +18,7 @@ public interface PostDao {
 	// 게시글 삭제
 	void delete(Long postId);
 
+	// 업체 다형성 게시글 생성
+	int insertPolyPostForCompany(PostDto dto);
+
 }

@@ -1,8 +1,8 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.interior.dto.request.*;
-import com.ama.don.interior.dto.response.CompanyDetailDto;
-import com.ama.don.interior.dto.response.CompanySummaryDto;
+import com.ama.don.interior.dto.company.*;
+import com.ama.don.interior.dto.company.CompanyDetailDto;
+import com.ama.don.interior.dto.company.CompanySummaryDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -39,12 +39,11 @@ public interface CompanyDao {
     // company_detail, company_score_avg
     CompanySummaryDto selectSummaryCompany(@Param("companyId") Long companyId);
 
-    // 업체 정보 수정(detail + company + location(api->service))
+    // 업체 정보 수정(detail + company + location(api->service)), file
     // company_detail table 수정(대부분)
     int updateCompanyDetail(CompanyUpdateDto dto);
 
-    // company table 수정(이미지만)
-    int updateCompanyImg(CompanyUpdateDto dto);
+    // 이미지는 다형성 file 사용
 
     // 업체의 주소가 바뀌면 company_addr를 가져다 위치 정보 업데이트
     int updateLocation(CompanyUpdateLocationDto dto);
@@ -52,5 +51,5 @@ public interface CompanyDao {
     // 업체 탈퇴(is_deleted), company table
     int deleteCompany(Long companyId);
 
-    // api location lat, lng, code 추후 변경 메서드 필요
+    // api location -> 정렬로 대체
 }

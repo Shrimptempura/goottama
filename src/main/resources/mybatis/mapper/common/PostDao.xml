@@ -85,4 +85,21 @@
 
 
 
+	<!-- 업체에서 사용하는 다형성 게시글 생성 -->
+	<insert id="insertPolyPostForCompany"
+			parameterType="com.ama.don.common.dto.PostDto"
+			useGeneratedKeys="true"
+			keyProperty="post_id">
+		INSERT INTO post (
+			user_id,
+		    target_id,
+		    target_type)
+		VALUES (
+			#{user_id},
+		    #{targetId},
+		    #{targetType}
+		)
+	</insert>
+
+
 </mapper>
