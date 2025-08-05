@@ -813,14 +813,6 @@ function debugInquiries() {
     <!-- 왼쪽 섹션: 이미지, 하단바, 상품정보 -->
     <div class="left-section">
     	
-    	<!-- 이미지 -->
-    	<div>
-    		<c:forEach var="productimg" items="${productimgs }">
-    			<img class="main-img" src="/static/uploads/shop/${productimg.product_imgurl }" alt="" onclick="changeMainImage(this)" />
-    			<img class="sub-img" src="/static/uploads/shop/${productimg.product_imgurl }" onclick="changeMainImage(this)"/>    		
-    		</c:forEach>
-    	</div>
-    	
         <!-- 이미지 영역 -->
         <div class="imgcontainer">
             <!-- 왼쪽 썸네일 리스트 -->
@@ -868,12 +860,14 @@ function debugInquiries() {
         	<button class="review-write-btn" onclick="reviewwrite()">리뷰 작성하기</button>
         	</div>
         	
+        	<!-- 테이블 상속 해서 사용 -->
+        	<!-- 리뷰는 별도의 상속 테이블을 따로 만들어서 사용한다. -->
         	<!-- 리뷰 목록 (forEach로 반복) -->
         	<c:forEach var="review" items="${review_list}" varStatus="status">
         		<div class="review-item">
         			<div class="review-content-area">
         				<div class="review-top">
-        					<h4 class="review-item-title">리뷰 제목 ${status.index + 1}</h4>
+        					<h4 class="review-item-title">${review.review_title}</h4>
         					<span class="review-author">작성자: ${review.user_nickname != null ? review.user_nickname : sessionScope.user_id}</span>
         				</div>
         				<div class="review-bottom">
@@ -952,17 +946,16 @@ function debugInquiries() {
 		                        </div>
 		                    </div>
 		                    
-		                    <button><a href="product_reply_view?pinquiry_id=${inquiry.pinquiry_id }"> 답변달기</a></button>
+		                    <button><a href="product_reply_view?product_id=${inquiry.product_id }&pinquiry_id=${inquiry.pinquiry_id }"> 답변달기</a></button>
 		                    <!-- 만약 user의 roles가 관리자이면은 답변달기 버튼이 활성화 -->
 		                    <c:set var="userRole" value="${sessionScope.user_id }"/>
 		                    <c:if test="${sessionScope.user_id }"></c:if>
 
-		                    
-		                    
+		   
 		                    <!-- JavaScript로 제어될 버튼 영역 (오른쪽에 위치) -->
 		                    <div class="inquiry-actions" style="display: none;">
 		                        <button class="btn-edit" onclick="editInquiry(${inquiry.pinquiry_id})">수정</button>
-		                        <button class="btn-delete" onclick="deleteInquiry(${inquiry.pinquiry_id})">삭제</button>
+		                        <button class="btn-delete" onclick="location.href='product_inquiry_delete?pinquiry_id=${inquiry.pinquiry_id}&user_id=${inquiry.user_id}'">삭제</button>
 		                    </div>
 		                </div>
 		                

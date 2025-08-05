@@ -107,7 +107,7 @@
 	<!-- 단일 상품 문의&답글 조회 리스트 -->
 	<select id="product_inquiry_list" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto" resultType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
 		select pi.pinquiry_id,pi.pinquiry_content,pi.pinquiry_date,pi.pinquiry_status, pr.preply_content
-		,pr.preply_date,u.user_id,u.user_nickname
+		,pr.preply_date,u.user_id,u.user_nickname,p.product_id
 		from product_inquiry pi
 		left join product_reply pr on pi.pinquiry_id=pr.pinquiry_id
 		left join product p on p.product_id=pi.product_id
@@ -121,14 +121,45 @@
 		values(#{param1},#{param2},#{param3},now(),'미답변');
 	 </insert>
 	 
+	 <!-- 단일 상품 문의 삭제 -->
+	 <delete id="product_inquiry_delete" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+		delete from product_inquiry
+		where pinquiry_id=#{pinquiry_id}
+		and user_id=#{user_id}
+	</delete>
+	 
 	 <!-- 단일 상품 특정 문의 조회 -->
 	 <select id="product_inquiry" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto" resultType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
-		select pi.pinquiry_id,pi.pinquiry_content,pi.pinquiry_date,pi.pinquiry_status
+		select pi.pinquiry_id,pi.pinquiry_content,pi.pinquiry_date,pi.pinquiry_status,pi.product_id
 		,u.user_nickname
 		from product_inquiry pi
 		left join user_detail u on u.user_id=pi.user_id		
 		where pi.pinquiry_id=#{pinquiry_id};
 	 </select>
+	 
+	 
+	 <!-- 기존 문의의 답글 존재여부 -->
+	<select id="product_reply" parameterType="long" resultType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+	    select 
+	        preply_id,
+	        pinquiry_id,
+	        preply_content,
+	        preply_date
+	    from product_reply 
+	    where pinquiry_id = #{pinquiry_id}
+	    order by preply_date desc
+	</select>
+	
+	<delete id="product_reply_delete" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+		delete from product_reply
+		where pinquiry_id=#{pinquiry_id}
+	</delete>
+	 
+	 <!-- 문의 답글 작성 -->
+	 <insert id="product_reply_write" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+	 	insert into product_reply(pinquiry_id,preply_content,preply_date) 
+		values (#{pinquiry_id},#{preply_content},now());
+	 </insert>
 	 
 	
 	

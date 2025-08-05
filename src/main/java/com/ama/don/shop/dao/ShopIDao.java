@@ -62,14 +62,18 @@ public interface ShopIDao {
   	public void review_write(ShopReviewFlatDto shopReviewFlatDto);
   	
     //product_inquiry iDao
-	public void product_inquiry_write(Long userid, Long productid, String pinquiry_content);	//상품문의 작성 
-	public ArrayList<ShopProductInquiryFlatDto> product_inquiry_list(Long productid);			//단일 상품 문의 리스트
-	public ShopProductInquiryFlatDto product_inquiry(Long pinquiryid);							//단일 상품 특정 문의 조회
+  	public ArrayList<ShopProductInquiryFlatDto> product_inquiry_list(Long productid);			//단일 상품 문의 리스트
+  	public ShopProductInquiryFlatDto product_inquiry(Long pinquiryid);							//단일 상품 특정 문의 조회
+
+  	public void product_inquiry_write(Long userid, Long productid, String pinquiry_content);	//상품문의 작성 
+	public void product_inquiry_delete(Long userid, Long pinquiryid);						//상품문의 삭제
 	
+		
 	
 	//product_reply iDao
-	public void reply_write(Long pinquiryid);
-	
+	public ArrayList<ShopProductInquiryFlatDto> product_reply(Long pinquiry_id);  				//답글 존재 여부 확인
+	public void product_reply_write(Long pinquiry_id, String preply_content);					//답글 작성
+	public void product_reply_delete(Long pinquiryid);											//답글 삭제
 	//Order iDao
     
     public void order_write(OrdersDto ordersDto);

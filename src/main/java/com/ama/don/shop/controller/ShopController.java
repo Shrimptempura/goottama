@@ -20,10 +20,7 @@ import com.ama.don.shop.dto.ProductFlatDto;
 import com.ama.don.shop.service.ShopBestService;
 import com.ama.don.shop.service.ShopHomeService;
 import com.ama.don.shop.service.ShopProductMallService;
-import com.ama.don.shop.service.ShopProductReplyViewService;
 import com.ama.don.shop.service.ShopListService;
-import com.ama.don.shop.service.ShopProductInquiryWriteService;
-import com.ama.don.shop.service.ShopProductInquiryWriteViewService;
 import com.ama.don.shop.service.ShopServiceinter;
 import com.ama.don.shop.service.ShopWriteService;
 import com.ama.don.shop.service.Kakaopay.ShopKakaopayService;
@@ -40,6 +37,11 @@ import com.ama.don.shop.service.orderservice.ShopOrderWriteService;
 import com.ama.don.shop.service.product.ShopProductHighSalesService;
 import com.ama.don.shop.service.product.ShopProductPopularService;
 import com.ama.don.shop.service.product.ShopProductdetailService;
+import com.ama.don.shop.service.productinquiry.ShopProductInquiryWriteService;
+import com.ama.don.shop.service.productinquiry.ShopProductInquiryWriteViewService;
+import com.ama.don.shop.service.productinquiry.ShopProductInquiryDeleteService;
+import com.ama.don.shop.service.productinquiry.ShopProductReplyViewService;
+import com.ama.don.shop.service.productinquiry.ShopProductReplyWriteService;
 import com.ama.don.shop.service.reviewservice.ShopReviewWriteService;
 import com.ama.don.shop.service.reviewservice.ShopReviewWriteViewService;
 
@@ -200,15 +202,52 @@ public class ShopController {
 		return "redirect:/shop/product_detail?product_id="+productid;
 	}
 	
+	@RequestMapping("/shop/product_inquiry_delete")
+	public String product_reply_delete(HttpServletRequest request,Model model) {
+		
+		System.out.println("reply_write()");
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopProductInquiryDeleteService(iDao);
+		shopServiceinter.execute(model);
+	
+		//
+		String product_id=request.getParameter("product_id");
+		
+		System.out.println(product_id);
+		
+		Long productid=Long.parseLong(product_id);
+		
+		return "redirect:/shop/product_detail?product_id="+productid;
+	}
+	
 	
 	@RequestMapping("/shop/product_reply_view")
-	public String product_reply_write(HttpServletRequest request,Model model) {
+	public String product_reply_view(HttpServletRequest request,Model model) {
 		
 		model.addAttribute("request",request);
 		shopServiceinter=new ShopProductReplyViewService(iDao);
 		shopServiceinter.execute(model);
 		
 		return "shop/product_reply_view";
+	}
+	
+	
+	@RequestMapping("/shop/product_reply_write")
+	public String product_reply_write(HttpServletRequest request,Model model) {
+		
+		System.out.println("reply_write()");
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopProductReplyWriteService(iDao);
+		shopServiceinter.execute(model);
+	
+		//
+		String product_id=request.getParameter("product_id");
+		
+		System.out.println(product_id);
+		
+		Long productid=Long.parseLong(product_id);
+		
+		return "redirect:/shop/product_detail?product_id="+productid;
 	}
 	
 
