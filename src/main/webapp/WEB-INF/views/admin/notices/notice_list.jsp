@@ -49,6 +49,7 @@
     <tr>
        <td>제목</td>
        <td>날자</td>
+       <td>보기</td>
     </tr>
     <c:forEach items="${list}" var="notice">
         <tr>
@@ -60,6 +61,8 @@
             <td>
             <fmt:formatDate value="${notice.noticesCreatedAt}" pattern="yyyy-MM-dd"/>
             </td>
+            <td><button type="button" class="open-modal-btn" data-modal-target="/admin/notices/notice_data_modal"
+                                    data-param-name="notices_id" data-param-value="${notice.noticesId}"> ▶ </button></td>
         </tr>
     </c:forEach>
 </table>
