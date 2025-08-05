@@ -161,7 +161,7 @@
 		values (#{pinquiry_id},#{preply_content},now());
 	 </insert>
 	 
-	
+	<!--  -->
 	
 	<!-- 상품 쇼핑몰 별 리스트 -->
 	<!-- <select id="product_mall_list" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ProductFlatDto">
