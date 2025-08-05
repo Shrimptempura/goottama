@@ -1,0 +1,60 @@
+@charset "UTF-8";
+
+.post-card {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	padding: 15px 0;
+	border-bottom: 1px solid #eee;
+}
+
+.post-content {
+	flex: 1;
+	margin-right: 12px;
+}
+
+.title {
+	font-weight: bold;
+	font-size: 18px;
+	margin: 4px 0 6px 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.summary {
+	color: #444;
+	font-size: 14px;
+	line-height: 1.4;
+	max-height: 2.8em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	margin-bottom: 6px;
+}
+
+.meta {
+	font-size: 12px;
+	color: #999;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.thumbnail img {
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	border-radius: 6px;
+}
+
+.write-button {
+	color: black;
+	border: none;
+}
+
+.write-button:hover {
+	background-color: #f0f0f0;
+}
