@@ -664,6 +664,13 @@
 </style>
 
 <script>
+//사진 클릭 시 이미지 전환
+function changeMainImage(element){
+	const src= element.getAttribute("src");
+	document.getElementById("main=img").setAttribute("src", src);
+}
+
+
 //========== 누락된 함수들 추가 ==========
 function changeMainImage(thumbnailElement) {
     const newSrc = thumbnailElement.getAttribute("src");
@@ -805,6 +812,14 @@ function debugInquiries() {
 
     <!-- 왼쪽 섹션: 이미지, 하단바, 상품정보 -->
     <div class="left-section">
+    	
+    	<!-- 이미지 -->
+    	<div>
+    		<c:forEach var="productimg" items="${productimgs }">
+    			<img class="main-img" src="/static/uploads/shop/${productimg.product_imgurl }" alt="" onclick="changeMainImage(this)" />
+    			<img class="sub-img" src="/static/uploads/shop/${productimg.product_imgurl }" onclick="changeMainImage(this)"/>    		
+    		</c:forEach>
+    	</div>
     	
         <!-- 이미지 영역 -->
         <div class="imgcontainer">
