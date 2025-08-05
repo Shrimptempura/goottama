@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
+import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
 import com.ama.don.member.dao.MemberProfileDao;
 import com.ama.don.member.dto.FindPwDto;
 import com.ama.don.member.dto.MemberDto;
@@ -60,8 +61,8 @@ public class MemberProfileService implements MemberProfileServiceInter{
 	}
 	
 	@Override
-	public MemberDto getupdatedMember(String login_id) {
-		MemberDto updated = memberProfileDao.updated(login_id);
+	public UserTotalDataDTO getupdatedMember(String login_id) {
+		UserTotalDataDTO updated = memberProfileDao.updated(login_id);
 		return updated;
 	}
 

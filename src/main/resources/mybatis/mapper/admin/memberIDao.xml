@@ -33,7 +33,7 @@
     <select id="getUserByLoginId" resultType="com.ama.don.admin.dto.userDTO.UserTotalDataDTO">
         SELECT D.USER_ID, D.USER_NAME, D.USER_NICKNAME, D.USER_GENDER, D.USER_BIRTH, D.USER_CREATED_AT, D.USER_TEL, D.USER_ZIPCODE, D.USER_ADDR, D.USER_EMAIL, D.USER_IMG,
         D.USER_STATUS, D.USER_SANCTIONS_UNTIL,
-        L.ROLES_ID, L.LOGIN_ID
+        L.ROLES_ID, L.LOGIN_ID, L.USER_PASSWORD
         FROM user_detail D
         JOIN user_login L ON D.USER_ID = L.USER_ID
         WHERE L.LOGIN_ID = #{param1}

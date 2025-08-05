@@ -1,13 +1,7 @@
 package com.ama.don.member.controller;
 
-import com.ama.don.member.dto.FindLoginIdDto;
-import com.ama.don.member.dto.FindPwDto;
-import com.ama.don.member.service.FindMemberService;
-import com.ama.don.member.service.LoginService;
-import com.ama.don.member.service.ValidationService;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,18 +10,46 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
+import com.ama.don.admin.service.userManage.ManageUserByAdmin;
+import com.ama.don.member.dto.FindLoginIdDto;
+import com.ama.don.member.dto.FindPwDto;
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.service.FindMemberService;
+import com.ama.don.member.service.ValidationService;
+
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 @Controller
 @RequiredArgsConstructor
 public class LoginController {
 	
-	private final LoginService loginService;
+	//private final LoginService loginService;
 	private final FindMemberService findMemberService;
 	private final ValidationService validationService;
 	
 	@GetMapping("/")
-	public String index() {
-		return "list";
-	}
+	   public String index() {
+	      Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+	      MemberDto memberDto = new MemberDto();
+	      if (authentication != null && authentication.getPrincipal() instanceof ManageUserByAdmin) {
+	         ManageUserByAdmin loggedInUser = (ManageUserByAdmin) authentication.getPrincipal();
+	         UserTotalDataDTO userTotalData = loggedInUser.getUserTotalDataDTO();
+
+	         System.out.println("\n--- UserTotalDataDTO 정보 ---");
+	         System.out.println("이미지: " + userTotalData.getUser_img()); 
+	         System.out.println("--- 끝 ---\n");
+
+	         memberDto.setLogin_id(loggedInUser.getUsername());
+	      } else {
+	         System.out.println("\n>>> 인증되지 않았거나 ManageUserByAdmin 타입이 아닙니다.");
+	      }
+	      System.out.println("\n>>> " + memberDto.getLogin_id());
+	      return "list";
+	   }
 	
 	@GetMapping("/login_view")
 	public String login_view() {
