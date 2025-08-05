@@ -15,8 +15,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.dto.MemberEditDto;
 import com.ama.don.member.dto.ResetPwDto;
+import com.ama.don.member.service.LoginService;
 import com.ama.don.member.service.MemberProfileService;
 import com.ama.don.member.service.ProfileImgUploadService;
+import com.ama.don.member.service.WithdrawalService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -28,6 +30,8 @@ public class MemberController {
 	
 	private final MemberProfileService memberProfileService;
 	private final ProfileImgUploadService profileImgUploadService;
+	private final WithdrawalService withdrawalService;
+	private final LoginService loginService;
 
 	@PostMapping("/resetPw")
 	public String resetPw(@Valid @ModelAttribute ResetPwDto resetPwDto,HttpSession session,Model model) {
@@ -94,7 +98,7 @@ public class MemberController {
 				System.out.println("Error in field: " + error.getField());
 				System.out.println("Message: " + error.getDefaultMessage());
 			}
-			return "member/mypage/editProfile_view";
+			return "redirect:/mypage/editProfile_view";
 		}
 		
 		memberEditDto.combineAddress(); // 폼에 입력된 값 하나로 dto에 주입
@@ -121,7 +125,7 @@ public class MemberController {
 		session.setAttribute("loginMember", memberDto);
 		model.addAttribute("loginMember", memberDto);
 		
-		return "member/mypage/editProfile_view";
+		return "redirect:/mypage/editProfile_view";
 	}
 	
 	@GetMapping("/mypage/editPassword")
@@ -133,4 +137,22 @@ public class MemberController {
 	public String customerCenter() {
 		return "member/mypage/customerCenter";
 	}
+	@GetMapping("/mypage/withdrawal_view")
+	public String withdrawal_view() {
+		return "member/mypage/withdrawal_view";
+	}
+	@PostMapping("/mypage/withdrawal")
+	public String withdrawal(@RequestParam("agree") String agree,@RequestParam(value = "reason",defaultValue = "4") int reason,HttpSession session) {
+		
+		MemberDto memberDto = (MemberDto) session.getAttribute("loginMember");
+		withdrawalService.deletedMember(agree, reason, memberDto);
+		loginService.logout(session); //세션 제거
+		
+		return "member/withdrawalSuccess_view";
+	}
+	@GetMapping("/member/withdrawalSuccess")
+	public String withdrawalSuccess() {
+		return "redirect:/";
+	}
+	
 }

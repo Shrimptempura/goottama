@@ -13,10 +13,23 @@
 		file_uploader, file_name, file_path,
 		target_type, target_id
 		) VALUES (
-		#{file_uploader}, #{file_name},
-		#{file_path}, #{target_type}, #{targetId}
+		#{file_uploader}, #{file_name}, #{file_path},
+		#{target_type}, #{target_id}
 		)
 	</insert>
+	
+	<delete id="deleteByTarget">
+	DELETE FROM file WHERE TARGET_TYPE = #{target_type} and target_id = #{target_id}
+	</delete>
+	
+	<delete id="deleteByUploader">
+	DELETE FROM file WHERE file_uploader = #{file_uploader}
+	</delete>
+	
+	<delete id="deleteByTargetAndUploader">
+	DELETE FROM file WHERE FILE_UPLOADER = #{file_uploader} AND TARGET_TYPE = #{targetType} AND TARGET_ID = #{targetId}
+	</delete>
+
 
 	<!-- 특정 게시글에 연결된 파일 조회 -->
 	<select id="findByTargetId"
@@ -32,7 +45,14 @@
 		WHERE target_type = #{targetType}
 		AND target_id = #{targetId}
 	</select>
-
+	
+	<update id="deleteProfileImg">
+	update user_detail set user_img = null WHERE USER_IMG = #{oldFileName}
+	</update>  
+	
+	<update id="createProfileImg">
+	update user_detail set user_img = #{fileName} where user_id = #{user_id} 
+	</update>
 
 	<!-- 타겟 아이디 수정 -->
 	<update id="updateTargetId">
