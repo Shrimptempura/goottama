@@ -1,7 +1,7 @@
 package com.ama.don.admin.dao;
 
-import com.ama.don.admin.dto.NoticeSearchDTO;
-import com.ama.don.admin.dto.NoticesDto;
+import com.ama.don.admin.dto.noticeDTO.NoticeSearchDTO;
+import com.ama.don.admin.dto.noticeDTO.NoticesDto;
 import com.ama.don.admin.utils.SearchVO;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;

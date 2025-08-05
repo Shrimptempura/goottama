@@ -1,6 +1,6 @@
 package com.ama.don.admin.controller;
 
-import com.ama.don.admin.dto.UserSearchDTO;
+import com.ama.don.admin.dto.userDTO.UserSearchDTO;
 import com.ama.don.admin.service.userManage.GetUserDataForModal;
 import com.ama.don.admin.service.userManage.GetUserDetailData;
 import com.ama.don.admin.service.userManage.GetUserListService;

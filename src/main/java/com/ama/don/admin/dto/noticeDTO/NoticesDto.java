@@ -1,4 +1,4 @@
-package com.ama.don.admin.dto;
+package com.ama.don.admin.dto.noticeDTO;
 
 import com.ama.don.common.dto.FileDto;
 import lombok.AllArgsConstructor;

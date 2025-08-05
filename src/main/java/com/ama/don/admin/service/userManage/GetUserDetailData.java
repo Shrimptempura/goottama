@@ -2,8 +2,8 @@ package com.ama.don.admin.service.userManage;
 
 import com.ama.don.admin.dao.ManageUserIDao;
 import com.ama.don.admin.dao.SanctionsIDao;
-import com.ama.don.admin.dto.SanctionsDto;
-import com.ama.don.admin.dto.UserTotalDataDTO;
+import com.ama.don.admin.dto.sanctionsDTO.SanctionsDTO;
+import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -29,10 +29,10 @@ public class GetUserDetailData {
         Map<String, Object> map = model.asMap();
         String userId = (String) map.get("userId");
         UserTotalDataDTO userTotalDataDTO = manageUserIDao.getUserByUserId(userId);
-        List<SanctionsDto> sanctionsDto = sanctionsIDao.getSanctionsByUserId(userId);
+        List<SanctionsDTO> sanctionsDto = sanctionsIDao.getSanctionsByUserId(userId);
 
         if (sanctionsDto != null && !sanctionsDto.isEmpty()) {
-            for (SanctionsDto dto : sanctionsDto) {
+            for (SanctionsDTO dto : sanctionsDto) {
                 if (dto != null) {
                     Map<String, Object> row = new HashMap<>();
                     row.put("sanctionsId", dto.getSanctions_id());

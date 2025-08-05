@@ -20,7 +20,7 @@ public class LoginWebConfig  implements WebMvcConfigurer{
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 			
 		registry.addResourceHandler("/profile/**")
-				.addResourceLocations("file:///C:/upload/profile/");
+				.addResourceLocations("file:///C:/member/profile/");
 	}
 
 }

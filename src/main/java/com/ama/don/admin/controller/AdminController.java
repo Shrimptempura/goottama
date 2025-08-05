@@ -1,7 +1,5 @@
 package com.ama.don.admin.controller;
 
-import com.ama.don.admin.dto.NoticeSearchDTO;
-import com.ama.don.admin.utils.SearchVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;

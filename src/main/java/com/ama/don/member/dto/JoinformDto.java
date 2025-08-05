@@ -42,7 +42,7 @@ public class JoinformDto {
 	private String birth;
 	
 	@NotBlank(message = "연락처를 입력하세요.")
-	@Pattern(regexp = "^01[016789]-?\\d{3,4}-?\\d{4}$", message = "올바른 연락처 형식이 아닙니다.")
+	@Pattern(regexp = "^01[016789]-?\\d{3,4}-?\\d{4}$|^01[016789]\\d{3,4}\\d{4}$", message = "올바른 연락처 형식이 아닙니다.")
 	private String tel;
 	
 	@NotBlank(message = "우편번호를 입력하세요.")

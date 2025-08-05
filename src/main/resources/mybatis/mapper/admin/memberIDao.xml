@@ -21,7 +21,7 @@
         JOIN user_login L ON D.USER_ID = L.USER_ID
     </select>
 
-    <select id="getUserByUserId" resultType="com.ama.don.admin.dto.UserTotalDataDTO">
+    <select id="getUserByUserId" resultType="com.ama.don.admin.dto.userDTO.UserTotalDataDTO">
         SELECT D.USER_ID, D.USER_NAME, D.USER_NICKNAME, D.USER_GENDER, D.USER_BIRTH, D.USER_CREATED_AT, D.USER_TEL, D.USER_ZIPCODE, D.USER_ADDR, D.USER_EMAIL, D.USER_IMG,
         D.USER_STATUS, D.USER_SANCTIONS_UNTIL,
         L.ROLES_ID, L.LOGIN_ID, L.USER_PASSWORD
@@ -30,7 +30,7 @@
         WHERE D.USER_ID = #{param1}
     </select>
 
-    <select id="getUserByLoginId" resultType="com.ama.don.admin.dto.UserTotalDataDTO">
+    <select id="getUserByLoginId" resultType="com.ama.don.admin.dto.userDTO.UserTotalDataDTO">
         SELECT D.USER_ID, D.USER_NAME, D.USER_NICKNAME, D.USER_GENDER, D.USER_BIRTH, D.USER_CREATED_AT, D.USER_TEL, D.USER_ZIPCODE, D.USER_ADDR, D.USER_EMAIL, D.USER_IMG,
         D.USER_STATUS, D.USER_SANCTIONS_UNTIL,
         L.ROLES_ID, L.LOGIN_ID
@@ -39,7 +39,7 @@
         WHERE L.LOGIN_ID = #{param1}
     </select>
 
-    <select id="searchUsers" resultType="com.ama.don.admin.dto.UserTotalDataDTO">
+    <select id="searchUsers" resultType="com.ama.don.admin.dto.userDTO.UserTotalDataDTO">
         SELECT USER_ID, USER_NAME, USER_NICKNAME, USER_GENDER, USER_BIRTH, USER_CREATED_AT, USER_TEL, USER_ZIPCODE, USER_ADDR, USER_EMAIL, USER_IMG, USER_STATUS, USER_SANCTIONS_UNTIL
         FROM user_detail
         <where>

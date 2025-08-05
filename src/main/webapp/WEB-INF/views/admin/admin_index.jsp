@@ -20,7 +20,7 @@
     </div>
 
     <!-- 모달 -->
-    <div id="userModalOverlay" class="modal-overlay">
+    <div id="ModalOverlay" class="modal-overlay">
         <div class="modal" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeModal()">&times;</button>
             <div class="modal-body-content"></div>
@@ -28,4 +28,5 @@
     </div>
 </body>
 <script src="/static/js/admin/admin_router.js"></script>
+<script src="/static/js/admin/ui-snippets/makeModal.js"></script>
 </html>

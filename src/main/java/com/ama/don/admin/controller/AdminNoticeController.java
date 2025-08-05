@@ -1,7 +1,7 @@
 package com.ama.don.admin.controller;
 
-import com.ama.don.admin.dto.NoticeSearchDTO;
-import com.ama.don.admin.dto.NoticesDto;
+import com.ama.don.admin.dto.noticeDTO.NoticeSearchDTO;
+import com.ama.don.admin.dto.noticeDTO.NoticesDto;
 import com.ama.don.admin.service.noticeService.*;
 import com.ama.don.admin.utils.SearchVO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -238,5 +238,12 @@ ommunitySearchVO} 객체.<br/>
         String message = result ? "delete_success" : "delete_failure";
         System.out.println(">>> "+message);
         return "redirect:notice_page";
+    }
+
+    @GetMapping("/admin/notices/notice_data_modal")
+    public String noticeDataModal(Model model, HttpServletRequest request){
+        model.addAttribute("request", request);
+        getNoticeDetail.execute(model);
+        return "admin/notices/notice_data_modal";
     }
 }

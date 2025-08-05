@@ -14,13 +14,13 @@
         FROM sanctions
     </select>
 
-    <select id="getSanctionsBySanctionId" resultType="com.ama.don.admin.dto.SanctionsDto">
+    <select id="getSanctionsBySanctionId" resultType="com.ama.don.admin.dto.sanctionsDTO.SanctionsDTO">
         SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
         FROM sanctions
         WHERE SANCTIONS_ID = #{param1}
     </select>
 
-    <select id="getSanctionsByUserId" resultType="com.ama.don.admin.dto.SanctionsDto">
+    <select id="getSanctionsByUserId" resultType="com.ama.don.admin.dto.sanctionsDTO.SanctionsDTO">
         SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
         FROM sanctions
         WHERE USER_ID = #{param1}

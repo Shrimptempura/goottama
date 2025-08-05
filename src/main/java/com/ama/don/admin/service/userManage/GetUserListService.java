@@ -1,14 +1,12 @@
 package com.ama.don.admin.service.userManage;
 
 import com.ama.don.admin.dao.ManageUserIDao;
-import com.ama.don.admin.dto.UserSearchDTO;
-import com.ama.don.admin.dto.UserTotalDataDTO;
+import com.ama.don.admin.dto.userDTO.UserSearchDTO;
+import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
 import com.ama.don.admin.utils.SearchVO;
-import com.ama.don.member.dto.MemberDto;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

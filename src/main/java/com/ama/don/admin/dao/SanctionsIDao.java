@@ -1,10 +1,9 @@
 package com.ama.don.admin.dao;
 
-import com.ama.don.admin.dto.SanctionSearchDTO;
-import com.ama.don.admin.dto.SanctionsDto;
+import com.ama.don.admin.dto.sanctionsDTO.SanctionSearchDTO;
+import com.ama.don.admin.dto.sanctionsDTO.SanctionsDTO;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -25,10 +24,10 @@ public interface SanctionsIDao {
     /**
      * 모든 제재 내역을 반환한다.
      *
-     * @return 전체 제재 내역 목록 (List of SanctionsDto)
+     * @return 전체 제재 내역 목록 (List of SanctionsDTO)
      * @see #countAllSanctions()
      */
-    List<SanctionsDto> getAllSanctions();
+    List<SanctionsDTO> getAllSanctions();
 
     /**
      * 모든 제재 내역의 개수를 반환한다.
@@ -41,9 +40,9 @@ public interface SanctionsIDao {
     /**
      * 특정 유저의 모든 제재 내역을 반환한다.
      * @param userId
-     * @return 제재 내역 목록 (List of SanctionsDto)
+     * @return 제재 내역 목록 (List of SanctionsDTO)
      */
-    List<SanctionsDto> getSanctionsByUserId(String userId);
+    List<SanctionsDTO> getSanctionsByUserId(String userId);
 
     /**
      * 제재 ID로 단일 제재 내역을 조회한다.
@@ -52,7 +51,7 @@ public interface SanctionsIDao {
      * @return 해당 제재의 정보 (없으면 null)
      * @see #getAllSanctions()
      */
-    SanctionsDto getSanctionsById(String sanctionsId);
+    SanctionsDTO getSanctionsById(String sanctionsId);
 
     /**
      * 조건에 따라 제재 내역을 검색한다.
@@ -66,7 +65,7 @@ public interface SanctionsIDao {
      * @return 검색 결과 목록
      * @see #countSearchSanctions(SanctionSearchDTO)
      */
-    List<SanctionsDto> searchSanctions(SanctionSearchDTO sanctionSearchDTO);
+    List<SanctionsDTO> searchSanctions(SanctionSearchDTO sanctionSearchDTO);
 
     /**
      * 조건 검색 결과의 개수를 반환한다.
@@ -82,14 +81,14 @@ public interface SanctionsIDao {
      *
      * @return 성공 시 true, 실패 시 false
      */
-    boolean makeSanction(SanctionsDto sanctionsDto);
+    boolean makeSanction(SanctionsDTO sanctionsDto);
 
     /**
      * 기존 제재 내역을 수정한다.
      *
      * @return 성공 시 true, 실패 시 false
      */
-    boolean modifySanction(SanctionsDto sanctionsDto);
+    boolean modifySanction(SanctionsDTO sanctionsDto);
 
     /**
      * 대상 사용자의 제재 내역을 삭제한다.

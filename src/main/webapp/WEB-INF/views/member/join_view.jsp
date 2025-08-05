@@ -9,7 +9,7 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 
-<!-- 이메일 선택 -->
+<!-- 이메일 선택 -->  <!-- 하 ㅇ떻깤지 -->
 <script>
 	document.addEventListener("DOMContentLoaded",
 			function() {
