@@ -2,15 +2,15 @@ package com.ama.don.interior.controller;
 
 import com.ama.don.interior.dto.company.CompanyCreateDto;
 import com.ama.don.interior.dto.company.CompanyCreateLocationDto;
+import com.ama.don.interior.dto.company.CompanyDetailDto;
+import com.ama.don.interior.dto.company.CompanySummaryDto;
 import com.ama.don.interior.service.CompanyService;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
@@ -47,6 +47,28 @@ public class CompanyController {
 //            model.addAttribute("location", location);
             return "interior/create-company-form";
         }
+    }
+
+    // 업체 상세페이지 탭 전환 + 요약 상자
+    @GetMapping("interior/myhome/{companyId}")
+    public String showCompanyHome(@PathVariable Long companyId,
+                                  @RequestParam(defaultValue = "all") String type,
+                                  Model model) {
+        // 요약 상자 - 좌측에 존재
+        CompanySummaryDto summary = companyService.selectSummaryCompany(companyId);
+        model.addAttribute("summary", summary);
+        model.addAttribute("companyId", companyId);
+
+        String tabName = switch (type) {
+            case "details" -> "/WEB-INF/views/interior/tabs/company-details.jsp";
+            case "photos" -> "/WEB-INF/views/interior/tabs/company-photos.jsp";
+            case "reviews" -> "/WEB-INF/views/interior/tabs/company-reviews.jsp";
+            case "posts" -> "/WEB-INF/views/interior/tabs/company-posts.jsp";
+            default -> "/WEB-INF/views/interior/tabs/company-all.jsp";
+        };
+        model.addAttribute("tabName", tabName);
+
+        return "interior/company-layout";
     }
 
 
