@@ -13,16 +13,18 @@
 </head>
 <body>
     <h3>company-summary</h3>
-    <p>test</p>
-    <p>test</p>
-    <p>test</p>
-    <p>test</p>
-    <p>test</p>
-    <p>test</p>
-    <p>test</p>
-    <p>test</p>
-    <p>test</p>
-    <p>test</p>
+    <section>
+        <%-- 회사 이름 --%>
+        <p>${summary.companyName}</p>
+        <%-- 소개말 --%>
+        <p>${summary.companyIntro}</p>
+        <%-- 주소 --%>
+        <p>${summary.companyAddr}</p>
+        <%-- 분야 --%>
+        <p>${summary.companyField}</p>
+        <%-- 면허 --%>
+        <p>${summary.companyLicense}</p>
+    </section>
 
 </body>
 </html>

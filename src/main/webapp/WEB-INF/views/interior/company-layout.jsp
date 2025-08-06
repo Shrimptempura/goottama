@@ -16,7 +16,7 @@
 <h3>company-all</h3>
 <%-- 좌측 요약 상자 --%>
 <div style="display: flex;">
-    <div style="width: 15%; position: fixed; padding-right: 10px; top: 70px; background-color: #f5f5f5; margin-left: 10px;">
+    <div style="width: 15%; position: fixed; padding-right: 10px; top: 150px; background-color: #f5f5f5; margin-left: 10px;">
         <jsp:include page="/WEB-INF/views/interior/fragments/company-summary.jsp" />
     </div>
 

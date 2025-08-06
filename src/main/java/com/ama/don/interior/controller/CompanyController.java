@@ -59,6 +59,12 @@ public class CompanyController {
         model.addAttribute("summary", summary);
         model.addAttribute("companyId", companyId);
 
+        // 상세 정보 탭
+        if (type.equals("details")) {
+            CompanyDetailDto detail = companyService.selectDetailCompany(companyId);
+            model.addAttribute("detail", detail);
+        }
+
         String tabName = switch (type) {
             case "details" -> "/WEB-INF/views/interior/tabs/company-details.jsp";
             case "photos" -> "/WEB-INF/views/interior/tabs/company-photos.jsp";

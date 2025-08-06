@@ -14,10 +14,12 @@
 <body>
     <h3>company-details</h3>
     <section>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
+        <p>상세 정보</p>
+        <p>주 소: ${detail.companyAddr}</p>
+        <p>분 야: ${detail.companyField}</p>
+        <p>면 허: ${detail.companyLicense}</p>
+        <p>AS기간: ${detail.companyAs}</p>
+        <p>경 력: ${detail.companyCareer}</p>
     </section>
 
 
