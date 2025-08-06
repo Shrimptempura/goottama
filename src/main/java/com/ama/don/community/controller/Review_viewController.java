@@ -13,8 +13,8 @@ import com.ama.don.common.dao.FileDao;
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.common.utils.CommunityPageVO;
-import com.ama.don.community.Dao.CommunityPostDao;
-import com.ama.don.community.Dto.Review.ReviewPostDto;
+import com.ama.don.community.dao.CommunityPostDao;
+import com.ama.don.community.dto.Review.ReviewPostDto;
 
 @Controller
 @RequestMapping("/community")
