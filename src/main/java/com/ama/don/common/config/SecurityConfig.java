@@ -26,11 +26,13 @@ public class SecurityConfig {
                                 "/",
                                 "/login_view",
                                 "/join_view",
-                                "findLoginId_view",
-                                "findPw_view",
-                                "checkPwCode_view",
-                                "emailSent_view",
-                                "withdrawalSuccess_view",
+                                "/join",
+                                "/findLoginId_view",
+                                "/findPw_view",
+                                "/checkPwCode_view",
+                                "/emailSent_view",
+                                "/withdrawalSuccess_view",
+                                "/emailCheck",
                                 "/authenticate",
                                 "/css/**", "/js/**"
                         ).permitAll()

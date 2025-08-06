@@ -2,6 +2,7 @@ package com.ama.don.member.controller;
 
 import java.io.IOException;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,7 @@ import com.ama.don.member.dto.MemberEditDto;
 import com.ama.don.member.dto.ResetPwDto;
 import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.member.service.MemberProfileService;
+import com.ama.don.member.service.MemberUpdateService;
 import com.ama.don.member.service.ProfileImgUploadService;
 import com.ama.don.member.service.WithdrawalService;
 
@@ -33,6 +35,7 @@ public class MemberController {
 	private final ProfileImgUploadService profileImgUploadService;
 	private final WithdrawalService withdrawalService;
 	private final LoginMemberService loginMemberService;
+	private final MemberUpdateService memberUpdateService;
 
 	@PostMapping("/resetPw")
 	public String resetPw(@Valid @ModelAttribute ResetPwDto resetPwDto,HttpSession session,Model model) {
@@ -90,32 +93,19 @@ public class MemberController {
 	}
 	
 	@PostMapping("/editProfile")
-	public String editProfile(@Valid @ModelAttribute MemberEditDto memberEditDto,BindingResult bindingResult, Model model) {
+	public String editProfile(@ModelAttribute MemberEditDto memberEditDto, Model model) {
 		
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("memberEditDto", memberEditDto);
-			// 검증 결과 콘솔에 에러출력
-			for (FieldError error : bindingResult.getFieldErrors()) {
-				System.out.println("Error in field: " + error.getField());
-				System.out.println("Message: " + error.getDefaultMessage());
-			}
-			return "redirect:/mypage/editProfile_view";
-		}
-		
-		memberEditDto.combineAddress(); // 폼에 입력된 값 하나로 dto에 주입
 		MemberDto memberDto = loginMemberService.getCurrentLoginMemberDto();
+		memberEditDto.combineAddress(); // 폼에 입력된 값 하나로 dto에 주입
+		
 		boolean success = memberProfileService.updateProfile(memberDto, memberEditDto, model); //db업데이트
 		
 		if (!success) {
-			model.addAttribute("nickname_error", "이미 사용중인 닉네임입니다.");
+			model.addAttribute("loginMember", memberDto);
 			return "member/mypage/editProfile_view";
 		}
-//		조회한 정보 토대로 최신화 해줘야함
-//		MemberDto updated = memberProfileService.getupdatedMember(memberDto.getLogin_id()); //최신정보 조회
-		UserTotalDataDTO updateUserdata = memberProfileService.getupdatedMember(memberDto.getLogin_id());
-//		LoginSecurityContextUpdater.update(updateUserdata);
-		
-
+//		세션 갱신
+		memberUpdateService.refreshAuthentication(memberDto.getLogin_id());
 		
 		return "redirect:/mypage/editProfile_view";
 	}
@@ -127,7 +117,8 @@ public class MemberController {
 		
 		profileImgUploadService.changeProfileImg(memberDto, file);
 		
-		//조회한 정보 토대로 최신화 해줘야함
+		//세션 최신화
+		memberUpdateService.refreshAuthentication(memberDto.getLogin_id());
 		
 		model.addAttribute("loginMember", memberDto);
 		
@@ -153,7 +144,10 @@ public class MemberController {
 		MemberDto memberDto = loginMemberService.getCurrentLoginMemberDto();
 		withdrawalService.deletedMember(agree, reason, memberDto);
 		
-		//세션제거 or logout처리?
+		//스프링 시큐리티 로그아웃(인증정보 삭제)
+		SecurityContextHolder.clearContext();
+		//세션 무효화
+		session.invalidate();
 		
 		return "member/withdrawalSuccess_view";
 	}

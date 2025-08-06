@@ -46,7 +46,7 @@ public class ProfileImgUploadService {
 				oldFile.delete();
 			}
 			// db 데이터 삭제(file테이블,member테이블)
-			fileDao.deleteByTargetAndUploader(login_id, TargetType.MEMBER, user_id); // file테이블 삭제
+			fileDao.deleteByTargetAndUploader(login_id, TargetType.MEMBER.name(), user_id); // file테이블 삭제
 			fileDao.deleteProfileImg(oldFileName); // user_detail테이블 데이터 삭제
 		}
 
