@@ -12,10 +12,10 @@ import com.ama.don.shop.service.ShopServiceinter;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class ShopProductInquiryDeleteService implements ShopServiceinter{
+public class ShopProductInquiryUpdateViewService implements ShopServiceinter{
 
 	private ShopIDao iDao;
-	public ShopProductInquiryDeleteService(ShopIDao iDao) {
+	public ShopProductInquiryUpdateViewService(ShopIDao iDao) {
 		this.iDao=iDao;
 	}
 	@Override
@@ -25,38 +25,24 @@ public class ShopProductInquiryDeleteService implements ShopServiceinter{
 		HttpServletRequest request=
 				(HttpServletRequest) map.get("request");
 		
-		System.out.println("inquirydelete()");
+		System.out.println("inquiryUpdate()");
 		
-		//
-		String user_id=request.getParameter("user_id");
 		String pinquiry_id=request.getParameter("pinquiry_id");
-		
-		
-		if(user_id==null || user_id.isEmpty()) {
-			
-			System.out.println("user_id가 null 입니다.");
-		}
 		
 		if(pinquiry_id==null || pinquiry_id.isEmpty()) {
 			
 			System.out.println("user_id가 null 입니다.");
 		}
 		
-		
-		Long userid=Long.parseLong(user_id);
+
 		Long pinquiryid=Long.parseLong(pinquiry_id);
 		
 		
 		try {
-			if(!iDao.product_reply(pinquiryid).isEmpty()) {
-				//1.문의 삭제를 하면 해당 문의의 답글을 지운다.
-				iDao.product_reply_delete(pinquiryid);
-			}
 			
-			
-			//2.문의 삭제를 하면 삭제한다.
-			iDao.product_inquiry_delete(userid,pinquiryid);
-			
+			//
+			ShopProductInquiryFlatDto inquiryFlatDto=iDao.product_inquiry(pinquiryid);
+			model.addAttribute("product_inquiry",inquiryFlatDto);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}

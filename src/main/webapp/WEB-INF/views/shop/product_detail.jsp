@@ -925,6 +925,7 @@ function debugInquiries() {
 		        <button class="inquiry-write-btn" onclick="inquirywrite()">문의 작성하기</button>
 		    </div>
 		    
+		    
 		    <!-- 문의 목록 -->
 		    <c:forEach var="inquiry" items="${product_inquiry_list}" varStatus="status">
 		        <!-- ✅ 중요: data-user-id와 data-inquiry-id 속성 추가 -->
@@ -954,8 +955,8 @@ function debugInquiries() {
 		   
 		                    <!-- JavaScript로 제어될 버튼 영역 (오른쪽에 위치) -->
 		                    <div class="inquiry-actions" style="display: none;">
-		                        <button class="btn-edit" onclick="editInquiry(${inquiry.pinquiry_id})">수정</button>
-		                        <button class="btn-delete" onclick="location.href='product_inquiry_delete?pinquiry_id=${inquiry.pinquiry_id}&user_id=${inquiry.user_id}'">삭제</button>
+		                        <button class="btn-edit" onclick="location.href='product_inquiry_update_view?pinquiry_id=${inquiry.pinquiry_id}'">수정</button>
+		                        <button class="btn-delete" onclick="location.href='product_inquiry_delete?pinquiry_id=${inquiry.pinquiry_id}&user_id=${inquiry.user_id}&product_id=${inquiry.product_id }'">삭제</button>
 		                    </div>
 		                </div>
 		                

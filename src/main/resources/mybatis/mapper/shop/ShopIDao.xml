@@ -96,7 +96,7 @@
 	<select id="product_category" resultType="com.ama.don.shop.dto.ProductFlatDto">
 	 
 		SELECT p.product_id,p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
-		    pi.product_imgurl,pi.product_img_type,c.category_main,c.category_sub
+		    pi.product_img_id,pi.product_imgurl,pi.product_img_type,c.category_main,c.category_sub
 		FROM product p
 		LEFT JOIN product_img pi ON p.product_id = pi.product_id
 		                         AND pi.product_img_type = '메인'
@@ -120,12 +120,17 @@
 		insert into product_inquiry(user_id,product_id,pinquiry_content,pinquiry_date,pinquiry_status)
 		values(#{param1},#{param2},#{param3},now(),'미답변');
 	 </insert>
+	 	
+	 <update id="product_inquiry_update" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+	 	update product_inquiry set pinquiry_content=#{pinquiry_content}
+		where pinquiry_id=#{pinquiry_id};
+	 </update>
 	 
 	 <!-- 단일 상품 문의 삭제 -->
 	 <delete id="product_inquiry_delete" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
 		delete from product_inquiry
-		where pinquiry_id=#{pinquiry_id}
-		and user_id=#{user_id}
+			where pinquiry_id=#{pinquiry_id}
+			and user_id=#{user_id}
 	</delete>
 	 
 	 <!-- 단일 상품 특정 문의 조회 -->
@@ -136,7 +141,6 @@
 		left join user_detail u on u.user_id=pi.user_id		
 		where pi.pinquiry_id=#{pinquiry_id};
 	 </select>
-	 
 	 
 	 <!-- 기존 문의의 답글 존재여부 -->
 	<select id="product_reply" parameterType="long" resultType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
@@ -163,15 +167,15 @@
 	 
 	<!--  -->
 	
-	<!-- 상품 쇼핑몰 별 리스트 -->
-	<!-- <select id="product_mall_list" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ProductFlatDto">
+	
+	<select id="product_mall_list" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ProductFlatDto">
 		select p.product_id,p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
 		    pi.product_imgurl,pi.product_img_type
 		from product p
 		left join product_img pi on p.product_id = pi.product_id
 		                         and pi.product_img_type = '메인'
 		where product_mall_name=#{product_mall_name}
-	</select> -->
+	</select> 
 	
 	<!-- 상품 리뷰 수가 많은 상품 리스트 -->
 	<select id="product_best_list" parameterType="com.ama.don.shop.dto.ProductFlatDto" resultType="com.ama.don.shop.dto.ProductFlatDto">

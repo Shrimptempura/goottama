@@ -16,6 +16,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.KakaoPayApprovalResponse;
 import com.ama.don.shop.dto.KakaoPayReadyResponse;
+import com.ama.don.shop.dto.OrdersDto;
+import com.ama.don.shop.dto.PaymentRequest;
 import com.ama.don.shop.dto.ProductFlatDto;
 import com.ama.don.shop.service.ShopBestService;
 import com.ama.don.shop.service.ShopHomeService;
@@ -40,12 +42,15 @@ import com.ama.don.shop.service.product.ShopProductdetailService;
 import com.ama.don.shop.service.productinquiry.ShopProductInquiryWriteService;
 import com.ama.don.shop.service.productinquiry.ShopProductInquiryWriteViewService;
 import com.ama.don.shop.service.productinquiry.ShopProductInquiryDeleteService;
+import com.ama.don.shop.service.productinquiry.ShopProductInquiryUpdateService;
+import com.ama.don.shop.service.productinquiry.ShopProductInquiryUpdateViewService;
 import com.ama.don.shop.service.productinquiry.ShopProductReplyViewService;
 import com.ama.don.shop.service.productinquiry.ShopProductReplyWriteService;
 import com.ama.don.shop.service.reviewservice.ShopReviewWriteService;
 import com.ama.don.shop.service.reviewservice.ShopReviewWriteViewService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ShopController {
@@ -202,6 +207,37 @@ public class ShopController {
 		return "redirect:/shop/product_detail?product_id="+productid;
 	}
 	
+	@RequestMapping("/shop/product_inquiry_update_view")
+	public String product_inquiry_update_view(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopProductInquiryUpdateViewService(iDao);
+		shopServiceinter.execute(model);
+		
+		
+		return "shop/product_inquiry_update_view";
+	}
+	
+	@RequestMapping("/shop/product_inquiry_update")
+	public String product_inquiry_update(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopProductInquiryUpdateService(iDao);
+		shopServiceinter.execute(model);
+		
+		//
+
+		String product_id=request.getParameter("product_id");		
+        System.out.println("product_id:"+product_id);
+     
+		Long productid=Long.parseLong(product_id);
+		
+
+		return "redirect:/shop/product_detail?product_id="+productid;
+	}
+	
+	
+	
 	@RequestMapping("/shop/product_inquiry_delete")
 	public String product_reply_delete(HttpServletRequest request,Model model) {
 		
@@ -213,7 +249,9 @@ public class ShopController {
 		//
 		String product_id=request.getParameter("product_id");
 		
-		System.out.println(product_id);
+		if(product_id==null || product_id.isEmpty()) {
+			System.out.println("product_id 가 null 입니다.");
+		}
 		
 		Long productid=Long.parseLong(product_id);
 		
@@ -375,6 +413,19 @@ public class ShopController {
 		shopServiceinter = new ShopOrderDetailService(iDao);
 		shopServiceinter.execute(model);
 		return "shop/order_details";
+	}
+	
+	
+	@PostMapping("kakaopay")
+	public String kakaopay(HttpServletRequest request,Model model) {
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopKakaopayService(iDao);
+		shopServiceinter.execute(model);
+		
+		//
+		
+		return "shop/kakaopay";
 	}
 	
 	
