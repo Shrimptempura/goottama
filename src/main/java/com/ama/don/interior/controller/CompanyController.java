@@ -33,15 +33,19 @@ public class CompanyController {
     public String companyCreate(@ModelAttribute("detail") CompanyCreateDto detail,
                                 @ModelAttribute("location") CompanyCreateLocationDto location,
                                 @ModelAttribute("file") MultipartFile file,
-                                HttpSession session) {
+                                HttpSession session,
+                                Model model) {
         Long userId = (Long) session.getAttribute("userId");
+        log.info("CompanyController - 세션 확인 - userId: {}", userId);
 
         try {
             companyService.createCompany(userId, detail, location, file);
             return "redirect:/interior/home";
         } catch (Exception e) {
             log.warn("CompanyController - 업체 등록 실패 - {}", e.getMessage());
-            return "redirect:/interior/newCompany";
+//            model.addAttribute("detail", detail);
+//            model.addAttribute("location", location);
+            return "interior/create-company-form";
         }
     }
 
