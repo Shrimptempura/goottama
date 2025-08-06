@@ -35,12 +35,15 @@
 				<div class="summary">${post.review_content}</div>
 
 				<div class="meta">
-					<%-- <span class="writer">${post.nickname}</span> --%> <span class="date"><fmt:formatDate
-							value="${post.review_date}" pattern="yyyy.MM.dd" /></span> <span
-						class="views">조회 ${post.review_count}</span> <span class="likes">좋아요
-						${post.review_like_count}</span> <%-- <span class="comments">댓글
-						${post.comment_count}</span> --%>
+					<span class="date"> <fmt:formatDate
+							value="${post.review_date}" pattern="yyyy.MM.dd" /> <span
+						class="views"> <span class="meta-label">조회</span> <span
+							id="review_count_${post.review_id}">${post.review_count}</span>
+					</span> <span class="likes"> <span class="meta-label">좋아요</span> <span
+							id="review_like_count_${post.review_id}">${post.review_like_count}</span>
+					</span>
 				</div>
+
 			</div>
 
 			<c:choose>
@@ -80,6 +83,9 @@
 			</ul>
 		</nav>
 	</div>
+	<script
+		src="${pageContext.request.contextPath}/js/community/update_review_count.js"></script>
+
 
 </body>
 </html>

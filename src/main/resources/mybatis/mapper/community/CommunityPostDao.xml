@@ -51,6 +51,19 @@
 		#{targetType}
 	</select>
 
+	<!-- db 값 불러오기 조회수 좋아요 수만 -->
+	<select id="findReviewCounts" resultType="map">
+		SELECT
+		review_id,
+		post_id,
+		review_count,
+		review_like_count
+		FROM community_post_review
+	</select>
+
+
+
+
 
 
 </mapper>

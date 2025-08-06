@@ -1,6 +1,7 @@
 package com.ama.don.community.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -27,5 +28,9 @@ public interface CommunityPostDao {
 
 	// 게시글 찾기
 	ReviewPostDto findById(Long review_id);
+	
+	// 조회수 좋아요수 최신화
+	List<Map<String, Object>> findReviewCounts();
+
 
 }
