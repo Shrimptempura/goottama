@@ -16,7 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -37,17 +39,20 @@ class FileServiceImplTest {
         String originalFileName = "test.png";
         byte[] content = "test content".getBytes();
         // 이거 4개는 필수
-        MultipartFile file = new MockMultipartFile("file", originalFileName, "image/png", content);
+        MultipartFile mockFile = Mockito.mock(MultipartFile.class);
+        when(mockFile.isEmpty()).thenReturn(false);
+        when(mockFile.getOriginalFilename()).thenReturn(originalFileName);
+        // lenient: 불필요 스텁 무시
 
         // uploadBaseDir를 value로 수동 지정해서 필요
         // spy(): fileSystem이라 사용, 외부 api 호출막을때
         FileServiceImpl service = Mockito.spy(new FileServiceImpl(fileDao));
         ReflectionTestUtils.setField(service, "uploadBaseDir", "/abcdefg");
 
-        // doNothing: 실제 실행 x
-        doNothing().when(file).transferTo(any(File.class));
+        // doNothing: 실제 실행해도 아무일도 일어나지 않음
+        doNothing().when(mockFile).transferTo(any(File.class));
 
-        service.saveFile(1L, TargetType.INTERIOR, 10L, file);
+        service.saveFile(1L, TargetType.INTERIOR, 10L, mockFile);
 
         verify(fileDao).create(any(FileDto.class));
     }
@@ -55,29 +60,52 @@ class FileServiceImplTest {
     @DisplayName("파일이 빈 경우 예외")
     @Test
     void saveFile_emptyFile_exception() {
-        MultipartFile file = Mockito.mock(MultipartFile.class);
-        when(file.isEmpty()).thenReturn(true);
+        MultipartFile mockFile = Mockito.mock(MultipartFile.class);
+        when(mockFile.isEmpty()).thenReturn(true);
 
         assertThrows(IllegalArgumentException.class, () ->
-                fileService.saveFile(1L, TargetType.INTERIOR, 10L, file));
+                fileService.saveFile(1L, TargetType.INTERIOR, 10L, mockFile));
     }
 
     @DisplayName("파일 정상 조회")
     @Test
     void getFileList_suceess() {
+        FileDto dummy = new FileDto();
+        dummy.setFile_id(100L);
+        dummy.setFile_name("test.png");
 
+        when(fileDao.findByTargetId(TargetType.INTERIOR, 10L)).thenReturn(List.of(dummy));
+
+        List<FileDto> result = fileService.getFileList(1L, TargetType.INTERIOR, 10L);
+
+        assertThat(result).isNotEmpty();
+        assertThat(result).hasSize(1);
+        assertThat(result.get(0).getFile_id()).isEqualTo(100L);
     }
 
     @DisplayName("파일 삭제 성공")
     @Test
     void deleteFile_success() {
+        // FileServiceImpl에서 path, name 사용
+        FileDto dummy = new FileDto();
+        dummy.setFile_path("/abcdefg");
+        dummy.setFile_name("test.png");
 
+        when(fileDao.interiorFindById(100L)).thenReturn(dummy);
+        when(fileDao.interiorDeletedById(100L)).thenReturn(1);
+
+        fileService.deleteFile(100L);
+
+        verify(fileDao).interiorFindById(100L);
+        verify(fileDao).interiorDeletedById(100L);
     }
 
     @DisplayName("없는 파일 경우 삭제 예외")
     @Test
     void deleteFile_notExistFile_exception() {
+        when(fileDao.interiorFindById(500L)).thenReturn(null);
 
+        assertThrows(IllegalArgumentException.class, () -> fileService.deleteFile(500L));
     }
 
 }
