@@ -7,6 +7,7 @@ import com.ama.don.member.dto.JoinformDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 // 업체 자체에 대한 dao
@@ -32,6 +33,9 @@ public interface CompanyDao {
     // company 테이블, pk: user_id, company_detail, location_id
     void insertCompany(CompanyInsertDto dto);
 
+    // homeDto dao, mapper 누락
+    List<CompanyHomeDto> findCompanyHomeList();
+
     // 업체 상세 정보 조회
     CompanyDetailDto selectDetailCompany(@Param("companyId") Long companyId);
 
@@ -52,6 +56,4 @@ public interface CompanyDao {
     int deleteCompany(@Param("companyId") Long companyId);
 
     // api location -> 정렬로 대체
-    
-    // homeDto dao, mapper 누락
 }

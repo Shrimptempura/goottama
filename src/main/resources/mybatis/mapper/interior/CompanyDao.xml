@@ -69,6 +69,12 @@
         )
     </insert>
 
+    <!-- 홈에서 보는 업체 리스트 랜덤 -->
+    <select id="findCompanyHomeList" resultType="com.ama.don.interior.dto.company.CompanyHomeDto">
+
+    </select>
+
+
     <!-- 업체등록 시 중복 이름 검사 -->
     <select id="isDuplicateCompanyName" resultType="java.lang.Boolean">
         SELECT count(*) > 0
