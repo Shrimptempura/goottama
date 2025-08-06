@@ -2,9 +2,7 @@ package com.ama.don.interior.service;
 
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dao.CompanyDao;
-import com.ama.don.interior.dto.company.CompanyCreateDto;
-import com.ama.don.interior.dto.company.CompanyCreateLocationDto;
-import com.ama.don.interior.dto.company.CompanyInsertDto;
+import com.ama.don.interior.dto.company.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -71,5 +69,17 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("CompanyService - 업체 이미지 저장 성공 - companyId: {}", companyId);
 
         log.info("CompanyService - 업체 등록 성공 - companyId: {}", companyId);
+    }
+
+    // 업체 페이지내 상세 정보
+    @Override
+    public CompanyDetailDto selectDetailCompany(Long companyId) {
+        return companyDao.selectDetailCompany(companyId);
+    }
+
+    // 업체 페이지 내 좌측 요약 정보 박스
+    @Override
+    public CompanySummaryDto selectSummaryCompany(Long companyId) {
+        return companyDao.selectSummaryCompany(companyId);
     }
 }

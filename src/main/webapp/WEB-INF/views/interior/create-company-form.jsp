@@ -14,7 +14,7 @@
 <body>
     <h3>create-company-form</h3>
 
-    <form action="${paageContext.request.contextPath}/interior/newCompany" method="post" enctype="multipart/form-data">
+    <form action="${pageContext.request.contextPath}/interior/new-company" method="post" enctype="multipart/form-data">
         <label>업체명:</label>
         <input type="text" name="companyName" value="${detail.companyName}" required><br/>
 
@@ -40,7 +40,7 @@
         <input type="text" name="companyIntro" value="${detail.companyIntro}" required><br/>
 
         <label>대표 이미지:</label>
-        <input type="file" name="file" accept="imag/*" required><br/>
+        <input type="file" name="file" accept="image/*" required><br/>
 
         <button type="submit">등록</button>
     </form>

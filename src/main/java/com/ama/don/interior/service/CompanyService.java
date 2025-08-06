@@ -2,6 +2,8 @@ package com.ama.don.interior.service;
 
 import com.ama.don.interior.dto.company.CompanyCreateDto;
 import com.ama.don.interior.dto.company.CompanyCreateLocationDto;
+import com.ama.don.interior.dto.company.CompanyDetailDto;
+import com.ama.don.interior.dto.company.CompanySummaryDto;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface CompanyService {
@@ -14,4 +16,10 @@ public interface CompanyService {
      */
     void createCompany(Long userId, CompanyCreateDto companyCreateDto, CompanyCreateLocationDto locationDto,
                        MultipartFile file);
+
+    // 업체 상세페이지 내 정보 조회
+    CompanyDetailDto selectDetailCompany(Long companyId);
+
+    // 업체 상세페이지 내 왼쪽 요약 상자
+    CompanySummaryDto selectSummaryCompany(Long companyId);
 }

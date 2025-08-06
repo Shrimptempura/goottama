@@ -17,14 +17,14 @@ public interface CompanyDao {
     void insertUser(JoinformDto dto);
 
     // 회원아이디로 업체아이디 찾기, 회원아이디로 업체 아이디가 없으면 optional
-    Optional<Long> findCompanyIdByUserId(Long userId);
+    Optional<Long> findCompanyIdByUserId(@Param("userId") Long userId);
 
     // 업체 정보 등록 + 내부적으로 정보 등록하면서 권한등급(번호)를 회원->업체 변경
     // dto가 테이블 2개의 내용이므로, 먼저 company_detail 테이블 먼저 생성
     void insertCompanyDetail(CompanyCreateDto dto);
 
     // 업체 이름 중복 검사, insertCompanydetail에서 확인해야함
-    Boolean isDuplicateCompanyName(String companyName);
+    Boolean isDuplicateCompanyName(@Param("companyName") String companyName);
 
     // 위치 정보 등록
     void insertLocation(CompanyCreateLocationDto dto);
@@ -33,7 +33,7 @@ public interface CompanyDao {
     void insertCompany(CompanyInsertDto dto);
 
     // 업체 상세 정보 조회
-    CompanyDetailDto selectDetailCompany(Long companyId);
+    CompanyDetailDto selectDetailCompany(@Param("companyId") Long companyId);
 
     // 업체 요약 정보 조회(박스)
     // company_detail, company_score_avg
@@ -49,7 +49,9 @@ public interface CompanyDao {
     int updateLocation(CompanyUpdateLocationDto dto);
 
     // 업체 탈퇴(is_deleted), company table
-    int deleteCompany(Long companyId);
+    int deleteCompany(@Param("companyId") Long companyId);
 
     // api location -> 정렬로 대체
+    
+    // homeDto dao, mapper 누락
 }

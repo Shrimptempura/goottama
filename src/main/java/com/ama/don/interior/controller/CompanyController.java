@@ -21,7 +21,7 @@ public class CompanyController {
     private final CompanyService companyService;
 
     // 업체 등록 폼으로 이동
-    @GetMapping("interior/newCompany")
+    @GetMapping("interior/new-company")
     public String companyForm(Model model) {
         model.addAttribute("detail", new CompanyCreateDto());
         model.addAttribute("location", new CompanyCreateLocationDto());
@@ -29,7 +29,7 @@ public class CompanyController {
     }
 
     // 업체 등록 처리
-    @PostMapping("interior/newCompany")
+    @PostMapping("interior/new-company")
     public String companyCreate(@ModelAttribute("detail") CompanyCreateDto detail,
                                 @ModelAttribute("location") CompanyCreateLocationDto location,
                                 @ModelAttribute("file") MultipartFile file,
