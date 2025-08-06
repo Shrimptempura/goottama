@@ -7,6 +7,7 @@
     <select id="getAllReports" resultType="com.ama.don.admin.dto.reportDTO.ReportDTO">
         SELECT REPORT_ID, USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID, REPORT_STATUS
         FROM report
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 
     <select id="countAllReports">
@@ -86,5 +87,21 @@
             </if>
         </where>
     </select>
+
+    <insert id="submitReport">
+        INSERT INTO report(USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID)
+        VALUES(#{userId}, NOW(), #{reportContent}, #{targetType}, #{targetId})
+    </insert>
+
+    <update id="handleReport">
+        UPDATE report
+        SET
+        REPORT_STATUS = #{statusChanged}
+        WHERE REPORT_ID = #{reportId}
+    </update>
+
+    <delete id="deleteReport">
+        DELETE FROM report WHERE REPORT_ID = #{param1}
+    </delete>
 
 </mapper>

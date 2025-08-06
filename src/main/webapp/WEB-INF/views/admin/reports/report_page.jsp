@@ -23,6 +23,9 @@
                 <div class="targetType-group">targetType
                     <label><input type="checkbox" name="targetType" value="INTERIOR">INTERIOR</label>
                     <label><input type="checkbox" name="targetType" value="COMMUNITY">COMMUNITY</label>
+                    <label><input type="checkbox" name="targetType" value="COMMUNITY_REVIEW">COMMUNITY_REVIEW</label>
+                    <label><input type="checkbox" name="targetType" value="REVIEW">REVIEW</label>
+                    <label><input type="checkbox" name="targetType" value="COMMENT">COMMENT</label>
                     <label><input type="checkbox" name="targetType" value="SHOP">SHOP</label>
                     <label><input type="checkbox" name="targetType" value="NOTICE">NOTICE</label>
                     <label><input type="checkbox" name="targetType" value="MEMBER">MEMBER</label>

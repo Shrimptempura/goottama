@@ -2,6 +2,7 @@ package com.ama.don.admin.dao;
 
 import com.ama.don.admin.dto.reportDTO.ReportSearchDTO;
 import com.ama.don.admin.dto.reportDTO.ReportDTO;
+import com.ama.don.admin.dto.reportDTO.SubmitReportForm;
 import com.ama.don.admin.utils.SearchVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -27,7 +28,7 @@ public interface ManageReportsIDao {
      * @return 신고 목록 (List of {@link ReportDTO})
      * @see #countAllReports()
      */
-    List<ReportDTO> getAllReports(SearchVO searchVO);
+    List<ReportDTO> getAllReports(@Param("searchVO") SearchVO searchVO);
 
     /**
      * 전체 신고 개수를 반환한다.
@@ -77,4 +78,28 @@ public interface ManageReportsIDao {
      * @return 검색 결과 수
      */
     int countSearchReports(@Param("reportSearchDTO") ReportSearchDTO reportSearchDTO);
+
+    /**
+     * 신고 접수 등록
+     *
+     * @param submitReportForm
+     * @return 성공시 1
+     */
+    int submitReport(SubmitReportForm submitReportForm);
+
+    /**
+     * 신고 상태 변경
+     *
+     * @param statusChanged
+     * @return
+     */
+    int handleReport(@Param("reportId") String reportId, @Param("statusChanged") String statusChanged);
+
+    /**
+     * 신고 내역 삭제
+     * 
+     * @param reportId
+     * @return
+     */
+    int deleteReport(String reportId);
 }

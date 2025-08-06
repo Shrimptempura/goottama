@@ -1,3 +1,4 @@
+<!-- report_list.jsp -->
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -51,7 +52,7 @@
        <td>날자</td>
        <td>타겟 타입</td>
        <td>타겟 아이디</td>
-       <td>유저 아이디</td>
+       <td>신고자 아이디</td>
        <td>보기</td>
     </tr>
     <c:forEach items="${list}" var="report">
@@ -59,7 +60,7 @@
             <td>${report.reportId}</td>
             <td>${report.reportStatus}</td>
             <td>
-            <fmt:formatDate value="${report.reportsCreatedAt}" pattern="yyyy-MM-dd"/>
+            <fmt:formatDate value="${report.reportDate}" pattern="yyyy-MM-dd"/>
             </td>
             <td>${report.targetType}</td>
             <td>${report.targetId}</td>

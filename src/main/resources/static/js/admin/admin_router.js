@@ -109,6 +109,14 @@ function callSpecificPageInitFunction(menuType) {
                 console.error("initUserPage could not found")
             }
             break;
+
+        case 'reports' :
+            if (typeof initReportPage === 'function') {
+                initReportPage();
+            } else {
+                console.error("initReportPage could not found")
+            }
+            break;
     }
 }
 

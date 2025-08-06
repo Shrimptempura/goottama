@@ -1,8 +1,11 @@
 package com.ama.don.admin.controller;
 
 import com.ama.don.admin.dto.reportDTO.ReportSearchDTO;
+import com.ama.don.admin.service.reportService.GetReportDetail;
 import com.ama.don.admin.service.reportService.GetReportListService;
+import com.ama.don.admin.service.reportService.SubmitReport;
 import com.ama.don.admin.utils.SearchVO;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +14,13 @@ import org.springframework.web.bind.annotation.*;
 public class ReportController {
 
     private final GetReportListService getReportListService;
+    private final GetReportDetail getReportDetail;
+    private final SubmitReport submitReport;
 
-    public ReportController(GetReportListService getReportListService) {
+    public ReportController(SubmitReport submitReport, GetReportListService getReportListService, GetReportDetail getReportDetail) {
         this.getReportListService = getReportListService;
+        this.getReportDetail = getReportDetail;
+        this.submitReport = submitReport;
     }
 
     @PostMapping("/admin/reports/report_list")
@@ -46,71 +53,45 @@ public class ReportController {
         return "admin/reports/report_page";
     }
 
-//    @RequestMapping("/admin/notices/notice_detail")
-//    public String noticeDetail(Model model, HttpServletRequest request){
-//        model.addAttribute("request", request);
-//        getNoticeDetail.execute(model);
-//        return "admin/notices/notice_detail";
-//    }
-//
-//    @PostMapping("/admin/notices/notice_write")
-//    public String noticeWrite(Model model, MultipartHttpServletRequest mtfRequest,
-//                              @RequestParam("title") String title,
-//                              @RequestParam("content") String content,
-//                              @RequestParam(value = "isPinned", defaultValue = "false") boolean isPinned){
-//        model.addAttribute("mtfRequest", mtfRequest);
-//
-//        NoticesDto newNotice = new NoticesDto();
-//        newNotice.setNotices_title(title);
-//        newNotice.setNotices_content(content);
-//        newNotice.setNotices_is_pinned(isPinned);
-//        // newNotice.setNotices_file_path(null);
-//        model.addAttribute("newNotice", newNotice);
-//        writeNotice.execute(model);
-//        Boolean result = (Boolean) model.asMap().get("writeResult");
-//        String message = result ? "write_success" : "write_failure";
-//        System.out.println(">>> "+ message);
-//        return "redirect:notice_page";
-//    }
-//
-//    @RequestMapping("/admin/notices/notice_modify_view")
-//    public String noticeModifyView(Model model, HttpServletRequest request){
-//        model.addAttribute("request", request);
-//        getNoticeDetail.execute(model);
-//        return "admin/notices/notice_modify_view";
-//    }
-//
-//    @RequestMapping("/admin/notices/notice_modify")
-//    public String noticeModify(Model model,
-//                               MultipartHttpServletRequest mtfRequest,
-//                               @RequestParam("notices_id") int noticesId,
-//                               @RequestParam("title") String title,
-//                               @RequestParam("content") String content,
-//                               @RequestParam(value = "isPinned", defaultValue = "false") boolean isPinned,
-//                               @RequestParam(value = "deleteFileIds", required = false) List<Long> deleteFileIds){
-//        NoticesDto modifiedNotice = new NoticesDto();
-//        modifiedNotice.setNotices_id(noticesId);
-//        modifiedNotice.setNotices_title(title);
-//        modifiedNotice.setNotices_content(content);
-//        modifiedNotice.setNotices_is_pinned(isPinned);
-//
-//        model.addAttribute("modifiedNotice", modifiedNotice);
-//        model.addAttribute("deleteFileIds", deleteFileIds);
-//        model.addAttribute("mtfRequest", mtfRequest);
-//        noticeModify.execute(model);
-//        Boolean result = (Boolean) model.asMap().get("modifyResult");
-//        String message = result ? "modify_success" : "modify_failure";
-//        System.out.println(">>> "+ message);
-//        return "redirect:notice_detail?notices_id="+noticesId;
-//    }
-//
-//    @RequestMapping("/admin/notices/notice_delete")
-//    public String noticeDelete(Model model, HttpServletRequest request){
-//        model.addAttribute("request", request);
-//        noticeDelete.execute(model);
-//        Boolean result = (Boolean) model.asMap().get("deleteResult");
-//        String message = result ? "delete_success" : "delete_failure";
-//        System.out.println(">>> "+message);
-//        return "redirect:notice_page";
-//    }
+    @GetMapping("/admin/reports/report_data_modal")
+    public String reportDataModal(Model model, HttpServletRequest request){
+        model.addAttribute("request", request);
+        getReportDetail.execute(model);
+        return "admin/reports/report_data_modal";
+    }
+
+    @GetMapping("/admin/reports/reportForm")
+    public String reportForm(Model model,
+                             @RequestParam("targetType") String targetType,
+                             @RequestParam("targetId") Long targetId) {
+
+        model.addAttribute("targetType", targetType);
+        model.addAttribute("targetId", targetId);
+        return "admin/reports/reportForm";
+    }
+
+    @PostMapping("/admin/reports/submit_report")
+    public String submitReport(Model model, HttpServletRequest request) {
+        model.addAttribute("request", request);
+        submitReport.execite(model);
+
+        // 결과 토스트를 위한 처리
+        boolean isSuccess = (boolean) model.getAttribute("submitReportResult");
+        model.addAttribute("result", isSuccess ? "report_success" : "report_failure");
+        return "admin/reports/close_window";
+    }
+
+    @GetMapping("/admin/reports/delete_report")
+    public String deleteReport(Model model, HttpServletRequest request) {
+        model.addAttribute("request", request);
+        //execute
+        return "redirect:admin/admin_index?menu=reports";
+    }
+
+    @GetMapping("/admin/reports/change_report_status")
+    public String changeReportStatus(Model model, HttpServletRequest request) {
+        model.addAttribute("request", request);
+        //execute
+        return "redirect:admin/admin_index?menu=reports";
+    }
 }

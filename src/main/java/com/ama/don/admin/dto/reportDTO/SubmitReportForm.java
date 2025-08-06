@@ -5,17 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
-
+@AllArgsConstructor
+@NoArgsConstructor
 @Setter
 @Getter
-@AllArgsConstructor
-public class ReportDTO {
-    private Long reportId;
-    private Long userId;
-    private Timestamp reportDate;
+public class SubmitReportForm {
+    private String userId;
     private String reportContent;
     private String targetType;
-    private Long targetId;
-    private String reportStatus;
+    private String targetId;
 }
