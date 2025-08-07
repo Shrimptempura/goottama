@@ -9,11 +9,10 @@ public interface CompanyService {
 
     /**
      * 회원이 업체 등록
-     * @param userId 세션에서 받는 회원 ID
      * @param companyCreateDto 업체 생성 dto
      * @param locationDto 업체 주소 생성 dto
      */
-    void createCompany(Long userId, CompanyCreateDto companyCreateDto, CompanyCreateLocationDto locationDto,
+    void createCompany(CompanyCreateDto companyCreateDto, CompanyCreateLocationDto locationDto,
                        MultipartFile file);
 
     Optional<Long> findCompanyIdByUserId(Long userId);
@@ -27,5 +26,5 @@ public interface CompanyService {
     CompanyUpdateDto getUpdateView(Long companyId);
 
     // 업체 수정
-    void updateCompany(CompanyUpdateDto updateDto, Long companyId, MultipartFile file);
+    Long updateCompany(CompanyUpdateDto updateDto, MultipartFile file);
 }

@@ -4,6 +4,7 @@ import com.ama.don.admin.service.userManage.ManageUserByAdmin;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+// Spring Security Context의 principal 납치하기
 public class DevFindTarget {
 
     public static ManageUserByAdmin findTarget() {

@@ -2,8 +2,8 @@ package com.ama.don.interior.service;
 
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dao.CompanyDao;
+import com.ama.don.interior.dev.DevFindTarget;
 import com.ama.don.interior.dto.company.*;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -23,9 +23,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Transactional
     @Override
-    public void createCompany(Long userId, CompanyCreateDto createDto, CompanyCreateLocationDto locationDto,
+    public void createCompany(CompanyCreateDto createDto, CompanyCreateLocationDto locationDto,
                               MultipartFile file) {
-
+        Long userId = DevFindTarget.getUserId();
         log.info("ComapnyService - 업체 등록 시작 - userId: {}", userId);
 
         try {
@@ -79,7 +79,11 @@ public class CompanyServiceImpl implements CompanyService {
 
     // 업체 수정
     @Override
-    public void updateCompany(CompanyUpdateDto updateDto, Long companyId, MultipartFile file) {
+    public Long updateCompany(CompanyUpdateDto updateDto, MultipartFile file) {
+        Long userId = DevFindTarget.getUserId();
+        Long companyId = companyDao.findCompanyIdByUserId(userId)
+                        .orElseThrow(() -> new IllegalStateException("companyId가 존재 하지 않음"));
+
         log.info("CompanyService - 업체 정보 수정 시작 - companyId: {}", companyId);
 
         try {
@@ -114,6 +118,8 @@ public class CompanyServiceImpl implements CompanyService {
             log.error("CompanyService - DB 오류, 업체 수정 실패 - companyId: {}", companyId, e);
             throw new IllegalStateException("DB오류 발생, 업체 수정 실패");
         }
+
+        return companyId;
     }
 
     private void validateCompanyNameDuplication(String name) {

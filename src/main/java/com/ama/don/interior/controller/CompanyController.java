@@ -6,8 +6,6 @@ import com.ama.don.interior.dto.company.*;
 import com.ama.don.interior.service.CompanyService;
 import com.ama.don.interior.service.CompanyServiceImpl;
 import com.ama.don.interior.service.FileService;
-import com.ama.don.member.dto.MemberDto;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -40,13 +38,9 @@ public class CompanyController {
     public String companyCreate(@ModelAttribute("detail") CompanyCreateDto detail,
                                 @ModelAttribute("location") CompanyCreateLocationDto location,
                                 @ModelAttribute("file") MultipartFile file,
-                                HttpSession session,
                                 Model model) {
-        Long userId = (Long) session.getAttribute("userId");
-        log.info("CompanyController - 세션 확인 - userId: {}", userId);
-
         try {
-            companyService.createCompany(userId, detail, location, file);
+            companyService.createCompany(detail, location, file);
             return "redirect:/interior/home";
         } catch (Exception e) {
             log.warn("CompanyController - 업체 등록 실패 - {}", e.getMessage());
@@ -99,10 +93,9 @@ public class CompanyController {
 
     // 업체 수정 기능
     @PostMapping("interior/update-company")
-    public String updateCompany(@RequestParam("companyId") Long companyId,
-                                @ModelAttribute("updateDto") CompanyUpdateDto updateDto,
+    public String updateCompany(@ModelAttribute("updateDto") CompanyUpdateDto updateDto,
                                 @ModelAttribute("file") MultipartFile file) {
-        companyService.updateCompany(updateDto, companyId, file);
+        Long companyId = companyService.updateCompany(updateDto, file);
         return "redirect:/interior/myhome/" + companyId;
     }
 }
