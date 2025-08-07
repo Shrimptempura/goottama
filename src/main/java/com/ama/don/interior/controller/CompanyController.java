@@ -83,10 +83,6 @@ public class CompanyController {
             case "photos" -> "/WEB-INF/views/interior/tabs/company-photos.jsp";
             case "reviews" -> "/WEB-INF/views/interior/tabs/company-reviews.jsp";
             case "posts" -> "/WEB-INF/views/interior/tabs/company-posts.jsp";
-            case "posts" -> "/WEB-INF/views/interior/tabs/company-posts.jsp";
-            case "posts" -> "/WEB-INF/views/interior/tabs/company-posts.jsp";
-            case "posts" -> "/WEB-INF/views/interior/tabs/company-posts.jsp";
-            case "posts" -> "/WEB-INF/views/interior/tabs/company-posts.jsp";
             default -> "/WEB-INF/views/interior/tabs/company-all.jsp";
         };
         model.addAttribute("tabName", tabName);
