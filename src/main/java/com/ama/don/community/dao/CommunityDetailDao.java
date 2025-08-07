@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.ama.don.common.dto.PostDto;
 import com.ama.don.community.dto.Review.ReviewDetailDto;
-
+//주석
 @Mapper
 public interface CommunityDetailDao {
 
