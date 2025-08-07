@@ -13,7 +13,7 @@ public class CompanyUpdateDto {
 
     private Long companyId;
     private Long companyDetailId;
-    private Long locationId;
+    private Long locationId;        // 일단 안쓰는 기능
 
     private String companyName;
     private String companyAddr;

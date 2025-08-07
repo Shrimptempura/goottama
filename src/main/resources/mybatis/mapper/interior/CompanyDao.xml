@@ -55,22 +55,6 @@
         )
     </insert>
 
-    <!-- 업체등록 시 중복 이름 검사 -->
-    <select id="isDuplicateCompanyName" resultType="java.lang.Boolean">
-        SELECT EXISTS (
-        SELECT 1
-        FROM company_detail
-        WHERE company_name = #{companyName}
-        ) AS isDuplicate
-    </select>
-
-    <!-- 업체아이디로 업체 이름 조회 -->
-    <select id="getCompanyNameById" resultType="java.lang.String">
-        SELECT company_name
-        FROM company_detail
-        WHERE company_id = #{companyId}
-    </select>
-
 
     <!-- === read =================================== -->
     <!-- 홈에서 보는 업체 리스트 랜덤 -->
@@ -145,6 +129,38 @@
         AND is_deleted = false
     </select>
 
+    <!-- 업체등록 시 중복 이름 검사 -->
+    <select id="isDuplicateCompanyName" resultType="java.lang.Boolean">
+        SELECT EXISTS (
+        SELECT 1
+        FROM company_detail
+        WHERE company_name = #{companyName}
+        ) AS isDuplicate
+    </select>
+
+    <!-- 업체아이디로 업체 이름 조회 -->
+    <select id="getCompanyNameById" resultType="java.lang.String">
+        SELECT company_name
+        FROM company_detail
+        WHERE company_id = #{companyId}
+    </select>
+
+    <!-- 업체 수정 뷰 -->
+    <select id="getUpdateView" resultType="com.ama.don.interior.dto.company.CompanyUpdateDto">
+        SELECT
+            c.company_id AS companyId,
+            cd.company_detail_id AS companyDetailId,
+            cd.company_name AS companyName,
+            cd.company_Addr AS companyAddr,
+            cd.company_field AS companyField,
+            cd.company_License AS companyLicense,
+            cd.company_as AS companyAS,
+            cd.company_career AS companyCareer,
+            cd.company_intro AS companyIntro
+        FROM company_detail cd
+        JOIN company c ON cd.company_detail_id = c.company_detail_id
+        WHERE c.company_id = #{companyId}
+    </select>
 
     <!-- === update =================================== -->
     <!-- 업체 정보수정 -->
