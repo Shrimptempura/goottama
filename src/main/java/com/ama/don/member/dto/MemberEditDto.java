@@ -19,7 +19,6 @@ public class MemberEditDto {
 	@NotBlank(message = "닉네임을 입력하세요.")
 	private String changeNickname;
 	
-	@NotBlank(message = "연락처를 입력하세요.")
 	@Pattern(regexp = "^01[016789]-?\\d{3,4}-?\\d{4}$|^01[016789]\\d{3,4}\\d{4}$", message = "올바른 연락처 형식이 아닙니다.")
 	private String changeTel;
 	

@@ -2,6 +2,7 @@ package com.ama.don.member.service;
 
 import org.springframework.ui.Model;
 
+import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
 import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.dto.MemberEditDto;
 import com.ama.don.member.dto.ResetPwDto;
@@ -14,6 +15,6 @@ public interface MemberProfileServiceInter {
 	
 	boolean updateProfile(MemberDto memberDto, MemberEditDto memberEditDto, Model model);
 	
-	MemberDto getupdatedMember(String login_id);
+	UserTotalDataDTO getupdatedMember(String login_id);
 
 }

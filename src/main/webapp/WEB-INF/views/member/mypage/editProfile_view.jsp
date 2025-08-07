@@ -61,7 +61,7 @@
 	이름:<input type="text" value="${loginMember.user_name }" name="changeName" /> <br />	 
 	닉네임:<input type="text" value="${loginMember.user_nickname }" name="changeNickname"/> 
 	<button>중복확인</button> <br />	 
-	<c:if test="${not empty nickname_error }"><p>${nickname_error }</p></c:if>
+	<c:if test="${not empty validationError }"><p>${validationError }</p></c:if>
 	성별:${loginMember.user_gender } <br />
 	생년월일:${loginMember.user_birth } <br />
 	연락처:<input type="text" value="${loginMember.user_tel } " name="changeTel" /> <br />	 

@@ -20,36 +20,45 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-//                .authorizeHttpRequests(auth -> auth
-//                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-//                        .requestMatchers(
-//                                "/",
-//                                "/login_view",
-//                                "/authenticate",
-//                                "/css/**", "/js/**"
-//                        ).permitAll()
-//                        .anyRequest().authenticated()
-//                )
-//                .sessionManagement(session -> session
-//                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
-//                        .maximumSessions(1)
-//                )
-//                .formLogin(form -> form
-//                        .loginPage("/login_view")
-//                        .loginProcessingUrl("/authenticate")
-//                        .usernameParameter("loginId")
-//                        .passwordParameter("pw")
-//                        .defaultSuccessUrl("/", true)
-//                        .failureUrl("/login_view?error=true")
-//                )
-//                .logout(logout -> logout
-//                        .logoutUrl("/logout")
-//                        .logoutSuccessUrl("/login?logout")
-//                        .invalidateHttpSession(true)
-//                        .deleteCookies("JSESSIONID")
-//                )
-//                .userDetailsService(customUserDetailsService)
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // 로그인 없이 모두 허용
+                .authorizeHttpRequests(auth -> auth
+                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+                        .requestMatchers(
+                                "/",
+                                "/login_view",
+                                "/join_view",
+                                "/join",
+                                "/findLoginId_view",
+                                "/findPw_view",
+                                "/checkPwCode_view",
+                                "/emailSent_view",
+                                "/withdrawalSuccess_view",
+                                "/emailCheck",
+                                "/authenticate",
+                                "/find_loginId",
+                                "/css/**", "/js/**"
+                        ).permitAll()
+                        .anyRequest().authenticated()
+                )
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                        .maximumSessions(1)
+                )
+                .formLogin(form -> form
+                        .loginPage("/login_view")
+                        .loginProcessingUrl("/authenticate")
+                        .usernameParameter("loginId")
+                        .passwordParameter("pw")
+                        .defaultSuccessUrl("/", true)
+                        .failureUrl("/login_view?error=true")
+                )
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                )
+                .userDetailsService(customUserDetailsService)
+//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // 로그인 없이 모두 허용
                 .csrf(csrf -> csrf.disable());
         return http.build();
     }
