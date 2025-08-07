@@ -25,13 +25,13 @@ public class FileServiceImpl implements FileService {
     private String uploadBaseDir;
 
     @Override
-    public void saveFile(Long userId, TargetType targetType, Long targetId, MultipartFile file) {
+    public void saveFile(TargetType targetType, Long targetId, MultipartFile file) {
         if (file.isEmpty() || file == null) {
-            log.warn("FileService - 업로드 실패 - userId: {}, targetType: {}, targetId: {}", userId, targetType, targetId);
+            log.warn("FileService - 업로드 실패 - targetType: {}, targetId: {}", targetType, targetId);
             throw new IllegalArgumentException("빈 파일입니다.");
         }
 
-        log.info("FileService - 파일 업로드 시작 - userId: {}, targetType: {}, targetId: {}", userId, targetType, targetId);
+        log.info("FileService - 파일 업로드 시작 - targetType: {}, targetId: {}", targetType, targetId);
         String originalName = file.getOriginalFilename();
         String savedPath = uploadBaseDir + "/" + TargetType.INTERIOR;
         String savedName = UUID.randomUUID().toString() + "_" + originalName;
@@ -48,7 +48,7 @@ public class FileServiceImpl implements FileService {
         }
 
         FileDto fileDto = new FileDto();
-        fileDto.setFile_uploader(String.valueOf(userId));
+        fileDto.setFile_uploader("interior");
         fileDto.setFile_name(originalName);
         fileDto.setFile_path(savedName);
         fileDto.setTarget_type(targetType);
@@ -59,8 +59,8 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public List<FileDto> getFileList(Long userId, TargetType targetType, Long targetId) {
-        log.info("FileService - 파일 조회 요청 - userId: {}, targetType: {}, targetId: {}", userId, targetType, targetId);
+    public List<FileDto> getFileList(TargetType targetType, Long targetId) {
+        log.info("FileService - 파일 조회 요청 - targetType: {}, targetId: {}", targetType, targetId);
         return fileDao.findByTargetId(targetType, targetId);
     }
 

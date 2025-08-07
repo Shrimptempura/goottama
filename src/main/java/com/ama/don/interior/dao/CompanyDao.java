@@ -51,7 +51,7 @@ public interface CompanyDao {
     // 이미지는 다형성 file 사용
 
     // 업체 상세페이지의 photos 탭 사진 보여주기
-    List<FileDto> selectThumbnailCompany(@Param("targetType") String targetType,
+    List<FileDto> selectCompanyPhoto(@Param("targetType") String targetType,
                                    @Param("targetId") Long targetId);
 
 

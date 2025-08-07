@@ -5,6 +5,7 @@ import com.ama.don.interior.dao.CompanyDao;
 import com.ama.don.interior.dto.company.CompanyCreateDto;
 import com.ama.don.interior.dto.company.CompanyCreateLocationDto;
 import com.ama.don.interior.dto.company.CompanyInsertDto;
+import com.ama.don.interior.dto.company.CompanyUpdateDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -81,7 +82,7 @@ class CompanyServiceImplTest {
         verify(companyDao).insertCompanyDetail(detail);
         verify(companyDao).insertLocation(location);
         verify(companyDao).insertCompany(any(CompanyInsertDto.class));
-        verify(fileService).saveFile(userId, TargetType.INTERIOR, 1000L, mockFile);
+        verify(fileService).saveFile(TargetType.INTERIOR, 1000L, mockFile);
     }
 
     @DisplayName("업체 생성시 이미지 누락 확인")
@@ -106,5 +107,36 @@ class CompanyServiceImplTest {
             companyServiceImpl.createCompany(1L, detail, location, null);
         });
     }
+
+    @DisplayName("업체 수정 성공 + 사진")
+    @Test
+    void shouldSucceed_whenUpdateCompany_withImage() {
+        Long companyId = 1000L;
+
+        CompanyUpdateDto dto = new CompanyUpdateDto();
+        dto.setCompanyName("바뀐 이름");
+        dto.setCompanyId(companyId);
+
+        MultipartFile mockFile = Mockito.mock(MultipartFile.class);
+        when(mockFile.isEmpty()).thenReturn(false);
+        when(companyDao.updateCompanyDetail(dto)).thenReturn(1);
+
+        companyServiceImpl.updateCompany(dto,companyId, mockFile);
+
+        verify(companyDao).updateCompanyDetail(dto);
+        verify(fileService).deleteFile(companyId);
+        verify(fileService).saveFile(TargetType.INTERIOR, companyId, mockFile);
+    }
+
+    @DisplayName("업체 수정 성공, 이미지는 교체 안함")
+    @Test
+    void shouldSucceed_whenUpdateCompany_withoutImage() {
+        Long companyId = 1000L;
+
+        CompanyUpdateDto dto = new CompanyUpdateDto();
+        dto.setCompanyId(companyId);
+        dto.setCompanyName();
+    }
+
     
 }

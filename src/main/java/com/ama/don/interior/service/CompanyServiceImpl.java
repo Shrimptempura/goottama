@@ -5,6 +5,7 @@ import com.ama.don.interior.dao.CompanyDao;
 import com.ama.don.interior.dto.company.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -67,7 +68,7 @@ public class CompanyServiceImpl implements CompanyService {
         }
 
         // 이미지 저장
-        fileService.saveFile(userId, TargetType.INTERIOR, companyId, file);
+        fileService.saveFile(TargetType.INTERIOR, companyId, file);
         log.info("CompanyService - 업체 이미지 저장 성공 - companyId: {}", companyId);
 
         log.info("CompanyService - 업체 등록 성공 - companyId: {}", companyId);
@@ -80,13 +81,59 @@ public class CompanyServiceImpl implements CompanyService {
 
     // 업체 페이지내 상세 정보
     @Override
-    public CompanyDetailDto selectDetailCompany(Long companyId) {
+    public CompanyDetailDto getDetailCompany(Long companyId) {
         return companyDao.selectDetailCompany(companyId);
     }
 
     // 업체 페이지 내 좌측 요약 정보 박스
     @Override
-    public CompanySummaryDto selectSummaryCompany(Long companyId) {
+    public CompanySummaryDto getSummaryCompany(Long companyId) {
         return companyDao.selectSummaryCompany(companyId);
     }
+
+    // 업체 수정
+    @Override
+    public void updateCompany(CompanyUpdateDto updateDto, Long companyId, MultipartFile file) {
+        log.info("CompanyService - 업체 정보 수정 시작 - companyId: {}", companyId);
+        String newName = updateDto.getCompanyName();
+        String originName = companyDao. /// findbyid 같은 조회 하지만 성능상 company_name from company_deatil where com_id로 가져가자
+
+        try {
+            if (companyId == null || updateDto == null) {
+                log.error("CompanyService - companyId 또는 updatDto 누락 - companyId: {}, updateDto: {}", companyId, updateDto);
+                throw new IllegalArgumentException("companyId 또는 수정할 데이터가 없습니다.");
+            }
+
+            if (updateDto.getCompanyName() == null) {
+                log.error("CompanyService - 업체 이름 누락 - companyId: {}", companyId);
+                throw new IllegalArgumentException("회사 이름은 필수입니다.");
+            }
+
+            if (companyDao.isDuplicateCompanyName(updateDto.getCompanyName())) {
+                log.warn("CompanyService - 업체명 중복 - companyName: {}", updateDto.getCompanyName());
+                throw new IllegalArgumentException("이미 등록된 이름입니다.");
+            }
+
+            int updated = companyDao.updateCompanyDetail(updateDto);
+            if (updated == 0) {
+                log.warn("CompanyService - 수정된 업체 정보가 없습니다. 실패 - companyId: {}", companyId);
+                throw new IllegalStateException("업체 정보 수정 실패");
+            }
+
+            // 사진이 존재할때만 교체가능
+            if (file != null && !file.isEmpty()) {
+                log.info("CompanyService - 업체 이미지 삭제 후 새로 생성 - companyId: {}", companyId);
+                fileService.deleteFile(companyId);
+                fileService.saveFile(TargetType.INTERIOR, companyId, file);
+            }
+
+            log.info("CompanyService - 업체 수정 성공 - companyId: {}", companyId);
+
+        } catch (DataAccessException e) {
+            log.error("CompanyService - DB 오류, 업체 수정 실패 - companyId: {}", companyId, e);
+            throw new IllegalStateException("DB오류 발생, 업체 수정 실패");
+        }
+    }
+
+
 }

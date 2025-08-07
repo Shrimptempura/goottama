@@ -63,17 +63,17 @@ public class CompanyController {
                                   @RequestParam(defaultValue = "all") String type,
                                   Model model) {
         // 요약 상자 - 좌측에 존재
-        CompanySummaryDto summary = companyService.selectSummaryCompany(companyId);
+        CompanySummaryDto summary = companyService.getSummaryCompany(companyId);
         model.addAttribute("summary", summary);
         model.addAttribute("companyId", companyId);
 
         // 상세 정보 탭
         if (type.equals("details")) {
-            CompanyDetailDto detail = companyService.selectDetailCompany(companyId);
+            CompanyDetailDto detail = companyService.getDetailCompany(companyId);
             log.info("CompanyController - detail 요청 - companyId: {}", companyId);
             model.addAttribute("detail", detail);
         } else if (type.equals("photos")) {
-            List<FileDto> photoList = fileService.getFileList(null, TargetType.INTERIOR, companyId);
+            List<FileDto> photoList = fileService.getFileList(TargetType.INTERIOR, companyId);
             log.info("CompanyController - File 요청 - userId: {}, targetType: {}, targetId: {}", null, TargetType.INTERIOR, companyId);
             model.addAttribute("photoList", photoList);
         }
@@ -89,7 +89,4 @@ public class CompanyController {
 
         return "interior/company-layout";
     }
-
-
-
 }

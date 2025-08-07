@@ -90,9 +90,11 @@
 
     <!-- 업체등록 시 중복 이름 검사 -->
     <select id="isDuplicateCompanyName" resultType="java.lang.Boolean">
-        SELECT count(*) > 0
-        FROM company_detail
-        WHERE company_name = #{companyName}
+        SELECT EXISTS (
+            SELECT 1
+            FROM company_detail
+            WHERE company_name = #{companyName}
+        ) AS isDuplicate
     </select>
 
     <!-- 세션으로 user_id 얻고, findCompanyIdByUserId로 company_id 얻음 -->
@@ -152,7 +154,7 @@
     </update>
 
     <!-- 업체 상세페이지의 phtos탭에서 사진 리스트 보기 -->
-    <select id="selectThumbnailCompany" resultType="com.ama.don.common.dto.FileDto">
+    <select id="selectCompanyPhoto" resultType="com.ama.don.common.dto.FileDto">
         SELECT
             file_id,
             file_uploader,
