@@ -93,7 +93,7 @@
         VALUES(#{userId}, NOW(), #{reportContent}, #{targetType}, #{targetId})
     </insert>
 
-    <update id="handleReport">
+    <update id="handleReportStatus">
         UPDATE report
         SET
         REPORT_STATUS = #{statusChanged}

@@ -93,7 +93,7 @@ public interface ManageReportsIDao {
      * @param statusChanged
      * @return
      */
-    int handleReport(@Param("reportId") String reportId, @Param("statusChanged") String statusChanged);
+    int handleReportStatus(@Param("reportId") String reportId, @Param("statusChanged") String statusChanged);
 
     /**
      * 신고 내역 삭제

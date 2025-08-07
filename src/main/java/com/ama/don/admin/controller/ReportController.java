@@ -1,9 +1,7 @@
 package com.ama.don.admin.controller;
 
 import com.ama.don.admin.dto.reportDTO.ReportSearchDTO;
-import com.ama.don.admin.service.reportService.GetReportDetail;
-import com.ama.don.admin.service.reportService.GetReportListService;
-import com.ama.don.admin.service.reportService.SubmitReport;
+import com.ama.don.admin.service.reportService.*;
 import com.ama.don.admin.utils.SearchVO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Controller;
@@ -16,11 +14,15 @@ public class ReportController {
     private final GetReportListService getReportListService;
     private final GetReportDetail getReportDetail;
     private final SubmitReport submitReport;
+    private final DeleteReport deleteReport;
+    private final ChangeReportStatus changeReportStatus;
 
-    public ReportController(SubmitReport submitReport, GetReportListService getReportListService, GetReportDetail getReportDetail) {
+    public ReportController(ChangeReportStatus changeReportStatus, DeleteReport deleteReport, SubmitReport submitReport, GetReportListService getReportListService, GetReportDetail getReportDetail) {
         this.getReportListService = getReportListService;
         this.getReportDetail = getReportDetail;
         this.submitReport = submitReport;
+        this.deleteReport = deleteReport;
+        this.changeReportStatus = changeReportStatus;
     }
 
     @PostMapping("/admin/reports/report_list")
@@ -60,6 +62,30 @@ public class ReportController {
         return "admin/reports/report_data_modal";
     }
 
+    @GetMapping("/admin/reports/handle_report")
+    public String handleReport(HttpServletRequest request, Model model,
+                               @RequestParam("targetType") String targetType,
+                               @RequestParam("targetId") Long targetId) {
+
+        model.addAttribute("targetType", targetType);
+        model.addAttribute("targetId", targetId);
+
+        if (targetType.equals("MEMBER")) {
+            return "admin/reports/handle_member_report";
+        } else if (targetType.equals("NOTICE") ||
+                targetType.equals("POST") ||
+                targetType.equals("COMMENT")) {
+            return "admin/reports/handle_text_report";
+        } else {
+            request.setAttribute("errorTitle", "유효하지 않은 요청 파라미터");
+            request.setAttribute("errorMessage", "처리할 수 없는 'targetType' 값입니다. 입력값을 확인해 주세요.");
+            request.setAttribute("requestURI", request.getRequestURI());
+            request.setAttribute("targetType", targetType);
+            request.setAttribute("targetId", targetId);
+            return "admin/adminErrorPage";
+        }
+    }
+
     @GetMapping("/admin/reports/reportForm")
     public String reportForm(Model model,
                              @RequestParam("targetType") String targetType,
@@ -81,17 +107,17 @@ public class ReportController {
         return "admin/reports/close_window";
     }
 
-    @GetMapping("/admin/reports/delete_report")
+    @PostMapping("/admin/reports/delete_report")
     public String deleteReport(Model model, HttpServletRequest request) {
         model.addAttribute("request", request);
-        //execute
+        deleteReport.execute(model);
         return "redirect:admin/admin_index?menu=reports";
     }
 
-    @GetMapping("/admin/reports/change_report_status")
+    @PostMapping("/admin/reports/change_report_status")
     public String changeReportStatus(Model model, HttpServletRequest request) {
         model.addAttribute("request", request);
-        //execute
+        changeReportStatus.execute(model);
         return "redirect:admin/admin_index?menu=reports";
     }
 }

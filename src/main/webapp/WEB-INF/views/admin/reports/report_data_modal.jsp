@@ -28,7 +28,12 @@
                 <%@ include file="reported_page/commentReportedDataPage.jsp" %>
             </c:if>
         </div>
-        <a href="/admin/reports/delete_report">신고 내역 삭제하기</a>
+        <button>
+        <a href='/admin/reports/handle_report?targetType=${reported.type}&targetId=${reported.id}'
+                onclick="window.open(this.href, '신고 처리', 'width=500,height=500'); return false;"
+                style="text-decoration: none; color: white;"
+        >신고 내역 처리하기</a>
+        </button>
     </div>
 </div>
 
