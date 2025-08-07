@@ -1,6 +1,5 @@
 package com.ama.don.shop.service.Kakaopay;
 
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -31,20 +30,20 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.Session;
 
 @Service
-public class ShopKakaopayService implements ShopServiceinter{
-	
+public class ShopKakaopayService implements ShopServiceinter {
+
 	private final String KAKAO_PAY_HOST = "https://kapi.kakao.com";
-	
+
 	private final String ADMIN_KEY = "your_kakao_admin_key"; // 카카오 개발자센터에서 발급
-	
+
 	private String savedTid; // 클래스 필드로 추가
-	
-	HttpSession session=null;
+
+	HttpSession session = null;
 
 	private ShopIDao iDao;
-	
+
 	public ShopKakaopayService(ShopIDao idao) {
-		this.iDao=iDao;
+		this.iDao = iDao;
 	}
 
 	@Override
@@ -178,19 +177,19 @@ public class ShopKakaopayService implements ShopServiceinter{
             itemName=flatDto.getProduct_name()+"외"+(cartFlatDtos.size()-1)+"건";
             
             for (CartFlatDto cartitem : cartFlatDtos) {
-               /* total += cartitem.getTotalPrice();
+            	total += cartitem.getTotalPrice();
                 
                 Orders_productsDto orderProduct = new Orders_productsDto();
                 orderProduct.setProduct_id(cartitem.getProduct_id());
                 orderProduct.setOp_quantity(cartitem.getCart_quantity());     // ✅ 장바구니 수량
                 orderProduct.setOp_price(cartitem.getDiscountedPrice());      // ✅ 할인된 단가
                 orderProduct.setOp_totalprice(cartitem.getTotalPrice());      // ✅ 아이템별 총액
-*/                
+            
              
                 totalqty+=cartitem.getCart_quantity();
                 
                 
-              /*  orderProducts.add(orderProduct);*/
+                orderProducts.add(orderProduct);
             }
             
             orderFlatDto.setProduct_name(itemName);
@@ -208,16 +207,17 @@ public class ShopKakaopayService implements ShopServiceinter{
         model.addAttribute("orderProducts",orderProducts);
         
         
-        
-        
-        // 5. 카카오 페이 결제 준비 호출
-        String itemName= getitemName(orderProducts);
-        
-        
-        public String getitemName
-        
-        
-        //주문 상품은 여러개이거나 한개이다.
+        //
+		/*
+		 * // 5. 카카오 페이 결제 준비 호출 KakaoPayReadyResponse readyResponse
+		 * 
+		 * String itemName= getitemName(orderProducts);
+		 * 
+		 * 
+		 * public String getitemName;
+		 * 
+		 * 
+		 */    //주문 상품은 여러개이거나 한개이다.
         for(Orders_productsDto orders_productsDto :orderProducts) {
         	
         	long op_product_id=orders_productsDto.getProduct_id();
@@ -258,64 +258,56 @@ public class ShopKakaopayService implements ShopServiceinter{
         
         
 	}
-	
-		
-	
-	
-	
-	//request
-	
-		public KakaoPayReadyResponse kakaoPayReady(int amount) {
-	        RestTemplate restTemplate = new RestTemplate();
 
-	        HttpHeaders headers = new HttpHeaders();
-	        headers.add("Authorization", "KakaoAK " + ADMIN_KEY);
-	        headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+	// request
 
-	        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-	        params.add("cid", "TC0ONETIME");
-	        params.add("partner_order_id", "1001");
-	        params.add("partner_user_id", "user123");
-	        params.add("item_name", "상품명");
-	        params.add("quantity", "1");
-	        params.add("total_amount", String.valueOf(amount));
-	        params.add("tax_free_amount", "0");
-	        params.add("approval_url", "http://localhost:8080/kakaopay/success");
-	        params.add("cancel_url", "http://localhost:8080/kakaopay/cancel");
-	        params.add("fail_url", "http://localhost:8080/kakaopay/fail");
+	public KakaoPayReadyResponse kakaoPayReady(int amount) {
+		RestTemplate restTemplate = new RestTemplate();
 
-	        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-	        ResponseEntity<KakaoPayReadyResponse> response = restTemplate.postForEntity(
-	                "https://kapi.kakao.com/v1/payment/ready", request, KakaoPayReadyResponse.class
-	        );
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "KakaoAK " + ADMIN_KEY);
+		headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
 
-	        return response.getBody();
-	    }
-		
-		
-		//response
-		
-		public KakaoPayApprovalResponse kakaoPayApprove(String pgToken) {
-		    RestTemplate restTemplate = new RestTemplate();
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("cid", "TC0ONETIME");
+		params.add("partner_order_id", "1001");
+		params.add("partner_user_id", "user123");
+		params.add("item_name", "상품명");
+		params.add("quantity", "1");
+		params.add("total_amount", String.valueOf(amount));
+		params.add("tax_free_amount", "0");
+		params.add("approval_url", "http://localhost:8080/kakaopay/success");
+		params.add("cancel_url", "http://localhost:8080/kakaopay/cancel");
+		params.add("fail_url", "http://localhost:8080/kakaopay/fail");
 
-		    HttpHeaders headers = new HttpHeaders();
-		    headers.add("Authorization", "KakaoAK " + "YOUR_ADMIN_KEY");
-		    headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+		ResponseEntity<KakaoPayReadyResponse> response = restTemplate
+				.postForEntity("https://kapi.kakao.com/v1/payment/ready", request, KakaoPayReadyResponse.class);
 
-		    MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		    params.add("cid", "TC0ONETIME");
-		    params.add("tid", savedTid); // 1단계에서 저장한 tid
-		    params.add("partner_order_id", "1001");
-		    params.add("partner_user_id", "user123");
-		    params.add("pg_token", pgToken);
+		return response.getBody();
+	}
 
-		    HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-		    ResponseEntity<KakaoPayApprovalResponse> response = restTemplate.postForEntity(
-		            "https://kapi.kakao.com/v1/payment/approve", request, KakaoPayApprovalResponse.class
-		    );
+	// response
 
-		    return response.getBody();
-		}
-		
-		
+	public KakaoPayApprovalResponse kakaoPayApprove(String pgToken) {
+		RestTemplate restTemplate = new RestTemplate();
+
+		HttpHeaders headers = new HttpHeaders();
+		headers.add("Authorization", "KakaoAK " + "YOUR_ADMIN_KEY");
+		headers.add("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
+
+		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+		params.add("cid", "TC0ONETIME");
+		params.add("tid", savedTid); // 1단계에서 저장한 tid
+		params.add("partner_order_id", "1001");
+		params.add("partner_user_id", "user123");
+		params.add("pg_token", pgToken);
+
+		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
+		ResponseEntity<KakaoPayApprovalResponse> response = restTemplate
+				.postForEntity("https://kapi.kakao.com/v1/payment/approve", request, KakaoPayApprovalResponse.class);
+
+		return response.getBody();
+	}
+
 }
