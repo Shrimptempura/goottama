@@ -1,0 +1,83 @@
+@charset "UTF-8";
+
+/* 전체 배경과 가운데 정렬 */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f2f2f2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* 폼 컨테이너 */
+.container {
+    background-color: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 400px;
+}
+
+/* 제목 */
+h3 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+/* 라벨 */
+label {
+    display: block;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #555;
+}
+
+/* 입력 필드 (비밀번호) */
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+input[type="password"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* 에러 메시지 */
+.error-msg {
+    color: red;
+    font-size: 0.85em;
+    margin-top: 4px;
+}
+
+/* 제출 버튼 */
+input[type="submit"] {
+    width: 100%;
+    background-color: #007bff;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 25px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* pw_error 메시지 */
+p {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.95em;
+    color: red;
+}

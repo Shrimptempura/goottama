@@ -53,8 +53,11 @@ public class SendEmailService implements SendEmailServiceInter{
 	public void sendPwcodeEmailAction(FindPwDto findPwDto, String code) {
 
 		String to = findPwDto.getEmail();		
-		String subject = "비밀번호 재설정 인증 코드";
-		String content = "인증 코드는 "+code+" 입니다.";
+		String subject = "아마겟돈 비밀번호 재설정 인증 코드";
+		String content = "<div style='font-family: Arial, sans-serif; font-size: 14px;'>"
+		        + "<p><strong>아마겟돈 비밀번호 재설정 인증 코드:</strong> <span style='color: blue; font-weight: bold;'>" + code + "</span></p>"
+		        + "<p>사이트로 돌아가셔서 위의 인증코드를 입력해주세요.</p>"
+		        + "</div>";
 		
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
@@ -62,7 +65,7 @@ public class SendEmailService implements SendEmailServiceInter{
 			
 			helper.setTo(to);
 			helper.setSubject(subject);
-			helper.setText(content);
+			helper.setText(content,true);
 			helper.setFrom(emailConfig.getFrom());
 			
 			mailSender.send(message);

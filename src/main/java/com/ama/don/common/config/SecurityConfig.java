@@ -35,6 +35,10 @@ public class SecurityConfig {
                                 "/emailCheck",
                                 "/authenticate",
                                 "/find_loginId",
+                                "/findPw",
+                                "/checkPwCode",
+                                "/resetPw_view",
+                                "/resetPw",
                                 "/css/**", "/js/**"
                         ).permitAll()
                         .anyRequest().authenticated()

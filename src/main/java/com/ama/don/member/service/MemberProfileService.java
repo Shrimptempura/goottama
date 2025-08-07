@@ -30,7 +30,7 @@ public class MemberProfileService implements MemberProfileServiceInter{
 		FindPwDto findPwDto = (FindPwDto) session.getAttribute("tempPwMember");
 		
 		if (!resetPwDto.getResetPw().equals(resetPwDto.getResetPw2())) {
-			model.addAttribute("pw_error","비밀번호가 잃지하지 안습니다.");
+			model.addAttribute("pw_error","비밀번호가 일치하지 안습니다.");
 			return false;
 		}
 		
