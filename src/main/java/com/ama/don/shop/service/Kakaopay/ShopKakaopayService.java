@@ -207,7 +207,7 @@ public class ShopKakaopayService implements ShopServiceinter {
         model.addAttribute("orderProducts",orderProducts);
         
         
-        
+        //
 		/*
 		 * // 5. 카카오 페이 결제 준비 호출 KakaoPayReadyResponse readyResponse
 		 * 
