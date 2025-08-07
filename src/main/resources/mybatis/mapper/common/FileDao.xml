@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.common.dao.FileDao">
+
+	<!-- 파일 저장 -->
+	<!-- 인테리어 사용함 -->
+	<insert id="create"
+		parameterType="com.ama.don.common.dto.FileDto" useGeneratedKeys="true"
+		keyProperty="file_id">
+		INSERT INTO file (
+		file_uploader, file_name, file_path,
+		target_type, target_id
+		) VALUES (
+		#{file_uploader}, #{file_name},
+		#{file_path}, #{target_type}, #{target_id}
+		)
+	</insert>
+	
+	<delete id="deleteByTarget">
+	DELETE FROM file WHERE TARGET_TYPE = #{target_type} and target_id = #{target_id}
+	</delete>
+	
+	<delete id="deleteByUploader">
+	DELETE FROM file WHERE file_uploader = #{file_uploader}
+	</delete>
+	
+	<delete id="deleteByTargetAndUploader">
+	DELETE FROM file WHERE FILE_UPLOADER = #{file_uploader} AND TARGET_TYPE = #{targetType} AND TARGET_ID = #{targetId}
+	</delete>
+
+
+	<!-- 특정 게시글에 연결된 파일 조회 -->
+	<!-- 인테리어도 같이 씁니다 -->
+	<select id="findByTargetId"
+		resultType="com.ama.don.common.dto.FileDto">
+		SELECT
+		file_id,
+		target_type,
+		target_id,
+		file_name,
+		file_path,
+		file_uploader
+		FROM file
+		WHERE target_type = #{target_type}
+		AND target_id
+		=
+		#{target_id}
+	</select>
+
+	<update id="deleteProfileImg">
+	update user_detail set user_img = null WHERE USER_IMG = #{oldFileName}
+	</update>  
+	
+	<update id="createProfileImg">
+	update user_detail set user_img = #{fileName} where user_id = #{user_id} 
+	</update>
+
+	<!-- 타겟 아이디 수정 -->
+	<update id="updateTargetId">
+		UPDATE file
+		SET target_id = #{new_target_id}
+		WHERE
+		target_type = #{target_type}
+		AND file_uploader = #{file_uploader}
+		AND
+		target_id IS NULL
+	</update>
+
+	<!--임시 업로드된 파일삭제 -->
+	<delete id="deleteTempFiles">
+		DELETE FROM file
+		WHERE target_type = #{target_type}
+		AND file_uploader = #{file_uploader}
+		AND target_id IS NULL
+	</delete>
+
+	<!-- 인테리어 사용 삭제 -->
+	<delete id="interiorDeletedById">
+		DELETE FROM file
+		WHERE file_id = #{fileId}
+	</delete>
+
+	<!-- 인테리어 사용 단건 조회 -->
+	<select id="interiorFindById" resultType="com.ama.don.common.dto.FileDto">
+		SELECT
+			file_uploader,
+			file_name,
+			file_path,
+			target_id,
+			target_type
+		FROM file
+		WHERE file_id = #{fileId}
+	</select>
+
+
+
+</mapper>

@@ -2,8 +2,10 @@ package com.ama.don;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 
-@SpringBootApplication
+@ServletComponentScan
+@SpringBootApplication(scanBasePackages = "com.ama.don")
 public class DonApplication {
 
 	public static void main(String[] args) {

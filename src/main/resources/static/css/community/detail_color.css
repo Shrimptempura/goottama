@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+.btn-white {
+	background-color: white;
+	border: 1px solid transparent;
+	color: black;
+	font-weight: bold;
+	transition: background-color 0.2s, border-color 0.2s;
+}
+/* 목록 버튼 */
+.btn-white.list:hover {
+	background-color: #f0f0f0;
+	border-color: #ccc;
+}
+
+/* 수정 버튼 */
+.btn-white.edit:hover {
+	background-color: #e0f0ff;
+	border-color: #7cc0ff;
+}
+/* 삭제 버튼 */
+.btn-white.delete:hover {
+	background-color: #ffe0e0;
+	border-color: #ff7c7c;
+}
+
+/* 좋아요 버튼 */
+.like-heart-btn {
+	background: none;
+	border: none;
+	font-size: 20px;
+	color: red;
+	cursor: pointer;
+	padding: 0;
+}
+
+.like-heart-btn:hover {
+	transform: scale(1.2);
+	transition: transform 0.2s ease;
+}

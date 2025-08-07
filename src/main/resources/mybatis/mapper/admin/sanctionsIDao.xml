@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.admin.dao.SanctionsIDao">
+    <select id="getAllSanctions">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+    </select>
+
+    <select id="countAllSanctions">
+        SELECT COUNT(*)
+        FROM sanctions
+    </select>
+
+    <select id="getSanctionsBySanctionId" resultType="com.ama.don.admin.dto.sanctionsDTO.SanctionsDTO">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        WHERE SANCTIONS_ID = #{param1}
+    </select>
+
+    <select id="getSanctionsByUserId" resultType="com.ama.don.admin.dto.sanctionsDTO.SanctionsDTO">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        WHERE USER_ID = #{param1}
+    </select>
+
+    <select id="searchSanctions">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        <where>
+            <if test="userId != null and userId != ''">
+                AND USER_ID = #{userId}
+            </if>
+            <if test="sanctionsTypes != null and sanctionsTypes != ''">
+                AND SANCTIONS_TYPES = #{sanctionsTypes}
+            </if>
+            <if test="sanctionsReason != null and sanctionsReason != ''">
+                AND SANCTIONS_REASON LIKE CONCAT('%', #{sanctionsReason}, '%')
+            </if>
+            <if test="adminAccountId != null and adminAccountId != ''">
+                AND ADMIN_ACCOUNT_ID = #{adminAccountId}
+            </if>
+            <if test="searchStartDate != null and searchEndDate != null">
+                AND (
+                (SANCTIONS_START_DATE BETWEEN #{searchStartDate} AND #{searchEndDate})
+                OR (SANCTIONS_END_DATE BETWEEN #{searchStartDate} AND #{searchEndDate})
+                OR (SANCTIONS_CREATED_AT BETWEEN #{searchStartDate} AND #{searchEndDate})
+                )
+            </if>
+            <if test="searchStartDate != null and searchEndDate == null">
+                AND (
+                SANCTIONS_START_DATE &gt;= #{searchStartDate}
+                OR SANCTIONS_END_DATE &gt;= #{searchStartDate}
+                OR SANCTIONS_CREATED_AT &gt;= #{searchStartDate}
+                )
+            </if>
+            <if test="searchStartDate == null and searchEndDate != null">
+                AND (
+                SANCTIONS_START_DATE &lt;= #{searchEndDate}
+                OR SANCTIONS_END_DATE &lt;= #{searchEndDate}
+                OR SANCTIONS_CREATED_AT &lt;= #{searchEndDate}
+                )
+            </if>
+            <if test="durationMin != null and durationMax != null">
+                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) BETWEEN #{durationMin} AND #{durationMax}
+            </if>
+            <if test="durationMin != null and durationMax == null">
+                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) &gt;= #{durationMin}
+            </if>
+            <if test="durationMin == null and durationMax != null">
+                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) &lt;= #{durationMax}
+            </if>
+
+        </where>
+    </select>
+    <select id="countSearchSanctions">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        FROM sanctions
+        <where>
+            <if test="userId != null and userId != ''">
+                AND USER_ID = #{userId}
+            </if>
+            <if test="sanctionsTypes != null and sanctionsTypes != ''">
+                AND SANCTIONS_TYPES = #{sanctionsTypes}
+            </if>
+            <if test="sanctionsReason != null and sanctionsReason != ''">
+                AND SANCTIONS_REASON LIKE CONCAT('%', #{sanctionsReason}, '%')
+            </if>
+            <if test="adminAccountId != null and adminAccountId != ''">
+                AND ADMIN_ACCOUNT_ID = #{adminAccountId}
+            </if>
+            <if test="searchStartDate != null and searchEndDate != null">
+                AND (
+                (SANCTIONS_START_DATE BETWEEN #{searchStartDate} AND #{searchEndDate})
+                OR (SANCTIONS_END_DATE BETWEEN #{searchStartDate} AND #{searchEndDate})
+                OR (SANCTIONS_CREATED_AT BETWEEN #{searchStartDate} AND #{searchEndDate})
+                )
+            </if>
+            <if test="searchStartDate != null and searchEndDate == null">
+                AND (
+                SANCTIONS_START_DATE &gt;= #{searchStartDate}
+                OR SANCTIONS_END_DATE &gt;= #{searchStartDate}
+                OR SANCTIONS_CREATED_AT &gt;= #{searchStartDate}
+                )
+            </if>
+            <if test="searchStartDate == null and searchEndDate != null">
+                AND (
+                SANCTIONS_START_DATE &lt;= #{searchEndDate}
+                OR SANCTIONS_END_DATE &lt;= #{searchEndDate}
+                OR SANCTIONS_CREATED_AT &lt;= #{searchEndDate}
+                )
+            </if>
+            <if test="durationMin != null and durationMax != null">
+                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) BETWEEN #{durationMin} AND #{durationMax}
+            </if>
+            <if test="durationMin != null and durationMax == null">
+                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) &gt;= #{durationMin}
+            </if>
+            <if test="durationMin == null and durationMax != null">
+                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) &lt;= #{durationMax}
+            </if>
+
+        </where>
+    </select>
+
+    <insert id="makeSanction">
+        INSERT INTO sanctions(USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT)
+        VALUES(#{userId}, #{sanctionsType}, #{sanctionsStartDate}, #{sanctionsEndDate}, #{sanctionsReason}, #{adminAccountId}, NOW())
+    </insert>
+
+    <update id="modifySanctionByUserId">
+        UPDATE sanctions
+        SET
+        SANCTIONS_TYPES = #{sanctionsType},
+        SANCTIONS_START_DATE = #{sanctionsStartDate},
+        SANCTIONS_END_DATE = #{sanctionsEndDate},
+        SANCTIONS_REASON = #{sanctionsReason},
+        ADMIN_ACCOUNT_ID = #{adminAccountId},
+        SANCTIONS_CREATED_AT = #{sanctionsCreatedAt}
+        WHERE USER_ID = #{userId}
+    </update>
+
+    <delete id="deleteSanction">
+        DELETE FROM sanctions WHERE SANCTIONS_ID = #{param1}
+    </delete>
+</mapper>
