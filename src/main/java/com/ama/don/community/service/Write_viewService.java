@@ -8,8 +8,8 @@ import com.ama.don.common.dao.FileDao;
 import com.ama.don.common.dao.PostDao;
 import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.enums.TargetType;
-import com.ama.don.community.Dao.CommunityWriteDao;
-import com.ama.don.community.Dto.Review.ReviewWriteDto;
+import com.ama.don.community.dao.CommunityWriteDao;
+import com.ama.don.community.dto.Review.ReviewWriteDto;
 
 @Service
 public class Write_viewService {

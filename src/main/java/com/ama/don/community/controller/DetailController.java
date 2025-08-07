@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ama.don.common.dao.FileDao;
 import com.ama.don.common.enums.TargetType;
-import com.ama.don.community.Dao.CommunityDetailDao;
-import com.ama.don.community.Dto.Review.ReviewDetailDto;
+import com.ama.don.community.dao.CommunityDetailDao;
+import com.ama.don.community.dto.Review.ReviewDetailDto;
 
 import jakarta.servlet.http.HttpSession;
 

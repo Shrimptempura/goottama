@@ -3,10 +3,10 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ama.don.community.Dao.CommunityWriteDao">
+<mapper namespace="com.ama.don.community.dao.CommunityWriteDao">
 
 	<insert id="createReview" useGeneratedKeys="true"
-		parameterType="com.ama.don.community.Dto.Review.ReviewWriteDto"
+		parameterType="com.ama.don.community.dto.Review.ReviewWriteDto"
 		keyProperty="review_id">
 		INSERT INTO community_post_review (
 		post_id,
