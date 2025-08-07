@@ -25,6 +25,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void createCompany(Long userId, CompanyCreateDto createDto, CompanyCreateLocationDto locationDto,
                               MultipartFile file) {
+
         log.info("ComapnyService - 업체 등록 시작 - userId: {}", userId);
 
         try {

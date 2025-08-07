@@ -1,6 +1,7 @@
 <%@ page import="com.ama.don.admin.service.userManage.ManageUserByAdmin" %>
 <%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
-<%@ page import="org.springframework.security.core.Authentication" %><%--
+<%@ page import="org.springframework.security.core.Authentication" %>
+<%@ page import="com.ama.don.interior.dev.DevFindTarget" %><%--
   Created by IntelliJ IDEA.
   User: goott4
   Date: 2025-08-04
@@ -25,6 +26,7 @@
 <%
     }
 %>
+<p>dfafaff: ===  <%= DevFindTarget.getUserNickname() %></p>
 <!DOCTYPE html>
 <html>
 <head>
