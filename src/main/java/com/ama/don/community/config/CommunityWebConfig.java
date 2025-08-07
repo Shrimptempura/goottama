@@ -15,6 +15,9 @@ public class CommunityWebConfig implements WebMvcConfigurer {
 		// 정적 리소스 (CSS, JS)
 		registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
 		registry.addResourceHandler("/js/**").addResourceLocations("classpath:/static/js/");
+		
+		// 인테리어 경로
+		registry.addResourceHandler("/upload/interior/**").addResourceLocations("file:///C:/ama_upload_pr/INTERIOR/");
 	}
 
 }

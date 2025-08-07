@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -17,11 +16,11 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ReportSearchDTO {
-    private long userId;
+    private Long userId;
     private String reportContent;
     private String targetType;
-    private long targetId;
+    private Long targetId;
     private List<String> reportStatus;
-    private Timestamp reportDateStart;
-    private Timestamp reportDateEnd;
+    private String reportDateStart;
+    private String reportDateEnd;
 }

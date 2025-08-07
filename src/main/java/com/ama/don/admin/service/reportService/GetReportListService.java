@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -27,5 +28,48 @@ public class GetReportListService {
         List<Map<String, Object>> mapList = new ArrayList<>();
         List<ReportDTO> dtoList;
         int total;
+
+        if (reportSearchDTO == null ||
+                (reportSearchDTO.getUserId() == null) &&
+                        (reportSearchDTO.getReportContent() == null || reportSearchDTO.getReportContent().isEmpty()) &&
+                        (reportSearchDTO.getTargetType() == null || reportSearchDTO.getTargetType().isEmpty()) &&
+                        (reportSearchDTO.getTargetId() == null) &&
+                        (reportSearchDTO.getReportStatus() == null || reportSearchDTO.getReportStatus().isEmpty()) &&
+                        (reportSearchDTO.getReportDateStart() == null) &&
+                        (reportSearchDTO.getReportDateEnd() == null)) {
+            total = manageReportsIDao.countAllReports();
+            dtoList = manageReportsIDao.getAllReports(searchVO);
+
+        } else {
+            total = manageReportsIDao.countSearchReports(reportSearchDTO);
+            dtoList = manageReportsIDao.searchReports(searchVO, reportSearchDTO);
+        }
+
+        searchVO.pageCalculate(total);
+
+        System.out.println("dtoList size: " + dtoList.size());
+        for (ReportDTO dto : dtoList) {
+            if (dto == null) {
+                System.out.println("NULL DTO 발견됨");
+            } else {
+                System.out.println("DTO: " + dto.getReportId());
+            }
+        }
+
+        for (ReportDTO dto : dtoList) {
+            Map<String, Object> row = new HashMap<>();
+            row.put("reportId", dto.getReportId());
+            row.put("userId", dto.getUserId());
+            row.put("reportDate", dto.getReportDate());
+            row.put("reportContent", dto.getReportContent());
+            row.put("targetType", dto.getTargetType());
+            row.put("targetId", dto.getTargetId());
+            row.put("reportStatus", dto.getReportStatus());
+            mapList.add(row);
+        }
+
+        model.addAttribute("list", mapList);
+        model.addAttribute("searchVO", searchVO);
+
     }
 }

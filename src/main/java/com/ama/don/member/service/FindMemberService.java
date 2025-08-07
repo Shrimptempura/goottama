@@ -26,7 +26,7 @@ public class FindMemberService implements FindMemberServiceInter{
 		String loginId = loginDao.findByLoginId(findLoginIdDto);
 		return loginId;
 	}
-
+	
 	@Override
 	public boolean findPw(FindPwDto findPwDto,HttpSession session,Model model) {
 		
@@ -49,5 +49,7 @@ public class FindMemberService implements FindMemberServiceInter{
 		
 		return true;
 	}
+
+	
 
 }

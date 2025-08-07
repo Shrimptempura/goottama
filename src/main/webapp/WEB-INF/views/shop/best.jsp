@@ -194,7 +194,7 @@
                     <div class="product-image">
                         <c:choose>
                             <c:when test="${not empty product.product_imgurl}">
-                                <img src="${product.product_imgurl}" alt="${product.product_name}">
+                                <img src="/static/uploads/shop/${product.product_imgurl}" alt="${product.product_name}">
                             </c:when>
                             <c:otherwise>
                                 <span class="no-image">이미지 없음</span>
@@ -212,11 +212,11 @@
                                 <span class="discount-rate">${product.product_discountrate}%</span>
                                 <span class="original-price">
                                     <fmt:formatNumber value="${product.product_price / (1 - product.product_discountrate/100)}" 
-                                                    pattern="#,###"/>원
+                                                    pattern="#,###"/>원       
                                 </span>
                             </c:if>
                             <div class="product-price">
-                                <fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원
+                            	<fmt:formatNumber value="${product.product_price*(1-product.product_discountrate)}" pattern="#,###"/>원
                             </div>
                         </div>
                         

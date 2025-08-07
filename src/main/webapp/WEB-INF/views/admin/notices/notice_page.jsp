@@ -20,10 +20,10 @@
     <%-- 검색바 --%>
     <form action="/admin/notices/notice_list" method="post" id="noticeSearchForm" >
         <div class="search-form">
-            <label>제목 <input type="text" name="noticeTitle" placeholder="제목" value="${noticeSearchVO.noticeTitle}"></label>
-            <label>내용 <input type="text" name="noticeContent" placeholder="내용" value="${noticeSearchVO.noticeContent}"></label>
-            <label>시작일 <input type="date" name="noticeDateStart" value="${noticeSearchVO.noticeDateStart}"></label>
-            <label>종료일 <input type="date" name="noticeDateEnd" value="${noticeSearchVO.noticeDateEnd}"></label>
+            <label>제목 <input type="text" name="noticeTitle" placeholder="제목" value="${noticeSearchDTO.noticeTitle}"></label>
+            <label>내용 <input type="text" name="noticeContent" placeholder="내용" value="${noticeSearchDTO.noticeContent}"></label>
+            <label>시작일 <input type="date" name="noticeDateStart" value="${noticeSearchDTO.noticeDateStart}"></label>
+            <label>종료일 <input type="date" name="noticeDateEnd" value="${noticeSearchDTO.noticeDateEnd}"></label>
             <input type="hidden" name="page" value="${searchVO.page}">
             <input type="submit" value="검색" />
         </div>

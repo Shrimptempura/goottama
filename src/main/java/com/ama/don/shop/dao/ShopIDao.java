@@ -43,8 +43,8 @@ public interface ShopIDao {
 	//상품 카테고리로 특정 상품 리스트 조회
 	public ArrayList<ProductFlatDto> product_category(Long category);
 	
-	////상품 쇼핑몰로 특정 상품 리스트 조히
-	public ArrayList<ProductFlatDto> product_mall(String product_mall_name);
+	//상품 쇼핑몰로 특정 상품 리스트 조히
+	public ArrayList<ProductFlatDto> product_mall_list(String product_mall_name);
 	
 	//상품 리뷰수가 많은 상품 리스트로 조회
 	public ArrayList<ProductFlatDto> product_best_list();
@@ -62,14 +62,18 @@ public interface ShopIDao {
   	public void review_write(ShopReviewFlatDto shopReviewFlatDto);
   	
     //product_inquiry iDao
-	public void product_inquiry_write(Long userid, Long productid, String pinquiry_content);	//상품문의 작성 
-	public ArrayList<ShopProductInquiryFlatDto> product_inquiry_list(Long productid);			//단일 상품 문의 리스트
-	public ShopProductInquiryFlatDto product_inquiry(Long pinquiryid);							//단일 상품 특정 문의 조회
-	
+  	public ArrayList<ShopProductInquiryFlatDto> product_inquiry_list(Long productid);			//단일 상품 문의 리스트
+  	public ShopProductInquiryFlatDto product_inquiry(Long pinquiryid);							//단일 상품 특정 문의 조회
+
+  	public void product_inquiry_write(Long userid, Long productid, String pinquiry_content);	//상품문의 작성 
+	public void product_inquiry_delete(Long user_id, Long pinquiry_id);						//상품문의 삭제
+	public void product_inquiry_update(Long pinquiry_id, String pinquiry_content);			//상품 문의 수정
+		
 	
 	//product_reply iDao
-	public void reply_write(Long pinquiryid);
-	
+	public ArrayList<ShopProductInquiryFlatDto> product_reply(Long pinquiry_id);  				//답글 존재 여부 확인
+	public void product_reply_write(Long pinquiry_id, String preply_content);					//답글 작성
+	public void product_reply_delete(Long pinquiry_id);											//답글 삭제
 	//Order iDao
     
     public void order_write(OrdersDto ordersDto);
@@ -93,6 +97,7 @@ public interface ShopIDao {
 	
 	//User_detail IDao
 	public ShopReviewFlatDto user_info(Long user_id);
+
 	
 	
 	//주문수정을 하는데 실제로는 배송지 수정정도를 할것 그러니까 주문아이디로 배송지를 찾아서 배송지를 deliver_update를 하면된다.

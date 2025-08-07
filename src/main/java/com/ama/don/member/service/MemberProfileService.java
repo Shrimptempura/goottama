@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
+import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
 import com.ama.don.member.dao.MemberProfileDao;
 import com.ama.don.member.dto.FindPwDto;
 import com.ama.don.member.dto.MemberDto;
@@ -47,10 +48,26 @@ public class MemberProfileService implements MemberProfileServiceInter{
 	@Override
 	public boolean updateProfile(MemberDto memberDto, MemberEditDto memberEditDto,Model model) {
 		
+		if (memberEditDto.getChangeTel() == null || memberEditDto.getChangeTel().isEmpty()) {
+	        memberEditDto.setChangeTel(memberDto.getUser_tel());
+	    }
+		
+		if (!memberEditDto.getChangeTel().matches("^(01[016789])(-?\\d{3,4})(-?\\d{4})$")) {
+	        model.addAttribute("validationError", "올바른 연락처 형식이 아닙니다.");
+	        model.addAttribute("loginMember",memberDto);
+	        return false;
+	    }
+		
+		if (memberEditDto.getChangeNickname() == null || memberEditDto.getChangeNickname().isEmpty()) {
+	        memberEditDto.setChangeNickname(memberDto.getUser_nickname());
+	    }
+		
 		//닉네임 중복확인
 		String nickname = memberEditDto.getChangeNickname();
 		boolean chechNickname = validationService.nicknameEditCheck(nickname);
-		if (chechNickname == false) {
+	 	if (chechNickname == false) {
+	 		model.addAttribute("validationError", "이미 사용중인 닉네임 입니다.");
+	 		model.addAttribute("loginMember",memberDto);
 			return false;
 		}		
 		//db update
@@ -60,8 +77,8 @@ public class MemberProfileService implements MemberProfileServiceInter{
 	}
 	
 	@Override
-	public MemberDto getupdatedMember(String login_id) {
-		MemberDto updated = memberProfileDao.updated(login_id);
+	public UserTotalDataDTO getupdatedMember(String login_id) {
+		UserTotalDataDTO updated = memberProfileDao.updated(login_id);
 		return updated;
 	}
 

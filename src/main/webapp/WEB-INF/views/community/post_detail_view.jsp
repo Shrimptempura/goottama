@@ -74,6 +74,49 @@
 			</tr>
 
 		</table>
+
+		<form action="${pageContext.request.contextPath}/comment/create"
+			method="post">
+			<input type="hidden" name="targetId" value="${post.post_id}" /> <input
+				type="hidden" name="targetType" value="INTERIOR" />
+			<textarea name="commentContent" rows="3" class="form-control"
+				required></textarea>
+			<button type="submit" class="btn btn-sm btn-primary mt-2">댓글
+				작성</button>
+		</form>
+
+
+		<h5>
+			댓글 <span>${commentCount}</span>개
+		</h5>
+
+		<div class="comment-section">
+			<c:forEach var="comment" items="${commentList}">
+				<div class="comment-box">
+					<div class="comment-header">
+						<img src="${comment.userProfileImgPath}" width="30" height="30" />
+						<strong>${comment.userNickname}</strong> <span
+							class="comment-date"> <fmt:formatDate
+								value="${comment.createdAt}" pattern="yyyy.MM.dd HH:mm" />
+						</span>
+					</div>
+
+					<div class="comment-body">
+						<c:choose>
+							<c:when test="${comment.isDeleted == 1}">
+								<i class="text-muted">삭제된 댓글입니다.</i>
+							</c:when>
+							<c:otherwise>
+								<span>${comment.commentContent}</span>
+							</c:otherwise>
+						</c:choose>
+					</div>
+
+					<!-- 댓글 수정/삭제 버튼은 본인에게만 보여주도록 처리 -->
+				</div>
+			</c:forEach>
+		</div>
+
 	</div>
 
 	<script>
