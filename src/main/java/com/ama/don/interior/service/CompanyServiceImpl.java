@@ -3,6 +3,7 @@ package com.ama.don.interior.service;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dao.CompanyDao;
 import com.ama.don.interior.dto.company.*;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -24,54 +25,22 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void createCompany(Long userId, CompanyCreateDto createDto, CompanyCreateLocationDto locationDto,
                               MultipartFile file) {
-
         log.info("ComapnyService - 업체 등록 시작 - userId: {}", userId);
-        if (companyDao.isDuplicateCompanyName(createDto.getCompanyName())) {
-            log.warn("CompanyService - 업체명 중복 - companyName: {}", createDto.getCompanyName());
-            throw new IllegalArgumentException("이미 등록된 이름입니다.");
+
+        try {
+            validateCompanyNameDuplication(createDto.getCompanyName());
+
+            Long companyDetailId = createCompanyDetail(createDto);          // company_detail 테이블 insert
+            Long locationId = createLocation(locationDto);                  // location 테이블 insert
+            Long companyId = insertCompany(userId, companyDetailId, locationId);    // company 테이블 insert
+
+            saveCompanyImg(companyId, file);
+
+            log.info("CompanyService - 업체 등록 성공 - companyId: {}", companyId);
+        } catch (DataAccessException e) {
+            log.error("CompanyService - DB 오류 발생", e);
+            throw new IllegalStateException("DB 오류 발생으로 업체 등록 실패");
         }
-
-        // company_detail 테이블 생성
-        companyDao.insertCompanyDetail(createDto);
-        Long companyDetailId = createDto.getCompanyDetailId();
-        if (companyDetailId == null) {
-            log.error("CompanyService - DB저장 실패, companyDetailId is null - dto: {}", createDto);
-            throw new IllegalStateException("companyDetailId에 값이 안들어옴");
-        }
-
-        // location 테이블 생성
-        companyDao.insertLocation(locationDto);
-        Long locationId = locationDto.getLocationId();
-        if (locationId == null) {
-            log.error("CompanyService - DB저장 실패, locationId is null - dto: {}", locationDto);
-            throw new IllegalStateException("locationId에 값이 안들어옴");
-        }
-
-        // company 테이블의 fk값: userId, companyDetailId, locationId
-        CompanyInsertDto insertDto = new CompanyInsertDto();
-        insertDto.setUserId(userId);
-        insertDto.setCompanyDetailId(companyDetailId);
-        insertDto.setLocationId(locationId);
-
-        // 업체 생성
-        companyDao.insertCompany(insertDto);
-
-        Long companyId = insertDto.getCompanyId();
-        if (companyId == null) {
-            log.error("CompanyService - 업체 등록 실패 - companyId is null");
-            throw new IllegalStateException("companyId가 없음, 업체 등록 실패");
-        }
-
-        if (file == null || file.isEmpty()) {
-            log.warn("CompanyService - 업체 이미지 필요 - companyId: {}", companyId);
-            throw new IllegalArgumentException("1장의 이미지는 필수");
-        }
-
-        // 이미지 저장
-        fileService.saveFile(TargetType.INTERIOR, companyId, file);
-        log.info("CompanyService - 업체 이미지 저장 성공 - companyId: {}", companyId);
-
-        log.info("CompanyService - 업체 등록 성공 - companyId: {}", companyId);
     }
 
     @Override
@@ -128,6 +97,58 @@ public class CompanyServiceImpl implements CompanyService {
             log.error("CompanyService - DB 오류, 업체 수정 실패 - companyId: {}", companyId, e);
             throw new IllegalStateException("DB오류 발생, 업체 수정 실패");
         }
+    }
+
+    private void validateCompanyNameDuplication(String name) {
+        if (companyDao.isDuplicateCompanyName(name)) {
+            log.warn("CompanyService - 업체명 중복 - companyName: {}", name);
+            throw new IllegalArgumentException("이미 등록된 이름입니다.");
+        }
+    }
+
+    private Long createCompanyDetail(CompanyCreateDto dto) {
+        companyDao.insertCompanyDetail(dto);
+        Long companyDetailId = dto.getCompanyDetailId();
+        if (companyDetailId == null) {
+            log.error("CompanyService - DB저장 실패, companyDetailId is null - dto: {}", dto);
+            throw new IllegalStateException("companyDetailId에 값이 안들어옴");
+        }
+        return companyDetailId;
+    }
+
+    private Long createLocation(CompanyCreateLocationDto dto) {
+        companyDao.insertLocation(dto);
+        Long locationId = dto.getLocationId();
+        if (locationId == null) {
+            log.error("CompanyService - DB저장 실패, locationId is null - dto: {}", dto);
+            throw new IllegalStateException("locationId에 값이 안들어옴");
+        }
+        return locationId;
+    }
+
+    private Long insertCompany(Long userId, Long companyDetailId, Long locationId) {
+        CompanyInsertDto dto = new CompanyInsertDto();
+        dto.setUserId(userId);
+        dto.setCompanyDetailId(companyDetailId);
+        dto.setLocationId(locationId);
+
+        companyDao.insertCompany(dto);
+
+        Long companyId = dto.getCompanyId();
+        if (companyId == null) {
+            log.error("CompanyService - 업체 등록 실패 - companyId is null");
+            throw new IllegalStateException("companyId가 없음, 업체 등록 실패");
+        }
+        return companyId;
+    }
+
+    private void saveCompanyImg(Long companyId, MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            log.warn("CompanyService - 업체 이미지 필요 - companyId: {}", companyId);
+            throw new IllegalArgumentException("1장의 이미지는 필수");
+        }
+        fileService.saveFile(TargetType.INTERIOR, companyId, file);
+        log.info("CompanyService - 업체 이미지 저장 성공 - companyId: {}", companyId);
     }
 
     private void updateCompanyFile(Long companyId, MultipartFile file) {
