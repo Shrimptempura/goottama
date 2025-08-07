@@ -398,7 +398,7 @@ body {
                 <c:when test="${not empty popularProducts}">
                     <c:forEach var="product" items="${popularProducts}" varStatus="status">
                         <c:if test="${status.index < 8}"> <!-- 최대 8개까지 -->
-                            <div class="product-card" onclick="location.href = `product_detail?product_id=${product.product_id}`">>
+                            <div class="product-card" onclick="location.href = `product_detail?product_id=${product.product_id}`">
                                 <div class="product-image">
                                     <div class="popular-badge">인기</div>
                                     <c:choose>
@@ -434,7 +434,7 @@ body {
                 <c:otherwise>
                     <!-- 임시 인기상품 데이터 -->
                     <c:forEach var="product" items="${list}" varStatus="status" begin="0" end="3">
-                        <div class="product-card" onclick="product_detail?product_id=${product.product_id}">>
+                        <div class="product-card" onclick="product_detail?product_id=${product.product_id}">
                             <div class="product-image">
                                 <div class="popular-badge">인기</div>
                                 <c:choose>
@@ -482,7 +482,7 @@ body {
                 <c:when test="${not empty saleProducts}">
                     <c:forEach var="product" items="${saleProducts}" varStatus="status">
                         <c:if test="${status.index < 8}"> <!-- 최대 8개까지 -->
-                            <div class="product-card" onclick="location.href = `product_detail?product_id=${product.product_id}`">>
+                            <div class="product-card" onclick="location.href = `product_detail?product_id=${product.product_id}`">
                                 <div class="product-image">
                                     <div class="sale-badge">SALE</div>
                                     <c:choose>

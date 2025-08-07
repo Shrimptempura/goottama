@@ -239,6 +239,9 @@ input[type="text"], input[type="email"], input[type="tel"], textarea {
 	    </c:otherwise>
 	</c:choose>
     
+    
+   
+    
 
    <!-- 주문 완료 버튼 - choose 밖에서 한 번만 -->
 	<c:if test="${not empty cart or not empty product}">
