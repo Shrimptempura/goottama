@@ -1,10 +1,14 @@
 package com.ama.don.interior.controller;
 
+import com.ama.don.common.dto.FileDto;
+import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.company.CompanyCreateDto;
 import com.ama.don.interior.dto.company.CompanyCreateLocationDto;
 import com.ama.don.interior.dto.company.CompanyDetailDto;
 import com.ama.don.interior.dto.company.CompanySummaryDto;
 import com.ama.don.interior.service.CompanyService;
+import com.ama.don.interior.service.FileService;
+import com.ama.don.member.dto.MemberDto;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,12 +17,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+import java.util.Optional;
+
 @Slf4j
 @RequiredArgsConstructor
 @Controller
 public class CompanyController {
 
     private final CompanyService companyService;
+    private final FileService fileService;
 
     // 업체 등록 폼으로 이동
     @GetMapping("interior/new-company")
@@ -62,7 +70,12 @@ public class CompanyController {
         // 상세 정보 탭
         if (type.equals("details")) {
             CompanyDetailDto detail = companyService.selectDetailCompany(companyId);
+            log.info("CompanyController - detail 요청 - companyId: {}", companyId);
             model.addAttribute("detail", detail);
+        } else if (type.equals("photos")) {
+            List<FileDto> photoList = fileService.getFileList(null, TargetType.INTERIOR, companyId);
+            log.info("CompanyController - File 요청 - userId: {}, targetType: {}, targetId: {}", null, TargetType.INTERIOR, companyId);
+            model.addAttribute("photoList", photoList);
         }
 
         String tabName = switch (type) {

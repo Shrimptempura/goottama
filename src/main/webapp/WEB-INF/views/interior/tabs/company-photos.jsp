@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: goott4
@@ -15,47 +16,10 @@
     <h3>company-photos</h3>
     <section>
         <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
-        <p>dddddddd</p>
+        <c:forEach items="${photoList}" var="photo">
+            <img src="${pageContext.request.contextPath}/upload/interior/${photo.file_path}" alt="업체 사진">
+        </c:forEach>
+
     </section>
 
 

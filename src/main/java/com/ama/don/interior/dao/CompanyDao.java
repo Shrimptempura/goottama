@@ -1,5 +1,6 @@
 package com.ama.don.interior.dao;
 
+import com.ama.don.common.dto.FileDto;
 import com.ama.don.interior.dto.company.*;
 import com.ama.don.interior.dto.company.CompanyDetailDto;
 import com.ama.don.interior.dto.company.CompanySummaryDto;
@@ -49,7 +50,13 @@ public interface CompanyDao {
 
     // 이미지는 다형성 file 사용
 
+    // 업체 상세페이지의 photos 탭 사진 보여주기
+    List<FileDto> selectThumbnailCompany(@Param("targetType") String targetType,
+                                   @Param("targetId") Long targetId);
+
+
     // 업체의 주소가 바뀌면 company_addr를 가져다 위치 정보 업데이트
+    // 현재 사용 안함
     int updateLocation(CompanyUpdateLocationDto dto);
 
     // 업체 탈퇴(is_deleted), company table

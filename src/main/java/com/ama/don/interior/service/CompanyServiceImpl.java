@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -69,6 +71,11 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("CompanyService - 업체 이미지 저장 성공 - companyId: {}", companyId);
 
         log.info("CompanyService - 업체 등록 성공 - companyId: {}", companyId);
+    }
+
+    @Override
+    public Optional<Long> findCompanyIdByUserId(Long userId) {
+        return companyDao.findCompanyIdByUserId(userId);
     }
 
     // 업체 페이지내 상세 정보

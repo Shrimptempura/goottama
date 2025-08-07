@@ -6,6 +6,8 @@ import com.ama.don.interior.dto.company.CompanyDetailDto;
 import com.ama.don.interior.dto.company.CompanySummaryDto;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Optional;
+
 public interface CompanyService {
 
     /**
@@ -16,6 +18,8 @@ public interface CompanyService {
      */
     void createCompany(Long userId, CompanyCreateDto companyCreateDto, CompanyCreateLocationDto locationDto,
                        MultipartFile file);
+
+    Optional<Long> findCompanyIdByUserId(Long userId);
 
     // 업체 상세페이지 내 정보 조회
     CompanyDetailDto selectDetailCompany(Long companyId);
