@@ -1,9 +1,13 @@
 package com.ama.don.admin.controller;
 
 import com.ama.don.admin.dto.reportDTO.ReportSearchDTO;
+import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
 import com.ama.don.admin.service.reportService.*;
+import com.ama.don.admin.service.userManage.ManageUserByAdmin;
 import com.ama.don.admin.utils.SearchVO;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -65,10 +69,12 @@ public class ReportController {
     @GetMapping("/admin/reports/handle_report")
     public String handleReport(HttpServletRequest request, Model model,
                                @RequestParam("targetType") String targetType,
-                               @RequestParam("targetId") Long targetId) {
+                               @RequestParam("targetId") Long targetId,
+                               @RequestParam("reportId") String reportId) {
 
         model.addAttribute("targetType", targetType);
         model.addAttribute("targetId", targetId);
+        model.addAttribute("reportId", reportId);
 
         if (targetType.equals("MEMBER")) {
             return "admin/reports/handle_member_report";
@@ -98,6 +104,15 @@ public class ReportController {
 
     @PostMapping("/admin/reports/submit_report")
     public String submitReport(Model model, HttpServletRequest request) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String userId = "";
+        if (authentication != null && authentication.getPrincipal() instanceof ManageUserByAdmin) {
+            ManageUserByAdmin userDetails = (ManageUserByAdmin) authentication.getPrincipal();
+            UserTotalDataDTO userTotalData = userDetails.getUserTotalDataDTO();
+            userId = String.valueOf(userTotalData.getUser_id());
+        }
+        model.addAttribute("userId", userId);
         model.addAttribute("request", request);
         submitReport.execite(model);
 
@@ -107,17 +122,17 @@ public class ReportController {
         return "admin/reports/close_window";
     }
 
-    @PostMapping("/admin/reports/delete_report")
-    public String deleteReport(Model model, HttpServletRequest request) {
-        model.addAttribute("request", request);
+    @GetMapping("/admin/reports/delete_report")
+    public String deleteReport(Model model, @RequestParam("reportId") Long reportId) {
+        model.addAttribute("reportId", reportId);
         deleteReport.execute(model);
-        return "redirect:admin/admin_index?menu=reports";
+        return "redirect:/admin/admin_index?menu=reports";
     }
 
     @PostMapping("/admin/reports/change_report_status")
     public String changeReportStatus(Model model, HttpServletRequest request) {
         model.addAttribute("request", request);
         changeReportStatus.execute(model);
-        return "redirect:admin/admin_index?menu=reports";
+        return "redirect:/admin/admin_index?menu=reports";
     }
 }

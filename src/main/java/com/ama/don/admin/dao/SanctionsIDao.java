@@ -1,5 +1,6 @@
 package com.ama.don.admin.dao;
 
+import com.ama.don.admin.dto.sanctionsDTO.MakeSanctionDTO;
 import com.ama.don.admin.dto.sanctionsDTO.SanctionSearchDTO;
 import com.ama.don.admin.dto.sanctionsDTO.SanctionsDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -81,7 +82,7 @@ public interface SanctionsIDao {
      *
      * @return 성공 시 true, 실패 시 false
      */
-    boolean makeSanction(SanctionsDTO sanctionsDto);
+    boolean makeSanction(MakeSanctionDTO makeSanctionDTO);
 
     /**
      * 기존 제재 내역을 수정한다.
