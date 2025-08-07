@@ -661,6 +661,43 @@
     }
 }
 
+/* 배송 환불  */
+
+.deliver-refund-section{
+	max-width: 800px;
+    margin: 0 auto;
+    border: 1px solid gray;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: white;
+}
+
+.deliver-section{
+	margin: 0 auto;
+ 	border: 1px solid gray;
+ 	border-radius: 10px;
+ 	padding: 20px;
+ 	background-color: white;
+}
+
+.exchange-section{
+	margin: 0 auto;
+ 	border: 1px solid gray;
+ 	border-radius: 10px;
+ 	padding: 20px;
+ 	background-color: white;
+}
+
+.deliver-info{
+	margin: 0 auto;
+ 	border: 1px solid gray;
+ 	border-radius: 10px;
+ 	padding: 20px;
+ 	background-color: white;
+}
+
+
+
 </style>
 
 <script>
@@ -802,6 +839,25 @@ function debugInquiries() {
         });
     });
 }
+
+
+
+
+//bottom bar
+//부드러운 스크롤
+// 부드러운 스크롤 효과를 위한 추가 스크립트 (CSS scroll-behavior로도 충분함)
+        document.querySelectorAll('.bottombar a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
 </script>
 
 
@@ -836,15 +892,15 @@ function debugInquiries() {
         <!-- 하단바 (이미지 아래) -->
         <div class="bottombar">
             <ul>
-                <li><a href="#">상품정보</a></li>
-                <li><a href="#">리뷰</a></li>
-                <li><a href="#">문의</a></li>
+                <li><a href="#productinfo">상품정보</a></li>
+                <li><a href="#review-section">리뷰</a></li>
+                <li><a href="#inquiry-section">문의</a></li>
                 <li><a href="#">배송/환불</a></li>
             </ul>
         </div>
 
         <!-- 상품 상세 정보 (하단바 아래) -->
-        <div class="productinfo">
+        <div id="productinfo" class="productinfo">
             <h3>상품 정보제공고시</h3>
             <div><strong>제조국:</strong> ${product.product_madein}</div>
             <div><strong>출시 일자:</strong> <fmt:formatDate value="${product.product_release}" pattern="yyyy-MM-dd"/></div>
@@ -854,7 +910,7 @@ function debugInquiries() {
         </div>
         
         <!-- 리뷰 섹션 -->
-        <div class="review-section">
+        <div id="review-section" class="review-section">
         	<div class="review-header">
         		<h3 class="review-title">리뷰</h3>
         	<button class="review-write-btn" onclick="reviewwrite()">리뷰 작성하기</button>
@@ -919,7 +975,7 @@ function debugInquiries() {
         
         <!-- 상품 문의 -->
         <!-- 상품 문의 섹션 (리뷰 섹션 아래에 추가) -->
-		<div class="inquiry-section">
+		<div id="inquiry-section" class="inquiry-section">
 		    <div class="inquiry-header">
 		        <h3 class="inquiry-title">상품 문의</h3>
 		        <button class="inquiry-write-btn" onclick="inquirywrite()">문의 작성하기</button>
@@ -993,6 +1049,53 @@ function debugInquiries() {
 		        </div>
 		    </c:if>
 		</div>
+		
+		
+		
+		
+		<!-- 배송/환불 섹션 -->
+		<h3>배송/환불</h3>
+		<div class="deliver-refund-section">
+			
+			<div id="deliver-section" class="deliver-section">
+				<p>배송</p>
+				<p>배송: 일반택배</p>
+				<p>배송비:3000원</p>
+				<p>도서산간 추가 배송비: 3000원</p>
+				<p>배송불가 지역:	배송불가 지역이 없습니다.</p>
+			</div>
+			
+			<div class="exchange-section"> 
+				<p>교환</p>
+				<p>반품배송비:	3,000원 (최초 배송비가 무료인 경우 6,000원 부과)</p>
+				<p>교환배송비: 6000원</p>
+				<p>보내실곳: 구트아카데미</p>
+				
+			</div>
+			
+			
+			<div class="deliver-info">
+				<p>반품/교환 사유에 따른 요청 가능 기간 <br />
+					반품 시 먼저 판매자와 연락하셔서 반품사유, 택배사, 배송비, 반품지 주소 등을 협의하신 후 반품상품을 발송해 주시기 바랍니다. <br />
+					<br />
+					1.구매자 단순 변심은 상품 수령 후 7일 이내 (구매자 반품배송비 부담) <br />
+					2.표시/광고와 상이, 계약내용과 다르게 이행된 경우 상품 수령 후 3개월 이내, 그 사실을 안 날 또는 알 수 있었던 날로부터 30일 이내. <br />
+					둘 중 하나 경과 시 반품/교환 불가 (판매자 반품배송비 부담) <br />
+					반품/교환 불가능 사유 <br />
+					아래와 같은 경우 반품/교환이 불가능합니다. <br />
+					 <br />
+					1.반품요청기간이 지난 경우 <br />
+					2.구매자의 책임 있는 사유로 상품 등이 멸실 또는 훼손된 경우 (단, 상품의 내용을 확인하기 위하여 포장 등을 훼손한 경우는 제외) <br />
+					3.포장을 개봉하였으나 포장이 훼손되어 상품가치가 현저히 상실된 경우 (예: 식품, 화장품) <br />
+					4.구매자의 사용 또는 일부 소비에 의하여 상품의 가치가 현저히 감소한 경우 (라벨이 떨어진 의류 또는 태그가 떨어진 명품관 상품인 경우) <br />
+					5.시간의 경과에 의하여 재판매가 곤란할 정도로 상품 등의 가치가 현저히 감소한 경우 (예: 식품, 화장품) <br />
+					6.고객주문 확인 후 상품제작에 들어가는 주문제작상품 <br />
+					7.복제가 가능한 상품 등의 포장을 훼손한 경우 (CD/DVD/GAME/도서의 경우 포장 개봉 시)</p>
+			
+			</div>
+			
+		</div>
+		
     </div>
     
 
