@@ -24,6 +24,8 @@ public interface CompanyService {
     // 업체 상세페이지 내 왼쪽 요약 상자
     CompanySummaryDto getSummaryCompany(Long companyId);
 
+    CompanyUpdateDto getUpdateView(Long companyId);
+
     // 업체 수정
     void updateCompany(CompanyUpdateDto updateDto, Long companyId, MultipartFile file);
 }
