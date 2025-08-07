@@ -15,10 +15,13 @@ public class CompanyHomeDto {
     private Long companyId;
 
     private String companyName;     // 업체 이름
-    private String rate;            // 업체 별점
-    private int countReview;        // 리뷰 수
+    private String companyRate;            // 업체 별점
+    private int reviewCount;        // 리뷰 수
 
-    private String location;        // 지역
+    // 파일 경로 + 파일명
+    private String thumbnailPath;       // 썸네일
+
+    // private String location;        // 지역
 
     // 파일 관련은 다형성 file dto로 서비스에서 해결
     // private String companyImg;      // 업체 사진(썸네일용)
