@@ -95,14 +95,15 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void updateCompany(CompanyUpdateDto updateDto, Long companyId, MultipartFile file) {
         log.info("CompanyService - 업체 정보 수정 시작 - companyId: {}", companyId);
-        String newName = updateDto.getCompanyName();
-        String originName = companyDao.getCompanyNameById(companyId);
 
         try {
             if (companyId == null || updateDto == null) {
                 log.error("CompanyService - companyId 또는 updatDto 누락 - companyId: {}, updateDto: {}", companyId, updateDto);
                 throw new IllegalArgumentException("companyId 또는 수정할 데이터가 없습니다.");
             }
+
+            String newName = updateDto.getCompanyName();
+            String originName = companyDao.getCompanyNameById(companyId);
 
             if (updateDto.getCompanyName() == null) {
                 log.error("CompanyService - 업체 이름 누락 - companyId: {}", companyId);

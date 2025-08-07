@@ -119,9 +119,11 @@ class CompanyServiceImplTest {
 
         MultipartFile mockFile = Mockito.mock(MultipartFile.class);
         when(mockFile.isEmpty()).thenReturn(false);
+        when(companyDao.getCompanyNameById(companyId)).thenReturn("기존 이름");
+        when(companyDao.isDuplicateCompanyName("바뀐 이름")).thenReturn(false);
         when(companyDao.updateCompanyDetail(dto)).thenReturn(1);
 
-        companyServiceImpl.updateCompany(dto,companyId, mockFile);
+        companyServiceImpl.updateCompany(dto, companyId, mockFile);
 
         verify(companyDao).updateCompanyDetail(dto);
         verify(fileService).deleteFile(companyId);
@@ -135,7 +137,71 @@ class CompanyServiceImplTest {
 
         CompanyUpdateDto dto = new CompanyUpdateDto();
         dto.setCompanyId(companyId);
-        dto.setCompanyName();
+        dto.setCompanyName("바뀐 이름");
+
+        when(companyDao.getCompanyNameById(companyId)).thenReturn("기존 이름");
+        when(companyDao.isDuplicateCompanyName("바뀐 이름")).thenReturn(false);
+        when(companyDao.updateCompanyDetail(dto)).thenReturn(1);
+
+        companyServiceImpl.updateCompany(dto, companyId, null);
+
+        verify(companyDao).updateCompanyDetail(dto);
+    }
+
+    @DisplayName("companayId 또는 updateDto가 null이면 예외 발생")
+    @Test
+    void shouldThrowException_whenCompanyIdOrUpdateDto_withNull() {
+        CompanyUpdateDto dto = new CompanyUpdateDto();
+        dto.setCompanyName("업체 이름");
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            companyServiceImpl.updateCompany(null, 100L, null);
+        });
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            companyServiceImpl.updateCompany(dto, null, null);
+        });
+
+        verify(companyDao, never()).updateCompanyDetail(any());
+        verify(fileService, never()).deleteFile(any());
+        verify(fileService, never()).saveFile(any(), any(), any());
+    }
+
+    @DisplayName("업체 이름이 null이면 예외 발생")
+    @Test
+    void shouldThrowException_whenCompanyName_withNull() {
+        CompanyUpdateDto dto = new CompanyUpdateDto();
+        dto.setCompanyId(100L);
+        dto.setCompanyName(null);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            companyServiceImpl.updateCompany(dto, 100L, null);
+        });
+
+        verify(companyDao, never()).updateCompanyDetail(dto);
+        verify(fileService, never()).deleteFile(any());
+        verify(fileService, never()).saveFile(any(), any(), any());
+    }
+
+    @DisplayName("업체 수정 실패 - 업체 이름 중복")
+    @Test
+    void shouldThrowException_whenUpdateCompanyDuplicated() {
+        Long companyId = 1000L;
+
+        CompanyUpdateDto dto = new CompanyUpdateDto();
+        dto.setCompanyId(companyId);
+        dto.setCompanyName("이미 있는 이름");
+
+        when(companyDao.getCompanyNameById(companyId)).thenReturn("기존 이름");
+        when(companyDao.isDuplicateCompanyName("이미 있는 이름")).thenReturn(true);
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            companyServiceImpl.updateCompany(dto, companyId, null);
+        });
+
+        verify(companyDao, never()).updateCompanyDetail(any());
+        verify(fileService, never()).deleteFile(any());
+        verify(fileService, never()).saveFile(any(), any(), any());
     }
 
     
