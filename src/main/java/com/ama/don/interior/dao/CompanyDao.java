@@ -36,12 +36,6 @@ public interface CompanyDao {
     // 업체 생성 (company)
     void insertCompany(CompanyInsertDto dto);
 
-    // 업체 이름 중복 검사
-    Boolean isDuplicateCompanyName(@Param("companyName") String companyName);
-    
-    // 업체 id로 업체 이름 조회
-    String getCompanyNameById(@Param("companyId") Long companyId);
-
     // === read ==================================================
     // 홈에서 보는 업체 리스트 -> 불안정한 추후 확인 필요
     List<CompanyHomeDto> findCompanyHomeList();
@@ -59,6 +53,15 @@ public interface CompanyDao {
 
     // 회원아이디로 업체아이디 찾기
     Optional<Long> findCompanyIdByUserId(@Param("userId") Long userId);
+
+    // 업체 이름 중복 검사
+    Boolean isDuplicateCompanyName(@Param("companyName") String companyName);
+
+    // 업체 id로 업체 이름 조회
+    String getCompanyNameById(@Param("companyId") Long companyId);
+    
+    // 업체 수정 뷰
+    CompanyUpdateDto getUpdateView(@Param("companyId") Long companyId);
 
     // === update ==================================================
     // 업체 정보 수정 (company_detail + file)
