@@ -2,11 +2,9 @@ package com.ama.don.interior.controller;
 
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
-import com.ama.don.interior.dto.company.CompanyCreateDto;
-import com.ama.don.interior.dto.company.CompanyCreateLocationDto;
-import com.ama.don.interior.dto.company.CompanyDetailDto;
-import com.ama.don.interior.dto.company.CompanySummaryDto;
+import com.ama.don.interior.dto.company.*;
 import com.ama.don.interior.service.CompanyService;
+import com.ama.don.interior.service.CompanyServiceImpl;
 import com.ama.don.interior.service.FileService;
 import com.ama.don.member.dto.MemberDto;
 import jakarta.servlet.http.HttpSession;
@@ -27,6 +25,7 @@ public class CompanyController {
 
     private final CompanyService companyService;
     private final FileService fileService;
+    private final CompanyServiceImpl companyServiceImpl;
 
     // 업체 등록 폼으로 이동
     @GetMapping("interior/new-company")
@@ -88,5 +87,22 @@ public class CompanyController {
         model.addAttribute("tabName", tabName);
 
         return "interior/company-layout";
+    }
+
+    // 업체 수정 폼
+    @GetMapping("interior/update-company")
+    public String updateCompanyForm(@RequestParam Long companyId, Model model) {
+        CompanyUpdateDto formDto = companyService.getUpdateView(companyId);
+        model.addAttribute("formDto", formDto);
+        return "interior/update-company-form";
+    }
+
+    // 업체 수정 기능
+    @PostMapping("interior/update-company")
+    public String updateCompany(@RequestParam("companyId") Long companyId,
+                                @ModelAttribute("updateDto") CompanyUpdateDto updateDto,
+                                @ModelAttribute("file") MultipartFile file) {
+        companyService.updateCompany(updateDto, companyId, file);
+        return "redirect:/interior/myhome/" + companyId;
     }
 }
