@@ -67,6 +67,7 @@ public class LoginController {
 			model.addAttribute("id_error","해당 정보로 가입된 아이디가 없습니다.");
 			return "member/findLoginId_view";
 		}
+		
 		model.addAttribute("loginId",loginId);
 		
 		return "member/findLoginId_view";

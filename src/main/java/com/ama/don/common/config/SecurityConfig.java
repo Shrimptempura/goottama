@@ -34,6 +34,7 @@ public class SecurityConfig {
                                 "/withdrawalSuccess_view",
                                 "/emailCheck",
                                 "/authenticate",
+                                "/find_loginId",
                                 "/css/**", "/js/**"
                         ).permitAll()
                         .anyRequest().authenticated()

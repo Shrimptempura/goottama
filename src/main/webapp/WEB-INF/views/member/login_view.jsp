@@ -1,27 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>로그인</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/login_view.css" />
 </head>
 <body>
-<h3>login view</h3>
+	<div class="login-container">
+		<h3>LogIn</h3>
 
-<form action="/authenticate" method="post">
-    ID : <input type="text" name="loginId" /><br />
-    PW : <input type="password" name="pw" /><br />
+		<form action="/authenticate" method="post">
+			 <label for="loginId">아이디</label>
+			 <input type="text" name="loginId" id="loginId" required/><br />
+			
+			 <label for="pw">비밀번호</label>
+			 <input type="password" name="pw"  id="pw" required/><br /> 
+			 
+			 <input type="submit" value="로그인" class="login-btn"/>
+		</form>
 
-    <c:if test="${not empty login_error }"><p>${login_error }</p></c:if>
-
-    <input type="submit" value="로그인" />
-</form>
-
-<a href="/findLoginId_view">아이디 찾기</a>
-<a href="/findPw_view">비밀번호 찾기</a>
-<a href="/join_view">회원가입</a>
-
+		<div class="links">
+			<a href="/findLoginId_view">아이디 찾기</a> 
+			<a href="/findPw_view">비밀번호찾기</a> 
+			<a href="/join_view">회원가입</a>
+		</div>
+	</div>
 </body>
 </html>
