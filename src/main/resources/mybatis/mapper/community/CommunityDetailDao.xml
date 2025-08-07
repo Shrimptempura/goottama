@@ -70,6 +70,7 @@
 		WHERE target_type = #{targetType}
 	</select>
 	<!-- 주석 -->
+	<!-- 주석 -->
 	<!-- 조회수 증가 -->
 	<update id="increaseViewCount">
 		UPDATE community_post_review
