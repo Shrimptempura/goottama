@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ama.don.common.dto.PostDto;
-import com.ama.don.community.Dao.CommunityDetailDao;
-import com.ama.don.community.Dto.Review.ReviewDetailDto;
+import com.ama.don.community.dao.CommunityDetailDao;
+import com.ama.don.community.dto.Review.ReviewDetailDto;
 
 @Controller
 @RequestMapping("/community")

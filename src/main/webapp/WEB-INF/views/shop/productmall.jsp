@@ -458,7 +458,7 @@ body {
 	                    
 	                    <!-- 쇼핑몰 링크 생성 -->
 	                    <div class="mall-category">
-	                        <a href="/shop/productmall?mall_name=${product.product_mall_name}" 
+	                        <a href="productmall?product_mall_name=${product.product_mall_name}" 
 	                           class="${param.mall_name == product.product_mall_name ? 'active' : ''}">
 	                            ${product.product_mall_name}
 	                            <span class="count">${mallCount}</span>
@@ -524,7 +524,7 @@ body {
 		        <c:when test="${not empty product_list}">
 		            <c:forEach var="product" items="${product_list}" varStatus="status">
 		                <!-- 🔧 수정1: onclick을 더 안전하게 처리 -->
-		                <div class="product-card" data-product-id="${product.product_id}">
+		                <div class="product-card" onclick="location.href = `product_detail?product_id=${product.product_id}`">
 		                    <!-- 상품 이미지 -->
 		                    <div class="product-image">
 		                        <c:choose>

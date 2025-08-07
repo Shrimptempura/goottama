@@ -1,4 +1,3 @@
-// 좋아요 버튼 클릭 시 좋아요수 증가
 function likePost(reviewId) {
 	fetch("/community/like/toggle", {
 		method: "POST",
@@ -9,10 +8,20 @@ function likePost(reviewId) {
 	})
 		.then(response => response.text())
 		.then(updatedCount => {
-			document.getElementById("likeCount").innerText = updatedCount;
+			// detail_view.jsp일 경우
+			const likeCountStatic = document.getElementById("likeCount");
+			if (likeCountStatic) {
+				likeCountStatic.textContent = updatedCount;
+			}
+
+			// review_view.jsp일 경우
+			const likeCountDynamic = document.getElementById("review_like_count_" + reviewId);
+			if (likeCountDynamic) {
+				likeCountDynamic.textContent = updatedCount;
+			}
 		})
 		.catch(err => {
-			console.error("좋아요 오류:", err);
-			alert("좋아요 처리 중 오류가 발생했습니다.");
+			console.error("❌ 좋아요 처리 실패:", err);
+			alert("좋아요 중 오류가 발생했습니다.");
 		});
 }

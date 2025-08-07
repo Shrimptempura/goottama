@@ -2,7 +2,6 @@ package com.ama.don.admin.service.userManage;
 
 import com.ama.don.admin.dao.ManageUserIDao;
 import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

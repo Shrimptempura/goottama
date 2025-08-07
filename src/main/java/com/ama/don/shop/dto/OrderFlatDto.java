@@ -50,7 +50,7 @@ public class OrderFlatDto {
     private Integer op_totalprice ; // 합계 (이 필드 추가!)
 
     // 상품 관련 필드들
-    private String product_id;
+    private Long product_id;
     private String product_name;     // 실제 컬럼명
 
     // 상품 이미지 관련 필드들

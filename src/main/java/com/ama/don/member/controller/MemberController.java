@@ -1,8 +1,20 @@
 package com.ama.don.member.controller;
 
+
 import java.io.IOException;
 
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.dto.MemberEditDto;
+import com.ama.don.member.dto.ResetPwDto;
+import com.ama.don.member.service.MemberProfileService;
+import com.ama.don.member.service.ProfileImgUploadService;
+import com.ama.don.member.service.WithdrawalService;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +24,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
 import com.ama.don.member.dto.MemberDto;
@@ -27,6 +40,9 @@ import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import java.io.IOException;
+
+
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
@@ -36,6 +52,7 @@ public class MemberController {
 	private final WithdrawalService withdrawalService;
 	private final LoginMemberService loginMemberService;
 	private final MemberUpdateService memberUpdateService;
+
 
 	@PostMapping("/resetPw")
 	public String resetPw(@Valid @ModelAttribute ResetPwDto resetPwDto,HttpSession session,Model model) {
@@ -143,11 +160,13 @@ public class MemberController {
 		
 		MemberDto memberDto = loginMemberService.getCurrentLoginMemberDto();
 		withdrawalService.deletedMember(agree, reason, memberDto);
+
 		
 		//스프링 시큐리티 로그아웃(인증정보 삭제)
 		SecurityContextHolder.clearContext();
 		//세션 무효화
 		session.invalidate();
+
 		
 		return "member/withdrawalSuccess_view";
 	}

@@ -1,6 +1,7 @@
 package com.ama.don.community.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -8,13 +9,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ama.don.common.dao.FileDao;
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.common.utils.CommunityPageVO;
-import com.ama.don.community.Dao.CommunityPostDao;
-import com.ama.don.community.Dto.Review.ReviewPostDto;
+import com.ama.don.community.dao.CommunityPostDao;
+import com.ama.don.community.dto.Review.ReviewPostDto;
 
 @Controller
 @RequestMapping("/community")
@@ -56,5 +58,12 @@ public class Review_viewController {
 
 		return "community/review_view";
 	}
+		// 조회수 와 좋아요 수 조회
+	@GetMapping("/review_live_counts")
+	@ResponseBody
+	public List<Map<String, Object>> getLiveReviewCounts() {
+	    return CommunityPostDao.findReviewCounts();
+	}
+
 
 }
