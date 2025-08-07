@@ -6,6 +6,7 @@
 <mapper namespace="com.ama.don.common.dao.FileDao">
 
 	<!-- 파일 저장 -->
+	<!-- 인테리어 사용함 -->
 	<insert id="create"
 		parameterType="com.ama.don.common.dto.FileDto" useGeneratedKeys="true"
 		keyProperty="file_id">
@@ -32,6 +33,7 @@
 
 
 	<!-- 특정 게시글에 연결된 파일 조회 -->
+	<!-- 인테리어도 같이 씁니다 -->
 	<select id="findByTargetId"
 		resultType="com.ama.don.common.dto.FileDto">
 		SELECT
@@ -47,7 +49,7 @@
 		=
 		#{target_id}
 	</select>
-	
+
 	<update id="deleteProfileImg">
 	update user_detail set user_img = null WHERE USER_IMG = #{oldFileName}
 	</update>  
@@ -74,6 +76,25 @@
 		AND file_uploader = #{file_uploader}
 		AND target_id IS NULL
 	</delete>
+
+	<!-- 인테리어 사용 삭제 -->
+	<delete id="interiorDeletedById">
+		DELETE FROM file
+		WHERE file_id = #{fileId}
+	</delete>
+
+	<!-- 인테리어 사용 단건 조회 -->
+	<select id="interiorFindById" resultType="com.ama.don.common.dto.FileDto">
+		SELECT
+			file_uploader,
+			file_name,
+			file_path,
+			target_id,
+			target_type
+		FROM file
+		WHERE file_id = #{fileId}
+	</select>
+
 
 
 </mapper>
