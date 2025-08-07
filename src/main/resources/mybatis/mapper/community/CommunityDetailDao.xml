@@ -3,11 +3,11 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ama.don.community.Dao.CommunityDetailDao">
+<mapper namespace="com.ama.don.community.dao.CommunityDetailDao">
 
 	<!-- 게시글 상세 조회 -->
 	<select id="findById"
-		resultType="com.ama.don.community.Dto.Review.ReviewDetailDto">
+		resultType="com.ama.don.community.dto.Review.ReviewDetailDto">
 		SELECT
 		r.review_id,
 		r.post_id,

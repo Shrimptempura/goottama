@@ -1,4 +1,4 @@
-package com.ama.don.community.Dao;
+package com.ama.don.community.dao;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.ama.don.common.dto.PostDto;
-import com.ama.don.community.Dto.Review.ReviewPostDto;
+import com.ama.don.community.dto.Review.ReviewPostDto;
 
 @Mapper
 public interface CommunityPostDao {
