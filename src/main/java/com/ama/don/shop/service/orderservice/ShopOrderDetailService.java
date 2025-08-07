@@ -57,13 +57,16 @@ public class ShopOrderDetailService implements ShopServiceinter{
 		    
 
 		    // 각 주문별 상품 목록 조회하여 Map으로 구성
+		    //<c:forEach items="${orderProductsMap}" var="orders" var>
 		    Map<Long, ArrayList<OrderFlatDto>> orderProductsMap = new HashMap<>();
+		    
+		    
 		    
 		    for(OrderFlatDto order : userOrders) {
 		        Long orderId = order.getOrder_id();
 		        System.out.println("주문 ID: " + orderId + ", 날짜: " + order.getOrder_date());
 		        
-		        // 2. 주문별 ㅈ
+		        // 2. 주문별 상품 저장 
 		        ArrayList<OrderFlatDto> products = iDao.order_products_flat(orderId);
 		        orderProductsMap.put(orderId, products);
 		        

@@ -194,6 +194,18 @@ body {
 
 <!-- 사용자 세션을 받아서 처리 -->
 
+<!-- 주문번호로 맵을 찾는다.  -->		
+		<!-- 이중 c:forEach 구문으로 사용자의 주문에 맞는 상품을 가져올 수 있다.  -->
+		<c:forEach var="order" items="${userOrders }">
+			<p>사용자의 주문들의 아이디:${order.order_id }</p>
+			<p>사용자의 주문들의 주문날짜:${order.order_date }</p>
+			<c:forEach var="product" items="${orderProductsMap[order.order_id] }">
+				<p>${product.product_name }</p>
+				<p>${product.op_quantity }</p>
+			</c:forEach>
+		</c:forEach>
+
+
 <div class="main-content">
     <h2 class="page-header">주문 내역</h2>
 
@@ -204,7 +216,6 @@ body {
     </div>
 
     <c:choose>
-
         <c:when test="${not empty userOrders}">
             <c:forEach var="order" items="${userOrders}">
                 <div class="order-container">

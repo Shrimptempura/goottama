@@ -364,7 +364,7 @@ public class ShopController {
 		shopServiceinter = new ShopOrderViewService(iDao);
 		shopServiceinter.execute(model);
 
-		return "shop/order_view";
+		return "shop/order_view";			
 	}
 
 	@RequestMapping("/shop/order_write")
