@@ -19,6 +19,7 @@ public class CompanyHomeDto {
     private int reviewCount;        // 리뷰 수
 
     // 파일 경로 + 파일명
+    // 조인으로 할까 생각중
     private String thumbnailPath;       // 썸네일
 
     // private String location;        // 지역
