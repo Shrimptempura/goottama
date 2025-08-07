@@ -64,7 +64,8 @@ function loadContent(menuType) {
 async function callSpecificPageJSFunction(menuType) {
     const scriptMap = {
         'notices' : '/static/js/admin/NoticePageScript.js',
-        'users' : '/static/js/admin/UserPageScript.js'
+        'users' : '/static/js/admin/UserPageScript.js',
+        'reports' : '/static/js/admin/ReportPageScript.js'
     };
 
     const scriptPath = scriptMap[menuType];
@@ -106,6 +107,14 @@ function callSpecificPageInitFunction(menuType) {
                 initUserPage();
             } else {
                 console.error("initUserPage could not found")
+            }
+            break;
+
+        case 'reports' :
+            if (typeof initReportPage === 'function') {
+                initReportPage();
+            } else {
+                console.error("initReportPage could not found")
             }
             break;
     }
