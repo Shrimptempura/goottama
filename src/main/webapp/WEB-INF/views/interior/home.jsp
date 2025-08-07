@@ -1,4 +1,6 @@
-<%@ page import="com.ama.don.member.dto.MemberDto" %><%--
+<%@ page import="com.ama.don.admin.service.userManage.ManageUserByAdmin" %>
+<%@ page import="org.springframework.security.core.context.SecurityContextHolder" %>
+<%@ page import="org.springframework.security.core.Authentication" %><%--
   Created by IntelliJ IDEA.
   User: goott4
   Date: 2025-08-04
@@ -8,12 +10,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ page session="true" %>
 <%
-    MemberDto member = (MemberDto) session.getAttribute("loginMember");
-    if (member != null) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+    if (authentication != null && authentication.getPrincipal() instanceof ManageUserByAdmin) {
+        ManageUserByAdmin user = (ManageUserByAdmin) authentication.getPrincipal();
 %>
-<p>로그인된 유저 ID: <%= member.getLogin_id() %></p>
-<p>닉네임: <%= member.getUser_nickname() %></p>
-<p>유저 번호: <%= member.getUser_id() %></p>
+<p>로그인된 유저 ID: <%= user.getUserTotalDataDTO().getLogin_id() %></p>
+<p>닉네임: <%= user.getUserNickname() %></p>
+<p>유저 번호: <%= user.getUserId() %></p>
 <%
 } else {
 %>

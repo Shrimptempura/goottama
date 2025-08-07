@@ -1,16 +1,10 @@
 package com.ama.don.admin.service.userManage;
 
 
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-
-import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
-
-
 import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Collection;
@@ -64,5 +58,14 @@ public class ManageUserByAdmin extends User {
 
     public Timestamp getSanctionsUntil() {
         return sanctionsUntil;
+    }
+
+    // 인테리어에서 사용함(userId, userNickname)
+    public Long getUserId() {
+        return userTotalDataDTO.getUser_id();
+    }
+
+    public String getUserNickname() {
+        return userTotalDataDTO.getUser_nickname();
     }
 }
