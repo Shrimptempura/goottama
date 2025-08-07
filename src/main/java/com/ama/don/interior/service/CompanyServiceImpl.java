@@ -96,7 +96,7 @@ public class CompanyServiceImpl implements CompanyService {
     public void updateCompany(CompanyUpdateDto updateDto, Long companyId, MultipartFile file) {
         log.info("CompanyService - 업체 정보 수정 시작 - companyId: {}", companyId);
         String newName = updateDto.getCompanyName();
-        String originName = companyDao. /// findbyid 같은 조회 하지만 성능상 company_name from company_deatil where com_id로 가져가자
+        String originName = companyDao.getCompanyNameById(companyId);
 
         try {
             if (companyId == null || updateDto == null) {
@@ -109,7 +109,7 @@ public class CompanyServiceImpl implements CompanyService {
                 throw new IllegalArgumentException("회사 이름은 필수입니다.");
             }
 
-            if (companyDao.isDuplicateCompanyName(updateDto.getCompanyName())) {
+            if (!originName.equals(newName) && companyDao.isDuplicateCompanyName(newName) ) {
                 log.warn("CompanyService - 업체명 중복 - companyName: {}", updateDto.getCompanyName());
                 throw new IllegalArgumentException("이미 등록된 이름입니다.");
             }
@@ -119,19 +119,21 @@ public class CompanyServiceImpl implements CompanyService {
                 log.warn("CompanyService - 수정된 업체 정보가 없습니다. 실패 - companyId: {}", companyId);
                 throw new IllegalStateException("업체 정보 수정 실패");
             }
-
             // 사진이 존재할때만 교체가능
-            if (file != null && !file.isEmpty()) {
-                log.info("CompanyService - 업체 이미지 삭제 후 새로 생성 - companyId: {}", companyId);
-                fileService.deleteFile(companyId);
-                fileService.saveFile(TargetType.INTERIOR, companyId, file);
-            }
+            updateCompanyFile(companyId, file);
 
             log.info("CompanyService - 업체 수정 성공 - companyId: {}", companyId);
-
         } catch (DataAccessException e) {
             log.error("CompanyService - DB 오류, 업체 수정 실패 - companyId: {}", companyId, e);
             throw new IllegalStateException("DB오류 발생, 업체 수정 실패");
+        }
+    }
+
+    private void updateCompanyFile(Long companyId, MultipartFile file) {
+        if (file != null && !file.isEmpty()) {
+            log.info("CompanyService - 업체 이미지 삭제 후 새로 생성 - companyId: {}", companyId);
+            fileService.deleteFile(companyId);
+            fileService.saveFile(TargetType.INTERIOR, companyId, file);
         }
     }
 
