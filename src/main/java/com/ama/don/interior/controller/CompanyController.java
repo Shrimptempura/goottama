@@ -92,8 +92,8 @@ public class CompanyController {
     // 업체 수정 폼
     @GetMapping("interior/update-company")
     public String updateCompanyForm(@RequestParam Long companyId, Model model) {
-        CompanyUpdateDto formDto = companyService.getUpdateView(companyId);
-        model.addAttribute("formDto", formDto);
+        CompanyUpdateDto form = companyService.getUpdateView(companyId);
+        model.addAttribute("form", form);
         return "interior/update-company-form";
     }
 
