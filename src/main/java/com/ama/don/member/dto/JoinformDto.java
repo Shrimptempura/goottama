@@ -17,7 +17,7 @@ public class JoinformDto {
 	@NotBlank(message = "아이디를 입력하세요.")
 	private String loginId;
 	
-	@NotBlank(message = "비밀번호를 입력하세요.")
+	@NotBlank
 	@Size(min = 8, max = 20)
 	@Pattern(regexp = "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,20}$",
 			message = "비밀번호는 비밀번호는 8~20자리, 영문/숫자/특수문자를 포함해야 합니다.")
@@ -34,7 +34,7 @@ public class JoinformDto {
 	@NotBlank(message = "닉네임을 입력하세요.")
 	private String nickname;
 	
-	@NotNull
+	@NotNull(message = "성별을 선택하세요.")
 	private Gender gender;
 	
 	@NotBlank(message = "생년월일을 선택하세요.")

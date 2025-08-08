@@ -27,9 +27,28 @@ public class SendEmailService implements SendEmailServiceInter{
 		String to = joinformDto.getEmail();
 		String code = new EmailSHA().getSHA256(to);
 		
-		String subject = "회원가입 인증을 위한 메일입니다.";
+		String subject = "아마겟돈 회원가입 인증을 위한 메일입니다.";
 		String link = emailConfig.getCallbackUrl()+"emailCheck?code="+code+"&loginId="+loginId;
-		String content="다음 링크 클릭 이메일 인증을 진행하세요. " + "<a href=\"" + link + "\"><b>이메일 인증하기</b></a>";
+		String content=
+				 "<div style=\"font-family: Arial, sans-serif; font-size: 16px; color: #333;\">" +
+					        "<p>안녕하세요,</p>" +
+					        "<p>아래 버튼을 클릭하여 이메일 인증을 완료해주세요.</p>" +
+
+					        "<div style=\"margin: 20px 0;\">" +
+					            "<a href=\"" + link + "\" " +
+					               "style=\"display: inline-block; " +
+					                       "background-color: #007bff; " +
+					                       "color: white; " +
+					                       "padding: 12px 24px; " +
+					                       "text-align: center; " +
+					                       "text-decoration: none; " +
+					                       "font-weight: bold; " +
+					                       "border-radius: 6px; " +
+					                       "font-size: 16px;\">" +
+					                "이메일 인증하기" +
+					            "</a>" +
+					        "</div>" +
+					    "</div>";
 		
 		try {
 			MimeMessage message = mailSender.createMimeMessage();

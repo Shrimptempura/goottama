@@ -39,6 +39,9 @@ public class SecurityConfig {
                                 "/checkPwCode",
                                 "/resetPw_view",
                                 "/resetPw",
+                                "/checkDuplicateId",
+                                "/checkDuplicateNickname",
+                                "/successJoin_view",
                                 "/css/**", "/js/**"
                         ).permitAll()
                         .anyRequest().authenticated()

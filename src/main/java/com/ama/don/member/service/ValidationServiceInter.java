@@ -12,6 +12,8 @@ public interface ValidationServiceInter {
 	void nicknameCheck(JoinformDto joinformDto, Model model);  //닉네임 중복확인
 	void passwordCheck(JoinformDto joinformDto, Model model);  // pw 일치확인
 	boolean emailvalidation(JoinformDto joinformDto,Model model,HttpSession session);
-	boolean pwCodeValidation(String inputcode,HttpSession session,Model model); //비밀번호 변경 이증번호 확인 
+	boolean pwCodeValidation(String inputcode,HttpSession session,Model model); //비밀번호 변경 이증번호 확인
+	boolean loginDuplicate(String loginId);
+	boolean nicknameDuplicate(String nickname);
 
 }
