@@ -4,6 +4,8 @@ import java.util.Map;
 
 import org.springframework.ui.Model;
 
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.service.ShopServiceinter;
 
@@ -11,10 +13,10 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public class ShopCartWriteService implements ShopServiceinter {
 
-	private ShopIDao siDao;
+	private ShopIDao iDao;
 	
-	public ShopCartWriteService(ShopIDao siDao) {
-		this.siDao=siDao;
+	public ShopCartWriteService(ShopIDao iDao) {
+		this.iDao=iDao;
 	}
 	
 	@Override
@@ -25,13 +27,19 @@ public class ShopCartWriteService implements ShopServiceinter {
 		Map<String, Object> map=model.asMap();
 		HttpServletRequest request=
 				(HttpServletRequest) map.get("request");
-		
-		String user_id=request.getParameter("user_id");
+	
 		String product_id=request.getParameter("product_id");
 		String cart_quantity=request.getParameter("cart_quantity");
 		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
-		siDao.cart_write(Long.parseLong(user_id),Long.parseLong(product_id),Long.parseLong(cart_quantity));
+		Long userid=memberDto.getUser_id();
+	
+		
+		
+		iDao.cart_write(userid,Long.parseLong(product_id),Integer.parseInt(cart_quantity));
 		
 	}
 

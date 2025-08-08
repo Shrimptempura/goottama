@@ -104,12 +104,13 @@ input[type="text"], input[type="email"], input[type="tel"], textarea {
 	
 	
 
-<!-- 주문 폼 -->
+<!-- 주문 폼 --> 		<!-- 수정 /shop/kakaopay -->      <!-- /shop/order_write --> 
 <form id="orderForm" action="/shop/order_write" method="post">
 	
 	<!-- 세션에서 user_id 가져오기, 없으면 기본값 1 -->
 	<c:set var="currentUserId" value="${not empty sessionScope.user_id ? sessionScope.user_id : '1'}" />
 	<input type="hidden" name="user_id" value="${currentUserId}">
+	<input type="hidden" name="order_id" value="0">
     
     <!-- 주문자 정보 -->
     <h3>주문자 정보</h3>

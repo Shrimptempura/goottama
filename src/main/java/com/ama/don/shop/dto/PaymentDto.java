@@ -17,6 +17,7 @@ public class PaymentDto {
 	String payment_type;
 	Timestamp payment_date;
 	String payment_status;
-	int payment_price;	
-	
+	int payment_price;
+	Long payment_tid;
+
 }

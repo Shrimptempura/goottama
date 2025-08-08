@@ -7,6 +7,8 @@ import java.util.Map;
 import org.apache.jasper.tagplugins.jstl.core.ForEach;
 import org.springframework.ui.Model;
 
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.CartDto;
 import com.ama.don.shop.dto.CartFlatDto;
@@ -39,7 +41,12 @@ public class ShopReviewWriteViewService implements ShopServiceinter{
         HttpServletRequest request = (HttpServletRequest) map.get("request");
         
         //
-        String user_id=request.getParameter("user_id");
+        LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
+		Long userid=memberDto.getUser_id();
+		
         String product_id=request.getParameter("product_id");
         
         
@@ -49,17 +56,9 @@ public class ShopReviewWriteViewService implements ShopServiceinter{
       		System.out.println("product_id가 null 입니다.");
       	}
       		
-      	//null cheak
-      	if(user_id==null) {
-      		System.out.println("user_id가 null 입니다.");
-      	}
-      	
-      	
       	
     	Long productid=Long.parseLong(product_id);
-		Long userid=Long.parseLong(user_id);
-		
-		
+
 		
 		// 사용자 아이디를 가지고 사용자 닉네임을 가져와서 사용한다.
 		ShopReviewFlatDto reviewFlatDto=iDao.user_info(userid);

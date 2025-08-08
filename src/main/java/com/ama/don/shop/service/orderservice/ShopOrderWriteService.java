@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.ui.Model;
 
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.CartFlatDto;
 import com.ama.don.shop.dto.DeliverDto;
@@ -36,16 +38,16 @@ public class ShopOrderWriteService implements ShopServiceinter {
         
         try {
             // 기본 정보 추출
-            String user_id = request.getParameter("user_id");
             String orderType = request.getParameter("orderType");
             
-            if (user_id == null || user_id.trim().isEmpty()) {
-                throw new IllegalArgumentException("유저 ID가 유효하지 않습니다.");
-            }
-            
-            Long userid = Long.parseLong(user_id);
+            LoginMemberService loginMemberService=new LoginMemberService();
+    		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+    		model.addAttribute("loginMember",memberDto);
+    		
+    		Long userid=memberDto.getUser_id();
+    		
             System.out.println("=== 주문 처리 시작 ===");
-            System.out.println("유저 아이디: " + user_id);
+            System.out.println("유저 아이디: " + userid);
             System.out.println("주문 타입: " + orderType);
             System.out.println("결제수단: " + paymentmethod);
             

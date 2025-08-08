@@ -25,6 +25,7 @@ public class ShopProductInquiryUpdateViewService implements ShopServiceinter{
 		HttpServletRequest request=
 				(HttpServletRequest) map.get("request");
 		
+		
 		System.out.println("inquiryUpdate()");
 		
 		String pinquiry_id=request.getParameter("pinquiry_id");

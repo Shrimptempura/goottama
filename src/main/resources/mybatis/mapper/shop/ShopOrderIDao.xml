@@ -6,7 +6,7 @@
 <mapper namespace="com.ama.don.shop.dao.ShopIDao">
 
     <!-- 1. 주문 등록 (orders 테이블) -->
-    <insert id="order_write" parameterType="com.ama.don.shop.dto.OrdersDto">
+    <insert id="order_write" parameterType="com.ama.don.shop.dto.OrderFlatDto">
         <selectKey keyProperty="order_id" resultType="long" order="AFTER">
             select last_insert_id()
         </selectKey>
@@ -67,14 +67,16 @@
             payment_type,
             payment_date,
             payment_status,
-            payment_price
+            payment_price,
+            payment_tid
         )
         values(
             #{order_id},
             '카카오결제',
             now(),
             '결재완료',
-            #{payment_price}
+            #{payment_price},
+            #{payment_tid}
         )
     </insert>
     

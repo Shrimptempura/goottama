@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.KakaoPayApprovalResponse;
 import com.ama.don.shop.dto.KakaoPayReadyResponse;
@@ -57,23 +59,32 @@ public class ShopController {
 
 	ShopServiceinter shopServiceinter;
 
-	private final ShopKakaopayService kakaoPayService;
-
-	public ShopController(ShopKakaopayService kakaoPayService) {
-		this.kakaoPayService = kakaoPayService;
-	}
-
 	@Autowired
 	private ShopIDao iDao;
+	
+	@Autowired
+	private ShopKakaopayService shopKakaopayService;
 
 	@RequestMapping("/shop/subheader")
-	public String subheader() {
+	public String subheader(Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
+		
 		return "shop/subheader";
 	}
 
 	//상품 홈
 	@RequestMapping("/shop/home")
 	public String home(HttpServletRequest request, Model model) {
+		
+		//지금 사용자가 필요한 곳은 user_id를교체
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
 		model.addAttribute("request", request);
 		shopServiceinter = new ShopHomeService(iDao);
@@ -86,6 +97,10 @@ public class ShopController {
 	@RequestMapping("/shop/product_popular")
 	public String product_popular(HttpServletRequest request, Model model) {
 		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
 		model.addAttribute("request", request);
 		shopServiceinter=new ShopProductPopularService(iDao);
 		shopServiceinter.execute(model);
@@ -96,6 +111,10 @@ public class ShopController {
 	
 	@RequestMapping("/shop/product_high_sales")
 	public String product_high_sales(HttpServletRequest request, Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
 		model.addAttribute("request", request);
 		shopServiceinter=new ShopProductHighSalesService(iDao);
@@ -121,11 +140,10 @@ public class ShopController {
 	//카테고리
 	@RequestMapping("/shop/category")
 	public String category(HttpServletRequest request, Model model) {
-
-		/*
-		 * model.addAttribute("request", request); shopServiceinter = new
-		 * ShopListService(iDao); shopServiceinter.execute(model);
-		 */
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
 		model.addAttribute("request", request); 
 		shopServiceinter = new ShopCategoryService(iDao); 
@@ -137,6 +155,10 @@ public class ShopController {
 
 	@RequestMapping("/shop/product_detail")
 	public String product_detail(HttpServletRequest request, Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 
 		model.addAttribute("request", request);
 		shopServiceinter = new ShopProductdetailService(iDao);
@@ -148,6 +170,10 @@ public class ShopController {
 	@RequestMapping("/shop/review_write_view")
 	public String review_write_view(HttpServletRequest request,Model model) {
 		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
 		model.addAttribute("request",request);
 		shopServiceinter= new ShopReviewWriteViewService(iDao);
 		shopServiceinter.execute(model);
@@ -157,6 +183,10 @@ public class ShopController {
 	
 	@RequestMapping("/shop/review_write")
 	public String review_write(HttpServletRequest request,Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
 		model.addAttribute("request",request);
 		shopServiceinter=new ShopReviewWriteService(iDao);
@@ -180,6 +210,10 @@ public class ShopController {
 	@RequestMapping("/shop/product_inquiry_write_view")
 	public String product_inquiry_view(HttpServletRequest request,Model model) {
 		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
 		model.addAttribute("request",request);
 		shopServiceinter=new ShopProductInquiryWriteViewService(iDao);
 		shopServiceinter.execute(model);
@@ -190,6 +224,10 @@ public class ShopController {
 	
 	@RequestMapping("/shop/product_inquiry_write")
 	public String product_inquiry_write(HttpServletRequest request,Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
 		model.addAttribute("request",request);
 		shopServiceinter=new ShopProductInquiryWriteService(iDao);
@@ -210,6 +248,10 @@ public class ShopController {
 	@RequestMapping("/shop/product_inquiry_update_view")
 	public String product_inquiry_update_view(HttpServletRequest request,Model model) {
 		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
 		model.addAttribute("request",request);
 		shopServiceinter=new ShopProductInquiryUpdateViewService(iDao);
 		shopServiceinter.execute(model);
@@ -220,6 +262,10 @@ public class ShopController {
 	
 	@RequestMapping("/shop/product_inquiry_update")
 	public String product_inquiry_update(HttpServletRequest request,Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
 		model.addAttribute("request",request);
 		shopServiceinter=new ShopProductInquiryUpdateService(iDao);
@@ -240,6 +286,10 @@ public class ShopController {
 	
 	@RequestMapping("/shop/product_inquiry_delete")
 	public String product_reply_delete(HttpServletRequest request,Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
 		System.out.println("reply_write()");
 		model.addAttribute("request",request);
@@ -262,6 +312,10 @@ public class ShopController {
 	@RequestMapping("/shop/product_reply_view")
 	public String product_reply_view(HttpServletRequest request,Model model) {
 		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
 		model.addAttribute("request",request);
 		shopServiceinter=new ShopProductReplyViewService(iDao);
 		shopServiceinter.execute(model);
@@ -272,6 +326,10 @@ public class ShopController {
 	
 	@RequestMapping("/shop/product_reply_write")
 	public String product_reply_write(HttpServletRequest request,Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
 		System.out.println("reply_write()");
 		model.addAttribute("request",request);
@@ -291,16 +349,24 @@ public class ShopController {
 
 	@RequestMapping("/shop/productmall")
 	public String exhibition(HttpServletRequest request, Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 	
-	model.addAttribute("request",request);
-	shopServiceinter=new ShopProductMallService(iDao);
-	shopServiceinter.execute(model);
-	
-	return "shop/productmall";
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopProductMallService(iDao);
+		shopServiceinter.execute(model);
+		
+		return "shop/productmall";
 	}
 
 	@RequestMapping("/shop/best")
 	public String best(HttpServletRequest request,Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
 		model.addAttribute("request",request);
 		shopServiceinter=new ShopBestService(iDao);
@@ -316,7 +382,7 @@ public class ShopController {
 
 	@RequestMapping("/shop/cart")
 	public String cart(HttpServletRequest request, Model model) {
-
+		
 		System.out.println("cartlist");
 		model.addAttribute("request", request);
 		shopServiceinter = new ShopCartService(iDao);
@@ -327,6 +393,10 @@ public class ShopController {
 
 	@RequestMapping("/shop/cart_write")
 	public String cart_write(HttpServletRequest request, Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 
 		model.addAttribute("request", request);
 		shopServiceinter = new ShopCartWriteService(iDao);
@@ -337,6 +407,10 @@ public class ShopController {
 
 	@RequestMapping("/shop/cart_delete")
 	public String cart_delete(HttpServletRequest request, Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 
 		model.addAttribute("request", request);
 		shopServiceinter = new ShopCartDeleteService(iDao);
@@ -348,6 +422,10 @@ public class ShopController {
 
 	@RequestMapping("/shop/cart_update")
 	public String cart_update(HttpServletRequest request, Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 
 		model.addAttribute("request", request);
 		shopServiceinter = new ShopCartUpdateService(iDao);
@@ -359,6 +437,10 @@ public class ShopController {
 
 	@RequestMapping("/shop/order_view")
 	public String order_view(HttpServletRequest request, Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 
 		model.addAttribute("request", request);
 		shopServiceinter = new ShopOrderViewService(iDao);
@@ -370,6 +452,9 @@ public class ShopController {
 	@RequestMapping("/shop/order_write")
 	public String order_complete(HttpServletRequest request, Model model) {
 		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
 		String paymentMethod = request.getParameter("payment_method");
 		
@@ -384,7 +469,10 @@ public class ShopController {
 	
 	 @RequestMapping("/shop/order_modify_view") 
 	 public String order_modify_view(HttpServletRequest request, Model model) {
-	
+		 
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 	
 		model.addAttribute("request", request); 
 		shopServiceinter= new ShopOrderModifyViewService(iDao); 
@@ -396,7 +484,10 @@ public class ShopController {
 
 	@RequestMapping("/shop/order_update")
 	public String order_update(HttpServletRequest request, Model model) {
-
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
 		model.addAttribute("request",request); 
 		shopServiceinter=new ShopOrderUpdateSerivce(iDao); 
@@ -408,15 +499,26 @@ public class ShopController {
 
 	@RequestMapping("/shop/order_details")
 	public String order_details(HttpServletRequest request, Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 
 		model.addAttribute("request", request);
 		shopServiceinter = new ShopOrderDetailService(iDao);
 		shopServiceinter.execute(model);
+		
+		
+		/*@Autowired꼭 써야됨 ShopIDao iDao;
+			ShopOrderDetailService shopOrderDetailService=new
+		 * ShopOrderDetailService(iDao); shopOrderDetailService.execute(model);
+		 */
+		
 		return "shop/order_details";
 	}
 	
 	
-	@PostMapping("kakaopay")
+	@RequestMapping("/shop/kakaopay")
 	public String kakaopay(HttpServletRequest request,Model model) {
 		
 		model.addAttribute("request",request);
@@ -425,7 +527,7 @@ public class ShopController {
 		
 		//
 		
-		return "shop/kakaopay";
+		return "shop/order_complete";
 	}
 	
 	

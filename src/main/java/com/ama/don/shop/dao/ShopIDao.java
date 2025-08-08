@@ -76,7 +76,7 @@ public interface ShopIDao {
 	public void product_reply_delete(Long pinquiry_id);											//답글 삭제
 	//Order iDao
     
-    public void order_write(OrdersDto ordersDto);
+	public void order_write(OrdersDto ordersDto);							
 	public void deliver_write(DeliverDto deliverDto);
 	public void orders_products_write(Orders_productsDto orders_productsDto);
 	public void payment_write(PaymentDto paymentDto);
