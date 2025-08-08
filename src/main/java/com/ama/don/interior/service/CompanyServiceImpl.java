@@ -85,6 +85,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     // 업체 수정
+    @Transactional
     @Override
     public Long updateCompany(CompanyUpdateDto updateDto, MultipartFile file) {
         Long userId = DevFindTarget.getUserId();
@@ -184,7 +185,7 @@ public class CompanyServiceImpl implements CompanyService {
     private void updateCompanyFile(Long companyId, MultipartFile file) {
         if (file != null && !file.isEmpty()) {
             log.info("CompanyService - 업체 이미지 삭제 후 새로 생성 - companyId: {}", companyId);
-            fileService.deleteFile(companyId);
+            fileService.deleteThumbnail(TargetType.INTERIOR, companyId);
             fileService.saveFile(TargetType.INTERIOR, companyId, file, true);
         }
     }

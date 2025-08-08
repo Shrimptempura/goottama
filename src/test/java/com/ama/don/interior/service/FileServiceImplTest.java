@@ -3,6 +3,7 @@ package com.ama.don.interior.service;
 import com.ama.don.common.dao.FileDao;
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,16 +11,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -33,54 +35,63 @@ class FileServiceImplTest {
     @InjectMocks
     private FileServiceImpl fileService;
 
+    // 임시 디렉토리
+    @org.junit.jupiter.api.io.TempDir
+    Path tempDir;
+
+    @BeforeEach
+    void setUp() throws IOException {
+        Files.createDirectories(tempDir.resolve("interior"));
+        ReflectionTestUtils.setField(fileService, "uploadBaseDir", tempDir.toString());
+    }
+
     @DisplayName("파일 정상 업로드")
     @Test
-    void saveFile_success() throws IOException {
-        String originalFileName = "test.png";
-        byte[] content = "test content".getBytes();
-        // 이거 4개는 필수
+    void shouldSucceed_whenTrySaveFile() throws IOException {
         MultipartFile mockFile = Mockito.mock(MultipartFile.class);
         when(mockFile.isEmpty()).thenReturn(false);
-        when(mockFile.getOriginalFilename()).thenReturn(originalFileName);
+        when(mockFile.getOriginalFilename()).thenReturn("testabc.png");
         // lenient: 불필요 스텁 무시
 
-        // uploadBaseDir를 value로 수동 지정해서 필요
-        // spy(): fileSystem이라 사용, 외부 api 호출막을때
-        FileServiceImpl service = Mockito.spy(new FileServiceImpl(fileDao));
-        ReflectionTestUtils.setField(service, "uploadBaseDir", "/abcdefg");
+        // 검사값이라 donAnswer로 값 지정
+        doAnswer(invocationOnMock -> {
+            File file = invocationOnMock.getArgument(0);
+            Files.writeString(file.toPath(), "www");
+            return null;
+        }).when(mockFile).transferTo(any(File.class));
 
-        // doNothing: 실제 실행해도 아무일도 일어나지 않음
-        doNothing().when(mockFile).transferTo(any(File.class));
+        fileService.saveFile(TargetType.INTERIOR, 10L, mockFile, true);
 
-        service.saveFile(TargetType.INTERIOR, 10L, mockFile, true);
-
-        verify(fileDao).create(any(FileDto.class));
+        verify(fileDao).interCreate(any(FileDto.class));
     }
 
     @DisplayName("파일이 빈 경우 예외")
     @Test
-    void saveFile_emptyFile_exception() {
+    void shouldThrowException_whenTrySaveFile_withEmptyFile() {
         MultipartFile mockFile = Mockito.mock(MultipartFile.class);
         when(mockFile.isEmpty()).thenReturn(true);
 
         assertThrows(IllegalArgumentException.class, () ->
-                fileService.saveFile(TargetType.INTERIOR, 10L, mockFile, any()));
+                fileService.saveFile(TargetType.INTERIOR, 10L, mockFile, true));
+
+        // fileDao 접근 여부 확인
+        verifyNoInteractions(fileDao);
     }
 
     @DisplayName("파일 정상 조회")
     @Test
-    void getFileList_suceess() {
+    void shouldSucceed_whenGetFileList() {
         FileDto dummy = new FileDto();
         dummy.setFile_id(100L);
-        dummy.setFile_name("test.png");
+        dummy.setFile_name("testabc.png");
 
-        when(fileDao.findByTargetId(TargetType.INTERIOR, 10L)).thenReturn(List.of(dummy));
+        when(fileDao.interFindByTarget(TargetType.INTERIOR, 10L)).thenReturn(List.of(dummy));
 
         List<FileDto> result = fileService.getFileList(TargetType.INTERIOR, 10L);
 
         assertThat(result).isNotEmpty();
         assertThat(result).hasSize(1);
-        assertThat(result.get(0).getFile_id()).isEqualTo(100L);
+        verify(fileDao).interFindByTarget(TargetType.INTERIOR, 10L);
     }
 
     @DisplayName("파일 삭제 성공")
@@ -91,21 +102,24 @@ class FileServiceImplTest {
         dummy.setFile_path("/abcdefg");
         dummy.setFile_name("test.png");
 
-        when(fileDao.interiorFindById(100L)).thenReturn(dummy);
-        when(fileDao.interiorDeletedById(100L)).thenReturn(1);
+        when(fileDao.interFindById(100L)).thenReturn(dummy);
+        when(fileDao.interDeletedById(100L)).thenReturn(1);
 
         fileService.deleteFile(100L);
 
-        verify(fileDao).interiorFindById(100L);
-        verify(fileDao).interiorDeletedById(100L);
+        verify(fileDao).interFindById(100L);
+        verify(fileDao).interDeletedById(100L);
     }
 
     @DisplayName("없는 파일 경우 삭제 예외")
     @Test
     void deleteFile_notExistFile_exception() {
-        when(fileDao.interiorFindById(500L)).thenReturn(null);
+        when(fileDao.interFindById(500L)).thenReturn(null);
 
         assertThrows(IllegalArgumentException.class, () -> fileService.deleteFile(500L));
+
+        verify(fileDao).interFindById(500L);
+        verifyNoInteractions(fileDao);      // fileDao 접근 여부 확인
     }
 
 }
