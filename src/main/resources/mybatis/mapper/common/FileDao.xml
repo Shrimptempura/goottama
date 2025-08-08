@@ -90,10 +90,26 @@
 			file_name,
 			file_path,
 			target_id,
-			target_type
+			target_type,
+			is_thumbnail
 		FROM file
 		WHERE file_id = #{fileId}
 	</select>
+
+	<select id="interiorFindByTarget" resultType="com.ama.don.common.dto.FileDto">
+		SELECT
+			file_id,
+			file_uploader,
+			file_name,
+			file_path,
+			target_id,
+			target_type,
+			is_thumbnail
+		FROM file
+		WHERE target_id = #{target_id}
+			AND target_type = #{target_type}
+	</select>
+
 
 	<!-- 인테리어 사용, 파일 생성 썸네일 버전 -->
 	<insert id="interiorCreate">

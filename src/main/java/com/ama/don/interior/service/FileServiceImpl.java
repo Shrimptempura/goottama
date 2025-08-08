@@ -97,12 +97,48 @@ public class FileServiceImpl implements FileService {
     // 썸네일 1장 삭제
     @Override
     public void deleteThumbnail(TargetType targetType, Long targetId) {
-        
+        log.info("FileService - 썸네일 삭제 요청 - targetType: {}, targetId: {}", targetType, targetId);
+
+        FileDto thumFile = fileDao.interiorFindByTarget(targetType, targetId);
+        if (thumFile == null) {
+            log.warn("FileService - 썸네일 없음 - targetType: {}, targetId: {}", targetType, targetId);
+            throw new IllegalArgumentException("삭제 파일을 찾지 못했습니다.");
+        }
+
+        File realPhysical = new File(thumFile.getFile_path(), thumFile.getFile_name());
+        if (realPhysical.exists()) {
+            boolean isDeleted = realPhysical.delete();
+            log.info("FileService - 실제 파일 삭제 - 경로: {}, 성공 여부: {}", realPhysical.getAbsolutePath(), isDeleted);
+        } else {
+            log.warn("FileService - 실제 파일이 존재하지 않음 - 경로: {}", realPhysical.getAbsolutePath());
+        }
+
+        int result = fileDao.interiorDeleteThumbnail(targetType, targetId);
+        log.info("FileService - 썸네일 DB 삭제 완료 - result: {}", result);
     }
 
     // 타겟으로 모두 삭제
     @Override
-    public int deleteAllByTargetId(TargetType targetType, Long targetId) {
-        return 0;
+    public void deleteAllByTargetId(TargetType targetType, Long targetId) {
+        log.info("FileService - 타겟으로 전체 파일 삭제 요청 - targetType: {}, targetId: {}", targetType, targetId);
+
+        List<FileDto> files = fileDao.interiorDeleteAllByTarget(targetType, targetId);
+        if (files.isEmpty()) {
+            log.warn("FileService - 타겟 파일 없음 - targetType: {}, targetId: {}", targetType, targetId);
+            throw new IllegalArgumentException("삭제 파일을 찾지 못했습니다.");
+        }
+
+        for (FileDto file : files) {
+            File realPhysical = new File(file.getFile_path(), file.getFile_name());
+            if (realPhysical.exists()) {
+                boolean isDeleted = realPhysical.delete();
+                log.info("FileService - 실제 파일 삭제 - 경로: {}, 성공 여부: {}", realPhysical.getAbsolutePath(), isDeleted);
+            } else {
+                log.warn("FileService - 실제 파일이 존재하지 않음 - 경로: {}", realPhysical.getAbsolutePath());
+            }
+        }
+        fileDao.interiorDeleteAllByTarget(targetType, targetId);
+        log.info("FileService - 썸네일 DB 삭제 완료");
     }
+
 }

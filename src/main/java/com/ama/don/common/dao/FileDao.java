@@ -46,12 +46,15 @@ public interface FileDao {
 	// 인테리어사용, 단건 조회
 	FileDto interiorFindById(@Param("fileId") Long fileId);
 
+	// 인테리어사용, 타겟으로 단건 조회
+	FileDto interiorFindByTarget(@Param("targetType") TargetType targetType, @Param("targetId") Long targetId);
+
 	// 인테리어사용, 파일 생성(썸네일 필드 있음)
 	int interiorCreate(FileDto fileDto);
 
 	// 인테리어사용, 썸네일 파일 삭제
-	int interiorDeleteThumbnail(@Param("target_type") TargetType targetType, @Param("target_id") Long targetId);
+	int interiorDeleteThumbnail(@Param("targetType") TargetType targetType, @Param("targetId") Long targetId);
 
 	// 인테리어 사용, 타겟으로 모두 삭제
-	int interiorDeleteAllByTarget(@Param("target_type") TargetType targetType, @Param("target_id") Long target_id);
+	List<FileDto> interiorDeleteAllByTarget(@Param("targetType") TargetType targetType, @Param("targetId") Long target_id);
 }
