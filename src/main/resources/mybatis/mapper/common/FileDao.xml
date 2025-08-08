@@ -76,43 +76,12 @@
 		AND target_id IS NULL
 	</delete>
 
-	<!-- 인테리어 사용, 파일 단건 삭제 -->
-	<delete id="interiorDeletedById">
-		DELETE FROM file
-		WHERE file_id = #{fileId}
-	</delete>
 
-	<!-- 인테리어 사용, 파일 단건 조회 -->
-	<select id="interiorFindById" resultType="com.ama.don.common.dto.FileDto">
-		SELECT
-			file_id,
-			file_uploader,
-			file_name,
-			file_path,
-			target_id,
-			target_type,
-			is_thumbnail
-		FROM file
-		WHERE file_id = #{fileId}
-	</select>
-
-	<select id="interiorFindByTarget" resultType="com.ama.don.common.dto.FileDto">
-		SELECT
-			file_id,
-			file_uploader,
-			file_name,
-			file_path,
-			target_id,
-			target_type,
-			is_thumbnail
-		FROM file
-		WHERE target_id = #{target_id}
-			AND target_type = #{target_type}
-	</select>
-
-
-	<!-- 인테리어 사용, 파일 생성 썸네일 버전 -->
-	<insert id="interiorCreate">
+	<!-- 인테리어 사용, 파일 생성 -->
+	<insert id="interCreate"
+			parameterType="com.ama.don.common.dto.FileDto"
+			useGeneratedKeys="true"
+			keyProperty="file_id">
 		INSERT INTO file (
 			file_uploader,
 			file_name,
@@ -130,17 +99,45 @@
 		)
 	</insert>
 
-	<!-- 인테리어 사용, 업체 썸네일 삭제 -->
-	<delete id="interiorDeleteThumbnail">
-		DELETE FROM file
-		WHERE target_type = #{target_type}
-			AND target_id = #{target_id}
+	<!-- 인테리어 사용, 파일 조회(리스트) -->
+	<select id="interFindByTarget" resultType="com.ama.don.common.dto.FileDto">
+		SELECT
+			file_id,
+			file_uploader,
+			file_name,
+			file_path,
+			target_id,
+			target_type,
+			is_thumbnail
+		FROM file
+		WHERE target_type = #{targetType}
+			AND target_id = #{targetId}
+	</select>
+
+	<!-- 인테리어 사용, 썸네일 찾기 -->
+	<select id="interFindThumbnail" resultType="java.lang.Integer">
+		SELECT
+			file_id,
+			file_uploader,
+			file_name,
+			file_path,
+			target_id,
+			target_type,
+			is_thumbnail
+		FROM file
+		WHERE target_id = #{target_id}
+			AND target_type = #{target_type}
 			AND is_thumbnail = 1
-		Limit 1
+	</select>
+
+	<!-- 인테리어 사용, 파일 단건 삭제 -->
+	<delete id="interDeletedById">
+		DELETE FROM file
+		WHERE file_id = #{fileId}
 	</delete>
 
 	<!-- 인테리어 사용, target 모두 삭제 -->
-	<delete id="interiorDeleteAllByTarget">
+	<delete id="interDeleteAllByTarget">
 		DELETE FROM file
 		WHERE target_type = #{target_type}
 			AND target_id = #{target_id}

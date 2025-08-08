@@ -40,21 +40,23 @@ public interface FileDao {
 	// 유저가 업로드한 target_id가 없는 임시 이미지 삭제
 	void deleteTempFiles(@Param("target_type") TargetType targetType, @Param("file_uploader") Long userId);
 
-	// 인테리어사용, 단건 삭제
-	int interiorDeletedById(@Param("fileId") Long fileId);
 
-	// 인테리어사용, 단건 조회
-	FileDto interiorFindById(@Param("fileId") Long fileId);
+	// == interior ====================================
+	// 인테리어사용, 파일 생성
+	int interCreate(FileDto fileDto);
 
-	// 인테리어사용, 타겟으로 단건 조회
-	FileDto interiorFindByTarget(@Param("targetType") TargetType targetType, @Param("targetId") Long targetId);
+	// 인테리어사용, 리스트 조회
+	List<FileDto> interFindByTarget(@Param("targetType") TargetType targetType,
+							 @Param("fileId") Long fileId);
 
-	// 인테리어사용, 파일 생성(썸네일 필드 있음)
-	int interiorCreate(FileDto fileDto);
+	// 인테리어사용, 썸네일 찾기
+	int interFindThumbnail(@Param("targetType") TargetType targetType,
+						   @Param("targetId") Long targetId);
 
-	// 인테리어사용, 썸네일 파일 삭제
-	int interiorDeleteThumbnail(@Param("targetType") TargetType targetType, @Param("targetId") Long targetId);
+	// 인테리어사용, fileId로 파일 삭제
+	int interDeletedById(@Param("fileId") Long fileId);
 
 	// 인테리어 사용, 타겟으로 모두 삭제
-	List<FileDto> interiorDeleteAllByTarget(@Param("targetType") TargetType targetType, @Param("targetId") Long target_id);
+	List<FileDto> interDeleteAllByTarget(@Param("targetType") TargetType targetType,
+										 @Param("targetId") Long target_id);
 }
