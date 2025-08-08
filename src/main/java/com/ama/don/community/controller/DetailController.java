@@ -1,5 +1,7 @@
 package com.ama.don.community.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ama.don.common.dao.FileDao;
 import com.ama.don.common.enums.TargetType;
+import com.ama.don.community.dao.CommunityCommentDao;
 import com.ama.don.community.dao.CommunityDetailDao;
+import com.ama.don.community.dto.Comment.CommentCreateDto;
 import com.ama.don.community.dto.Review.ReviewDetailDto;
 
 import jakarta.servlet.http.HttpSession;
@@ -23,6 +27,10 @@ public class DetailController {
 
 	@Autowired
 	private FileDao fileDao;
+	
+	@Autowired
+	private CommunityCommentDao commentDao;
+
 
 	@GetMapping("/post_detail_view")
 	public String detail(@RequestParam("post_id") Long postId, Model model, HttpSession session) {
@@ -51,7 +59,9 @@ public class DetailController {
 		if (review != null) {
 			review.setFileList(fileDao.findByTargetId(TargetType.COMMUNITY_REVIEW, review.getPost_id()));
 		}
-
+		
+		List<CommentCreateDto> commentList = commentDao.findByTargetId(postId, TargetType.COMMUNITY_REVIEW);
+		model.addAttribute("commentList", commentList);
 		model.addAttribute("review", review);
 		return "community/post_detail_view";
 	}

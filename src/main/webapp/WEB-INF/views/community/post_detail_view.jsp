@@ -75,56 +75,89 @@
 
 		</table>
 
-		<form action="${pageContext.request.contextPath}/comment/create"
-			method="post">
-			<input type="hidden" name="targetId" value="${post.post_id}" /> <input
-				type="hidden" name="targetType" value="INTERIOR" />
-			<textarea name="commentContent" rows="3" class="form-control"
-				required></textarea>
-			<button type="submit" class="btn btn-sm btn-primary mt-2">댓글
-				작성</button>
-		</form>
+		<div class="mt-5">
+			<h5>댓글</h5>
 
+			<!-- 댓글 작성 폼 -->
+			<form method="post"
+				action="${pageContext.request.contextPath}/community/comment"
+				class="mb-4">
+				<input type="hidden" name="targetId" value="${review.post_id}" /> <input
+					type="hidden" name="targetType" value="COMMUNITY_REVIEW" /> <input
+					type="hidden" name="user_id"
+					value="${sessionScope.loginUser.user_id}" />
 
-		<h5>
-			댓글 <span>${commentCount}</span>개
-		</h5>
-
-		<div class="comment-section">
-			<c:forEach var="comment" items="${commentList}">
-				<div class="comment-box">
-					<div class="comment-header">
-						<img src="${comment.userProfileImgPath}" width="30" height="30" />
-						<strong>${comment.userNickname}</strong> <span
-							class="comment-date"> <fmt:formatDate
-								value="${comment.createdAt}" pattern="yyyy.MM.dd HH:mm" />
-						</span>
-					</div>
-
-					<div class="comment-body">
-						<c:choose>
-							<c:when test="${comment.isDeleted == 1}">
-								<i class="text-muted">삭제된 댓글입니다.</i>
-							</c:when>
-							<c:otherwise>
-								<span>${comment.commentContent}</span>
-							</c:otherwise>
-						</c:choose>
-					</div>
-
-					<!-- 댓글 수정/삭제 버튼은 본인에게만 보여주도록 처리 -->
+				<div class="mb-2">
+					<textarea name="comment_content" class="form-control" rows="3"
+						placeholder="댓글을 입력하세요" required></textarea>
 				</div>
-			</c:forEach>
+				<div class="text-end">
+					<button type="submit" class="btn btn-primary btn-sm">댓글 작성</button>
+				</div>
+			</form>
+
+			<!-- 댓글 목록 -->
+			<c:if test="${not empty commentList}">
+				<ul class="list-group">
+					<c:forEach var="comment" items="${commentList}">
+						<li class="list-group-item">
+							<div>
+								<strong>작성자 ID:</strong> ${comment.user_id}
+							</div>
+							<textarea name="comment_content_${comment.comment_id}"
+								class="form-control my-2" rows="2"
+								form="form-${comment.comment_id}">${comment.comment_content}</textarea>
+
+							<div class="d-flex justify-content-between">
+								<small class="text-muted"> 작성일: <fmt:formatDate
+										value="${comment.created_at}" pattern="yyyy-MM-dd HH:mm" />
+								</small>
+
+								<div>
+									<!-- 수정 -->
+									<form id="form-${comment.comment_id}" method="post"
+										action="${pageContext.request.contextPath}/community/comment/update"
+										class="d-inline">
+										<input type="hidden" name="comment_id"
+											value="${comment.comment_id}" /> <input type="hidden"
+											name="targetId" value="${review.post_id}" /> <input
+											type="hidden" name="targetType" value="COMMUNITY_REVIEW" />
+										<input type="hidden" name="user_id" value="${comment.user_id}" />
+										<input type="hidden" name="comment_content" value="" />
+										<button type="submit" class="btn btn-sm btn-success"
+											onclick="
+                                    this.form.comment_content.value = this.form.closest('li').querySelector('textarea').value;
+                                ">수정</button>
+									</form>
+
+									<!-- 삭제 -->
+									<form method="post"
+										action="${pageContext.request.contextPath}/community/comment/delete"
+										class="d-inline" onsubmit="return confirm('댓글을 삭제하시겠습니까?');">
+										<input type="hidden" name="commentId"
+											value="${comment.comment_id}" /> <input type="hidden"
+											name="postId" value="${review.post_id}" />
+										<button type="submit" class="btn btn-sm btn-outline-danger">삭제</button>
+									</form>
+								</div>
+							</div>
+						</li>
+					</c:forEach>
+				</ul>
+			</c:if>
+
+			<c:if test="${empty commentList}">
+				<p class="text-muted">댓글이 없습니다.</p>
+			</c:if>
 		</div>
 
-	</div>
 
-	<script>
+		<script>
 	const contextPath = "${pageContext.request.contextPath}";
 	const postId = '${review.post_id}';
 </script>
 
-	<script
-		src="${pageContext.request.contextPath}/js/community/like_button.js"></script>
+		<script
+			src="${pageContext.request.contextPath}/js/community/like_button.js"></script>
 </body>
 </html>
