@@ -123,7 +123,7 @@ class CompanyServiceImplTest {
             verify(companyDao).insertCompanyDetail(detail);
             verify(companyDao).insertLocation(location);
             verify(companyDao).insertCompany(any(CompanyInsertDto.class));
-            verify(fileService, never()).saveFile(any(), any(), any(), any());
+            verify(fileService, never()).saveFile(any(TargetType.class), anyLong(), any(MultipartFile.class), anyBoolean());
         }
     }
 
@@ -151,7 +151,7 @@ class CompanyServiceImplTest {
             companyServiceImpl.updateCompany(dto, mockFile);
 
             verify(companyDao).updateCompanyDetail(dto);
-            verify(fileService).deleteFile(companyId);
+            verify(fileService).deleteThumbnail(TargetType.INTERIOR, companyId);
             verify(fileService).saveFile(TargetType.INTERIOR, companyId, mockFile, true);
         }
     }
@@ -177,8 +177,8 @@ class CompanyServiceImplTest {
             companyServiceImpl.updateCompany(dto, null);
 
             verify(companyDao).updateCompanyDetail(dto);
-            verify(fileService, never()).deleteFile(any());
-            verify(fileService, never()).saveFile(any(), any(), any(), any());
+            verify(fileService, never()).deleteThumbnail(any(TargetType.class), anyLong());
+            verify(fileService, never()).saveFile(any(TargetType.class), anyLong(), any(MultipartFile.class), anyBoolean());
         }
     }
 
@@ -203,9 +203,9 @@ class CompanyServiceImplTest {
                 companyServiceImpl.updateCompany(dto, null);
             });
 
-            verify(companyDao, never()).updateCompanyDetail(any());
-            verify(fileService, never()).deleteFile(any());
-            verify(fileService, never()).saveFile(any(), any(), any(), any());
+            verify(companyDao, never()).updateCompanyDetail(any(CompanyUpdateDto.class));
+            verify(fileService, never()).deleteThumbnail(any(TargetType.class), anyLong());
+            verify(fileService, never()).saveFile(any(TargetType.class), anyLong(), any(MultipartFile.class), anyBoolean());
         }
     }
 
@@ -228,8 +228,8 @@ class CompanyServiceImplTest {
             });
 
             verify(companyDao, never()).updateCompanyDetail(dto);
-            verify(fileService, never()).deleteFile(any());
-            verify(fileService, never()).saveFile(any(), any(), any(), any());
+            verify(fileService, never()).deleteThumbnail(any(TargetType.class), anyLong());
+            verify(fileService, never()).saveFile(any(TargetType.class), anyLong(), any(MultipartFile.class), anyBoolean());
         }
     }
 
@@ -254,9 +254,9 @@ class CompanyServiceImplTest {
                 companyServiceImpl.updateCompany(dto, null);
             });
 
-            verify(companyDao, never()).updateCompanyDetail(any());
-            verify(fileService, never()).deleteFile(any());
-            verify(fileService, never()).saveFile(any(), any(), any(), any());
+            verify(companyDao, never()).updateCompanyDetail(any(CompanyUpdateDto.class));
+            verify(fileService, never()).deleteFile(anyLong());
+            verify(fileService, never()).saveFile(any(TargetType.class), anyLong(), any(MultipartFile.class), anyBoolean());
         }
     }
 
