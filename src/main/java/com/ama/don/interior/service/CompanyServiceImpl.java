@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -59,6 +60,12 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public CompanySummaryDto getSummaryCompany(Long companyId) {
         return companyDao.selectSummaryCompany(companyId);
+    }
+
+    // 인테리어 홈의 업체 랜덤 리스트, 개수 제한은 controller에서 건내줌
+    @Override
+    public List<CompanyHomeDto> getHomeCompanyList(int limit) {
+        return companyDao.findCompanyHomeList(limit);
     }
 
     @Override
@@ -170,7 +177,7 @@ public class CompanyServiceImpl implements CompanyService {
             log.warn("CompanyService - 업체 이미지 필요 - companyId: {}", companyId);
             throw new IllegalArgumentException("1장의 이미지는 필수");
         }
-        fileService.saveFile(TargetType.INTERIOR, companyId, file);
+        fileService.saveFile(TargetType.INTERIOR, companyId, file, true);
         log.info("CompanyService - 업체 이미지 저장 성공 - companyId: {}", companyId);
     }
 
@@ -178,7 +185,7 @@ public class CompanyServiceImpl implements CompanyService {
         if (file != null && !file.isEmpty()) {
             log.info("CompanyService - 업체 이미지 삭제 후 새로 생성 - companyId: {}", companyId);
             fileService.deleteFile(companyId);
-            fileService.saveFile(TargetType.INTERIOR, companyId, file);
+            fileService.saveFile(TargetType.INTERIOR, companyId, file, true);
         }
     }
 

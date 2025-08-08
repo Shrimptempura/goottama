@@ -3,6 +3,7 @@ package com.ama.don.interior.service;
 import com.ama.don.interior.dto.company.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface CompanyService {
@@ -23,6 +24,14 @@ public interface CompanyService {
     // 업체 상세페이지 내 왼쪽 요약 상자
     CompanySummaryDto getSummaryCompany(Long companyId);
 
+    // 인테리어 홈에서 보는 업체 게시글 리스트(최신)
+    List<CompanyHomeDto> getHomeCompanyList(int limit);
+
+    default List<CompanyHomeDto> getHomeCompanyList() {
+        return getHomeCompanyList(10);
+    }
+    
+    // 업체 수정 뷰
     CompanyUpdateDto getUpdateView(Long companyId);
 
     // 업체 수정

@@ -38,7 +38,7 @@ public interface CompanyDao {
 
     // === read ==================================================
     // 홈에서 보는 업체 리스트 -> 불안정한 추후 확인 필요
-    List<CompanyHomeDto> findCompanyHomeList();
+    List<CompanyHomeDto> findCompanyHomeList(@Param("limit") int limit);
 
     // 업체 상세 페이지에서 보는 정보 탭
     CompanyDetailDto selectDetailCompany(@Param("companyId") Long companyId);

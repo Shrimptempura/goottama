@@ -73,7 +73,6 @@ class CompanyServiceImplTest {
         try (MockedStatic<DevFindTarget> mockStatic = Mockito.mockStatic(DevFindTarget.class)) {
             mockStatic.when(DevFindTarget::getUserId).thenReturn(userId);
 
-
             // 중복 통과
             when(companyDao.isDuplicateCompanyName("테스트 업체")).thenReturn(false);
 
@@ -91,7 +90,7 @@ class CompanyServiceImplTest {
             verify(companyDao).insertCompanyDetail(detail);
             verify(companyDao).insertLocation(location);
             verify(companyDao).insertCompany(any(CompanyInsertDto.class));
-            verify(fileService).saveFile(TargetType.INTERIOR, 1000L, mockFile);
+            verify(fileService).saveFile(TargetType.INTERIOR, 1000L, mockFile, true);
         }
     }
 
@@ -124,7 +123,7 @@ class CompanyServiceImplTest {
             verify(companyDao).insertCompanyDetail(detail);
             verify(companyDao).insertLocation(location);
             verify(companyDao).insertCompany(any(CompanyInsertDto.class));
-            verify(fileService, never()).saveFile(any(), any(), any());
+            verify(fileService, never()).saveFile(any(), any(), any(), any());
         }
     }
 
@@ -153,7 +152,7 @@ class CompanyServiceImplTest {
 
             verify(companyDao).updateCompanyDetail(dto);
             verify(fileService).deleteFile(companyId);
-            verify(fileService).saveFile(TargetType.INTERIOR, companyId, mockFile);
+            verify(fileService).saveFile(TargetType.INTERIOR, companyId, mockFile, true);
         }
     }
 
@@ -179,7 +178,7 @@ class CompanyServiceImplTest {
 
             verify(companyDao).updateCompanyDetail(dto);
             verify(fileService, never()).deleteFile(any());
-            verify(fileService, never()).saveFile(any(), any(), any());
+            verify(fileService, never()).saveFile(any(), any(), any(), any());
         }
     }
 
@@ -206,7 +205,7 @@ class CompanyServiceImplTest {
 
             verify(companyDao, never()).updateCompanyDetail(any());
             verify(fileService, never()).deleteFile(any());
-            verify(fileService, never()).saveFile(any(), any(), any());
+            verify(fileService, never()).saveFile(any(), any(), any(), any());
         }
     }
 
@@ -230,7 +229,7 @@ class CompanyServiceImplTest {
 
             verify(companyDao, never()).updateCompanyDetail(dto);
             verify(fileService, never()).deleteFile(any());
-            verify(fileService, never()).saveFile(any(), any(), any());
+            verify(fileService, never()).saveFile(any(), any(), any(), any());
         }
     }
 
@@ -257,7 +256,7 @@ class CompanyServiceImplTest {
 
             verify(companyDao, never()).updateCompanyDetail(any());
             verify(fileService, never()).deleteFile(any());
-            verify(fileService, never()).saveFile(any(), any(), any());
+            verify(fileService, never()).saveFile(any(), any(), any(), any());
         }
     }
 

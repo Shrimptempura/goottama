@@ -6,6 +6,8 @@ import com.ama.don.interior.dto.company.*;
 import com.ama.don.interior.service.CompanyService;
 import com.ama.don.interior.service.CompanyServiceImpl;
 import com.ama.don.interior.service.FileService;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -97,5 +99,14 @@ public class CompanyController {
                                 @ModelAttribute("file") MultipartFile file) {
         Long companyId = companyService.updateCompany(updateDto, file);
         return "redirect:/interior/myhome/" + companyId;
+    }
+
+    // 인테리어의 홈탭
+    @GetMapping("interior/ihome")
+    public String ihome(@RequestParam @Min(1) @Max(10) int limit,
+                        Model model) {
+        List<CompanyHomeDto> homeList = companyService.getHomeCompanyList(limit);
+        model.addAttribute("homeList", homeList);
+        return "interior/ihome";
     }
 }
