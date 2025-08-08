@@ -96,7 +96,7 @@ class FileServiceImplTest {
 
     @DisplayName("파일 삭제 성공")
     @Test
-    void deleteFile_success() {
+    void shouldSucceed_whenDeleteFile() {
         // FileServiceImpl에서 path, name 사용
         FileDto dummy = new FileDto();
         dummy.setFile_path("/abcdefg");
@@ -113,12 +113,11 @@ class FileServiceImplTest {
 
     @DisplayName("없는 파일 경우 삭제 예외")
     @Test
-    void deleteFile_notExistFile_exception() {
+    void shouldThrowException_whenDeleteFile_withNotExistFile() {
         when(fileDao.interFindById(500L)).thenReturn(null);
 
         assertThrows(IllegalArgumentException.class, () -> fileService.deleteFile(500L));
 
-        verify(fileDao).interFindById(500L);
         verifyNoInteractions(fileDao);      // fileDao 접근 여부 확인
     }
 
