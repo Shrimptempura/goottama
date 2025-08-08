@@ -6,7 +6,6 @@
 <mapper namespace="com.ama.don.common.dao.FileDao">
 
 	<!-- 파일 저장 -->
-	<!-- 인테리어 사용함 -->
 	<insert id="create"
 		parameterType="com.ama.don.common.dto.FileDto" useGeneratedKeys="true"
 		keyProperty="file_id">
@@ -18,7 +17,7 @@
 		#{file_path}, #{target_type}, #{target_id}
 		)
 	</insert>
-	
+
 	<delete id="deleteByTarget">
 	DELETE FROM file WHERE TARGET_TYPE = #{target_type} and target_id = #{target_id}
 	</delete>
@@ -77,15 +76,16 @@
 		AND target_id IS NULL
 	</delete>
 
-	<!-- 인테리어 사용 삭제 -->
+	<!-- 인테리어 사용, 파일 단건 삭제 -->
 	<delete id="interiorDeletedById">
 		DELETE FROM file
 		WHERE file_id = #{fileId}
 	</delete>
 
-	<!-- 인테리어 사용 단건 조회 -->
+	<!-- 인테리어 사용, 파일 단건 조회 -->
 	<select id="interiorFindById" resultType="com.ama.don.common.dto.FileDto">
 		SELECT
+			file_id,
 			file_uploader,
 			file_name,
 			file_path,
@@ -95,6 +95,40 @@
 		WHERE file_id = #{fileId}
 	</select>
 
+	<!-- 인테리어 사용, 파일 생성 썸네일 버전 -->
+	<insert id="interiorCreate">
+		INSERT INTO file (
+			file_uploader,
+			file_name,
+			file_path,
+			target_type,
+			target_id,
+			is_thumbnail)
+		VALUES (
+			#{file_uploader},
+			#{file_name},
+			#{file_path},
+			#{target_type},
+			#{target_id},
+			#{thumbnail}
+		)
+	</insert>
+
+	<!-- 인테리어 사용, 업체 썸네일 삭제 -->
+	<delete id="interiorDeleteThumbnail">
+		DELETE FROM file
+		WHERE target_type = #{target_type}
+			AND target_id = #{target_id}
+			AND is_thumbnail = 1
+		Limit 1
+	</delete>
+
+	<!-- 인테리어 사용, target 모두 삭제 -->
+	<delete id="interiorDeleteAllByTarget">
+		DELETE FROM file
+		WHERE target_type = #{target_type}
+			AND target_id = #{target_id}
+	</delete>
 
 
 </mapper>
