@@ -19,6 +19,7 @@ public class FileDto {
 	private String file_path; // 저장된 파일명
 	private TargetType target_type; // 파일이 속한 게시판 타입
 	private Long target_id; // 게시글 ID
+	private boolean thumbnail;
 
 	@Override
 	public String toString() {
