@@ -20,5 +20,5 @@ public interface FileService {
     void deleteThumbnail(TargetType targetType, Long targetId);
 
     // 타겟 일치 모두 삭제
-    int deleteAllByTargetId(TargetType targetType, Long targetId);
+    void deleteAllByTargetId(TargetType targetType, Long targetId);
 }
