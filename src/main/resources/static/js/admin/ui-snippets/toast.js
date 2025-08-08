@@ -15,6 +15,8 @@ const toastMap = {
     modify_failure: { message: '글 수정 실패!', type: 'failure' },
     report_delete_success: { message: '신고 내역 삭제 성공!', type: 'success' },
     report_delete_failure: { message: '신고 내역 삭제 실패!', type: 'failure' },
+    change_user_sanctions_until_success: { message: '제재 기간이 성공적으로 변경되었습니다!', type: 'success' },
+    change_user_sanctions_until_failure: { message: '제재 기간 변경에 실패했습니다!', type: 'failure' },
     error: { message: 'error', type: 'failure' }
 };
 

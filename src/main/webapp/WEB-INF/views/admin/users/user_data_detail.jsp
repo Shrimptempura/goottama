@@ -13,6 +13,7 @@
 <title>User Data Detail</title>
 </head>
 <body>
+    <div id="toast"></div>
     <h1>${userData.login_id}</h1>
     <p>아읻 : ${userData.user_id}</p>
     <p>이름 : ${userData.user_name}</p>
@@ -30,11 +31,17 @@
     <p>제재 : ${userData.sanctions_types}</p>
     <p>상태 : ${userData.user_status}</p>
     <p>정지 : ${userData.user_sanctions_until}
-        <c:if test="${userData.user_sanctions_until != null}" >
-            <button type="button" class="open-modal-btn" data-modal-target="/admin/users/user_data_modal"
-                data-param-name="userId" data-param-value="${user.userId}"> 제재 기간 변경 </button>
-        </c:if>
+    <br />
+    <button type="button" class="open-modal-btn"
+                data-param-name="userId" data-param-value="${userData.user_id}"
+                data-modal-target="/admin/users/sanction_modal_content"> 제재 기간 변경 </button>
     </p>
+    <div id="ModalOverlay" class="modal-overlay">
+        <div class="modal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+            <div class="modal-body-content"></div>
+        </div>
+    </div>
 
     <c:forEach var="sanction" items="${sanctions}">
     <div><br /><hr /></div>
@@ -48,7 +55,7 @@
         <p>재제생성 : ${sanction.sanctionsCreatedAt}</p>
     </c:forEach>
 
-    <script src="/static/js/admin/ui-snippets/makeModal.js"></script>
     <script src="/static/js/admin/ui-snippets/toast.js"></script>
+    <script src="/static/js/admin/ui-snippets/makeModal.js"></script>
 </body>
 </html>

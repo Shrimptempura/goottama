@@ -28,5 +28,5 @@ public interface ManageUserIDao {
 
     public int updateUserSanctionsUntil(String userId, Timestamp endDate);
 
-
+    public int updateUserSanctionsAndStatus(String userId, Timestamp endDate, String userStatus);
 }
