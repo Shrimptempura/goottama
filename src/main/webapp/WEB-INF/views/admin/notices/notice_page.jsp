@@ -13,8 +13,6 @@
 <title>Notice_page</title>
 </head>
 <body>
-    <div id="toast"></div>
-
     <h1>Notice</h1>
 
     <%-- 검색바 --%>

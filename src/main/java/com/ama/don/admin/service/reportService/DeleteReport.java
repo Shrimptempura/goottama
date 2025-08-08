@@ -15,20 +15,19 @@ public class DeleteReport {
         this.manageReportsIDao = manageReportsIDao;
     }
 
-    public void execute(Model model) {
+    public boolean execute(Model model) {
         Map<String, Object> map = model.asMap();
         Long reportId = (Long) map.get("reportId");
-        String report_id = String.valueOf(reportId);
-        System.out.println("\n >>> reportId : " + reportId);
+        String reportIdString = String.valueOf(reportId);
         boolean result = false;
 
-        int deleteReportResult = manageReportsIDao.deleteReport(report_id);
+        int deleteReportResult = manageReportsIDao.deleteReport(reportIdString);
         if (deleteReportResult>0) {
             result = true;
         } else {
             System.err.println("[ERROR] No report ID like " + reportId);
         }
-        model.addAttribute("deleteResult", result);
+        return result;
     }
 
 }

@@ -104,4 +104,11 @@
         DELETE FROM report WHERE REPORT_ID = #{param1}
     </delete>
 
+    <select id="getReportStatusByTarget">
+        SELECT REPORT_STATUS
+        FROM report
+        WHERE TARGET_TYPE = #{targetType}
+        AND TARGET_ID = #{targetId}
+    </select>
+
 </mapper>

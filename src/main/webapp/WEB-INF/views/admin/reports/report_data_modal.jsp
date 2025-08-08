@@ -30,7 +30,7 @@
         </div>
         <button>
         <a href='/admin/reports/handle_report?targetType=${reported.type}&targetId=${reported.id}&reportId=${report.reportId}'
-                onclick="window.open(this.href, '신고 처리', 'width=500,height=800'); return false;"
+                onclick="window.open(this.href, '신고 처리', 'width=500,height=900'); return false;"
                 style="text-decoration: none; color: white;"
         >신고 내역 처리하기</a>
         </button>

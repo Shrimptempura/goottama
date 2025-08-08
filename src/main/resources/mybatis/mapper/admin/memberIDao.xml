@@ -39,6 +39,12 @@
         WHERE L.LOGIN_ID = #{param1}
     </select>
 
+    <update id="updateUserSanctionsUntil">
+        UPDATE user_detail
+        SET USER_SANCTIONS_UNTIL = #{endDate}
+        WHERE USER_ID = #{userId}
+    </update>
+
     <select id="searchUsers" resultType="com.ama.don.admin.dto.userDTO.UserTotalDataDTO">
         SELECT USER_ID, USER_NAME, USER_NICKNAME, USER_GENDER, USER_BIRTH, USER_CREATED_AT, USER_TEL, USER_ZIPCODE, USER_ADDR, USER_EMAIL, USER_IMG, USER_STATUS, USER_SANCTIONS_UNTIL
         FROM user_detail

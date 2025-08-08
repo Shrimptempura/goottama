@@ -1,9 +1,8 @@
 package com.ama.don.admin.service.reportService;
 
-import com.ama.don.admin.dao.ManageReportsIDao;
-import com.ama.don.admin.dao.SanctionsIDao;
 import com.ama.don.admin.dto.sanctionsDTO.MakeSanctionDTO;
 import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
+import com.ama.don.admin.service.sanctionService.SanctionFromReport;
 import com.ama.don.admin.service.userManage.ManageUserByAdmin;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
@@ -11,67 +10,59 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
+/**
+ * 신고 처리 메서드
+ */
 @Service
 public class ChangeReportStatus {
 
-    private final ManageReportsIDao manageReportsIDao;
-    private final SanctionsIDao sanctionsIDao;
+    private final ReportHandlingService reportHandlingService;
+    private final SanctionFromReport sanctionFromReport;
 
-    public ChangeReportStatus(ManageReportsIDao manageReportsIDao, SanctionsIDao sanctionsIDao) {
-        this.manageReportsIDao = manageReportsIDao;
-        this.sanctionsIDao = sanctionsIDao;
+    public ChangeReportStatus(SanctionFromReport sanctionFromReport, ReportHandlingService reportHandlingService) {
+        this.sanctionFromReport = sanctionFromReport;
+        this.reportHandlingService = reportHandlingService;
     }
 
-    public void execute(Model model) {
+    public boolean execute(Model model) {
         Map<String, Object> map = model.asMap();
         HttpServletRequest request = (HttpServletRequest) map.get("request");
-        String targetType = request.getParameter("targetType");
+
         String reportId = request.getParameter("reportId");
         String statusChanged = request.getParameter("status");
+        String targetType = request.getParameter("targetType");
         String targetId = request.getParameter("targetId");
         String sanctionReason = request.getParameter("sanctionReason");
+        String adminId = getAdminId(); // 관리자 ID를 가져오는 메서드
+        boolean result;
 
+        // 관리자 ID가 없으면 false 반환
+        if (adminId == null) {
+            return false;
+        }
+        if ("MEMBER".equals(targetType)) {
+            MakeSanctionDTO makeSanctionDTO = reportHandlingService.createMemberSanctionDTO(request, targetId, sanctionReason, adminId);
+            result = sanctionFromReport.makeSanctionAndHandleReport(makeSanctionDTO, reportId, statusChanged);
+        } else {
+            result = reportHandlingService.handleReportStatus(reportId, statusChanged);
+        }
+        return result;
+    }
+
+    // ReportController의 submitReport 참조
+    private String getAdminId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String adminId = "";
+
         if (authentication != null && authentication.getPrincipal() instanceof ManageUserByAdmin) {
             ManageUserByAdmin userDetails = (ManageUserByAdmin) authentication.getPrincipal();
             UserTotalDataDTO userTotalData = userDetails.getUserTotalDataDTO();
-            adminId = String.valueOf(userTotalData.getUser_id());
+            Long roles_id = userTotalData.getRoles_id();
+            if (roles_id != null && roles_id >= 300) { // 관리자 이상
+                return String.valueOf(userTotalData.getUser_id());
+            }
         }
-
-        if (targetType.equals("MEMBER")) {
-            String startDateString = request.getParameter("startDate");
-            String endDateString = request.getParameter("endDate");
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-            LocalDate startDate = LocalDate.parse(startDateString, formatter);
-            LocalDate endDate = LocalDate.parse(endDateString, formatter);
-            Timestamp startDateTimeStamp = Timestamp.valueOf(startDate.atStartOfDay());
-            Timestamp endDateTimeStamp = Timestamp.valueOf(endDate.atStartOfDay());
-            String sanctionsType = request.getParameter("sanctionsType");
-            MakeSanctionDTO makeSanctionDTO = new MakeSanctionDTO(targetId, sanctionsType, startDateTimeStamp, endDateTimeStamp, sanctionReason, adminId);
-            sanctionsIDao.makeSanction(makeSanctionDTO);
-        } else {
-            String visibility = request.getParameter("visibility");
-
-        }
-
-
-
-        //여기서 신고아이디를 토대로 유저와 글 모두 처리 해야 함. 
-        // 차라리 유저 처리 메서드와 글 처리 메서드를 만들어서 호출 하느게 낫겠음
-        boolean changeReportStatusResult = false;
-
-
-
-//        int changeStatusResult = manageReportsIDao.handleReportStatus(reportId, statusChanged);
-//        if (changeStatusResult > 0) {
-//            changeReportStatusResult = true;
-//        }
-//        model.addAttribute("changeReportStatusResult", changeReportStatusResult);
+        return null;
     }
 }

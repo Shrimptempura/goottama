@@ -125,14 +125,16 @@ public class ReportController {
     @GetMapping("/admin/reports/delete_report")
     public String deleteReport(Model model, @RequestParam("reportId") Long reportId) {
         model.addAttribute("reportId", reportId);
-        deleteReport.execute(model);
-        return "redirect:/admin/admin_index?menu=reports";
+        boolean isSuccess = deleteReport.execute(model);
+        String resultMessage = isSuccess ? "report_delete_success" : "report_delete_failure";
+        return "redirect:/admin/admin_index?menu=reports&result=" + resultMessage;
     }
 
     @PostMapping("/admin/reports/change_report_status")
     public String changeReportStatus(Model model, HttpServletRequest request) {
         model.addAttribute("request", request);
-        changeReportStatus.execute(model);
-        return "redirect:/admin/admin_index?menu=reports";
+        boolean isSuccess = changeReportStatus.execute(model);
+        model.addAttribute("result", isSuccess ? "report_success" : "report_failure");
+        return "admin/reports/close_window";
     }
 }

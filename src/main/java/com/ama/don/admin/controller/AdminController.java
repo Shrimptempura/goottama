@@ -22,9 +22,9 @@ public class AdminController {
         return "admin/admin_dashboard";
     }
 
-    @RequestMapping("admin/reports/report_page")
-    public String report(){
-        return "admin/reports/report_page";
+    @RequestMapping("/admin/accessDeniedPage")
+    public String accessDeniedPage(){
+        return "admin/accessDeniedPage";
     }
 
     @RequestMapping("admin/search/advanced_search")

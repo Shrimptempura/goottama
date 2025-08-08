@@ -17,22 +17,6 @@
       report id : ${reportId} <br />
       target type : ${targetType} <br />
       target id : ${targetId} <br />
-      <label for="visibility">
-        <div id="visibility-radio-button">
-          <strong>표시 설정</strong>
-          <div>
-            <label>
-              <input type="radio" name="visibility" value="hide" /> 가리기
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="radio" name="visibility" value="keep" /> 현재 상태
-              유지
-            </label>
-          </div>
-        </div>
-      </label>
       <label for="status">
         <div id="status-radio-button">
           <strong>신고 처리 상태 변경</strong>

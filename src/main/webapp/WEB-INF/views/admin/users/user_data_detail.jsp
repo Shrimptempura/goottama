@@ -8,6 +8,8 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+<link rel="stylesheet" href="/static/css/admin/ui-snippets/modal.css">
+<link rel="stylesheet" href="/static/css/admin/ui-snippets/toast.css">
 <title>User Data Detail</title>
 </head>
 <body>
@@ -27,18 +29,26 @@
     <p>로긴 : ${userData.login_id}</p>
     <p>제재 : ${userData.sanctions_types}</p>
     <p>상태 : ${userData.user_status}</p>
-    <p>정지 : ${userData.user_sanctions_until}</p>
+    <p>정지 : ${userData.user_sanctions_until}
+        <c:if test="${userData.user_sanctions_until != null}" >
+            <button type="button" class="open-modal-btn" data-modal-target="/admin/users/user_data_modal"
+                data-param-name="userId" data-param-value="${user.userId}"> 제재 기간 변경 </button>
+        </c:if>
+    </p>
 
     <c:forEach var="sanction" items="${sanctions}">
     <div><br /><hr /></div>
-        <p>제제아읻 : ${sanction.sanctionsId}</p>
+        <p>제재아읻 : ${sanction.sanctionsId}</p>
         <p>유저아읻 : ${sanction.userId}</p>
-        <p>제제종류 : ${sanction.sanctionsTypes}</p>
-        <p>제제시작 : ${sanction.sanctionsStartDate}</p>
-        <p>제제종료 : ${sanction.sanctionsEndDate}</p>
-        <p>제제이유 : ${sanction.sanctionsReason}</p>
+        <p>제재종류 : ${sanction.sanctionsTypes}</p>
+        <p>제재시작 : ${sanction.sanctionsStartDate}</p>
+        <p>제재종료 : ${sanction.sanctionsEndDate}</p>
+        <p>제재이유 : ${sanction.sanctionsReason}</p>
         <p>관리자앋 : ${sanction.adminAccountId}</p>
         <p>재제생성 : ${sanction.sanctionsCreatedAt}</p>
     </c:forEach>
+
+    <script src="/static/js/admin/ui-snippets/makeModal.js"></script>
+    <script src="/static/js/admin/ui-snippets/toast.js"></script>
 </body>
 </html>
