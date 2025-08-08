@@ -62,14 +62,24 @@
         SELECT
             c.company_id AS companyId,
             cd.company_name AS companyName,
-            cs.avg_total_rate AS companyRate,
-            cs.company_review_count AS reviewCount,
-            CONCAT(f.file_path, '/', f.file_name) AS thumbnailPath
+            IFNULL(cs.avg_total_rate, 0) AS companyRate,
+            IFNULL(cs.company_review_count, 0) AS reviewCount,
+            CONCAT_WS('/', f.file_path, f.file_name) AS thumbnailPath
         FROM company_detail cd
-        JOIN company c ON cd.company_detail_id = c.company_detail_id
-        LEFT JOIN company_score_avg cs ON c.company_id = cs.company_id
-        JOIN file f ON f.target_id = c.company_id
-            AND f.target_type = 'INTERIOR'
+        JOIN company c
+            ON cd.company_detail_id = c.company_detail_id
+        LEFT JOIN company_score_avg cs
+            ON c.company_id = cs.company_id
+        JOIN (
+            SELECT target_id, MAX(file_id) AS file_id
+            FROM file
+            WHERE target_type = 'INTERIOR'
+                AND is_thumbnail = 1
+            GROUP BY target_id
+        ) tf
+        ON tf.target_id = c.company_id
+        JOIN file f
+            ON f.file_id = tf.file_id
         WHERE c.is_deleted = 0
         ORDER BY RAND()
         LIMIT #{limit}

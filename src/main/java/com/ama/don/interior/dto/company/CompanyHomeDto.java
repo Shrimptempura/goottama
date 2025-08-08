@@ -15,7 +15,7 @@ public class CompanyHomeDto {
     private Long companyId;
 
     private String companyName;     // 업체 이름
-    private String companyRate;            // 업체 별점
+    private Double companyRate;            // 업체 별점
     private int reviewCount;        // 리뷰 수
 
     // 파일 경로 + 파일명
