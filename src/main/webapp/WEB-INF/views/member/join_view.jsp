@@ -1,49 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<script
-	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script src="/js/member/emailChoose.js"></script>
+<script src="/js/member/postCode.js"></script>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-
-<!-- 이메일 선택 --> 
-<script>
-	document.addEventListener("DOMContentLoaded",
-			function() {
-				const domainSelect = document
-						.querySelector("select[name='domainSelect']");
-				const domainInput = document
-						.querySelector("input[name='emailDomain']");
-
-				domainSelect.addEventListener("change", function() {
-					const selected = this.value;
-
-					if (selected === "직접입력" || selected === "") {
-						domainInput.value = "";
-						domainInput.readOnly = false;
-						domainInput.focus();
-					} else {
-						domainInput.value = selected;
-						domainInput.readOnly = true;
-					}
-				});
-			});
-</script>
-<!-- api 우편번호 찾기/자동입력 -->
-<script>
-	function execDaumPostcode() {
-		new daum.Postcode({
-			oncomplete : function(data) {
-				// 선택된 우편번호와 주소 정보를 입력창에 자동 채움
-				document.getElementById("zipcode").value = data.zonecode; // 우편번호
-				document.getElementById("addr").value = data.roadAddress; // 도로명 주소
-			}
-		}).open();
-	}
-</script>
+<title>아마겟돈 회원가입</title>
 
 </head>
 <body>
