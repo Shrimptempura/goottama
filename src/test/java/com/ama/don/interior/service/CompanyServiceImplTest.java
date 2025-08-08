@@ -40,6 +40,7 @@ class CompanyServiceImplTest {
     @Test
     void shouldThrowException_whenCompanyNameIsDuplicate() {
         try (MockedStatic<DevFindTarget> mockStatic = Mockito.mockStatic(DevFindTarget.class)) {
+            // () -> DevFineTarget.getUserId()
             mockStatic.when(DevFindTarget::getUserId).thenReturn(100L);
 
             CompanyCreateDto detail = new CompanyCreateDto();
@@ -69,23 +70,29 @@ class CompanyServiceImplTest {
         MultipartFile mockFile = Mockito.mock(MultipartFile.class);
         when(mockFile.isEmpty()).thenReturn(false);
 
-        // 중복 통과
-        when(companyDao.isDuplicateCompanyName("테스트 업체")).thenReturn(false);
+        try (MockedStatic<DevFindTarget> mockStatic = Mockito.mockStatic(DevFindTarget.class)) {
+            mockStatic.when(DevFindTarget::getUserId).thenReturn(userId);
 
-        // 테스트 대상이므로 set(x)
-        // companyId 추가, insertCompany void -> doAnswer()
-        doAnswer(invocation -> {
-            CompanyInsertDto dto = invocation.getArgument(0);
-            dto.setCompanyId(1000L);
-            return null;
-        }).when(companyDao).insertCompany(any(CompanyInsertDto.class));
-        // 실행
-        companyServiceImpl.createCompany(detail, location, mockFile);
 
-        verify(companyDao).insertCompanyDetail(detail);
-        verify(companyDao).insertLocation(location);
-        verify(companyDao).insertCompany(any(CompanyInsertDto.class));
-        verify(fileService).saveFile(TargetType.INTERIOR, 1000L, mockFile);
+            // 중복 통과
+            when(companyDao.isDuplicateCompanyName("테스트 업체")).thenReturn(false);
+
+            // 테스트 대상이므로 set지정 불가
+            // companyId 추가, insertCompany void -> doAnswer()
+            doAnswer(invocation -> {
+                CompanyInsertDto dto = invocation.getArgument(0);
+                dto.setCompanyId(1000L);
+                return null;
+            }).when(companyDao).insertCompany(any(CompanyInsertDto.class));
+
+            // 실행
+            companyServiceImpl.createCompany(detail, location, mockFile);
+
+            verify(companyDao).insertCompanyDetail(detail);
+            verify(companyDao).insertLocation(location);
+            verify(companyDao).insertCompany(any(CompanyInsertDto.class));
+            verify(fileService).saveFile(TargetType.INTERIOR, 1000L, mockFile);
+        }
     }
 
     @DisplayName("업체 생성시 이미지 누락 확인")
@@ -94,21 +101,31 @@ class CompanyServiceImplTest {
         CompanyCreateDto detail = new CompanyCreateDto();
         detail.setCompanyDetailId(200L);
         detail.setCompanyName("통과하는 이름");
+        Long userId = 100L;
 
         CompanyCreateLocationDto location = new CompanyCreateLocationDto();
         location.setLocationId(300L);
 
-        when(companyDao.isDuplicateCompanyName("통과하는 이름")).thenReturn(false);
+        try (MockedStatic<DevFindTarget> mockStatic = Mockito.mockStatic(DevFindTarget.class)) {
+            mockStatic.when(DevFindTarget::getUserId).thenReturn(userId);
 
-        doAnswer(invocation -> {
-            CompanyInsertDto dto = invocation.getArgument(0);
-            dto.setCompanyId(1000L);
-            return null;
-        }).when(companyDao).insertCompany(any(CompanyInsertDto.class));
+            when(companyDao.isDuplicateCompanyName("통과하는 이름")).thenReturn(false);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            companyServiceImpl.createCompany(detail, location, null);
-        });
+            doAnswer(invocation -> {
+                CompanyInsertDto dto = invocation.getArgument(0);
+                dto.setCompanyId(1000L);
+                return null;
+            }).when(companyDao).insertCompany(any(CompanyInsertDto.class));
+
+            assertThrows(IllegalArgumentException.class, () -> {
+                companyServiceImpl.createCompany(detail, location, null);
+            });
+
+            verify(companyDao).insertCompanyDetail(detail);
+            verify(companyDao).insertLocation(location);
+            verify(companyDao).insertCompany(any(CompanyInsertDto.class));
+            verify(fileService, never()).saveFile(any(), any(), any());
+        }
     }
 
     @DisplayName("업체 수정 성공 + 사진")
@@ -121,39 +138,49 @@ class CompanyServiceImplTest {
         dto.setCompanyName("바뀐 이름");
         dto.setCompanyId(companyId);
 
-        MultipartFile mockFile = Mockito.mock(MultipartFile.class);
-        when(mockFile.isEmpty()).thenReturn(false);
-        when(companyDao.findCompanyIdByUserId(userId)).thenReturn(Optional.of(companyId));
-        when(companyDao.getCompanyNameById(companyId)).thenReturn("기존 이름");
-        when(companyDao.isDuplicateCompanyName("바뀐 이름")).thenReturn(false);
-        when(companyDao.updateCompanyDetail(dto)).thenReturn(1);
+        try (MockedStatic<DevFindTarget> mockStatic = Mockito.mockStatic(DevFindTarget.class)) {
+            mockStatic.when(DevFindTarget::getUserId).thenReturn(userId);
+            when(companyDao.findCompanyIdByUserId(userId)).thenReturn(Optional.of(companyId));
 
-        companyServiceImpl.updateCompany(dto, mockFile);
+            when(companyDao.getCompanyNameById(companyId)).thenReturn("기존 이름");
+            when(companyDao.isDuplicateCompanyName("바뀐 이름")).thenReturn(false);
+            when(companyDao.updateCompanyDetail(dto)).thenReturn(1);
 
-        verify(companyDao).updateCompanyDetail(dto);
-        verify(fileService).deleteFile(companyId);
-        verify(fileService).saveFile(TargetType.INTERIOR, companyId, mockFile);
+            MultipartFile mockFile = Mockito.mock(MultipartFile.class);
+            when(mockFile.isEmpty()).thenReturn(false);
+
+            companyServiceImpl.updateCompany(dto, mockFile);
+
+            verify(companyDao).updateCompanyDetail(dto);
+            verify(fileService).deleteFile(companyId);
+            verify(fileService).saveFile(TargetType.INTERIOR, companyId, mockFile);
+        }
     }
 
     @DisplayName("업체 수정 성공, 이미지는 교체 안함")
     @Test
     void shouldSucceed_whenUpdateCompany_withoutImage() {
+        Long userId = 100L;
         Long companyId = 1000L;
 
         CompanyUpdateDto dto = new CompanyUpdateDto();
         dto.setCompanyId(companyId);
         dto.setCompanyName("바뀐 이름");
 
-        when(companyDao.findCompanyIdByUserId(100L)).thenReturn(Optional.of(companyId));
-        when(companyDao.getCompanyNameById(companyId)).thenReturn("기존 이름");
-        when(companyDao.isDuplicateCompanyName("바뀐 이름")).thenReturn(false);
-        when(companyDao.updateCompanyDetail(dto)).thenReturn(1);
+        try (MockedStatic<DevFindTarget> mockStatic = Mockito.mockStatic(DevFindTarget.class)) {
+            mockStatic.when(DevFindTarget::getUserId).thenReturn(userId);
+            when(companyDao.findCompanyIdByUserId(100L)).thenReturn(Optional.of(companyId));
 
-        companyServiceImpl.updateCompany(dto, null);
+            when(companyDao.getCompanyNameById(companyId)).thenReturn("기존 이름");
+            when(companyDao.isDuplicateCompanyName("바뀐 이름")).thenReturn(false);
+            when(companyDao.updateCompanyDetail(dto)).thenReturn(1);
 
-        verify(companyDao).updateCompanyDetail(dto);
-        verify(fileService, never()).deleteFile(any());
-        verify(fileService, never()).saveFile(any(), any(), any());
+            companyServiceImpl.updateCompany(dto, null);
+
+            verify(companyDao).updateCompanyDetail(dto);
+            verify(fileService, never()).deleteFile(any());
+            verify(fileService, never()).saveFile(any(), any(), any());
+        }
     }
 
     @DisplayName("companayId 또는 updateDto가 null이면 예외 발생")
@@ -161,57 +188,77 @@ class CompanyServiceImplTest {
     void shouldThrowException_whenCompanyIdOrUpdateDto_withNull() {
         CompanyUpdateDto dto = new CompanyUpdateDto();
         dto.setCompanyName("업체 이름");
+        Long companyId = 1000L;
+        Long userId = 100L;
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            companyServiceImpl.updateCompany(null, null);
-        });
+        try (MockedStatic<DevFindTarget> mockStatic = Mockito.mockStatic(DevFindTarget.class)) {
+            mockStatic.when(DevFindTarget::getUserId).thenReturn(userId);
+            when(companyDao.findCompanyIdByUserId(userId)).thenReturn(Optional.of(companyId));
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            companyServiceImpl.updateCompany(dto, null);
-        });
+            assertThrows(IllegalArgumentException.class, () -> {
+                companyServiceImpl.updateCompany(null, null);
+            });
 
-        verify(companyDao, never()).updateCompanyDetail(any());
-        verify(fileService, never()).deleteFile(any());
-        verify(fileService, never()).saveFile(any(), any(), any());
+            when(companyDao.findCompanyIdByUserId(userId)).thenReturn(Optional.empty());
+            assertThrows(IllegalStateException.class, () -> {
+                companyServiceImpl.updateCompany(dto, null);
+            });
+
+            verify(companyDao, never()).updateCompanyDetail(any());
+            verify(fileService, never()).deleteFile(any());
+            verify(fileService, never()).saveFile(any(), any(), any());
+        }
     }
 
     @DisplayName("업체 이름이 null이면 예외 발생")
     @Test
     void shouldThrowException_whenCompanyName_withNull() {
+        Long userId = 100L;
+        Long companyId = 1000L;
+
         CompanyUpdateDto dto = new CompanyUpdateDto();
-        dto.setCompanyId(100L);
+        dto.setCompanyId(1000L);
         dto.setCompanyName(null);
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            companyServiceImpl.updateCompany(dto, null);
-        });
+        try (MockedStatic<DevFindTarget> mockStatic = Mockito.mockStatic(DevFindTarget.class)) {
+            mockStatic.when(DevFindTarget::getUserId).thenReturn(userId);
+            when(companyDao.findCompanyIdByUserId(userId)).thenReturn(Optional.of(companyId));
 
-        verify(companyDao, never()).updateCompanyDetail(dto);
-        verify(fileService, never()).deleteFile(any());
-        verify(fileService, never()).saveFile(any(), any(), any());
+            assertThrows(IllegalArgumentException.class, () -> {
+                companyServiceImpl.updateCompany(dto, null);
+            });
+
+            verify(companyDao, never()).updateCompanyDetail(dto);
+            verify(fileService, never()).deleteFile(any());
+            verify(fileService, never()).saveFile(any(), any(), any());
+        }
     }
 
     @DisplayName("업체 수정 실패 - 업체 이름 중복")
     @Test
     void shouldThrowException_whenUpdateCompanyDuplicated() {
         Long companyId = 1000L;
+        Long userId = 100L;
 
         CompanyUpdateDto dto = new CompanyUpdateDto();
         dto.setCompanyId(companyId);
         dto.setCompanyName("이미 있는 이름");
 
-        when(companyDao.findCompanyIdByUserId(100L)).thenReturn(Optional.of(companyId));
-        when(companyDao.getCompanyNameById(companyId)).thenReturn("기존 이름");
-        when(companyDao.isDuplicateCompanyName("이미 있는 이름")).thenReturn(true);
+        try (MockedStatic<DevFindTarget> mockStatic = Mockito.mockStatic(DevFindTarget.class)) {
+            mockStatic.when(DevFindTarget::getUserId).thenReturn(userId);
+            when(companyDao.findCompanyIdByUserId(userId)).thenReturn(Optional.of(companyId));
 
-        assertThrows(IllegalArgumentException.class, () -> {
-            companyServiceImpl.updateCompany(dto, null);
-        });
+            when(companyDao.getCompanyNameById(companyId)).thenReturn("기존 이름");
+            when(companyDao.isDuplicateCompanyName("이미 있는 이름")).thenReturn(true);
 
-        verify(companyDao, never()).updateCompanyDetail(any());
-        verify(fileService, never()).deleteFile(any());
-        verify(fileService, never()).saveFile(any(), any(), any());
+            assertThrows(IllegalArgumentException.class, () -> {
+                companyServiceImpl.updateCompany(dto, null);
+            });
+
+            verify(companyDao, never()).updateCompanyDetail(any());
+            verify(fileService, never()).deleteFile(any());
+            verify(fileService, never()).saveFile(any(), any(), any());
+        }
     }
 
-    
 }
