@@ -52,7 +52,7 @@ class FileServiceImplTest {
         // doNothing: 실제 실행해도 아무일도 일어나지 않음
         doNothing().when(mockFile).transferTo(any(File.class));
 
-        service.saveFile(TargetType.INTERIOR, 10L, mockFile);
+        service.saveFile(TargetType.INTERIOR, 10L, mockFile, true);
 
         verify(fileDao).create(any(FileDto.class));
     }
@@ -64,7 +64,7 @@ class FileServiceImplTest {
         when(mockFile.isEmpty()).thenReturn(true);
 
         assertThrows(IllegalArgumentException.class, () ->
-                fileService.saveFile(TargetType.INTERIOR, 10L, mockFile));
+                fileService.saveFile(TargetType.INTERIOR, 10L, mockFile, any()));
     }
 
     @DisplayName("파일 정상 조회")

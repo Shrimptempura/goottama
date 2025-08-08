@@ -8,11 +8,17 @@ import java.util.List;
 
 public interface FileService {
     // 생성
-    void saveFile(TargetType targetType, Long targetId, MultipartFile file);
+    void saveFile(TargetType targetType, Long targetId, MultipartFile file, boolean isThumbnail);
 
     // 조회, findByTargetId
     List<FileDto> getFileList(TargetType targetType, Long targetId);
 
-    // 삭제, interiorFindById으로 단건 조회,  interiorDeletedById으로 단건 삭제
+    // 삭제, interiorFindById: 단건 조회,  interiorDeletedById: 단건 삭제
     void deleteFile(Long fileId);
+
+    // 썸네일 1장 삭제
+    void deleteThumbnail(TargetType targetType, Long targetId);
+
+    // 타겟 일치 모두 삭제
+    int deleteAllByTargetId(TargetType targetType, Long targetId);
 }

@@ -25,20 +25,26 @@ public class FileServiceImpl implements FileService {
     private String uploadBaseDir;
 
     @Override
-    public void saveFile(TargetType targetType, Long targetId, MultipartFile file) {
-        if (file.isEmpty() || file == null) {
+    public void saveFile(TargetType targetType, Long targetId, MultipartFile file, boolean isThumbnail) {
+        if (file == null || file.isEmpty()) {
             log.warn("FileService - 업로드 실패 - targetType: {}, targetId: {}", targetType, targetId);
             throw new IllegalArgumentException("빈 파일입니다.");
         }
 
         log.info("FileService - 파일 업로드 시작 - targetType: {}, targetId: {}", targetType, targetId);
         String originalName = file.getOriginalFilename();
-        String savedPath = uploadBaseDir + "/" + TargetType.INTERIOR;
-        String savedName = UUID.randomUUID().toString() + "_" + originalName;
+        String saveDir = uploadBaseDir + "/" + targetType.name().toLowerCase();
+        String savedName = UUID.randomUUID() + "_" + originalName;
 
-        File filePath = new File(savedPath, savedName);
-        
         // 경로는 사전에 무조건 존재해야함, 따로 생성 코드는 없음
+        File checkDir = new File(saveDir);
+        if (!checkDir.exists()) {
+            log.error("FileService - 로컬 디렉토리 생성 실패 - dir: {}", saveDir);
+            throw new RuntimeException("로컬 디렉토리 생성 실패: " + saveDir);
+        }
+
+        File filePath = new File(saveDir, savedName);
+
         try {
             file.transferTo(filePath);
             log.info("FileService - 파일 저장 성공 - 경로: {}", filePath.getAbsolutePath());
@@ -49,12 +55,13 @@ public class FileServiceImpl implements FileService {
 
         FileDto fileDto = new FileDto();
         fileDto.setFile_uploader("interior");
-        fileDto.setFile_name(originalName);
-        fileDto.setFile_path(savedName);
+        fileDto.setFile_name(savedName);
+        fileDto.setFile_path(saveDir);
         fileDto.setTarget_type(targetType);
         fileDto.setTarget_id(targetId);
+        fileDto.setThumbnail(isThumbnail);
 
-        fileDao.create(fileDto);
+        fileDao.interiorCreate(fileDto);
         log.info("FileService - DB 저장 완료 - fileDto: {}", fileDto);
     }
 
@@ -85,5 +92,17 @@ public class FileServiceImpl implements FileService {
 
         int result = fileDao.interiorDeletedById(fileId);
         log.info("FileService - DB 삭제 결과 - fileId: {}, 삭제된 행 수 result: {}", fileId, result);
+    }
+
+    // 썸네일 1장 삭제
+    @Override
+    public void deleteThumbnail(TargetType targetType, Long targetId) {
+        
+    }
+
+    // 타겟으로 모두 삭제
+    @Override
+    public int deleteAllByTargetId(TargetType targetType, Long targetId) {
+        return 0;
     }
 }
