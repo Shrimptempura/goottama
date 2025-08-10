@@ -45,35 +45,38 @@ public class CompanyServiceImpl implements CompanyService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<Long> findCompanyIdByUserId(Long userId) {
         return companyDao.findCompanyIdByUserId(userId);
     }
 
     // 업체 페이지내 상세 정보
+    @Transactional(readOnly = true)
     @Override
     public CompanyDetailDto getDetailCompany(Long companyId) {
         return companyDao.selectDetailCompany(companyId);
     }
 
     // 업체 페이지 내 좌측 요약 정보 박스
+    @Transactional(readOnly = true)
     @Override
     public CompanySummaryDto getSummaryCompany(Long companyId) {
         return companyDao.selectSummaryCompany(companyId);
     }
 
     // 인테리어 홈의 업체 랜덤 리스트, 개수 제한은 controller에서 건내줌
+    @Transactional(readOnly = true)
     @Override
     public List<CompanyHomeDto> getHomeCompanyList(int limit) {
         return companyDao.findCompanyHomeList(limit);
     }
     
     // 업체 업데이트 전 정보 확인
+    @Transactional(readOnly = true)
     @Override
     public CompanyUpdateDto getMyCompanyUpdateView() {
-        Long userId = DevFindTarget.getUserId();
-        Long companyId = companyDao.findCompanyIdByUserId(userId)
-                .orElseThrow(() -> new IllegalStateException("업체가 존재하지 않음"));
+        Long companyId = getMyCompanyId();
         return companyDao.getUpdateView(companyId);
     }
 
@@ -81,24 +84,22 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     @Override
     public Long updateCompany(CompanyUpdateDto updateDto, MultipartFile file) {
-        Long userId = DevFindTarget.getUserId();
-        Long companyId = companyDao.findCompanyIdByUserId(userId)
-                        .orElseThrow(() -> new IllegalStateException("companyId가 존재 하지 않음"));
+        Long companyId = getMyCompanyId();
         log.info("CompanyService - 업체 정보 수정 시작 - companyId: {}", companyId);
 
+        if (updateDto == null) {
+            log.error("CompanyService - updateDto 누락 - updateDto: {}", updateDto);
+            throw new IllegalArgumentException("companyId 또는 수정할 데이터가 없습니다.");
+        }
+
+        String newName = updateDto.getCompanyName();
+        if (newName == null) {
+            log.error("CompanyService - 업체 이름 누락 - companyId: {}", companyId);
+            throw new IllegalArgumentException("회사 이름은 필수입니다.");
+        }
+
         try {
-            if (companyId == null || updateDto == null) {
-                log.error("CompanyService - companyId 또는 updatDto 누락 - companyId: {}, updateDto: {}", companyId, updateDto);
-                throw new IllegalArgumentException("companyId 또는 수정할 데이터가 없습니다.");
-            }
-
-            String newName = updateDto.getCompanyName();
             String originName = companyDao.getCompanyNameById(companyId);
-
-            if (updateDto.getCompanyName() == null) {
-                log.error("CompanyService - 업체 이름 누락 - companyId: {}", companyId);
-                throw new IllegalArgumentException("회사 이름은 필수입니다.");
-            }
 
             if (!originName.equals(newName) && companyDao.isDuplicateCompanyName(newName) ) {
                 log.warn("CompanyService - 업체명 중복 - companyName: {}", updateDto.getCompanyName());
@@ -115,21 +116,37 @@ public class CompanyServiceImpl implements CompanyService {
             updateCompanyFile(companyId, file);
 
             log.info("CompanyService - 업체 수정 성공 - companyId: {}", companyId);
+            return companyId;
+
         } catch (DataAccessException e) {
             log.error("CompanyService - DB 오류, 업체 수정 실패 - companyId: {}", companyId, e);
             log.error("DAO 실패: {} - {}", e.getClass().getName(), e.getMessage(), e);
             throw new IllegalStateException("DB오류 발생, 업체 수정 실패", e);
         }
-
-        return companyId;
     }
 
     // 업체 탈퇴(소프트 삭제)
+    @Transactional
     @Override
-    public int deleteCompany(Long companyId) {
-        return 0;
+    public int deleteCompany() {
+        Long companyId = getMyCompanyId();
+        log.info("CompanyService - 업체 소프트 삭제 시작 - companyId: {}", companyId);
+
+        try {
+            int updated = companyDao.deleteCompany(companyId);
+            if (updated == 0) {
+                throw new IllegalStateException("잘못된 삭제 companyId: " + companyId);
+            }
+            log.info("CompanyService - 업체 소프트 삭제 성공 - companyId: {}, updated: {}", companyId, updated);
+            return updated;
+
+        } catch (DataAccessException e) {
+            log.error("CompanyService - 업체 삭제 DB 오류 - companyId: {}", companyId, e);
+            throw new IllegalStateException("업체 삭제 실패, DB오류", e);
+        }
     }
 
+    // ------------------------------------------------------------------------
     private void validateCompanyNameDuplication(String name) {
         if (companyDao.isDuplicateCompanyName(name)) {
             log.warn("CompanyService - 업체명 중복 - companyName: {}", name);
@@ -182,6 +199,7 @@ public class CompanyServiceImpl implements CompanyService {
         log.info("CompanyService - 업체 이미지 저장 성공 - companyId: {}", companyId);
     }
 
+    // 저장 실패시 이미지 삭제후 null 되는 위험성 있음
     private void updateCompanyFile(Long companyId, MultipartFile file) {
         if (file != null && !file.isEmpty()) {
             log.info("CompanyService - 업체 이미지 삭제 후 새로 생성 - companyId: {}", companyId);
@@ -190,5 +208,19 @@ public class CompanyServiceImpl implements CompanyService {
         }
     }
 
+    // 내부에서 companyId 받기
+    private Long getMyCompanyId() {
+        Long userId = DevFindTarget.getUserId();
+        try {
+            return companyDao.findCompanyIdByUserId(userId)
+                    .orElseThrow(() -> {
+                        log.warn("CompanyService - getMyCompanyId 업체가 없습니다. userId: {}", userId);
+                        return new IllegalStateException("업체가 없습니다. userId: " + userId);
+                    });
+        } catch (DataAccessException e) {
+            log.error("CompanyService - companyId DB 오류 - userId: {}", userId, e);
+            throw new IllegalStateException("companyId 조회 실패 - userId: " + userId, e);
+        }
+    }
 
 }

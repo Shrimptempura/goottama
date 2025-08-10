@@ -194,10 +194,12 @@
 
     <!-- === delete =================================== -->
     <!-- 업체 비활성화 -->
+    <!-- 재가입 불가 -->
     <update id="deleteCompany">
         UPDATE company
         SET is_deleted = 1
         WHERE company_id = #{companyId}
+            AND is_deleted = 0
     </update>
 
 

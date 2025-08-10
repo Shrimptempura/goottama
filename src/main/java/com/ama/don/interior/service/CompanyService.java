@@ -1,7 +1,6 @@
 package com.ama.don.interior.service;
 
 import com.ama.don.interior.dto.company.*;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -39,5 +38,5 @@ public interface CompanyService {
     Long updateCompany(CompanyUpdateDto updateDto, MultipartFile file);
 
     // 업체 탈퇴(소프트 삭제)
-    int deleteCompany(@Param("companyId") Long companyId);
+    int deleteCompany();
 }
