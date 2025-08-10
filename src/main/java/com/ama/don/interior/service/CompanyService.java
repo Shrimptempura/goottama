@@ -16,9 +16,6 @@ public interface CompanyService {
     void createCompany(CompanyCreateDto companyCreateDto, CompanyCreateLocationDto locationDto,
                        MultipartFile file);
 
-    // userId로 companyId 찾기
-    Optional<Long> findCompanyIdByUserId(Long userId);
-
     // 업체 상세페이지 내 정보 조회
     CompanyDetailDto getDetailCompany(Long companyId);
 

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -21,6 +20,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyDao companyDao;
     private final FileService fileService;
+    private final CompanyAuthService companyAuthService;
 
     @Transactional
     @Override
@@ -43,12 +43,6 @@ public class CompanyServiceImpl implements CompanyService {
             log.error("CompanyService - DB 오류 발생", e);
             throw new IllegalStateException("DB 오류 발생으로 업체 등록 실패");
         }
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public Optional<Long> findCompanyIdByUserId(Long userId) {
-        return companyDao.findCompanyIdByUserId(userId);
     }
 
     // 업체 페이지내 상세 정보
@@ -76,7 +70,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional(readOnly = true)
     @Override
     public CompanyUpdateDto getMyCompanyUpdateView() {
-        Long companyId = getMyCompanyId();
+        Long companyId = companyAuthService.requireMyCompanyId();
         return companyDao.getUpdateView(companyId);
     }
 
@@ -84,7 +78,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     @Override
     public Long updateCompany(CompanyUpdateDto updateDto, MultipartFile file) {
-        Long companyId = getMyCompanyId();
+        Long companyId = companyAuthService.requireMyCompanyId();
         log.info("CompanyService - 업체 정보 수정 시작 - companyId: {}", companyId);
 
         if (updateDto == null) {
@@ -95,11 +89,15 @@ public class CompanyServiceImpl implements CompanyService {
         String newName = updateDto.getCompanyName();
         if (newName == null) {
             log.error("CompanyService - 업체 이름 누락 - companyId: {}", companyId);
-            throw new IllegalArgumentException("회사 이름은 필수입니다.");
+            throw new IllegalStateException("회사 이름은 필수입니다.");
         }
 
         try {
             String originName = companyDao.getCompanyNameById(companyId);
+            if (originName == null) {
+                log.error("CompanyService - 업체 원본 이름 조회 실패 - companyId: {}", companyId);
+                throw new IllegalStateException("업체 정보 조회 실패. companyId: " + companyId);
+            }
 
             if (!originName.equals(newName) && companyDao.isDuplicateCompanyName(newName) ) {
                 log.warn("CompanyService - 업체명 중복 - companyName: {}", updateDto.getCompanyName());
@@ -129,7 +127,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     @Override
     public int deleteCompany() {
-        Long companyId = getMyCompanyId();
+        Long companyId = companyAuthService.requireMyCompanyId();
         log.info("CompanyService - 업체 소프트 삭제 시작 - companyId: {}", companyId);
 
         try {
@@ -207,20 +205,4 @@ public class CompanyServiceImpl implements CompanyService {
             fileService.saveFile(TargetType.INTERIOR, companyId, file, true);
         }
     }
-
-    // 내부에서 companyId 받기
-    private Long getMyCompanyId() {
-        Long userId = DevFindTarget.getUserId();
-        try {
-            return companyDao.findCompanyIdByUserId(userId)
-                    .orElseThrow(() -> {
-                        log.warn("CompanyService - getMyCompanyId 업체가 없습니다. userId: {}", userId);
-                        return new IllegalStateException("업체가 없습니다. userId: " + userId);
-                    });
-        } catch (DataAccessException e) {
-            log.error("CompanyService - companyId DB 오류 - userId: {}", userId, e);
-            throw new IllegalStateException("companyId 조회 실패 - userId: " + userId, e);
-        }
-    }
-
 }

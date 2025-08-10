@@ -36,7 +36,7 @@
         <jsp:include page="${tabName}"/>
     </div>
 
-    <c:if test="${checkOwner}">
+    <c:if test="${isOwner}">
         <form action="${pageContext.request.contextPath}/interior/company/delete" method="post" style="display: inline"
             onsubmit="return confirm('정말 탈퇴 하시겠습니까?')">
             <button type="submit">업체 탈퇴</button>
