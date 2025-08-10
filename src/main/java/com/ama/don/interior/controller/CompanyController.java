@@ -2,6 +2,7 @@ package com.ama.don.interior.controller;
 
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
+import com.ama.don.interior.dev.DevFindTarget;
 import com.ama.don.interior.dto.company.*;
 import com.ama.don.interior.service.CompanyService;
 import com.ama.don.interior.service.FileService;
@@ -9,12 +10,14 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -59,6 +62,12 @@ public class CompanyController {
         CompanySummaryDto summary = companyService.getSummaryCompany(companyId);
         model.addAttribute("summary", summary);
         model.addAttribute("companyId", companyId);
+
+        // 보고있는 페이지가 본인 것인지 확인
+        boolean checkOwner = companyService.findCompanyIdByUserId(DevFindTarget.getUserId())
+                .filter(id -> Objects.equals(id, companyId))
+                .isPresent();
+        model.addAttribute("checkOwner", checkOwner);
 
         // 상세 정보 탭
         if (type.equals("details")) {
@@ -105,5 +114,12 @@ public class CompanyController {
         List<CompanyHomeDto> homeList = companyService.getHomeCompanyList(limit);
         model.addAttribute("homeList", homeList);
         return "interior/ihome";
+    }
+
+    // 업체 탈퇴
+    @PostMapping("/interior/company/delete")
+    public String deleteCompany() {
+        companyService.deleteCompany();
+        return "redirect:/interior/ihome";
     }
 }
