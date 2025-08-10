@@ -29,7 +29,7 @@ public class CompanyController {
     public String companyForm(Model model) {
         model.addAttribute("detail", new CompanyCreateDto());
         model.addAttribute("location", new CompanyCreateLocationDto());
-        return "/interior/create-company-form";
+        return "interior/create-company-form";
     }
 
     // 업체 등록 처리
@@ -46,7 +46,7 @@ public class CompanyController {
             // check rebase substring
             model.addAttribute("detail", detail);
             model.addAttribute("location", location);
-            return "/interior/create-company-form";
+            return "interior/create-company-form";
         }
     }
 
@@ -80,7 +80,7 @@ public class CompanyController {
         };
         model.addAttribute("tabName", tabName);
 
-        return "/interior/company-layout";
+        return "interior/company-layout";
     }
 
     // 업체 수정 폼
@@ -88,7 +88,7 @@ public class CompanyController {
     public String updateCompanyForm(@RequestParam Long companyId, Model model) {
         CompanyUpdateDto form = companyService.getUpdateView(companyId);
         model.addAttribute("form", form);
-        return "/interior/update-company-form";
+        return "interior/update-company-form";
     }
 
     // 업체 수정 기능
@@ -101,10 +101,10 @@ public class CompanyController {
 
     // 인테리어의 홈탭
     @GetMapping("/interior/ihome")
-    public String ihome(@RequestParam(defaultValue = "6") @Min(1) @Max(10) int limit,
+    public String showIhome(@RequestParam(defaultValue = "6") @Min(1) @Max(10) int limit,
                         Model model) {
         List<CompanyHomeDto> homeList = companyService.getHomeCompanyList(limit);
         model.addAttribute("homeList", homeList);
-        return "/interior/ihome";
+        return "interior/ihome";
     }
 }

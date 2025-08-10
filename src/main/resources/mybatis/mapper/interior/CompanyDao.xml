@@ -64,7 +64,7 @@
             cd.company_name AS companyName,
             IFNULL(cs.avg_total_rate, 0) AS companyRate,
             IFNULL(cs.company_review_count, 0) AS reviewCount,
-            CONCAT_WS('/', f.file_path, f.file_name) AS thumbnailPath
+            CONCAT_WS('/', '/upload/interior', f.file_name) AS thumbnailPath
         FROM company_detail cd
         JOIN company c
             ON cd.company_detail_id = c.company_detail_id
