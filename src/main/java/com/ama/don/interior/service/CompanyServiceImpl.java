@@ -77,22 +77,6 @@ public class CompanyServiceImpl implements CompanyService {
         return companyDao.getUpdateView(companyId);
     }
 
-    @Override
-    public CompanyUpdateDto getUpdateView(Long companyId) {
-        if (companyId == null) {
-            log.warn("CompanyService - 업체 수정 뷰 오류 - companyId is null, companyId: {}", companyId);
-            throw new IllegalArgumentException("companyId가 없습니다.");
-        }
-
-        CompanyUpdateDto dto = companyDao.getUpdateView(companyId);
-        if (dto == null) {
-            log.warn("CompanyService - 업체 수정 뷰 오류 - 수정 정보 없음, companyId: {} ", companyId);
-            throw new IllegalStateException("업체 정보가 없습니다.");
-        }
-
-        return dto;
-    }
-
     // 업체 수정
     @Transactional
     @Override
@@ -138,6 +122,12 @@ public class CompanyServiceImpl implements CompanyService {
         }
 
         return companyId;
+    }
+
+    // 업체 탈퇴(소프트 삭제)
+    @Override
+    public int deleteCompany(Long companyId) {
+        return 0;
     }
 
     private void validateCompanyNameDuplication(String name) {
