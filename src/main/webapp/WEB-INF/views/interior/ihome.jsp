@@ -19,7 +19,7 @@
 <c:forEach var="c" items="${homeList}">
     <c:if test="${not empty c.thumbnailPath}">
         <c:url value="${c.thumbnailPath}" var="imgUrl"/>
-        <img src="${imgUrl}" alt="${c.companyName}">
+        <img src="${imgUrl}" alt="${c.companyName}" style="width: 200px; height: 200px;">
     </c:if>
 
     <div>${c.companyName}</div>

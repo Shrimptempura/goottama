@@ -67,6 +67,15 @@ public class CompanyServiceImpl implements CompanyService {
     public List<CompanyHomeDto> getHomeCompanyList(int limit) {
         return companyDao.findCompanyHomeList(limit);
     }
+    
+    // 업체 업데이트 전 정보 확인
+    @Override
+    public CompanyUpdateDto getMyCompanyUpdateView() {
+        Long userId = DevFindTarget.getUserId();
+        Long companyId = companyDao.findCompanyIdByUserId(userId)
+                .orElseThrow(() -> new IllegalStateException("업체가 존재하지 않음"));
+        return companyDao.getUpdateView(companyId);
+    }
 
     @Override
     public CompanyUpdateDto getUpdateView(Long companyId) {
@@ -91,7 +100,6 @@ public class CompanyServiceImpl implements CompanyService {
         Long userId = DevFindTarget.getUserId();
         Long companyId = companyDao.findCompanyIdByUserId(userId)
                         .orElseThrow(() -> new IllegalStateException("companyId가 존재 하지 않음"));
-
         log.info("CompanyService - 업체 정보 수정 시작 - companyId: {}", companyId);
 
         try {
@@ -113,6 +121,7 @@ public class CompanyServiceImpl implements CompanyService {
                 throw new IllegalArgumentException("이미 등록된 이름입니다.");
             }
 
+            updateDto.setCompanyId(companyId);
             int updated = companyDao.updateCompanyDetail(updateDto);
             if (updated == 0) {
                 log.warn("CompanyService - 수정된 업체 정보가 없습니다. 실패 - companyId: {}", companyId);
@@ -124,7 +133,8 @@ public class CompanyServiceImpl implements CompanyService {
             log.info("CompanyService - 업체 수정 성공 - companyId: {}", companyId);
         } catch (DataAccessException e) {
             log.error("CompanyService - DB 오류, 업체 수정 실패 - companyId: {}", companyId, e);
-            throw new IllegalStateException("DB오류 발생, 업체 수정 실패");
+            log.error("DAO 실패: {} - {}", e.getClass().getName(), e.getMessage(), e);
+            throw new IllegalStateException("DB오류 발생, 업체 수정 실패", e);
         }
 
         return companyId;

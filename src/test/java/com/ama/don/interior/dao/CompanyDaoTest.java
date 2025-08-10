@@ -129,15 +129,14 @@ class CompanyDaoTest extends AbstractCompanyTestSupport {
         assertThat(result.getCompanyRate()).isNull();
     }
 
-    @DisplayName("업체 수정, company_deatil 테이블 수정")
+    @DisplayName("업체 수정, company_detail 테이블 수정")
     @Test
     void updateCompanyDetail() {
         CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
-        dto.setCompanyImg("testCompanyImg");
-        Long companyDetailId = dto.getCompanyDetailId();
+        Long companyId = dto.getCompanyId();
 
         CompanyUpdateDto updateDto = new CompanyUpdateDto();
-        updateDto.setCompanyDetailId(companyDetailId);
+        updateDto.setCompanyId(companyId);
         updateDto.setCompanyName("testCompanyName");
         updateDto.setCompanyAddr("testCompanyAddr");
         updateDto.setCompanyField("testCompanyField");

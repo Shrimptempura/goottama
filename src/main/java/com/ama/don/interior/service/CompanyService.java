@@ -16,6 +16,7 @@ public interface CompanyService {
     void createCompany(CompanyCreateDto companyCreateDto, CompanyCreateLocationDto locationDto,
                        MultipartFile file);
 
+    // userId로 companyId 찾기
     Optional<Long> findCompanyIdByUserId(Long userId);
 
     // 업체 상세페이지 내 정보 조회
@@ -26,11 +27,13 @@ public interface CompanyService {
 
     // 인테리어 홈에서 보는 업체 게시글 리스트(최신)
     List<CompanyHomeDto> getHomeCompanyList(int limit);
-
     default List<CompanyHomeDto> getHomeCompanyList() {
         return getHomeCompanyList(10);
     }
-    
+
+    // 업체 수정 뷰에 대한 검증(companyId 얻기)
+    CompanyUpdateDto getMyCompanyUpdateView();
+
     // 업체 수정 뷰
     CompanyUpdateDto getUpdateView(Long companyId);
 

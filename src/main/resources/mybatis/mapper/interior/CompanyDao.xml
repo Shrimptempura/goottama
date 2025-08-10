@@ -150,9 +150,11 @@
 
     <!-- 업체아이디로 업체 이름 조회 -->
     <select id="getCompanyNameById" resultType="java.lang.String">
-        SELECT company_name
-        FROM company_detail
-        WHERE company_id = #{companyId}
+        SELECT cd.company_name
+        FROM company_detail cd
+        JOIN company c ON c.company_detail_id = cd.company_detail_id
+        WHERE c.company_id = #{companyId}
+            AND c.is_deleted = 0
     </select>
 
     <!-- 업체 수정 뷰 -->
@@ -175,16 +177,18 @@
     <!-- === update =================================== -->
     <!-- 업체 정보수정 -->
     <update id="updateCompanyDetail">
-        UPDATE company_detail
+        UPDATE company_detail cd
+        JOIN company c ON cd.company_detail_id = c.company_detail_id
         SET
-            company_name = #{companyName},
-            company_addr = #{companyAddr},
-            company_field = #{companyField},
-            company_license = #{companyLicense},
-            company_as = #{companyAs},
-            company_career = #{companyCareer},
-            company_intro = #{companyIntro}
-        WHERE company_detail_id = #{companyDetailId}
+            cd.company_name = #{companyName},
+            cd.company_addr = #{companyAddr},
+            cd.company_field = #{companyField},
+            cd.company_license = #{companyLicense},
+            cd.company_as = #{companyAs},
+            cd.company_career = #{companyCareer},
+            cd.company_intro = #{companyIntro}
+        WHERE c.company_id = #{companyId}
+            AND c.is_deleted = 0
     </update>
 
 
