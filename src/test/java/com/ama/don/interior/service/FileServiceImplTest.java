@@ -118,7 +118,7 @@ class FileServiceImplTest {
 
         assertThrows(IllegalArgumentException.class, () -> fileService.deleteFile(500L));
 
-        verifyNoInteractions(fileDao);      // fileDao 접근 여부 확인
+        verify(fileDao).interFindById(500L);
     }
 
 }
