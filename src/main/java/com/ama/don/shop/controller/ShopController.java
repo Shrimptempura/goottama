@@ -527,7 +527,7 @@ public class ShopController {
 		
 		//
 		
-		return "shop/order_complete";
+		return "shop/kakaopaypayment";
 	}
 	
 	

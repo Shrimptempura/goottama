@@ -18,6 +18,6 @@ public class PaymentDto {
 	Timestamp payment_date;
 	String payment_status;
 	int payment_price;
-	Long payment_tid;
+	String payment_tid;	// 카카오페이 결재 시 ,결재고유번호 
 
 }

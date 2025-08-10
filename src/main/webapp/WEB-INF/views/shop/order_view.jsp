@@ -105,7 +105,7 @@ input[type="text"], input[type="email"], input[type="tel"], textarea {
 	
 
 <!-- 주문 폼 --> 		<!-- 수정 /shop/kakaopay -->      <!-- /shop/order_write --> 
-<form id="orderForm" action="/shop/order_write" method="post">
+<form id="orderForm" action="/shop/kakaopay" method="post">
 	
 	<!-- 세션에서 user_id 가져오기, 없으면 기본값 1 -->
 	<c:set var="currentUserId" value="${not empty sessionScope.user_id ? sessionScope.user_id : '1'}" />
@@ -247,7 +247,7 @@ input[type="text"], input[type="email"], input[type="tel"], textarea {
    <!-- 주문 완료 버튼 - choose 밖에서 한 번만 -->
 	<c:if test="${not empty cart or not empty product}">
 	    <c:set var="finalPrice" value="${not empty cart ? totalPrice : product.totalPrice}"/>
-	    <button type="submit" class="order-btn">
+	    <button id="submitbtn" type="submit" class="order-btn">
 	        ₩<fmt:formatNumber value="${finalPrice}" pattern="#,###"/> 주문하기
 	    </button>
 	</c:if>
@@ -257,6 +257,132 @@ input[type="text"], input[type="email"], input[type="tel"], textarea {
 	<!-- 내가 이해하는 바는 해당 메서드컨트롤러 가면 ㄱ메서드 처리하는것 -->
 
 <script>
+	
+//카카오페이 호출
+$(document).ready(function(){
+    
+    console.log("카카오페이 스크립트 로드됨");
+    
+    // ✅ 주문 버튼 클릭 이벤트
+    $("#submitBtn").on("click", function(e){
+        e.preventDefault(); // 폼 기본 제출 방지
+        
+        console.log("카카오페이 결제 버튼 클릭됨");
+        
+        // ✅ 필수 입력값 검증
+        if (!validateForm()) {
+            return;
+        }
+        
+        // ✅ 버튼 비활성화 (중복 클릭 방지)
+        $(this).prop('disabled', true).text('결제 준비 중...');
+        
+        // ✅ 폼 데이터 직렬화
+        var formData = $("#orderForm").serialize();
+        console.log("전송할 데이터:", formData);
+        
+        // ✅ AJAX 요청
+        $.ajax({
+            type: "POST",
+            url: "/shop/kakaopay", // ✅ URL 수정
+            data: formData,
+            dataType: "json", // ✅ 서버에서 JSON 응답 기대
+            timeout: 30000, // 30초 타임아웃
+            success: function(result){
+                console.log("카카오페이 API 응답:", result);
+                
+                if (result && result.next_redirect_pc_url) {
+                    console.log("카카오페이 결제 페이지로 이동:", result.next_redirect_pc_url);
+                    
+                    // ✅ 팝업으로 카카오페이 결제 페이지 열기
+                    window.open(
+                        result.next_redirect_pc_url, 
+                        'kakaopay_popup', 
+                        'width=500,height=600,top=100,left=200,location=no,toolbar=no,menubar=no'
+                    );
+                    
+                } else {
+                    console.error("올바르지 않은 응답:", result);
+                    alert("결제 준비 중 오류가 발생했습니다.");
+                    resetButton();
+                }
+            },
+            error: function(xhr, status, error){
+                console.log("AJAX 에러 발생:");
+                console.log("Status:", status);
+                console.log("Error:", error);
+                console.log("Response:", xhr.responseText);
+                
+                // ✅ 에러 메시지 표시
+                var errorMessage = "결제 요청 실패";
+                if (xhr.responseJSON && xhr.responseJSON.message) {
+                    errorMessage = xhr.responseJSON.message;
+                } else if (xhr.responseText) {
+                    errorMessage = xhr.responseText;
+                }
+                
+                alert(errorMessage);
+                resetButton();
+            },
+            complete: function(xhr, status){
+                console.log("AJAX 요청 완료. Status:", status);
+            }
+        });
+    });
+    
+    // ✅ 폼 검증 함수
+    function validateForm() {
+        var isValid = true;
+        var errorMessages = [];
+        
+        // 주문자 정보 검증
+        if (!$("input[name='order_name']").val().trim()) {
+            errorMessages.push("주문자 이름을 입력해주세요.");
+            isValid = false;
+        }
+        
+        if (!$("input[name='order_email']").val().trim()) {
+            errorMessages.push("이메일을 입력해주세요.");
+            isValid = false;
+        }
+        
+        if (!$("input[name='order_phone']").val().trim()) {
+            errorMessages.push("전화번호를 입력해주세요.");
+            isValid = false;
+        }
+        
+        // 배송지 정보 검증
+        if (!$("input[name='order_receiver_name']").val().trim()) {
+            errorMessages.push("받는사람 이름을 입력해주세요.");
+            isValid = false;
+        }
+        
+        if (!$("input[name='order_loc']").val().trim()) {
+            errorMessages.push("주소를 입력해주세요.");
+            isValid = false;
+        }
+        
+        if (!isValid) {
+            alert(errorMessages.join("\n"));
+        }
+        
+        return isValid;
+    }
+    
+    // ✅ 버튼 상태 리셋 함수
+    function resetButton() {
+        $("#submitBtn").prop('disabled', false).html('₩<fmt:formatNumber value="${finalPrice}" pattern="#,###"/> 카카오페이로 결제하기');
+    }
+    
+    // ✅ 페이지 언로드 시 팝업 정리
+    $(window).on('beforeunload', function() {
+        // 열린 팝업이 있다면 정리
+        if (window.kakaoPayPopup && !window.kakaoPayPopup.closed) {
+            window.kakaoPayPopup.close();
+        }
+    });
+});
+
 
 //결제 방식 선택 함수
 function selectPayment(method) {
