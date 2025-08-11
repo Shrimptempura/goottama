@@ -22,6 +22,7 @@ import com.ama.don.shop.dto.OrdersDto;
 import com.ama.don.shop.dto.Orders_productsDto;
 import com.ama.don.shop.dto.PaymentDto;
 import com.ama.don.shop.dto.ProductFlatDto;
+import com.ama.don.shop.service.ShopServiceinter;
 import com.ama.don.shop.service.Kakaopay.ShopKakaopayService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +33,7 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 @RequestMapping("/shop")  // 🔧 수정: /shop으로 변경
 public class KakaoPayController{
+	
  
  @Autowired
  private ShopKakaopayService shopKakaopayService;

@@ -229,13 +229,17 @@ input[type="text"], input[type="email"], input[type="tel"], textarea {
 	        <input type="hidden" name="product_id" value="${product.product_id}">
 	        <input type="hidden" name="quantity" value="${product.quantity}">
 	        
+	        <input type="hidden" name="totalAmount" value="${product.totalprice }" />
+	        <input type="hidden" name="product_id" value="${product.product_id }" />
+	        <input type="hidden" name="quantity" value="${product.quantity }" />
+	        
 	        
 	    </c:when>
 	    
 	    <c:otherwise>
 	        <div class="empty-order">
 	            <p>주문할 상품이 없습니다.</p>
-	            <a href="/shop/products">상품 보러가기</a>
+	            <a href="/shop/home">상품 보러가기</a>
 	        </div>
 	    </c:otherwise>
 	</c:choose>
