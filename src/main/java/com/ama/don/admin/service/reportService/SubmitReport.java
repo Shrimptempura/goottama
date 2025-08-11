@@ -21,10 +21,10 @@ public class SubmitReport {
     public void execite(Model model) {
         Map<String, Object> map = model.asMap();
         HttpServletRequest request = (HttpServletRequest) map.get("request");
+        String reporterId = (String) map.get("userId");
         String targetId = request.getParameter("targetId");
         String targetType = request.getParameter("targetType");
         String reportContent = request.getParameter("reportContent");
-        String reporterId = request.getParameter("reporterId");
         SubmitReportForm submitReportForm = new SubmitReportForm();
         submitReportForm.setUserId(reporterId);
         submitReportForm.setReportContent(reportContent);

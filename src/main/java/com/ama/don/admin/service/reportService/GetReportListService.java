@@ -47,15 +47,6 @@ public class GetReportListService {
 
         searchVO.pageCalculate(total);
 
-        System.out.println("dtoList size: " + dtoList.size());
-        for (ReportDTO dto : dtoList) {
-            if (dto == null) {
-                System.out.println("NULL DTO 발견됨");
-            } else {
-                System.out.println("DTO: " + dto.getReportId());
-            }
-        }
-
         for (ReportDTO dto : dtoList) {
             Map<String, Object> row = new HashMap<>();
             row.put("reportId", dto.getReportId());
