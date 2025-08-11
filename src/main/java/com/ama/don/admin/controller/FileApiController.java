@@ -17,7 +17,7 @@ import java.util.UUID;
 /**
  * TUI 에디터 이미지 업로드 전용 컨트롤러.
  * 다운로드는 `AttachmentController`에서, <br/>
- * 에디터 속 이미지 출력은 `WebConfig`가 하고 있음.
+ * 에디터 속 이미지 출력은 `AdminFileWebConfig`가 하고 있음.
  */
 @RestController
 @RequestMapping("/tui-editor")
