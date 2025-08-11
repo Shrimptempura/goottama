@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface InquiryDao {
 
-	void insertInquiry(@Param("user_id")long user_id,@Param("inquity_id") int inquity_id);
+	void insertInquiryKakao(@Param("user_id")long user_id,@Param("inquity_id") int inquity_id);
+
+	void insertInquiryEmail(@Param("user_id")long user_id,@Param("inquity_id") int inquity_id);
 
 }

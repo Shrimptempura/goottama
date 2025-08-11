@@ -106,7 +106,7 @@ public class MemberController {
 	}
 	
 	@GetMapping("/mypage/editProfile_view")
-	public String editProfile_view(HttpSession session, MemberDto memberDto, Model model) {
+	public String editProfile_view(MemberDto memberDto, Model model) {
 		
 		memberDto = loginMemberService.getCurrentLoginMemberDto();
 		model.addAttribute("loginMember", memberDto);
@@ -124,7 +124,7 @@ public class MemberController {
 		
 		if (!success) {
 			model.addAttribute("loginMember", memberDto);
-			return "member/mypage/editProfile_view";
+			return "redirect:/mypage/editProfile_view";
 		}
 //		세션 갱신
 		memberUpdateService.refreshAuthentication(memberDto.getLogin_id());

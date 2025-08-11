@@ -4,6 +4,7 @@ import com.ama.don.member.dto.MemberDto;
 
 public interface InquiryInter {
 	
-	void insertInquiry(MemberDto memberDto);
+	void insertInquiryKaKao(MemberDto memberDto);
+	void insertInquiryEmail(MemberDto memberDto);
 
 }

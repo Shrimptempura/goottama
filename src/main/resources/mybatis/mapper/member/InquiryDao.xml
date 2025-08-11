@@ -5,9 +5,12 @@
 
 <mapper namespace="com.ama.don.member.dao.InquiryDao">
 	
-	<insert id="insertInquiry">
+	<insert id="insertInquiryKakao">
 	insert into inquiry(user_id,inquiry_way_id) values(#{user_id},#{inquity_id})
 	</insert>
-
+	
+	<insert id="insertInquiryEmail">
+	insert into inquiry(user_id,inquiry_way_id) values(#{user_id},#{inquity_id})
+	</insert>
 
 </mapper>

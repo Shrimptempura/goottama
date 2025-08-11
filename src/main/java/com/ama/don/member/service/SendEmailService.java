@@ -94,6 +94,26 @@ public class SendEmailService implements SendEmailServiceInter{
 		}
 		
 	}
+
+	@Override
+	public void sendInquiryEmail(String email, String subject, String message) {
+		
+		try {
+			MimeMessage mail = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
+			
+			helper.setTo(emailConfig.getFrom());
+			helper.setSubject(subject);
+			helper.setText(message,true);
+			helper.setFrom(email);
+			
+			mailSender.send(mail);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
 	
 	
 	
