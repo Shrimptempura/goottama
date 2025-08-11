@@ -154,6 +154,7 @@
 	    order by preply_date desc
 	</select>
 	
+	<!-- 문의 답글 삭제 -->
 	<delete id="product_reply_delete" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
 		delete from product_reply
 		where pinquiry_id=#{pinquiry_id}
@@ -165,9 +166,7 @@
 		values (#{pinquiry_id},#{preply_content},now());
 	 </insert>
 	 
-	<!--  -->
-	
-	
+	<!--상품 상품몰로 검색  -->
 	<select id="product_mall_list" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ProductFlatDto">
 		select p.product_id,p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
 		    pi.product_imgurl,pi.product_img_type
@@ -179,7 +178,6 @@
 	
 	<!-- 상품 리뷰 수가 많은 상품 리스트 -->
 	<select id="product_best_list" parameterType="com.ama.don.shop.dto.ProductFlatDto" resultType="com.ama.don.shop.dto.ProductFlatDto">
-		
 		select p.product_id,p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
 		    pi.product_imgurl,pi.product_img_type,count(r.target_id) as review_count
 		from product p
@@ -196,27 +194,6 @@
          pi.product_img_type                        
         order by count(r.target_id) desc;
 	</select>
-			
-								<!-- primary key를 가져온다. -->
-	<insert id="write" parameterType="map" useGeneratedKeys="true" keyProperty="productId" keyColumn="product_id">
-		INSERT INTO PRODUCT(CATEGORY_ID,PRODUCT_NAME,PRODUCT_PRICE,PRODUCT_DISCOUNTRATE,PRODUCT_MALL_NAME,
-		PRODUCT_MADEIN,PRODUCT_RELEASE,PRODUCT_AS_MANAGER_PHONE,PRODUCT_TYPE
-		,PRODUCT_COLOR,PRODUCT_ISTODAY,PRODUCT_DATE) VALUES(
-		#{category_id},#{product_name},#{product_price},#{product_discountrate}
-		,#{product_mall_name},#{product_madein},#{product_release},#{product_as_manager_phone}
-		,#{product_type},#{product_color},#{product_istoday},NOW())
-	</insert>
-	
-	<insert id="imgwritemain">
-		INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
-		VALUES(#{param1},#{param2},'메인');
-	</insert>
-	
-	<insert id="imgwrite">
-		INSERT INTO PRODUCT_IMG(PRODUCT_ID,PRODUCT_IMGURL,PRODUCT_IMG_TYPE) 
-		VALUES(#{param1},#{param2},'서브');
-	</insert>
-	
 	
 	<!-- 단일 상품 리뷰 리스트 -->
 	<select id="review_list" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">

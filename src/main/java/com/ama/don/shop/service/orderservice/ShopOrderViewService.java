@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.ui.Model;
 
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.CartDto;
 import com.ama.don.shop.dto.CartFlatDto;
@@ -30,21 +32,13 @@ public class ShopOrderViewService implements ShopServiceinter{
 		HttpServletRequest request=
 				(HttpServletRequest) map.get("request");
 		
-		String user_id=request.getParameter("user_id");
+		
+		//장바구니 주문인지 , 바로구매 주문인지 true,false
 		String form_cart=request.getParameter("form_cart");
 		
-		System.out.println("user_id"+user_id);
 		System.out.println("form_cart:"+form_cart);
 			
 	
-		//null
-        if (user_id == null || user_id.trim().isEmpty()) {
-            System.out.println("ERROR: user_id가 null이거나 비어있음");
-            model.addAttribute("error", "사용자 ID가 필요합니다.");
-            model.addAttribute("cart", new ArrayList<CartFlatDto>());
-            return;
-        }
-        
         if (form_cart == null || form_cart.trim().isEmpty()) {
             System.out.println("ERROR: form_cart가 null이거나 비어있음");
             model.addAttribute("error", "form_cart ID가 필요합니다.");
@@ -52,8 +46,11 @@ public class ShopOrderViewService implements ShopServiceinter{
             return;
         }
         
-        
-		Long userid=Long.parseLong(user_id);
+        LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
+		Long userid=memberDto.getUser_id();
      
         
  

@@ -56,6 +56,7 @@ public class GetUserListService {
             row.put("userName", memberDto.getUser_name());
             row.put("userNickname", memberDto.getUser_nickname());
             row.put("userLoginId", memberDto.getLogin_id());
+            row.put("roleId", memberDto.getRoles_id());
             row.put("userAddr", memberDto.getUser_addr());
             row.put("userEmail", memberDto.getUser_email());
             row.put("userGender", memberDto.getUser_gender());

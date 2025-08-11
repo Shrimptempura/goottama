@@ -127,7 +127,7 @@
 
     <insert id="makeSanction">
         INSERT INTO sanctions(USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT)
-        VALUES(#{userId}, #{sanctionsType}, #{sanctionsStartDate}, #{sanctionsEndDate}, #{sanctionsReason}, #{adminAccountId}, NOW())
+        VALUES(#{user_id}, #{sanctions_types}, #{sanctions_start_date}, #{sanctions_end_date}, #{sanctions_reason}, #{admin_account}, NOW())
     </insert>
 
     <update id="modifySanctionByUserId">

@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.springframework.ui.Model;
 
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.CartDto;
 import com.ama.don.shop.dto.CartFlatDto;
@@ -31,19 +33,12 @@ public class ShopOrderDetailService implements ShopServiceinter{
 		HttpServletRequest request=
 				(HttpServletRequest) map.get("request");
 		
-		String user_id=request.getParameter("user_id");
 		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		
-		
-		// user_id null 체크 및 안전한 변환
-        if (user_id == null || user_id.trim().isEmpty()) {
-            System.out.println("ERROR: user_id가 null이거나 비어있음");
-            model.addAttribute("error", "사용자 ID가 필요합니다.");
-            model.addAttribute("cart", new ArrayList<CartFlatDto>());
-            return;
-        }
-		
-		Long userid=Long.parseLong(user_id);
+		Long userid=memberDto.getUser_id();
 		
 		try {
 			System.out.println("=== 주문 조회 시작 ===");
@@ -59,11 +54,13 @@ public class ShopOrderDetailService implements ShopServiceinter{
 		    // 각 주문별 상품 목록 조회하여 Map으로 구성
 		    Map<Long, ArrayList<OrderFlatDto>> orderProductsMap = new HashMap<>();
 		    
+		    
+		    
 		    for(OrderFlatDto order : userOrders) {
 		        Long orderId = order.getOrder_id();
 		        System.out.println("주문 ID: " + orderId + ", 날짜: " + order.getOrder_date());
 		        
-		        // 2. 주문별 ㅈ
+		        // 2. 주문별 상품 저장 
 		        ArrayList<OrderFlatDto> products = iDao.order_products_flat(orderId);
 		        orderProductsMap.put(orderId, products);
 		        

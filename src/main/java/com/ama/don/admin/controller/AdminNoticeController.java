@@ -109,12 +109,12 @@ ommunitySearchVO} 객체.<br/>
     /**
      * 공지 조회
      * @param model
-     * @param request
+     * @param noticesId
      * @return
      */
     @RequestMapping("/admin/notices/notice_detail")
-    public String noticeDetail(Model model, HttpServletRequest request){
-        model.addAttribute("request", request);
+    public String noticeDetail(Model model, @RequestParam("notices_id") String noticesId){
+        model.addAttribute("noticesId", noticesId);
         getNoticeDetail.execute(model);
         return "admin/notices/notice_detail";
     }
@@ -171,8 +171,8 @@ ommunitySearchVO} 객체.<br/>
      * @return
      */
     @RequestMapping("/admin/notices/notice_modify_view")
-    public String noticeModifyView(Model model, HttpServletRequest request){
-        model.addAttribute("request", request);
+    public String noticeModifyView(Model model, @RequestParam("notices_id") String noticesId){
+        model.addAttribute("noticesId", noticesId);
         getNoticeDetail.execute(model);
         return "admin/notices/notice_modify_view";
     }
@@ -241,8 +241,8 @@ ommunitySearchVO} 객체.<br/>
     }
 
     @GetMapping("/admin/notices/notice_data_modal")
-    public String noticeDataModal(Model model, HttpServletRequest request){
-        model.addAttribute("request", request);
+    public String noticeDataModal(Model model, @RequestParam("notices_id") String noticesId){
+        model.addAttribute("noticesId", noticesId);
         getNoticeDetail.execute(model);
         return "admin/notices/notice_data_modal";
     }

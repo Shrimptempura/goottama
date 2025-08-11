@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.MultipartRequest;
 
 import com.ama.don.common.dto.ReviewDto;
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.CartDto;
 import com.ama.don.shop.dto.CartFlatDto;
@@ -53,13 +55,18 @@ public class ShopReviewWriteService implements ShopServiceinter{
 	
 		
 		//사용자 폼 정보
-        String user_id=request.getParameter("user_id");
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+			
+		Long userid=memberDto.getUser_id();
+        
         String product_id=request.getParameter("product_id");
         String review_title=request.getParameter("review_title");
 		String review_content=request.getParameter("review_content");
 		
 		
-		System.out.println("user_id: "+user_id);
 		System.out.println("product_id: "+product_id);
 		System.out.println("review_title: "+review_title);
 		System.out.println("review_content: "+review_content);
@@ -67,7 +74,6 @@ public class ShopReviewWriteService implements ShopServiceinter{
 		
 		
 		//
-		Long userid=Long.parseLong(user_id);
 		Long productid=Long.parseLong(product_id);
 		
 		ShopReviewFlatDto shopReviewFlatDto=new ShopReviewFlatDto();

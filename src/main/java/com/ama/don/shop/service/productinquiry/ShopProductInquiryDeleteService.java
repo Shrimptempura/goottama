@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.ui.Model;
 
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.ProductFlatDto;
 import com.ama.don.shop.dto.ShopProductInquiryFlatDto;
@@ -27,23 +29,22 @@ public class ShopProductInquiryDeleteService implements ShopServiceinter{
 		
 		System.out.println("inquirydelete()");
 		
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
 		//
-		String user_id=request.getParameter("user_id");
+		
+		Long userid=memberDto.getUser_id();
+		
 		String pinquiry_id=request.getParameter("pinquiry_id");
 		
-		
-		if(user_id==null || user_id.isEmpty()) {
-			
-			System.out.println("user_id가 null 입니다.");
-		}
 		
 		if(pinquiry_id==null || pinquiry_id.isEmpty()) {
 			
 			System.out.println("user_id가 null 입니다.");
 		}
 		
-		
-		Long userid=Long.parseLong(user_id);
 		Long pinquiryid=Long.parseLong(pinquiry_id);
 		
 		

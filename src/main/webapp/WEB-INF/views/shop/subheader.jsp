@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %> 
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -40,13 +44,18 @@
 
 <!-- 사용자 정보 표시 -->
 <div class="user-info">
+
+
+
+	<!-- 로그인된 경우 -->
     <c:choose>
-        <c:when test="${not empty sessionScope.user_id}">
-            <!-- 로그인된 경우 -->
+        <c:when test="${not empty loginMember.user_id}">
+
             <span>현재 사용자: 
-                <span class="current-user" id="currentUserId">${sessionScope.user_id}</span>
+                <p>${loginMember.user_nickname }</p> 
             </span>
         </c:when>
+       
         <c:otherwise>
             <!-- 비로그인인 경우 -->
             <span>현재 사용자: 
@@ -71,13 +80,13 @@ function getUserId() {
 // 장바구니로 이동
 function goToCart() {
     const userId = getUserId();
-    location.href = "cart?user_id=" + userId;
+    location.href = "cart?user_id=" + ${loginMember.user_id};
 }
 
 // 주문내역으로 이동
 function goToOrderDetails() {
     const userId = getUserId();
-    location.href = "order_details?user_id=" + userId;
+    location.href = "order_details?user_id=" + ${loginMember.user_id};
 }
 </script>
 

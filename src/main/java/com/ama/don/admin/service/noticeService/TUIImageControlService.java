@@ -95,17 +95,18 @@ public class TUIImageControlService {
      * 실시간으로 삭제하지 못 하는 이유는 글쓰기와 관련된 데이터를 매 순간 DB로 보내고 가지고 오는 건 부담스러운 일이고, 그렇다고 작성 완료 순간에
      * 모든 음수 `target_id`파일들을 삭제 하는 경우에는, 다른 사람이 작성 중인 사진 파일도 삭제 되기 때문임.
      */
+    @Transactional
     public void removeNegativeTargetIdFiles(){
         List<FileDto> negativeTargetIdFiles = fileIDao.getNegativeTargetIdFiles("TUI_EDITOR");
+        if (negativeTargetIdFiles == null || negativeTargetIdFiles.isEmpty()) {
+            System.out.println("삭제할 고아 파일이 없습니다.");
+            return;
+        }
         for (FileDto negativeFiles : negativeTargetIdFiles) {
             System.out.println(">>> Checking negative file for deletion: " + negativeFiles.getFile_path());
-            if (negativeTargetIdFiles != null || !negativeTargetIdFiles.equals("")) {
-                fileUtil.deleteFile(negativeFiles.getFile_path(), negativeFiles.getFile_uploader()); // 물리적 삭제
-                fileIDao.deleteFile(negativeFiles.getFile_id()); // DB에서 삭제
-                System.out.println("고아 TUI 에디터 이미지 삭제됨: " + negativeFiles.getFile_path());
-            } else {
-                System.out.println(">>> File still in use, not deleting: " + negativeFiles.getFile_path());
-            }
+            fileUtil.deleteFile(negativeFiles.getFile_path(), negativeFiles.getFile_uploader());
+            fileIDao.deleteFile(negativeFiles.getFile_id());
+            System.out.println("고아 TUI 에디터 이미지 삭제됨: " + negativeFiles.getFile_path());
         }
     }
 }
