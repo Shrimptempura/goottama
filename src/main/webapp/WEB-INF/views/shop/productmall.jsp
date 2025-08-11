@@ -617,17 +617,6 @@ body {
 <script>
 // 🔧 수정된 JavaScript 코드
 
-// getUserId 함수가 없을 경우를 대비한 기본 구현
-function getUserId() {
-    // subheader.jsp에서 정의된 함수가 있다면 그것을 사용
-    if (typeof window.getUserId === 'function') {
-        return window.getUserId();
-    }
-    
-    // 세션에서 사용자 ID 가져오기 (예시)
-    return '${sessionScope.loginMember != null ? sessionScope.loginMember.user_id : "guest"}';
-}
-
 // 🔧 수정1: 이벤트 위임을 사용한 안전한 클릭 처리
 document.addEventListener('DOMContentLoaded', function() {
     const productGrid = document.getElementById('productGrid');
