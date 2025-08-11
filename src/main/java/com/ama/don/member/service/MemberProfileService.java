@@ -48,28 +48,34 @@ public class MemberProfileService implements MemberProfileServiceInter{
 	@Override
 	public boolean updateProfile(MemberDto memberDto, MemberEditDto memberEditDto,Model model) {
 		
-		if (memberEditDto.getChangeTel() == null || memberEditDto.getChangeTel().isEmpty()) {
-	        memberEditDto.setChangeTel(memberDto.getUser_tel());
-	    }
-		
-		if (!memberEditDto.getChangeTel().matches("^(01[016789])(-?\\d{3,4})(-?\\d{4})$")) {
-	        model.addAttribute("validationError", "올바른 연락처 형식이 아닙니다.");
-	        model.addAttribute("loginMember",memberDto);
-	        return false;
-	    }
-		
-		if (memberEditDto.getChangeNickname() == null || memberEditDto.getChangeNickname().isEmpty()) {
-	        memberEditDto.setChangeNickname(memberDto.getUser_nickname());
-	    }
-		
-		//닉네임 중복확인
-		String nickname = memberEditDto.getChangeNickname();
-		boolean chechNickname = validationService.nicknameEditCheck(nickname);
-	 	if (chechNickname == false) {
-	 		model.addAttribute("validationError", "이미 사용중인 닉네임 입니다.");
-	 		model.addAttribute("loginMember",memberDto);
-			return false;
-		}		
+		   boolean hasError = false;
+
+		    // 연락처 처리
+		    String newTel = memberEditDto.getChangeTel();
+		    if (newTel == null || newTel.isBlank()) {
+		        memberEditDto.setChangeTel(memberDto.getUser_tel()); // 기존 값 유지
+		    } else if (!newTel.matches("^(01[016789])(-?\\d{3,4})(-?\\d{4})$")) {
+		        model.addAttribute("validationError_tel", "올바른 연락처 형식이 아닙니다.");
+		        hasError = true;
+		    }
+
+		    // 닉네임 처리
+		    String newNickname = memberEditDto.getChangeNickname();
+		    if (newNickname == null || newNickname.isBlank()) {
+		        memberEditDto.setChangeNickname(memberDto.getUser_nickname()); // 기존 값 유지
+		    } else if (!newNickname.equals(memberDto.getUser_nickname())) { // 닉네임이 바뀌었을 때만 체크
+		        boolean checkNickname = validationService.nicknameEditCheck(newNickname);
+		        if (!checkNickname) {
+		            model.addAttribute("validationError_nickname", "이미 사용중인 닉네임 입니다.");
+		            hasError = true;
+		        }
+		    }
+
+		    // 에러가 하나라도 있으면 업데이트 중단
+		    if (hasError) {
+		        model.addAttribute("loginMember", memberDto);
+		        return false;
+		    }
 		//db update
 		memberProfileDao.updateMember(memberDto,memberEditDto);		
 		

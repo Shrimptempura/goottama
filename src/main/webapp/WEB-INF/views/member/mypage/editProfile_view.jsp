@@ -57,8 +57,8 @@
       <button type="button" class="btn btn-secondary" onclick="checkDuplicateNickname()">중복확인</button>
     </div>
 
-    <c:if test="${not empty validationError}">
-      <p class="info-text" >${validationError}</p>
+    <c:if test="${not empty validationError_nickname}">
+      <p class="error" >${validationError_nickname}</p>
     </c:if>
 
     <label>성별</label>
@@ -69,6 +69,9 @@
 
     <label for="changeTel">연락처</label>
     <input type="text" id="changeTel" name="changeTel" value="${loginMember.user_tel}" />
+    <c:if test="${not empty validationError_tel}">
+      <p class="error" >${validationError_tel}</p>
+    </c:if>
 
     <label for="changeZipcode">우편번호</label>
     <div class="inline-group">

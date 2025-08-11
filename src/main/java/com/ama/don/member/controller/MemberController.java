@@ -124,7 +124,7 @@ public class MemberController {
 		
 		if (!success) {
 			model.addAttribute("loginMember", memberDto);
-			return "redirect:/mypage/editProfile_view";
+			return "member/mypage/editProfile_view";
 		}
 //		세션 갱신
 		memberUpdateService.refreshAuthentication(memberDto.getLogin_id());
