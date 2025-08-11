@@ -1,6 +1,5 @@
 package com.ama.don.interior.service;
 
-import com.ama.don.common.dao.ReviewDao;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.common.service.ReviewService;
@@ -11,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,11 +24,12 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
     private final CompanyReviewDao companyReviewDao;
     private final ReviewService reviewService;
     private final CompanyAuthService companyAuthService;
+    private final FileService fileService;
 
     // 리뷰생성(회원만 작성가능)
     @Transactional
     @Override
-    public Long createReview(CompanyReviewCreateDto createReviewDto) {
+    public Long createReview(CompanyReviewCreateDto createReviewDto, List<MultipartFile> files) {
         Long userId = companyAuthService.getLoginUserId();
         Long companyId = createReviewDto.getCompanyId();    // hidden form jsp
 
@@ -54,6 +56,9 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
                 log.error("CRService - 하위 리뷰 생성 실패 - userId: {}, reviewId: {}", userId, reviewId);
                 throw new IllegalStateException("하위 리뷰 생성 실패");
             }
+
+            // 최소 1장의 썸네일 파일 저장
+            reviewImgOptions(reviewId, files, false);
 
             log.info("CRService - 점수 테이블 생성 시작 - userId: {}, reviewId: {}", userId, reviewId);
             if (!companyReviewDao.isExistScoreTable(companyId)) {
@@ -108,7 +113,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
     @Transactional
     @Override
-    public void updateReview(CompanyReviewUpdateDto updateReviewDto) {
+    public void updateReview(CompanyReviewUpdateDto updateReviewDto, List<MultipartFile> files) {
         Long userId = companyAuthService.getLoginUserId();
         Long reviewId = updateReviewDto.getReviewId();
 
@@ -145,6 +150,9 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             if (companyUpdated == 0) {
                 log.error("CRService - 하위 리뷰 수정 없음 - reviewId: {}", reviewId);
             }
+
+            // 이미지 삭제 생성
+            reviewImgOptions(reviewId, files, true);
 
             // 점수 조정
             CompanyScoreAdjustDto adjust = recycleScoreOnEdit(companyId, updateReviewDto, origin);
@@ -200,6 +208,41 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         }
     }
 
+
+    // 리뷰 생성 삭제시 이미지 처리 allDelete으로 선택
+    private void reviewImgOptions(Long reviewId, List<MultipartFile> files, boolean allDelete) {
+        if (files == null || files.isEmpty()) {
+            log.error("CRService - 리뷰 이미지는 최소 1장 필요 - reviewId: {}", reviewId);
+            throw new IllegalArgumentException("리뷰 이미지는 최소 1장이 필요합니다.");
+        }
+
+        List<MultipartFile> filedList = new ArrayList<>();
+        for (MultipartFile file : files) {
+            if (!file.isEmpty()) {
+                filedList.add(file);
+            }
+        }
+
+        if (filedList.isEmpty()) {
+            log.error("CRService - 이미지가 저장되지 않았습니다. - reviewId: {}", reviewId);
+            throw new IllegalArgumentException("이미지가 저장되지 않았습니다.");
+        }
+
+        // 이전 이미지 모두 삭제
+        if (allDelete) {
+            log.info("CRService - 기존 이미지 모두 삭제 - reviewId: {}", reviewId);
+            fileService.deleteAllByTargetId(TargetType.INTERIOR_REVIEW, reviewId);
+        }
+
+        // 첫장 썸네일
+        fileService.saveFile(TargetType.INTERIOR_REVIEW, reviewId, filedList.get(0), true);
+        for (int i = 1; i < filedList.size(); i++) {
+            fileService.saveFile(TargetType.INTERIOR_REVIEW, reviewId, filedList.get(i), false);
+        }
+        log.info("CRService - 리뷰 작성시 이미지 저장 성공 - reviewId: {}", reviewId);
+    }
+
+
     // 다형성 리뷰 작성(content)
     private ReviewDto makePolyReview(CompanyReviewCreateDto createReviewDto) {
 
@@ -208,7 +251,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
         ReviewDto poly = new ReviewDto();
         poly.setUserId(userId);
-        poly.setTargetType(TargetType.INTERIOR);
+        poly.setTargetType(TargetType.INTERIOR_REVIEW);
         poly.setTargetId(companyId);
         poly.setReviewContent(createReviewDto.getReviewContent());
 

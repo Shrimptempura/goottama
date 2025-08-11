@@ -145,7 +145,7 @@
             r.review_content AS reviewContent
         FROM company_review c
         JOIN review r ON c.review_id = r.review_id
-        WHERE r.target_type = 'INTERIOR'
+        WHERE r.target_type = 'INTERIOR_REVIEW'
             AND r.is_deleted = 0
             AND c.is_deleted = 0
         ORDER BY r.review_modify desc
