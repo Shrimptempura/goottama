@@ -28,7 +28,8 @@ public class UploadController {
 	@PostMapping("/upload_image")
 	@ResponseBody
 	public String uploadImage(@RequestParam("file") MultipartFile file,
-			@RequestParam("target_type") String targetTypeStr) throws IOException {
+			@RequestParam("target_type") String targetTypeStr, @RequestParam("target_id") Long targetId)
+			throws IOException {
 
 		Long userId = 1L;
 
@@ -43,7 +44,7 @@ public class UploadController {
 		fileDto.setTarget_type(TargetType.valueOf(targetTypeStr));
 		fileDto.setFile_name(saveName);
 		fileDto.setFile_path("/upload/" + saveName);
-		fileDto.setTarget_id(null);
+		fileDto.setTarget_id(targetId);
 		System.out.println("파일 업로드 시@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ target_id: " + fileDto.getTarget_id());
 
 		System.out.println("INSERT @@@@@@@@@@@@@@@@@@@@@@@@@@@@" + "@@@@@@@@@@@@전 DTO 상태: " + fileDto);
