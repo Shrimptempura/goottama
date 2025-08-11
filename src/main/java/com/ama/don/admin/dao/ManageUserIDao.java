@@ -48,4 +48,12 @@ public interface ManageUserIDao {
      * @return
      */
     public int resetExpiredUserSanctions();
+
+    /**
+     * 유저 등급 변경
+     * @param userId
+     * @param role
+     * @return
+     */
+    public int changeUserRole(Long userId, Long role);
 }

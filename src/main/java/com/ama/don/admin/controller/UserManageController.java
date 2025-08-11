@@ -1,10 +1,7 @@
 package com.ama.don.admin.controller;
 
 import com.ama.don.admin.dto.userDTO.UserSearchDTO;
-import com.ama.don.admin.service.userManage.ChangeUserSanctionsUntilService;
-import com.ama.don.admin.service.userManage.GetUserDataForModal;
-import com.ama.don.admin.service.userManage.GetUserDetailData;
-import com.ama.don.admin.service.userManage.GetUserListService;
+import com.ama.don.admin.service.userManage.*;
 import com.ama.don.admin.utils.SearchVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +14,18 @@ public class UserManageController {
     private final GetUserDataForModal getUserDataForModal;
     private final GetUserDetailData getUserDetailData;
     private final ChangeUserSanctionsUntilService changeUserSanctionsUntilService;
+    private final ChangeUserRoleService changeUserRoleService;
 
-    public UserManageController(ChangeUserSanctionsUntilService changeUserSanctionsUntilService, GetUserDetailData getUserDetailData, GetUserListService getUserListService, GetUserDataForModal getUserDataForModal) {
+    public UserManageController(ChangeUserRoleService changeUserRoleService,
+                                ChangeUserSanctionsUntilService changeUserSanctionsUntilService,
+                                GetUserDetailData getUserDetailData,
+                                GetUserListService getUserListService,
+                                GetUserDataForModal getUserDataForModal) {
         this.getUserListService = getUserListService;
         this.getUserDataForModal = getUserDataForModal;
         this.getUserDetailData = getUserDetailData;
         this.changeUserSanctionsUntilService = changeUserSanctionsUntilService;
+        this.changeUserRoleService = changeUserRoleService;
     }
 
     @RequestMapping("/admin/users/user_manage")
@@ -81,6 +84,29 @@ public class UserManageController {
         model.addAttribute("userStatus", userStatus);
         boolean isSuccess = changeUserSanctionsUntilService.execute(model);
         String resultMessage = isSuccess ? "change_user_sanctions_until_success" : "change_user_sanctions_until_failure";
+        return "redirect:/admin/users/user_data_detail?user_id=" + userId + "&result=" + resultMessage;
+    }
+
+    @GetMapping("/admin/users/roles_modal_content")
+    public String changeUserRoleView(@RequestParam("userInfo") String userInfo, Model model) {
+        String[] infoArray = userInfo.split(",");
+
+        String userId = infoArray[0];
+        String rolesId = infoArray[1];
+
+        model.addAttribute("rolesId", rolesId);
+        model.addAttribute("userId", userId);
+        return "admin/users/user_role_modal";
+    }
+
+    @PostMapping("/admin/users/change_user_role")
+    public String changeUserRole(Model model,
+                                 @RequestParam("user_id") String userId,
+                                 @RequestParam("new_user_role") String userRole) {
+        model.addAttribute("userId", userId);
+        model.addAttribute("userRole", userRole);
+        boolean isSuccess = changeUserRoleService.execute(model);
+        String resultMessage = isSuccess ? "change_user_role_success" : "change_user_role_failure";
         return "redirect:/admin/users/user_data_detail?user_id=" + userId + "&result=" + resultMessage;
     }
 }
