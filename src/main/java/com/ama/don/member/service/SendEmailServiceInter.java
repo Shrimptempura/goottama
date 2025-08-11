@@ -8,5 +8,6 @@ import com.ama.don.member.dto.JoinformDto;
 public interface SendEmailServiceInter {
 	
 	void emailSendAction(JoinformDto joinformDto,Model model);
-	void  sendPwcodeEmailAction(FindPwDto findPwDto, String code);
+	void sendPwcodeEmailAction(FindPwDto findPwDto, String code);
+	void sendInquiryEmail(String email,String subject,String message);
 }

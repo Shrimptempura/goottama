@@ -35,6 +35,13 @@ public class SecurityConfig {
                                 "/emailCheck",
                                 "/authenticate",
                                 "/find_loginId",
+                                "/findPw",
+                                "/checkPwCode",
+                                "/resetPw_view",
+                                "/resetPw",
+                                "/checkDuplicateId",
+                                "/checkDuplicateNickname",
+                                "/successJoin_view",
                                 "/css/**", "/js/**"
                         ).permitAll()
 //                        .requestMatchers("/seller/**").hasRole("SELLER") // 200(판매자) 이상 권한이 필요한 페이지

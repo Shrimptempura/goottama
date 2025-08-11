@@ -97,4 +97,25 @@ public class ValidationService implements ValidationServiceInter {
 		
 	}
 
+	@Override
+	public boolean loginDuplicate(String loginId) {
+
+		if (validationDao.loginIdDuplicate(loginId) > 0) {
+			return true;
+		}else {
+			return false;
+		}
+		
+		
+	}
+
+	@Override
+	public boolean nicknameDuplicate(String nickname) {
+		if (validationDao.nicknameDuplicate(nickname) > 0) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
 }

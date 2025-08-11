@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.ama.don.member.dto.FindLoginIdDto;
 import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.dto.MemberEditDto;
 import com.ama.don.member.dto.ResetPwDto;
@@ -52,11 +53,15 @@ public class MemberController {
 	private final WithdrawalService withdrawalService;
 	private final LoginMemberService loginMemberService;
 	private final MemberUpdateService memberUpdateService;
-
+	
 
 	@PostMapping("/resetPw")
-	public String resetPw(@Valid @ModelAttribute ResetPwDto resetPwDto,HttpSession session,Model model) {
-		
+	public String resetPw(@Valid @ModelAttribute ResetPwDto resetPwDto,BindingResult bindingResult, HttpSession session,Model model) {
+				
+		if (bindingResult.hasErrors()) {
+	        return "member/resetPw_view";
+	    }
+	
 		boolean success = memberProfileService.resetPw(resetPwDto, session, model);
 		
 		if (!success) {
@@ -101,7 +106,7 @@ public class MemberController {
 	}
 	
 	@GetMapping("/mypage/editProfile_view")
-	public String editProfile_view(HttpSession session, MemberDto memberDto, Model model) {
+	public String editProfile_view(MemberDto memberDto, Model model) {
 		
 		memberDto = loginMemberService.getCurrentLoginMemberDto();
 		model.addAttribute("loginMember", memberDto);

@@ -1,5 +1,8 @@
 package com.ama.don.member.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -8,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ama.don.member.dto.JoinformDto;
 import com.ama.don.member.service.JoinService;
@@ -44,12 +49,6 @@ public class JoinController {
 
 		// 입력값 검증 실패 시 메시지를 model에 담아 회원가입페이지로
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("joinformDto", joinformDto);
-			// 검증 결과 콘솔에 에러출력
-			for (FieldError error : bindingResult.getFieldErrors()) {
-				System.out.println("Error in field: " + error.getField());
-				System.out.println("Message: " + error.getDefaultMessage());
-			}
 			return "member/join_view";
 		}
 
@@ -71,6 +70,25 @@ public class JoinController {
 		return "member/emailSent_view";
 
 	}
+	//ajax 아이디 중복확인
+	@GetMapping("/checkDuplicateId")
+	@ResponseBody
+	public Map<String, Boolean> checkDuplicateId(@RequestParam String loginId){
+		boolean isDuplicate = validationService.loginDuplicate(loginId);
+		Map<String, Boolean> result = new HashMap<>();
+	    result.put("duplicate", isDuplicate); 
+	    return result;
+	}
+	
+	//ajax 닉네임 중복확인
+	@GetMapping("/checkDuplicateNickname")
+	@ResponseBody
+	public Map<String, Boolean> checkDuplicateNickname(@RequestParam String nickname){
+		boolean isDuplicate = validationService.nicknameDuplicate(nickname);
+		Map<String, Boolean> result = new HashMap<>();
+	    result.put("duplicate", isDuplicate); 
+	    return result;
+	}
 
 	@RequestMapping("/emailCheck")
 	public String emailCheck(HttpServletRequest request, JoinformDto joinformDto, Model model, HttpSession session) {
@@ -83,10 +101,14 @@ public class JoinController {
 		if (isRight == true) {
 			joinService.join(joinformDto, model);
 			session.removeAttribute("tempJoinUser");
-			return "redirect:/login_view";
+			return "redirect:/successJoin_view";
 		}
 
 		return "member/join_view";
 
+	}
+	@GetMapping("/successJoin_view")
+	public String successJoin_view(Model model) {
+		return "member/successJoin_view";
 	}
 }

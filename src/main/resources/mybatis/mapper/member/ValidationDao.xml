@@ -20,5 +20,13 @@
 	<select id="nicknameEditCheck" resultType="int">
 	SELECT COUNT(*) FROM user_detail WHERE USER_NICKNAME=#{nickname}
 	</select> 
+	
+	<select id="loginIdDuplicate" resultType="int">
+	SELECT COUNT(*) FROM user_login WHERE LOGIN_ID=#{loginId}
+	</select> 
+	
+	<select id="nicknameDuplicate" resultType="int">
+	SELECT COUNT(*) FROM user_detail WHERE USER_NICKNAME=#{nickname}
+	</select> 
 
 </mapper>
