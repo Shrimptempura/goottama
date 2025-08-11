@@ -25,20 +25,25 @@ public class FileServiceImpl implements FileService {
     private String uploadBaseDir;
 
     @Override
-    public void saveFile(Long userId, TargetType targetType, Long targetId, MultipartFile file) {
-        if (file.isEmpty() || file == null) {
-            log.warn("FileService - 업로드 실패 - userId: {}, targetType: {}, targetId: {}", userId, targetType, targetId);
+    public void saveFile(TargetType targetType, Long targetId, MultipartFile file, boolean isThumbnail) {
+        log.info("FileService - 파일 업로드 시작 - targetType: {}, targetId: {}", targetType, targetId);
+        if (file == null || file.isEmpty()) {
+            log.warn("FileService - 파일이 null 또는 비었습니다. - targetType: {}, targetId: {}", targetType, targetId);
             throw new IllegalArgumentException("빈 파일입니다.");
         }
 
-        log.info("FileService - 파일 업로드 시작 - userId: {}, targetType: {}, targetId: {}", userId, targetType, targetId);
         String originalName = file.getOriginalFilename();
-        String savedPath = uploadBaseDir + "/" + TargetType.INTERIOR;
-        String savedName = UUID.randomUUID().toString() + "_" + originalName;
+        String saveDir = uploadBaseDir + "/" + targetType.name().toLowerCase();
+        String savedName = UUID.randomUUID() + "_" + originalName;
 
-        File filePath = new File(savedPath, savedName);
-        
         // 경로는 사전에 무조건 존재해야함, 따로 생성 코드는 없음
+        File checkDir = new File(saveDir);
+        if (!checkDir.exists()) {
+            log.error("FileService - 로컬 디렉토리 생성 실패 - dir: {}", saveDir);
+            throw new RuntimeException("로컬 디렉토리 생성 실패: " + saveDir);
+        }
+
+        File filePath = new File(saveDir, savedName);
         try {
             file.transferTo(filePath);
             log.info("FileService - 파일 저장 성공 - 경로: {}", filePath.getAbsolutePath());
@@ -48,28 +53,29 @@ public class FileServiceImpl implements FileService {
         }
 
         FileDto fileDto = new FileDto();
-        fileDto.setFile_uploader(String.valueOf(userId));
-        fileDto.setFile_name(originalName);
-        fileDto.setFile_path(savedName);
+        fileDto.setFile_uploader("interior");
+        fileDto.setFile_name(savedName);
+        fileDto.setFile_path(saveDir);
         fileDto.setTarget_type(targetType);
         fileDto.setTarget_id(targetId);
+        fileDto.setThumbnail(isThumbnail);
 
-        fileDao.create(fileDto);
+        fileDao.interCreate(fileDto);
         log.info("FileService - DB 저장 완료 - fileDto: {}", fileDto);
     }
 
     @Override
-    public List<FileDto> getFileList(Long userId, TargetType targetType, Long targetId) {
-        log.info("FileService - 파일 조회 요청 - userId: {}, targetType: {}, targetId: {}", userId, targetType, targetId);
-        return fileDao.findByTargetId(targetType, targetId);
+    public List<FileDto> getFileList(TargetType targetType, Long targetId) {
+        log.info("FileService - 파일 조회 요청 - targetType: {}, targetId: {}", targetType, targetId);
+        return fileDao.interFindByTarget(targetType, targetId);
     }
 
     // 삭제, 여러장은 iter로 돌림
     @Override
     public void deleteFile(Long fileId) {
         log.info("FileService - 파일 삭제 요청 - fileId: {}", fileId);
-        FileDto fileDto = fileDao.interiorFindById(fileId);
 
+        FileDto fileDto = fileDao.interFindById(fileId);
         if (fileDto == null) {
             log.warn("FileService - 파일 삭제 실패 - 해당 파일 없음 - fileId: {}", fileId);
             throw new IllegalArgumentException("삭제 파일을 찾지 못했습니다.");
@@ -83,7 +89,55 @@ public class FileServiceImpl implements FileService {
             log.warn("FileService - 실제 파일이 존재하지 않음 - 경로: {}", realPhysical.getAbsolutePath());
         }
 
-        int result = fileDao.interiorDeletedById(fileId);
+        int result = fileDao.interDeletedById(fileId);
         log.info("FileService - DB 삭제 결과 - fileId: {}, 삭제된 행 수 result: {}", fileId, result);
     }
+
+    // 썸네일 1장 삭제
+    @Override
+    public void deleteThumbnail(TargetType targetType, Long targetId) {
+        log.info("FileService - 썸네일 삭제 요청 - targetType: {}, targetId: {}", targetType, targetId);
+
+        FileDto thumFile = fileDao.interFindThumbnail(targetType, targetId);
+        if (thumFile == null) {
+            log.warn("FileService - 썸네일 없음 - targetType: {}, targetId: {}", targetType, targetId);
+            throw new IllegalArgumentException("삭제 파일을 찾지 못했습니다.");
+        }
+
+        File realPhysical = new File(thumFile.getFile_path(), thumFile.getFile_name());
+        if (realPhysical.exists()) {
+            boolean isDeleted = realPhysical.delete();
+            log.info("FileService - 실제 파일 삭제 - 경로: {}, 성공 여부: {}", realPhysical.getAbsolutePath(), isDeleted);
+        } else {
+            log.warn("FileService - 실제 파일이 존재하지 않음 - 경로: {}", realPhysical.getAbsolutePath());
+        }
+
+        int result = fileDao.interDeletedById(thumFile.getFile_id());
+        log.info("FileService - 썸네일 DB 삭제 완료 - result: {}", result);
+    }
+
+    // 타겟으로 모두 삭제
+    @Override
+    public void deleteAllByTargetId(TargetType targetType, Long targetId) {
+        log.info("FileService - 타겟으로 전체 파일 삭제 요청 - targetType: {}, targetId: {}", targetType, targetId);
+
+        List<FileDto> files = fileDao.interFindByTarget(targetType, targetId);
+        if (files == null || files.isEmpty()) {
+            log.warn("FileService - 타겟 파일 없음 - targetType: {}, targetId: {}", targetType, targetId);
+            throw new IllegalArgumentException("삭제 파일을 찾지 못했습니다.");
+        }
+
+        for (FileDto file : files) {
+            File realPhysical = new File(file.getFile_path(), file.getFile_name());
+            if (realPhysical.exists()) {
+                boolean isDeleted = realPhysical.delete();
+                log.info("FileService - 실제 파일 삭제 - 경로: {}, 성공 여부: {}", realPhysical.getAbsolutePath(), isDeleted);
+            } else {
+                log.warn("FileService - 실제 파일이 존재하지 않음 - 경로: {}", realPhysical.getAbsolutePath());
+            }
+        }
+        fileDao.interDeleteAllByTarget(targetType, targetId);
+        log.info("FileService - 타겟 전체 DB 삭제 완료");
+    }
+
 }

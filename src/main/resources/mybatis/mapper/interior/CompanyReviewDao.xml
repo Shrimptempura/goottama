@@ -6,7 +6,7 @@
 <mapper namespace="com.ama.don.interior.dao.CompanyReviewDao">
 
     <!-- 다형성 리뷰 작성된 상태에서 업체 리뷰생성하기 -->
-    <insert id="insert"
+    <insert id="insertCompanyReview"
             parameterType="com.ama.don.interior.dto.review.CompanyReviewCreateDto">
         INSERT INTO company_review (
             review_id,
@@ -32,11 +32,12 @@
     </insert>
 
     <!-- 점수 테이블 존재 유무 -->
-    <select id="isExistScoreTable" resultType="java.lang.Boolean">
-        SELECT 1
-        FROM company_score_avg
-        WHERE company_id = #{companyId}
-        LIMIT 1
+    <select id="isExistScoreTable" resultType="boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM company_score_avg
+            WHERE company_id = #{companyId}
+        ) AS isExistScoreTable
     </select>
 
     <!-- 첫 리뷰작성후만 실행, 점수 테이블 생성 -->
@@ -101,7 +102,7 @@
     </update>
 
     <!-- 업체아이디로 점수평균 값 빼오기 -->
-    <select id="getAvgScoreByCompanyId" resultType="com.ama.don.interior.dto.review.CompanyScoreAvgDto">
+    <select id="findScoreAvgByCompanyId" resultType="com.ama.don.interior.dto.review.CompanyScoreAvgDto">
         SELECT
             company_id AS companyId,
             avg_communication AS avgCommunication,
@@ -145,9 +146,10 @@
         FROM company_review c
         JOIN review r ON c.review_id = r.review_id
         WHERE r.target_type = 'INTERIOR'
-            AND r.is_deleted = false
-            AND c.is_deleted = false
+            AND r.is_deleted = 0
+            AND c.is_deleted = 0
         ORDER BY r.review_modify desc
+        LIMIT 10
     </select>
 
     <!-- 업체 상세정보에서 리뷰탭 보기(사진 제외: userImg, reviewImg) -->
@@ -155,7 +157,7 @@
         SELECT
             r.review_id AS reviewId,
             u.user_id AS userId,
-            u.user_nickname AS userNickName,
+            u.user_nickname AS userNickname,
             c.structure_type AS structureType,
             c.area_pyeong AS areaPyeong,
             c.construction_field AS constructionField,
@@ -166,8 +168,8 @@
         JOIN review r ON c.review_id = r.review_id
         JOIN user_detail u ON r.user_id = u.user_id
         WHERE company_id = #{companyId}
-            AND r.is_deleted = false
-            AND c.is_deleted = false
+            AND r.is_deleted = 0
+            AND c.is_deleted = 0
     </select>
 
     <!-- 업체 아이디로 업체에 대한 리뷰 수 구하기 -->
@@ -176,19 +178,19 @@
         FROM company_review c
         JOIN review r ON c.review_id = r.review_id
         WHERE company_id = #{companyId}
-            AND c.is_deleted = false
-            AND r.is_deleted = false
+            AND c.is_deleted = 0
+            AND r.is_deleted = 0
     </select>
 
     <!-- 검증쿼리 다형성 리뷰에 해당 내용 존재하는지 -->
-    <select id="existByReviewIdAndUserId" resultType="java.lang.Boolean">
+    <select id="existByReviewIdAndUserId" resultType="boolean">
         SELECT 1
         FROM review r
         JOIN company_review c ON c.review_id = r.review_id
         WHERE r.review_id = #{reviewId}
             AND r.user_id = #{userId}
-            AND c.is_deleted = false
-            AND r.is_deleted = false
+            AND c.is_deleted = 0
+            AND r.is_deleted = 0
         LIMIT 1
     </select>
 
@@ -197,7 +199,7 @@
         UPDATE company_review
         SET is_deleted = 1
         WHERE review_id = #{reviewId}
-            AND is_deleted = false
+            AND is_deleted = 0
     </update>
 
     <!-- 상위 리뷰 소프트 삭제 -->
@@ -206,7 +208,7 @@
         SET is_deleted = 1
         WHERE review_id = #{reviewId}
             AND user_id = #{userId}
-            AND is_deleted = false
+            AND is_deleted = 0
     </update>
 
     <!-- 다형성 리뷰 수정하기 -->
@@ -316,7 +318,7 @@
         FROM company_review c
         JOIN review r ON c.review_id = r.review_id
         WHERE r.review_id = #{reviewId}
-            AND r.is_deleted = false
-            AND c.is_deleted = false
+            AND r.is_deleted = 0
+            AND c.is_deleted = 0
     </select>
 </mapper>

@@ -179,7 +179,7 @@ public class AbstractCompanyTestSupport {
         companyReviewDto.setAreaPyeong("30평");
         companyReviewDto.setConstructionField("장판공사");
 
-        companyReviewDao.insert(companyReviewDto);
+        companyReviewDao.insertCompanyReview(companyReviewDto);
 
         // context 방식
         CreateReviewSet result = new CreateReviewSet();

@@ -7,12 +7,18 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 public interface FileService {
-    // 생성
-    void saveFile(Long userId, TargetType targetType, Long targetId, MultipartFile file);
+    // 생성(여러장은 반복)
+    void saveFile(TargetType targetType, Long targetId, MultipartFile file, boolean isThumbnail);
 
-    // 조회, findByTargetId
-    List<FileDto> getFileList(Long userId, TargetType targetType, Long targetId);
+    // 조회, 장수 상관없이 리스트
+    List<FileDto> getFileList(TargetType targetType, Long targetId);
 
-    // 삭제, interiorFindById으로 단건 조회,  interiorDeletedById으로 단건 삭제
+    // 단건 삭제
     void deleteFile(Long fileId);
+
+    // 썸네일 1장 삭제
+    void deleteThumbnail(TargetType targetType, Long targetId);
+
+    // 타겟 일치 모두 삭제
+    void deleteAllByTargetId(TargetType targetType, Long targetId);
 }
