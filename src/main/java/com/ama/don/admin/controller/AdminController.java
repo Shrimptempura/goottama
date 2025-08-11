@@ -1,5 +1,9 @@
 package com.ama.don.admin.controller;
 
+import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
+import com.ama.don.admin.service.userManage.ManageUserByAdmin;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,9 +22,9 @@ public class AdminController {
         return "admin/admin_dashboard";
     }
 
-    @RequestMapping("admin/reports/report_page")
-    public String report(){
-        return "admin/reports/report_page";
+    @RequestMapping("/admin/accessDeniedPage")
+    public String accessDeniedPage(){
+        return "admin/accessDeniedPage";
     }
 
     @RequestMapping("admin/search/advanced_search")

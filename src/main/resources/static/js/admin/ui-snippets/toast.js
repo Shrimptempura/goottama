@@ -1,3 +1,4 @@
+// /static/js/admin/ui-snippets/toast.js
 const urlParams = new URLSearchParams(window.location.search);
 const result = urlParams.get('result');
 const toast = document.getElementById('toast');
@@ -12,6 +13,10 @@ const toastMap = {
     reply_failure: { message: '답변 작성 실패!', type: 'failure' },
     modify_success: { message: '글 수정 성공!', type: 'success' },
     modify_failure: { message: '글 수정 실패!', type: 'failure' },
+    report_delete_success: { message: '신고 내역 삭제 성공!', type: 'success' },
+    report_delete_failure: { message: '신고 내역 삭제 실패!', type: 'failure' },
+    change_user_sanctions_until_success: { message: '제재 기간이 성공적으로 변경되었습니다!', type: 'success' },
+    change_user_sanctions_until_failure: { message: '제재 기간 변경에 실패했습니다!', type: 'failure' },
     error: { message: 'error', type: 'failure' }
 };
 
@@ -31,6 +36,9 @@ if (toastMap[result]) {
         toast.style.opacity = '0';
         setTimeout(() => {
             toast.style.display = 'none';
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.delete('result');
+            history.replaceState(null, '', newUrl.toString());
         }, 500);
     }, 3000);
 }

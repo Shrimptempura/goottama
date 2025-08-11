@@ -27,9 +27,28 @@ public class SendEmailService implements SendEmailServiceInter{
 		String to = joinformDto.getEmail();
 		String code = new EmailSHA().getSHA256(to);
 		
-		String subject = "회원가입 인증을 위한 메일입니다.";
+		String subject = "아마겟돈 회원가입 인증을 위한 메일입니다.";
 		String link = emailConfig.getCallbackUrl()+"emailCheck?code="+code+"&loginId="+loginId;
-		String content="다음 링크 클릭 이메일 인증을 진행하세요. " + "<a href=\"" + link + "\"><b>이메일 인증하기</b></a>";
+		String content=
+				 "<div style=\"font-family: Arial, sans-serif; font-size: 16px; color: #333;\">" +
+					        "<p>안녕하세요,</p>" +
+					        "<p>아래 버튼을 클릭하여 이메일 인증을 완료해주세요.</p>" +
+
+					        "<div style=\"margin: 20px 0;\">" +
+					            "<a href=\"" + link + "\" " +
+					               "style=\"display: inline-block; " +
+					                       "background-color: #007bff; " +
+					                       "color: white; " +
+					                       "padding: 12px 24px; " +
+					                       "text-align: center; " +
+					                       "text-decoration: none; " +
+					                       "font-weight: bold; " +
+					                       "border-radius: 6px; " +
+					                       "font-size: 16px;\">" +
+					                "이메일 인증하기" +
+					            "</a>" +
+					        "</div>" +
+					    "</div>";
 		
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
@@ -53,8 +72,11 @@ public class SendEmailService implements SendEmailServiceInter{
 	public void sendPwcodeEmailAction(FindPwDto findPwDto, String code) {
 
 		String to = findPwDto.getEmail();		
-		String subject = "비밀번호 재설정 인증 코드";
-		String content = "인증 코드는 "+code+" 입니다.";
+		String subject = "아마겟돈 비밀번호 재설정 인증 코드";
+		String content = "<div style='font-family: Arial, sans-serif; font-size: 14px;'>"
+		        + "<p><strong>아마겟돈 비밀번호 재설정 인증 코드:</strong> <span style='color: blue; font-weight: bold;'>" + code + "</span></p>"
+		        + "<p>사이트로 돌아가셔서 위의 인증코드를 입력해주세요.</p>"
+		        + "</div>";
 		
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
@@ -62,10 +84,30 @@ public class SendEmailService implements SendEmailServiceInter{
 			
 			helper.setTo(to);
 			helper.setSubject(subject);
-			helper.setText(content);
+			helper.setText(content,true);
 			helper.setFrom(emailConfig.getFrom());
 			
 			mailSender.send(message);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	@Override
+	public void sendInquiryEmail(String email, String subject, String message) {
+		
+		try {
+			MimeMessage mail = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
+			
+			helper.setTo(emailConfig.getFrom());
+			helper.setSubject(subject);
+			helper.setText(message,true);
+			helper.setFrom(email);
+			
+			mailSender.send(mail);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

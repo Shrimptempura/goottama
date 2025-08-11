@@ -102,4 +102,13 @@ public interface ManageReportsIDao {
      * @return
      */
     int deleteReport(String reportId);
+
+    /**
+     * 신고 상태 확인
+     *
+     * @param targetType
+     * @param targetId
+     * @return
+     */
+    public String getReportStatusByTarget(String targetType, Long targetId);
 }

@@ -41,7 +41,7 @@ public class GetReportDetail {
             throw new RuntimeException("신고 내역 없음 ID : " + reportId);
         }
 
-        String reporterId = String.valueOf(report.getReportId());
+        String reporterId = String.valueOf(report.getUserId());
         UserTotalDataDTO reporter = manageUserIDao.getUserByUserId(reporterId);
         String reportTargetType = report.getTargetType();
         Long reportTargetId = report.getTargetId();

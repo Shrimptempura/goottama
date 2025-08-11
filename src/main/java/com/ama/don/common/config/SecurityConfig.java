@@ -45,8 +45,18 @@ public class SecurityConfig {
                                 "/emailCheck",
                                 "/authenticate",
                                 "/find_loginId",
+                                "/findPw",
+                                "/checkPwCode",
+                                "/resetPw_view",
+                                "/resetPw",
+                                "/checkDuplicateId",
+                                "/checkDuplicateNickname",
+                                "/successJoin_view",
                                 "/css/**", "/js/**"
                         ).permitAll()
+//                        .requestMatchers("/seller/**").hasRole("SELLER") // 200(판매자) 이상 권한이 필요한 페이지
+//                        .requestMatchers("/admin/**").hasRole("ADMIN") // 300(관리자) 이상 권한이 필요한 페이지
+//                        .requestMatchers("/superAdmin/**").hasRole("SUPER_ADMIN") // 400(최고운영자) 권한이 필요한 페이지
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
@@ -68,7 +78,7 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                 )
                 .userDetailsService(customUserDetailsService)
-//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // 로그인 없이 모두 허용
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // 로그인 없이 모두 허용
                 .csrf(csrf -> csrf.disable());
         return http.build();
     }

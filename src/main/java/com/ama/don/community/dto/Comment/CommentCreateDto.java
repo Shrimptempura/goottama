@@ -1,5 +1,7 @@
 package com.ama.don.community.dto.Comment;
 
+import java.sql.Timestamp;
+
 import com.ama.don.common.enums.TargetType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,6 +20,8 @@ public class CommentCreateDto {
 
 	private String comment_content;
 	private Long parent_comment_id;
+	private Timestamp created_at;
+	private Timestamp modified_at;
 
 	private Long targetId;
 	private TargetType targetType;

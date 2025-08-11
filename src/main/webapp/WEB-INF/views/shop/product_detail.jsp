@@ -843,6 +843,35 @@ function debugInquiries() {
 
 
 
+//
+function renderOrderActions(orderId){
+	
+	<p>리턴입니다.</p>	
+	return '<p>리턴입니다.</p>';
+		
+
+}
+
+function alert(){
+	console.log('=== 알람 ===');
+	alert("버튼알람");
+}
+
+
+//버튼 클릭
+ const btn = document.getElementById('btn');
+    const container = document.getElementById('container');
+
+    btn.addEventListener('click', () => {
+      const p = document.createElement('p');
+      p.textContent = '새로 추가된 문단입니다.';
+      p.classList.add('my-paragraph'); // 필요하면 클래스 추가
+      container.appendChild(p);
+    });
+
+
+})
+
 //bottom bar
 //부드러운 스크롤
 // 부드러운 스크롤 효과를 위한 추가 스크립트 (CSS scroll-behavior로도 충분함)
@@ -858,6 +887,47 @@ function debugInquiries() {
                 }
             });
         });
+        
+        
+//
+//전역 변수
+let paragraphCount = 0;
+
+// DOM 요소들
+const btn = document.getElementById('btn');
+const btnClear = document.getElementById('btnClear');
+
+
+const container = document.getElementById('container');
+
+// 1. 기본 문단 추가
+btn.addEventListener('click', () => {
+	console.log('버튼 클릭:', paragraphCount);
+    const p = document.createElement('p');
+    p.textContent = `새로 추가된 문단입니다. (${paragraphCount}번째)`;
+    p.classList.add('my-paragraph');
+    
+    // 기존 안내 텍스트 제거
+    if (paragraphCount === 1) {
+        container.innerHTML = '';
+    }
+    
+    container.appendChild(p);
+    updateCounter();
+    
+    // 새로 추가된 요소로 스크롤
+    p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+});
+
+// 2. 전체 삭제
+btnClear.addEventListener('click', () => {
+    if (paragraphCount > 0 && confirm('모든 문단을 삭제하시겠습니까?')) {
+        container.innerHTML = '<p style="color: #666; font-style: italic;">여기에 새로운 문단들이 추가됩니다...</p>';
+        paragraphCount = 0;
+        updateCounter();
+    }
+});
+
 </script>
 
 
@@ -865,6 +935,16 @@ function debugInquiries() {
 <h2>product_detail</h2>
 
 <div class="main-container">
+
+<!-- 
+	
+	 <button id="btn">문단 추가</button>
+	 <button id="btnClear" class="btn-danger">전체 삭제</button>
+  	<div id="container">
+        <p style="color: #666; font-style: italic;">여기에 새로운 문단들이 추가됩니다...</p>
+    </div>
+      -->
+     
 
     <!-- 왼쪽 섹션: 이미지, 하단바, 상품정보 -->
     <div class="left-section">
@@ -934,6 +1014,8 @@ function debugInquiries() {
         			</div>
         		</div>
         	</c:forEach>
+        	
+        	
         	
         	<!-- 샘플 리뷰 (reviews가 없을 경우) -->
         	<c:if test="${empty reviews}">

@@ -8,7 +8,7 @@
         <h1>${report.targetType} 신고</h1>
         신고 번호 : ${report.reportId} </br>
         처리 상태 : ${report.reportStatus} </br>
-        신고자 : <a href="/admin/users/user_data_detail?user_id=${reporter.user_id}" target="_blank">${reporter.user_name}</a><br/>
+        신고자 : <a style="text-decoration: none;" href="/admin/users/user_data_detail?user_id=${reporter.user_id}" target="_blank">${reporter.user_id}번 -- ${reporter.user_name}</a><br/>
         신고일 : ${report.reportDate} </br>
         신고 내용 : ${report.reportContent} </br>
 
@@ -29,11 +29,12 @@
             </c:if>
         </div>
         <button>
-        <a href='/admin/reports/handle_report?targetType=${reported.type}&targetId=${reported.id}'
-                onclick="window.open(this.href, '신고 처리', 'width=500,height=500'); return false;"
+        <a href='/admin/reports/handle_report?targetType=${reported.type}&targetId=${reported.id}&reportId=${report.reportId}'
+                onclick="window.open(this.href, '신고 처리', 'width=500,height=900'); return false;"
                 style="text-decoration: none; color: white;"
         >신고 내역 처리하기</a>
         </button>
+        <button type="button" onclick="if(confirm('정말 삭제하시겠습니까?')) { location.href = '/admin/reports/delete_report?reportId=${report.reportId}'; }">신고내역 삭제</button>
     </div>
 </div>
 

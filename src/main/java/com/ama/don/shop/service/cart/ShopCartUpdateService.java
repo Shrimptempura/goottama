@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.springframework.ui.Model;
 
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.dto.CartDto;
 import com.ama.don.shop.dto.CartFlatDto;
@@ -26,10 +28,20 @@ public class ShopCartUpdateService implements ShopServiceinter{
 				(HttpServletRequest) map.get("request");
 		
 		String product_id=request.getParameter("product_id");
-		String user_id=request.getParameter("user_id");
 		
 		String cart_id=request.getParameter("cart_id");
 		String cart_quantity=request.getParameter("cart_quantity");
+		
+		
+		
+		
+		//
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
+		Long userid=memberDto.getUser_id();
+		
 		
 		  // cart_id null 체크 및 안전한 변환
         if (cart_id == null || cart_id.trim().isEmpty()) {
@@ -59,7 +71,7 @@ public class ShopCartUpdateService implements ShopServiceinter{
             return;
         }
         
-		Long userid=Long.parseLong(user_id);
+
 		
 		
 		//카트아이디를 long으로바꾸고 

@@ -271,16 +271,16 @@
             </div>
         </div>
     </div>
-    
+    LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
     <!-- 디버깅 정보 (개발용) - 사용자 정보 포함 -->
     <div class="debug-info">
         <strong>🔍 디버깅 정보:</strong><br>
-        세션 user_id 원본: <span id="debug_session_raw">${sessionScope.user_id}</span><br>
-        세션 user_id 타입: <span id="debug_session_type"></span><br>
-        처리된 user_id: <span id="debug_user_id">미설정</span><br>
-        사용자 닉네임: <span style="color: #007bff;">${userinfo.user_nickname != null ? userinfo.user_nickname : '없음'}</span><br>
-        사용자 이메일: <span style="color: #007bff;">${userinfo.user_email != null ? userinfo.user_email : '없음'}</span><br>
-        사용자 연락처: <span style="color: #007bff;">${userinfo.user_tel != null ? userinfo.user_tel : '없음'}</span><br>
+        유저 아이디: <span id="debug_session_raw">${loginMember.user_id}</span><br>
+        사용자 닉네임: <span style="color: #007bff;">${loginMember.user_nickname} </span><br>
+        사용자 이메일: <span style="color: #007bff;">${loginMember.user_email} </span><br>
+        사용자 연락처: <span style="color: #007bff;">${loginMember.user_tel} </span><br>
         폼 제출 상태: <span id="debug_status">대기중</span><br>
         <button type="button" onclick="testUserId()" style="margin-top: 5px; padding: 5px 10px; background: #17a2b8; color: white; border: none; border-radius: 3px;">user_id 테스트</button>
     </div>
@@ -293,7 +293,7 @@
         
         <!-- 숨겨진 필드들 -->
         <input type="hidden" name="product_id" value="${product.product_id}">
-        <input type="hidden" name="user_id" id="user_id_field" value="">
+        <input type="hidden" name="user_id" id="user_id_field" value="${loginMember.user_id }">     
         
         <!-- 문의 유형 -->
         <div class="form-group">
@@ -315,9 +315,9 @@
             <label for="inquirer_name" class="form-label">이름 <span class="required">*</span></label>
             <p class="user-info-display">
                 <span class="user-icon">👤</span>
-                ${userinfo.user_nickname != null ? userinfo.user_nickname : '사용자'}
+                ${loginMember.user_nickname }
             </p>
-            <input type="hidden" name="inquirer_name" value="${userinfo.user_nickname != null ? userinfo.user_nickname : '사용자'}">
+            <input type="hidden" name="inquirer_name" value="${loginMember.user_nickname }">
         </div>
         
         
@@ -357,105 +357,6 @@
 </div>
 
 <script>
-// ========== 방법 1: 폼 제출 시 getUserId() 함수 호출 ==========
-
-// getUserId 함수 정의 (개선된 버전)
-function getUserId() {
-    var userId = '${sessionScope.user_id}';
-    console.log('getUserId() 호출됨 - 원본 세션 user_id:', userId);
-    console.log('userId 타입:', typeof userId);
-    console.log('userId 길이:', userId ? userId.length : 'undefined');
-    
-    // 다양한 경우의 null/빈값 체크
-    if (!userId || 
-        userId === 'null' || 
-        userId === 'undefined' || 
-        userId.trim() === '' || 
-        userId === '${sessionScope.user_id}') { // EL이 처리되지 않은 경우
-        
-        userId = '1'; // 기본값
-        console.log('세션에 user_id가 없어서 기본값 사용:', userId);
-    } else {
-        // 숫자가 아닌 문자 제거 (혹시 모를 공백이나 특수문자)
-        userId = userId.toString().replace(/[^0-9]/g, '');
-        if (userId === '') {
-            userId = '1';
-            console.log('숫자가 아닌 값이어서 기본값 사용:', userId);
-        }
-    }
-    
-    console.log('최종 반환될 user_id:', userId);
-    return userId;
-}
-
-// 폼 제출 시 호출되는 함수 (개선된 버전)
-function setUserId() {
-    console.log('=== 폼 제출 시작 ===');
-    
-    // 1. getUserId() 함수로 user_id 가져오기
-    var userId = getUserId();
-    console.log('가져온 user_id:', userId);
-    
-    // 2. user_id 유효성 재검증
-    if (!userId || userId === '' || userId === 'null' || userId === 'undefined') {
-        console.error('user_id가 여전히 비어있음, 강제로 기본값 설정');
-        userId = '1';
-    }
-    
-    // 3. 숫자인지 확인
-    if (!/^\d+$/.test(userId)) {
-        console.error('user_id가 숫자가 아님:', userId);
-        userId = '1';
-    }
-    
-    // 4. hidden input에 user_id 설정
-    var userIdField = document.getElementById('user_id_field');
-    userIdField.value = userId;
-    console.log('hidden input에 설정된 값:', userIdField.value);
-    console.log('hidden input name:', userIdField.name);
-    
-    // 5. 디버깅 정보 업데이트
-    document.getElementById('debug_user_id').textContent = userId;
-    document.getElementById('debug_status').textContent = '제출 준비 완료';
-    
-    // 6. 폼 데이터 전체 확인 (디버깅용)
-    console.log('=== 폼 데이터 확인 ===');
-    var formData = new FormData(document.querySelector('.inquiry-form'));
-    for (var pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-    }
-    
-    // 7. 필수 필드 검사
-    var requiredFields = document.querySelectorAll('[required]');
-    var hasError = false;
-    
-    requiredFields.forEach(function(field) {
-        if (!field.value.trim()) {
-            field.style.borderColor = '#e74c3c';
-            hasError = true;
-            console.log('필수 필드 누락:', field.name);
-        } else {
-            field.style.borderColor = '#ced4da';
-        }
-    });
-    
-    if (hasError) {
-        alert('필수 항목을 모두 입력해주세요.');
-        document.getElementById('debug_status').textContent = '필수 항목 누락';
-        return false; // 폼 제출 중단
-    }
-    
-    // 8. 최종 확인
-    var confirmed = confirm('문의를 등록하시겠습니까?\n\n전송될 user_id: ' + userId);
-    if (confirmed) {
-        document.getElementById('debug_status').textContent = '제출 중...';
-        console.log('=== 폼 제출 진행 ===');
-        return true; // 폼 제출 계속
-    } else {
-        document.getElementById('debug_status').textContent = '제출 취소됨';
-        return false; // 폼 제출 중단
-    }
-}
 
 // 글자 수 카운터
 function updateCharCount(textarea) {
@@ -497,22 +398,6 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('처리된 user_id:', processedUserId);
 });
 
-// user_id 테스트 함수
-function testUserId() {
-    console.log('=== user_id 테스트 시작 ===');
-    
-    var rawValue = '${sessionScope.user_id}';
-    var processedValue = getUserId();
-    
-    alert('세션 원본 값: "' + rawValue + '"\n' +
-          '타입: ' + typeof rawValue + '\n' +
-          '길이: ' + (rawValue ? rawValue.length : 'undefined') + '\n' +
-          '처리된 값: "' + processedValue + '"');
-          
-    // hidden input에 값 설정 테스트
-    document.getElementById('user_id_field').value = processedValue;
-    console.log('테스트 완료 - hidden input 값:', document.getElementById('user_id_field').value);
-}
 </script>
 </body>
 </html>

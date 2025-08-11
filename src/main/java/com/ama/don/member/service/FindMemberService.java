@@ -1,14 +1,11 @@
 package com.ama.don.member.service;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.ama.don.member.dao.JoinDao;
 import com.ama.don.member.dao.LoginDao;
 import com.ama.don.member.dto.FindLoginIdDto;
 import com.ama.don.member.dto.FindPwDto;
-import com.ama.don.member.utill.EmailSHA;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
