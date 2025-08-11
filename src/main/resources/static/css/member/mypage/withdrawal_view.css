@@ -1,0 +1,76 @@
+.withdrawal-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+}
+
+.withdrawal-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 24px;
+}
+
+.withdraw-info {
+  font-size: 14px;
+  color: #555;
+  background-color: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  line-height: 1.6;
+}
+
+.withdrawal-form label {
+  display: block;
+  margin: 12px 0;
+  font-size: 15px;
+  color: #444;
+}
+
+.checkbox-label {
+  margin-top: 20px;
+}
+
+.reason-section {
+  margin-top: 20px;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+}
+
+.btn {
+  padding: 10px 25px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-submit {
+  background-color: #dc3545;
+  color: #fff;
+}
+
+.btn-submit:hover {
+  background-color: #c82333;
+}
+
+.btn-cancel {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+.btn-cancel:hover {
+  background-color: #5a6268;
+}
