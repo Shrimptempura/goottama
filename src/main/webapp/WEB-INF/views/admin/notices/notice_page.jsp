@@ -33,6 +33,6 @@
     </div>
 
     <%-- 글쓰기 버튼 --%>
-    <button type="button" onclick="location.href='./notice_write_view'">공지 작성</button>
+    <button type="button" onclick="location.href='/admin/notices/notice_write_view'">공지 작성</button>
 </body>
 </html>

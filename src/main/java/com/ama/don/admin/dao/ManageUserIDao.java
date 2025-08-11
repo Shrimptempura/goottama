@@ -26,7 +26,26 @@ public interface ManageUserIDao {
 
     public int countSearchUsers(@Param("userSearchDTO") UserSearchDTO userSearchDTO);
 
+    /**
+     * 유저 아이디를 기반으로 재제 종료일을 변경
+     * @param userId
+     * @param endDate
+     * @return
+     */
     public int updateUserSanctionsUntil(String userId, Timestamp endDate);
 
+    /**
+     * 유저 아이디를 기반으로 활성 상태, 재제 종료일을 변경
+     * @param userId
+     * @param endDate
+     * @param userStatus
+     * @return
+     */
     public int updateUserSanctionsAndStatus(String userId, Timestamp endDate, String userStatus);
+
+    /**
+     * 현재 시간을 기준으로 만료된 제재를 찾아 업데이트
+     * @return
+     */
+    public int resetExpiredUserSanctions();
 }

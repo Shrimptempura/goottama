@@ -171,8 +171,8 @@ ommunitySearchVO} 객체.<br/>
      * @return
      */
     @RequestMapping("/admin/notices/notice_modify_view")
-    public String noticeModifyView(Model model, HttpServletRequest request){
-        model.addAttribute("request", request);
+    public String noticeModifyView(Model model, @RequestParam("notices_id") String noticesId){
+        model.addAttribute("noticesId", noticesId);
         getNoticeDetail.execute(model);
         return "admin/notices/notice_modify_view";
     }

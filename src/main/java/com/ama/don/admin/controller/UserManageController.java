@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class UserManageController {
-    // TODO: 날짜 확인 해서 지난 user_sanctions_until은 없애야
+
     private final GetUserListService getUserListService;
     private final GetUserDataForModal getUserDataForModal;
     private final GetUserDetailData getUserDetailData;
