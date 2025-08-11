@@ -723,7 +723,7 @@ function changeCount(value){
 
 // ========== getuserid() 함수 정의 ==========
 function getuserid() {
-    var userId = '${sessionScope.user_id}';
+    var userId = ${loginMember.user_id};
     if (!userId || userId.trim() === '' || userId === 'null') {
         userId = '1'; // 기본값으로 1 사용
     }
@@ -751,7 +751,7 @@ function inquirywrite() {
 
 // 바로 주문하기도 getuserid() 사용하도록 수정
 function goorder(){
-    let userId = getuserid();
+    let userId = ${loginMember.user_id};
     // 바로 주문: product_id, user_id, quantity 전달
     location.href = 'order_view?product_id=${product.product_id}' + 
                    '&user_id=' + userId + 
@@ -856,45 +856,7 @@ function debugInquiries() {
             });
         });
         
-        
-//
-//전역 변수
-let paragraphCount = 0;
-
-// DOM 요소들
-const btn = document.getElementById('btn');
-const btnClear = document.getElementById('btnClear');
-
-
-const container = document.getElementById('container');
-
-// 1. 기본 문단 추가
-btn.addEventListener('click', () => {
-	console.log('버튼 클릭:', paragraphCount);
-    const p = document.createElement('p');
-    p.textContent = `새로 추가된 문단입니다. (${paragraphCount}번째)`;
-    p.classList.add('my-paragraph');
-    
-    // 기존 안내 텍스트 제거
-    if (paragraphCount === 1) {
-        container.innerHTML = '';
-    }
-    
-    container.appendChild(p);
-    updateCounter();
-    
-    // 새로 추가된 요소로 스크롤
-    p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-});
-
-// 2. 전체 삭제
-btnClear.addEventListener('click', () => {
-    if (paragraphCount > 0 && confirm('모든 문단을 삭제하시겠습니까?')) {
-        container.innerHTML = '<p style="color: #666; font-style: italic;">여기에 새로운 문단들이 추가됩니다...</p>';
-        paragraphCount = 0;
-        updateCounter();
-    }
-});
+       
 
 </script>
 
@@ -1190,25 +1152,7 @@ btnClear.addEventListener('click', () => {
             <button class="cart-btn" onclick="showAlert()">장바구니 담기</button>
             <button class="order-btn" onclick="goorder()">바로 주문하기</button>
         </div>
-        
-        <script>
-        
-        
-        
-     	// 바로 주문하기
-        function goorder(){
-            let userId = getUserId();
-            if (!userId) return; // 로그인 안된 경우 함수 종료
-            
-            // 바로 주문: product_id, user_id, quantity 전달
-            location.href = 'order_view?product_id=${product.product_id}' + 
-                           '&user_id=' + userId + 
-                           '&quantity=' + count+
-            			   '&form_cart=false';
-        }
-        
-        </script>
-        
+      
     </div>
 </div>
 

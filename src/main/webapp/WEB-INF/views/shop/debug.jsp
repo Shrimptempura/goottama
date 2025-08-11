@@ -81,14 +81,23 @@
 			<hr />
 		</c:forEach> --%>
 
-
 	<!-- 주문 카드 -->
 <c:forEach var="order" items="${userOrders}">
     <div class="order-card">
+        
         <div class="order-header">
             주문번호: ${order.order_id}  
             <span style="font-size:14px; font-weight:normal; color:#666;">(${order.order_date})</span>
+            
+            
+            <!-- 배송 정보 -->     
+             <c:set var="deliverinfo" value="${orderDeliverMap[order.order_id] }" />
+             	<p>배송상태:${deliverinfo.deliver_status }</p>
+         	
+            
         </div>
+        
+        
         <p>주문 상품 총갯수: ${orderProductsMap[order.order_id].size()}개</p>
 
         <!-- 상품 카드 반복 -->
@@ -108,6 +117,7 @@
         <div class="order-total">
             주문 총 가격: ₩<fmt:formatNumber value="${order.order_totalprice}" pattern="#,###"/>
         </div>
+       
     </div>
 </c:forEach>
 </html>

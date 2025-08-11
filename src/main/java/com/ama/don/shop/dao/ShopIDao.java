@@ -77,7 +77,6 @@ public interface ShopIDao {
 	//Order iDao
     
 	public void order_write(OrdersDto ordersDto);							
-	public void deliver_write(DeliverDto deliverDto);
 	public void orders_products_write(Orders_productsDto orders_productsDto);
 	public void payment_write(PaymentDto paymentDto);
 	// 주문 조회 관련
@@ -91,7 +90,10 @@ public interface ShopIDao {
 	 * public ArrayList<OrderFlatDto> user_orders_simple(Long userid); //디버깅 샘플
 	 */	//Deliver iDao
 	//Deliver iDao
-	public void deliver_update(Long order_id, String deliver_person, 
+	
+	public OrderFlatDto order_deliver_info(Long order_id);					//주문 아이디로 배송 상태 확인
+	public void deliver_write(DeliverDto deliverDto);						//배송 작성
+	public void deliver_update(Long order_id, String deliver_person, 		//배송 수정	
 			String deliver_recipient_phone, String deliver_loc, String deliver_detail_loc);
 	
 	
