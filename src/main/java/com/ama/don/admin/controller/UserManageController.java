@@ -1,6 +1,7 @@
 package com.ama.don.admin.controller;
 
 import com.ama.don.admin.dto.userDTO.UserSearchDTO;
+import com.ama.don.admin.service.userManage.ChangeUserSanctionsUntilService;
 import com.ama.don.admin.service.userManage.GetUserDataForModal;
 import com.ama.don.admin.service.userManage.GetUserDetailData;
 import com.ama.don.admin.service.userManage.GetUserListService;
@@ -15,11 +16,13 @@ public class UserManageController {
     private final GetUserListService getUserListService;
     private final GetUserDataForModal getUserDataForModal;
     private final GetUserDetailData getUserDetailData;
+    private final ChangeUserSanctionsUntilService changeUserSanctionsUntilService;
 
-    public UserManageController(GetUserDetailData getUserDetailData, GetUserListService getUserListService, GetUserDataForModal getUserDataForModal) {
+    public UserManageController(ChangeUserSanctionsUntilService changeUserSanctionsUntilService, GetUserDetailData getUserDetailData, GetUserListService getUserListService, GetUserDataForModal getUserDataForModal) {
         this.getUserListService = getUserListService;
         this.getUserDataForModal = getUserDataForModal;
         this.getUserDetailData = getUserDetailData;
+        this.changeUserSanctionsUntilService = changeUserSanctionsUntilService;
     }
 
     @RequestMapping("/admin/users/user_manage")
@@ -60,5 +63,24 @@ public class UserManageController {
         model.addAttribute("userId", userId);
         getUserDetailData.execute(model);
         return "admin/users/user_data_detail";
+    }
+
+    @GetMapping("/admin/users/sanction_modal_content")
+    public String getSanctionModalContent(@RequestParam("userId") String userId, Model model) {
+        model.addAttribute("userId", userId);
+        return "admin/users/sanction_modal_content";
+    }
+
+    @PostMapping("/admin/users/change_user_sanctions_until")
+    public String changeUserSanctionsUntil(Model model,
+                                           @RequestParam("user_id") String userId,
+                                           @RequestParam("user_sanctions_until") String userSanctionsUntil,
+                                           @RequestParam("new_user_status") String userStatus) {
+        model.addAttribute("userId", userId);
+        model.addAttribute("userSanctionsUntil", userSanctionsUntil);
+        model.addAttribute("userStatus", userStatus);
+        boolean isSuccess = changeUserSanctionsUntilService.execute(model);
+        String resultMessage = isSuccess ? "change_user_sanctions_until_success" : "change_user_sanctions_until_failure";
+        return "redirect:/admin/users/user_data_detail?user_id=" + userId + "&result=" + resultMessage;
     }
 }

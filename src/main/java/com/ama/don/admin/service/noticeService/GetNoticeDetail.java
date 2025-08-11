@@ -39,10 +39,10 @@ public class GetNoticeDetail implements NoticeServiceInterface{
     @Override
     public void execute(Model model) {
         Map<String, Object> map = model.asMap();
-        HttpServletRequest request = (HttpServletRequest) map.get("request");
-        String noticeId = request.getParameter("notices_id");
+        String noticeId = (String) model.getAttribute("noticesId");
+        // String noticeId = request.getParameter("notices_id");
         NoticesDto notice = noticesIDao.getNoticeById(noticeId);
-
+        System.out.println("\nnoticeId : "+noticeId);
         // 공지사항을 찾을 수 없는 경우 예외 발생시킴.
         if (notice == null) {
             throw new RuntimeException("공지사항을 찾을 수 없음. ID: " + noticeId);

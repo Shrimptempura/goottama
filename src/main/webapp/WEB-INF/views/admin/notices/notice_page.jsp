@@ -13,8 +13,6 @@
 <title>Notice_page</title>
 </head>
 <body>
-    <div id="toast"></div>
-
     <h1>Notice</h1>
 
     <%-- 검색바 --%>
@@ -35,6 +33,6 @@
     </div>
 
     <%-- 글쓰기 버튼 --%>
-    <button type="button" onclick="location.href='./notice_write_view'">공지 작성</button>
+    <button type="button" onclick="location.href='/admin/notices/notice_write_view'">공지 작성</button>
 </body>
 </html>

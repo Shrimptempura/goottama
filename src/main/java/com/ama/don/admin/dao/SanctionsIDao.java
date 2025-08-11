@@ -1,5 +1,6 @@
 package com.ama.don.admin.dao;
 
+import com.ama.don.admin.dto.sanctionsDTO.MakeSanctionDTO;
 import com.ama.don.admin.dto.sanctionsDTO.SanctionSearchDTO;
 import com.ama.don.admin.dto.sanctionsDTO.SanctionsDTO;
 import org.apache.ibatis.annotations.Mapper;
@@ -81,14 +82,14 @@ public interface SanctionsIDao {
      *
      * @return 성공 시 true, 실패 시 false
      */
-    boolean makeSanction(SanctionsDTO sanctionsDto);
+    int makeSanction(MakeSanctionDTO makeSanctionDTO);
 
     /**
      * 기존 제재 내역을 수정한다.
      *
      * @return 성공 시 true, 실패 시 false
      */
-    boolean modifySanction(SanctionsDTO sanctionsDto);
+    int modifySanction(SanctionsDTO sanctionsDto);
 
     /**
      * 대상 사용자의 제재 내역을 삭제한다.
@@ -96,5 +97,5 @@ public interface SanctionsIDao {
      * @param userId 삭제할 대상 사용자 ID
      * @return 성공 시 true, 실패 시 false
      */
-    boolean deleteSanction(String userId);
+    int deleteSanction(String userId);
 }

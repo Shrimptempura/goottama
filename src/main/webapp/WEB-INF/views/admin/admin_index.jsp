@@ -7,10 +7,12 @@
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 <link rel="stylesheet" href="/static/css/admin/ui-snippets/modal.css">
+<link rel="stylesheet" href="/static/css/admin/ui-snippets/toast.css">
 <title>Admin Dashboard</title>
 </head>
 <body>
     <h1>Admin Dashboard</h1>
+    <div id="toast"></div>
     <div class="leftNavigationBar">
         <jsp:include page="${leftNavigationBar}" />
         <hr />
@@ -29,4 +31,5 @@
 </body>
 <script src="/static/js/admin/admin_router.js"></script>
 <script src="/static/js/admin/ui-snippets/makeModal.js"></script>
+<script src="/static/js/admin/ui-snippets/toast.js"></script>
 </html>
