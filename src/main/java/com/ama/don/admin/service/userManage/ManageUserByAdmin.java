@@ -49,9 +49,18 @@ public class ManageUserByAdmin extends User {
         return Date.from(Instant.now()).after(sanctionsUntil);
     }
 
+    private static boolean isDeletedCheck(String userStatus) {
+        return "deleted".equals(userStatus);
+    }
+
     @Override
     public boolean isAccountNonLocked() {
         return isAccountNonLockedCheck(this.sanctionsUntil);
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return !isDeletedCheck(this.userStatus);
     }
 
     public UserTotalDataDTO getUserTotalDataDTO() {
