@@ -18,7 +18,6 @@
 
 <div class="sub-nav">
 <a href="/mypage/myReview"><strong>내가남긴리뷰</strong></a> 
-<a href="/mypage/myFeed">나의피드</a> 
 <a href="/mypage/myComment">내가남긴댓글</a>
 </div>
 

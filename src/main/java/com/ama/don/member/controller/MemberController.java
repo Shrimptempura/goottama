@@ -12,6 +12,10 @@ import com.ama.don.member.dto.ResetPwDto;
 import com.ama.don.member.service.MemberProfileService;
 import com.ama.don.member.service.ProfileImgUploadService;
 import com.ama.don.member.service.WithdrawalService;
+import com.ama.don.shop.dao.ShopIDao;
+import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +57,7 @@ public class MemberController {
 	private final WithdrawalService withdrawalService;
 	private final LoginMemberService loginMemberService;
 	private final MemberUpdateService memberUpdateService;
+	private final ShopIDao iDao;
 	
 
 	@PostMapping("/resetPw")
@@ -76,7 +81,14 @@ public class MemberController {
 	}
 	
 	@GetMapping("/mypage/myOrderList")
-	public String memberOrderList() {
+	public String memberOrderList(HttpServletRequest request, Model model,MemberDto memberDto) {
+		
+		memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		model.addAttribute("request", request);
+		ShopOrderDetailService service = new ShopOrderDetailService(iDao);
+		service.execute(model);
+		
 		return "member/mypage/myOrderList";
 	}
 	
@@ -93,11 +105,6 @@ public class MemberController {
 	@GetMapping("/mypage/myReview")
 	public String myReview() {
 		return "member/mypage/myReview";
-	}
-	
-	@GetMapping("/mypage/myFeed")
-	public String myFeed() {
-		return "member/mypage/myFeed";
 	}
 	
 	@GetMapping("/mypage/myComment")
