@@ -24,6 +24,8 @@ import com.ama.don.shop.dto.PaymentDto;
 import com.ama.don.shop.dto.ProductFlatDto;
 import com.ama.don.shop.service.ShopServiceinter;
 import com.ama.don.shop.service.Kakaopay.ShopKakaopayService;
+import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
+import com.ama.don.shop.service.orderservice.ShopOrderViewService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -31,20 +33,22 @@ import jakarta.servlet.http.HttpSession;
 //3. 필수 추가: PaymentController.java
 
 @Controller
-@RequestMapping("/shop")  // 🔧 수정: /shop으로 변경
 public class KakaoPayController{
 	
+	
+	@Autowired
+	private ShopServiceinter shopServiceinter;
  
- @Autowired
- private ShopKakaopayService shopKakaopayService;
- 
- @Autowired
- private ShopIDao iDao;
+	@Autowired
+	private ShopKakaopayService shopKakaopayService;
+	 
+	@Autowired
+	private ShopIDao iDao;
  
 /// ✅ 즉시 적용 - 카카오페이 콜백용 Controller 수정
 
 //주문 승인
-@GetMapping("/kakaopaysuccess")
+@GetMapping("/shop/kakaopaysuccess")
 public String kakaoPaySuccess(@RequestParam(value = "pg_token", required = false) String pgToken,HttpServletRequest request,Model model) {
     
 	try {
@@ -301,7 +305,7 @@ private Long saveOrderToDatabase(HttpSession session, KakaoPayApprovalResponse a
 
 }
 
-@GetMapping("/kakaopaycancel")
+@GetMapping("/shop/kakaopaycancel")
 public String kakaoPayCancel(HttpServletRequest request, Model model) {
     System.out.println("=== 카카오페이 결제 취소 ===");
     
@@ -325,7 +329,7 @@ public String kakaoPayCancel(HttpServletRequest request, Model model) {
     return "shop/cancel_popup";
 }
 
-@GetMapping("/kakaopayfail")
+@GetMapping("/shop/kakaopayfail")
 public String kakaoPayFail(
     @RequestParam(value = "error_code", required = false) String errorCode,
     @RequestParam(value = "error_msg", required = false) String errorMsg,
@@ -359,7 +363,7 @@ public String kakaoPayFail(
 }
  
  // 디버깅을 위한 모든 파라미터 출력 메서드 (임시)
- @GetMapping("/kakaopay-debug")
+ @GetMapping("/shop/kakaopay-debug")
  public String kakaoPayDebug(HttpServletRequest request, Model model) {
      System.out.println("=== 카카오페이 디버그 - 모든 파라미터 ===");
      
@@ -371,6 +375,19 @@ public String kakaoPayFail(
      return "payment/debug";
  }
  
+ 
+ 
+ @RequestMapping("/shop/debug")
+ public String debug(HttpServletRequest request,Model model) {
+	System.out.println("shop/debug");
+	
+	shopServiceinter = new ShopOrderDetailService(iDao);
+	shopServiceinter.execute(model);
+	
+	
+	 return "shop/debug";
+
+ }
  
  
  

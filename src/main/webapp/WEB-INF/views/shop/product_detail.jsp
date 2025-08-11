@@ -840,38 +840,6 @@ function debugInquiries() {
     });
 }
 
-
-
-
-//
-function renderOrderActions(orderId){
-	
-	<p>리턴입니다.</p>	
-	return '<p>리턴입니다.</p>';
-		
-
-}
-
-function alert(){
-	console.log('=== 알람 ===');
-	alert("버튼알람");
-}
-
-
-//버튼 클릭
- const btn = document.getElementById('btn');
-    const container = document.getElementById('container');
-
-    btn.addEventListener('click', () => {
-      const p = document.createElement('p');
-      p.textContent = '새로 추가된 문단입니다.';
-      p.classList.add('my-paragraph'); // 필요하면 클래스 추가
-      container.appendChild(p);
-    });
-
-
-})
-
 //bottom bar
 //부드러운 스크롤
 // 부드러운 스크롤 효과를 위한 추가 스크립트 (CSS scroll-behavior로도 충분함)
@@ -936,14 +904,6 @@ btnClear.addEventListener('click', () => {
 
 <div class="main-container">
 
-<!-- 
-	
-	 <button id="btn">문단 추가</button>
-	 <button id="btnClear" class="btn-danger">전체 삭제</button>
-  	<div id="container">
-        <p style="color: #666; font-style: italic;">여기에 새로운 문단들이 추가됩니다...</p>
-    </div>
-      -->
      
 
     <!-- 왼쪽 섹션: 이미지, 하단바, 상품정보 -->
