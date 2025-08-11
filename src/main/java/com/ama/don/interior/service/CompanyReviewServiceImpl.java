@@ -7,7 +7,6 @@ import com.ama.don.interior.dao.CompanyReviewDao;
 import com.ama.don.interior.dto.review.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -61,7 +60,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             }
 
             // 최소 1장의 썸네일 파일 저장
-            reviewImgOptions(reviewId, files, false);
+            saveReviewImages(reviewId, files, false);
 
             log.info("CRService - 점수 테이블 생성 시작 - userId: {}, reviewId: {}", userId, reviewId);
             if (!companyReviewDao.isExistScoreTable(companyId)) {
@@ -80,14 +79,8 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             log.info("CRService - 리뷰 작성 성공 - reviewId: {}, companyId: {}, userId: {}", reviewId, companyId, userId);
             return reviewId;
         } catch (Exception e) {
-            if (reviewId != null) {
-                try {
-                    fileService.deleteAllByTargetId(TargetType.INTERIOR_REVIEW, reviewId);
-                } catch (Exception failed) {
-                    log.warn("CRService - 리뷰 실패, 파일 정리 실패 - reviewId: {}", reviewId, failed);
-                }
-            }
-            log.error("CRService - DB 오류, 리뷰 생성 실패 - userId: {}", userId, e);
+            cleanUpReviewCatch(reviewId);
+            log.error("CRService - 리뷰 생성 실패 - userId: {}", userId, e);
             throw new IllegalStateException("업체 리뷰 생성 실패", e);
         }
     }
@@ -162,7 +155,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             }
 
             // 이미지 삭제 생성
-            reviewImgOptions(reviewId, files, true);
+            saveReviewImages(reviewId, files, true);
 
             // 점수 조정
             CompanyScoreAdjustDto adjust = recycleScoreOnEdit(companyId, updateReviewDto, origin);
@@ -171,15 +164,9 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
             log.info("CRService - 리뷰 수정 성공 - reviewId: {}", reviewId);
         } catch (Exception e) {
-            if (reviewId != null) {
-                try {
-                    fileService.deleteAllByTargetId(TargetType.INTERIOR_REVIEW, reviewId);
-                } catch (Exception failed) {
-                    log.warn("CRService - 리뷰 실패, 파일 정리 실패 - reviewId: {}", reviewId, failed);
-                }
-            }
-            log.error("CRService - DB 오류, 리뷰 수정 실패 - reviewId: {}", reviewId, e);
-            throw new IllegalStateException("DB 오류, 리뷰 수정 실패", e);
+            cleanUpReviewCatch(reviewId);
+            log.error("CRService - 리뷰 수정 실패 - reviewId: {}", reviewId, e);
+            throw new IllegalStateException("리뷰 수정 실패", e);
         }
     }
 
@@ -222,15 +209,16 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
             log.info("CRService - 삭제 성공 - reviewId: {}, userId: {}", reviewId, userId);
 
-        } catch (DataAccessException e) {
-            log.error("CRService - DB 오류, 리뷰 삭제 실패 - reviewId: {}", reviewId, e);
-            throw new IllegalStateException("DB 오류, 리뷰 삭제 실패", e);
+        } catch (Exception e) {
+            cleanUpReviewCatch(reviewId);
+            log.error("CRService - 리뷰 삭제 실패 - reviewId: {}", reviewId, e);
+            throw new IllegalStateException("리뷰 삭제 실패", e);
         }
     }
 
 
     // 리뷰 생성 삭제시 이미지 처리 allDelete으로 선택
-    private void reviewImgOptions(Long reviewId, List<MultipartFile> files, boolean allDelete) {
+    private void saveReviewImages(Long reviewId, List<MultipartFile> files, boolean allDelete) {
         if (files == null || files.isEmpty()) {
             log.error("CRService - 리뷰 이미지는 최소 1장 필요 - reviewId: {}", reviewId);
             throw new IllegalArgumentException("리뷰 이미지는 최소 1장이 필요합니다.");
@@ -296,7 +284,8 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
         return adjust;
     }
-
+    
+    // 리뷰 삭제시 점수 조정
     private CompanyScoreAdjustDto recycleScoreOnDelete(Long companyId, CompanyReviewUpdateDto origin) {
 
         CompanyScoreAdjustDto adjust = new CompanyScoreAdjustDto();
@@ -308,7 +297,15 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
         return adjust;
     }
-    
-    // catch helper 이중잡자
-    // 삭제도 실패할수 있으니 catch 확인필요
+
+    // catch 보상 정리
+    private void cleanUpReviewCatch(Long reviewId) {
+        if (reviewId != null) {
+            try {
+                fileService.deleteAllByTargetId(TargetType.INTERIOR_REVIEW, reviewId);
+            } catch (Exception failed) {
+                log.warn("CRService - 파일 정리 실패 - reviewId: {}", reviewId, failed);
+            }
+        }
+    }
 }

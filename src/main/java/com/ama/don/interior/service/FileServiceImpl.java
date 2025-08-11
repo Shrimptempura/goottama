@@ -11,6 +11,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,11 +39,16 @@ public class FileServiceImpl implements FileService {
         String saveDir = uploadBaseDir + "/" + targetType.name().toLowerCase();
         String savedName = UUID.randomUUID() + "_" + originalName;
 
-        // 경로는 사전에 무조건 존재해야함, 따로 생성 코드는 없음
+        // 경로 확인
         File checkDir = new File(saveDir);
         if (!checkDir.exists()) {
-            log.error("FileService - 로컬 디렉토리 생성 실패 - dir: {}", saveDir);
-            throw new RuntimeException("로컬 디렉토리 생성 실패: " + saveDir);
+            try {
+                Path dirPath = Paths.get(saveDir);
+                Files.createDirectories(dirPath);
+            } catch (IOException e) {
+                log.error("FileService - 로컬 디렉토리 생성 실패 - dir: {}", saveDir, e);
+                throw new RuntimeException("로컬 디렉토리 생성 실패: " + saveDir, e);
+            }
         }
 
         File filePath = new File(saveDir, savedName);

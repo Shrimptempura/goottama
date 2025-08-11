@@ -42,19 +42,15 @@ class CompanyServiceImplTest {
     @DisplayName("업체 이름 중복 확인")
     @Test
     void shouldThrowException_whenCompanyNameIsDuplicate() {
-        try (MockedStatic<DevFindTarget> mockStatic = Mockito.mockStatic(DevFindTarget.class)) {
-            // () -> DevFineTarget.getUserId()
-            mockStatic.when(DevFindTarget::getUserId).thenReturn(100L);
+        CompanyCreateDto detail = new CompanyCreateDto();
+        detail.setCompanyName("중복된 업체명");
 
-            CompanyCreateDto detail = new CompanyCreateDto();
-            detail.setCompanyName("중복된 업체명");
+        when(companyAuthService.getLoginUserId()).thenReturn(100L);
+        when(companyDao.isDuplicateCompanyName("중복된 업체명")).thenReturn(true);
 
-            when(companyDao.isDuplicateCompanyName("중복된 업체명")).thenReturn(true);
-
-            assertThrows(IllegalArgumentException.class, () -> {
-                companyServiceImpl.createCompany(detail, new CompanyCreateLocationDto(), Mockito.mock(MultipartFile.class));
-            });
-        }
+        assertThrows(IllegalStateException.class, () -> {
+            companyServiceImpl.createCompany(detail, new CompanyCreateLocationDto(), Mockito.mock(MultipartFile.class));
+        });
     }
 
     @DisplayName("업체 생성 성공")
@@ -108,26 +104,23 @@ class CompanyServiceImplTest {
         CompanyCreateLocationDto location = new CompanyCreateLocationDto();
         location.setLocationId(300L);
 
-        try (MockedStatic<DevFindTarget> mockStatic = Mockito.mockStatic(DevFindTarget.class)) {
-            mockStatic.when(DevFindTarget::getUserId).thenReturn(userId);
+        when(companyAuthService.getLoginUserId()).thenReturn(userId);
+        when(companyDao.isDuplicateCompanyName("통과하는 이름")).thenReturn(false);
 
-            when(companyDao.isDuplicateCompanyName("통과하는 이름")).thenReturn(false);
+        doAnswer(invocation -> {
+            CompanyInsertDto dto = invocation.getArgument(0);
+            dto.setCompanyId(1000L);
+            return null;
+        }).when(companyDao).insertCompany(any(CompanyInsertDto.class));
 
-            doAnswer(invocation -> {
-                CompanyInsertDto dto = invocation.getArgument(0);
-                dto.setCompanyId(1000L);
-                return null;
-            }).when(companyDao).insertCompany(any(CompanyInsertDto.class));
+        assertThrows(IllegalStateException.class, () -> {
+            companyServiceImpl.createCompany(detail, location, null);
+        });
 
-            assertThrows(IllegalArgumentException.class, () -> {
-                companyServiceImpl.createCompany(detail, location, null);
-            });
-
-            verify(companyDao).insertCompanyDetail(detail);
-            verify(companyDao).insertLocation(location);
-            verify(companyDao).insertCompany(any(CompanyInsertDto.class));
-            verify(fileService, never()).saveFile(any(TargetType.class), anyLong(), any(MultipartFile.class), anyBoolean());
-        }
+        verify(companyDao).insertCompanyDetail(detail);
+        verify(companyDao).insertLocation(location);
+        verify(companyDao).insertCompany(any(CompanyInsertDto.class));
+        verify(fileService, never()).saveFile(any(TargetType.class), anyLong(), any(MultipartFile.class), anyBoolean());
     }
 
     @DisplayName("업체 수정 성공 + 사진")
@@ -241,7 +234,7 @@ class CompanyServiceImplTest {
         when(companyDao.getCompanyNameById(companyId)).thenReturn("기존 이름");
         when(companyDao.isDuplicateCompanyName("이미 있는 이름")).thenReturn(true);
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             companyServiceImpl.updateCompany(dto, null);
         });
 
