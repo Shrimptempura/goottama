@@ -307,6 +307,7 @@
     <select id="getEditView" resultType="com.ama.don.interior.dto.review.CompanyReviewUpdateDto">
         SELECT
             r.review_id AS reviewId,
+            c.company_id AS companyId,
             c.communication_rate AS communicationRate,
             c.price_rate AS priceRate,
             c.result_rate AS resultRate,

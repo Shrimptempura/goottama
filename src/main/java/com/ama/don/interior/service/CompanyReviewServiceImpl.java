@@ -72,7 +72,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             log.info("CRService - 리뷰 작성 성공 - reviewId: {}, companyId: {}, userId: {}", reviewId, companyId, userId);
             return reviewId;
         } catch (DataAccessException e) {
-            log.error("SRService - DB 오류, 리뷰 생성 실패 - userId: {}", userId, e);
+            log.error("CRService - DB 오류, 리뷰 생성 실패 - userId: {}", userId, e);
             throw new IllegalStateException("업체 리뷰 생성 실패", e);
         }
     }
@@ -110,14 +110,13 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
     @Override
     public void updateReview(CompanyReviewUpdateDto updateReviewDto) {
         Long userId = companyAuthService.getLoginUserId();
-        Long companyId = companyAuthService.requireMyCompanyId();
         Long reviewId = updateReviewDto.getReviewId();
 
-        log.info("CRService - 업체 리뷰 수정 시작 - userId: {}, companyId: {}, reviewId: {}", userId, companyId, reviewId);
+        log.info("CRService - 업체 리뷰 수정 시작 - userId: {}, reviewId: {}", userId, reviewId);
 
         try {
             if (!companyReviewDao.existByReviewIdAndUserId(reviewId, userId)) {
-                log.error("CRService - 상위 리뷰가 존재 하지 않음 - userId: {}, companyId: {}, reviewId: {}", userId, companyId, reviewId);
+                log.error("CRService - 상위 리뷰가 존재 하지 않음 - userId: {}, reviewId: {}", userId, reviewId);
                 throw new IllegalStateException("상위 리뷰가 없음");
             }
 
@@ -127,6 +126,8 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
                 log.error("CRService - 수정 전 기존 정보 조회 실패 - reviewId: {}", reviewId);
                 throw new IllegalStateException("기존 정보 조회 실패");
             }
+            Long companyId = origin.getCompanyId();
+
 
             // 상위 리뷰 수정
             ReviewDto dto = new ReviewDto();
@@ -175,7 +176,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
                 log.error("CRService - 삭제 전 기존 정보 조회 실패 - reviewId: {}", reviewId);
                 throw new IllegalStateException("리뷰 원본 조회 실패");
             }
-            Long companyId = companyAuthService.requireMyCompanyId();
+            Long companyId = origin.getCompanyId();
             
             // 하위 -> 상위 삭제(소프트)
             companyReviewDao.softDeleteCompanyReview(reviewId);
