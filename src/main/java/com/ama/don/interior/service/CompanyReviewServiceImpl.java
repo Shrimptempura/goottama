@@ -43,13 +43,13 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
         try {
             ReviewDto poly = makePolyReview(createReviewDto);
-            Long polyed = reviewService.insertPolyReview(poly);
-            if (polyed == null) {
+            // insertPolyReview 반환값 = reviewId
+            reviewId = reviewService.insertPolyReview(poly);
+            if (reviewId == null) {
                 log.error("CRService - 상위 리뷰 생성 실패 - userId: {}", userId);
                 throw new IllegalStateException("상위 리뷰 생성 실패");
             }
 
-            reviewId = poly.getReviewId();
             createReviewDto.setReviewId(reviewId);
 
             log.info("CRService - 하위 리뷰 생성 시작 - userId: {}, reviewId: {}", userId, reviewId);
@@ -82,9 +82,9 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         } catch (Exception e) {
             if (reviewId != null) {
                 try {
-                    fileService.deleteAllByTargetId(TargetType.INTERIOR_REVIEW, createReviewDto.getReviewId());
+                    fileService.deleteAllByTargetId(TargetType.INTERIOR_REVIEW, reviewId);
                 } catch (Exception failed) {
-                    log.warn("CRService - 리뷰 실패, 파일 정리 실패 - reviewId: {}", createReviewDto.getReviewId(), failed);
+                    log.warn("CRService - 리뷰 실패, 파일 정리 실패 - reviewId: {}", reviewId, failed);
                 }
             }
             log.error("CRService - DB 오류, 리뷰 생성 실패 - userId: {}", userId, e);
@@ -152,13 +152,13 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
             // 상위 수정 또는 하위 수정이 없을수도 있다 예외 x
             if (polyUpdated == 0) {
-                log.error("CRService - 상위 리뷰 수정 없음 - reviewId: {}", reviewId);
+                log.warn("CRService - 상위 리뷰 수정 없음 - reviewId: {}", reviewId);
             }
 
             // 하위 리뷰 수정
             int companyUpdated = companyReviewDao.updateCompanyReview(updateReviewDto);
             if (companyUpdated == 0) {
-                log.error("CRService - 하위 리뷰 수정 없음 - reviewId: {}", reviewId);
+                log.warn("CRService - 하위 리뷰 수정 없음 - reviewId: {}", reviewId);
             }
 
             // 이미지 삭제 생성
@@ -308,4 +308,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
         return adjust;
     }
+    
+    // catch helper 이중잡자
+    // 삭제도 실패할수 있으니 catch 확인필요
 }
