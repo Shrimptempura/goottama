@@ -723,7 +723,7 @@ function changeCount(value){
 
 // ========== getuserid() 함수 정의 ==========
 function getuserid() {
-    var userId = ${loginMember.user_id};
+    var userId = '${loginMember.user_id}';
     if (!userId || userId.trim() === '' || userId === 'null') {
         userId = '1'; // 기본값으로 1 사용
     }
@@ -751,7 +751,7 @@ function inquirywrite() {
 
 // 바로 주문하기도 getuserid() 사용하도록 수정
 function goorder(){
-    let userId = ${loginMember.user_id};
+    let userId = getuserid();
     // 바로 주문: product_id, user_id, quantity 전달
     location.href = 'order_view?product_id=${product.product_id}' + 
                    '&user_id=' + userId + 
@@ -1152,7 +1152,8 @@ function debugInquiries() {
             <button class="cart-btn" onclick="showAlert()">장바구니 담기</button>
             <button class="order-btn" onclick="goorder()">바로 주문하기</button>
         </div>
-      
+        
+
     </div>
 </div>
 

@@ -79,13 +79,24 @@ function goToOrderDetails() {
     location.href = "order_details?user_id=" + ${loginMember.user_id};
 }
 
-//오늘의집 나의 쇼핑 (주문 배송 목록)
 
-
-// 배송현황으로 이동
+// 주문 내역으로 이동
 function goToOrderDetail(){
-	location.href = "debug"
+	location.href = "debug";
 }
+
+// 리뷰 상세로 이동
+function goToReviewDetail(){
+	location.href = "review_details";
+}
+
+//문의 상세로 이동
+function goToProductInquiryDetail(){
+	location.href = "product_inquiry_details";
+}
+
+
+
 </script>
 
 <div class="subheader">
@@ -96,6 +107,8 @@ function goToOrderDetail(){
     <a href="javascript:void(0)" onclick="goToCart()">Cart</a>
     <a href="javascript:void(0)" onclick="goToOrderDetails()">Order Details</a>
     <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
+    <a href="javascript:void(0)" onclick="goToReviewDetail()">review</a>
+    <a href="javascript:void(0)" onclick="goToProductInquiryDetail()">product_inquiry</a>
     
    
 </div>
