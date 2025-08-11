@@ -6,6 +6,7 @@ import com.ama.don.admin.dto.noticeDTO.NoticesDto;
 import com.ama.don.admin.utils.SearchVO;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -70,8 +71,6 @@ public class GetNoticeListService implements NoticeServiceInterface{
             row.put("noticesContent", dto.getNotices_content());
             mapList.add(row);
         }
-
-        tUIImageControlService.removeNegativeTargetIdFiles();
 
         model.addAttribute("list", mapList);
         model.addAttribute("searchVO", searchVO);

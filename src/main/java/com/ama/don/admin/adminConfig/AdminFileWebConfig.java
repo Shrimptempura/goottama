@@ -1,4 +1,4 @@
-package com.ama.don.admin.utils;
+package com.ama.don.admin.adminConfig;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +14,7 @@ import java.io.File;
  * 정적 자원 핸들러 추가 및 애플리케이션 시작 시 필요한 디렉토리 생성을 처리함.<br/>
  */
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
+public class AdminFileWebConfig implements WebMvcConfigurer {
 
     // application.properties에서 설정한 업로드 경로를 주입받음
     @Value("${file.upload-location:}")

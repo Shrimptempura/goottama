@@ -53,7 +53,8 @@ function loadContent(menuType) {
         return Response.text();
     }).then(html => {
         mainContainer.innerHTML = html;
-        callSpecificPageJSFunction(menuType)
+        callSpecificPageJSFunction(menuType);
+
     }).catch(error => {
         console.error('Error loading content:', error); // TODO : 나중에 toast로 바꾸기
         mainContainer.innerHTML = '<p>컨텐츠 불러오기 실패</p>'; // TODO : 에러페이지 만들기

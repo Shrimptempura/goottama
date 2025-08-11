@@ -8,8 +8,6 @@
 <title>Report Page</title>
 </head>
 <body>
-    <div id="toast"></div>
-
         <h1>Report</h1>
 
         <%-- 검색바 --%>
