@@ -108,7 +108,7 @@ public interface CompanyReviewDao {
      * 1. companyId로 작성한 company_score_avg가 있는가?, 실제 첫 리뷰인가
      *      - company_score_avg 테이블 확인 (isExistScoreTable)
      *      - 처음이다: createScoreTable (company_score_avg)
-     *      - 처음이 아니다: addScoreOnCreate, addScoreOnCreate (company_score_avg)
+     *      - 처음이 아니다: addScoreOnCreate, averageOnCreate (company_score_avg)
      */
 
     // companyId로 company_score_avg 테이블 존재 유무 확인

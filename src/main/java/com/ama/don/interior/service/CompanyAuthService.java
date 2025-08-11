@@ -3,6 +3,9 @@ package com.ama.don.interior.service;
 import java.util.Optional;
 
 public interface CompanyAuthService {
+    
+    // 로그인한 userId 찾기
+    Long getLoginUserId();
 
     // userId로 companyId 찾기, 없을수도 있음
     Optional<Long> findMyCompanyId();

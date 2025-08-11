@@ -18,6 +18,15 @@ public class CompanyAuthServiceImpl implements CompanyAuthService {
 
     private final CompanyDao companyDao;
 
+    @Override
+    public Long getLoginUserId() {
+        Long userId = DevFindTarget.getUserId();
+        if (userId == null) {
+            throw new IllegalStateException("로그인한 사용자만 가능합니다.");
+        }
+        return userId;
+    }
+
     @Transactional(readOnly = true)
     @Override
     public Optional<Long> findMyCompanyId() {
