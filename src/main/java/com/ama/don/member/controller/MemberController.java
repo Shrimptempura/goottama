@@ -133,7 +133,7 @@ public class MemberController {
 	}
 	
 	@PostMapping("/profileImgUpload")
-	public String profileImgUpload(@RequestParam("profileImg") MultipartFile file, HttpSession session, MemberDto memberDto, Model model) throws IllegalStateException, IOException {
+	public String profileImgUpload(@RequestParam("profileImg") MultipartFile file, MemberDto memberDto, Model model) throws IllegalStateException, IOException {
 		
 		memberDto = loginMemberService.getCurrentLoginMemberDto();
 		

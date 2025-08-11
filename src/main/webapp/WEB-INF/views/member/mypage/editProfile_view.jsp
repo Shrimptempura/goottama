@@ -29,7 +29,6 @@
 </div>
 
 <div class="profile-container">
-
  	<h2>회원정보 수정</h2>
   
     <div class="profile-image-section">
