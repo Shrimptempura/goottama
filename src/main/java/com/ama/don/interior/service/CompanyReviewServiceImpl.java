@@ -32,6 +32,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
     public Long createReview(CompanyReviewCreateDto createReviewDto, List<MultipartFile> files) {
         Long userId = companyAuthService.getLoginUserId();
         Long companyId = createReviewDto.getCompanyId();    // hidden form jsp
+        Long reviewId = null;
 
         if (companyId == null) {
             log.warn("CRService - 리뷰 생성 중 companyId를 찾을수 없습니다. - userId: {}, dto: {}", userId, createReviewDto);
@@ -42,11 +43,13 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
         try {
             ReviewDto poly = makePolyReview(createReviewDto);
-            Long reviewId = reviewService.insertPolyReview(poly);
-            if (reviewId == null) {
+            Long polyed = reviewService.insertPolyReview(poly);
+            if (polyed == null) {
                 log.error("CRService - 상위 리뷰 생성 실패 - userId: {}", userId);
                 throw new IllegalStateException("상위 리뷰 생성 실패");
             }
+
+            reviewId = poly.getReviewId();
             createReviewDto.setReviewId(reviewId);
 
             log.info("CRService - 하위 리뷰 생성 시작 - userId: {}, reviewId: {}", userId, reviewId);
@@ -76,7 +79,14 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
             log.info("CRService - 리뷰 작성 성공 - reviewId: {}, companyId: {}, userId: {}", reviewId, companyId, userId);
             return reviewId;
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
+            if (reviewId != null) {
+                try {
+                    fileService.deleteAllByTargetId(TargetType.INTERIOR_REVIEW, createReviewDto.getReviewId());
+                } catch (Exception failed) {
+                    log.warn("CRService - 리뷰 실패, 파일 정리 실패 - reviewId: {}", createReviewDto.getReviewId(), failed);
+                }
+            }
             log.error("CRService - DB 오류, 리뷰 생성 실패 - userId: {}", userId, e);
             throw new IllegalStateException("업체 리뷰 생성 실패", e);
         }
@@ -160,7 +170,14 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             companyReviewDao.updateAverageScores(adjust);
 
             log.info("CRService - 리뷰 수정 성공 - reviewId: {}", reviewId);
-        } catch (DataAccessException e) {
+        } catch (Exception e) {
+            if (reviewId != null) {
+                try {
+                    fileService.deleteAllByTargetId(TargetType.INTERIOR_REVIEW, reviewId);
+                } catch (Exception failed) {
+                    log.warn("CRService - 리뷰 실패, 파일 정리 실패 - reviewId: {}", reviewId, failed);
+                }
+            }
             log.error("CRService - DB 오류, 리뷰 수정 실패 - reviewId: {}", reviewId, e);
             throw new IllegalStateException("DB 오류, 리뷰 수정 실패", e);
         }
@@ -189,6 +206,9 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             // 하위 -> 상위 삭제(소프트)
             companyReviewDao.softDeleteCompanyReview(reviewId);
             companyReviewDao.softDeletePolyReview(reviewId, userId);
+            
+            // 모든 파일 삭제
+            fileService.deleteAllByTargetId(TargetType.INTERIOR_REVIEW, reviewId);
 
             // 현재 companyId에 대한 리뷰 숫자 구하기
             int leftCount = companyReviewDao.countByCompanyId(companyId);
