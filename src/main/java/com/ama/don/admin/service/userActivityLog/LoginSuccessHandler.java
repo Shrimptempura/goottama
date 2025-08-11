@@ -1,9 +1,7 @@
-package com.ama.don.admin.utils;
+package com.ama.don.admin.service.userActivityLog;
 
 import com.ama.don.admin.dto.userDTO.UserActivityDto;
 import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
-import com.ama.don.admin.service.userActivityLog.GetUserActivityList;
-import com.ama.don.admin.service.userActivityLog.SaveUserActivityLog;
 import com.ama.don.admin.service.userManage.ManageUserByAdmin;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
