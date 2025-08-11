@@ -1,33 +1,39 @@
 package com.ama.don.community.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import com.ama.don.common.enums.TargetType;
 import com.ama.don.community.dao.CommunityCommentDao;
 import com.ama.don.community.dto.Comment.CommentCreateDto;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-public interface CommentService {
-    void createComment(CommentCreateDto dto);
-    List<CommentCreateDto> getCommentsByTarget(Long targetId, TargetType targetType);
-    
-    @Service
-    public class CommunityCommentServiceImpl implements CommentService {
+import java.util.List;
 
-        @Autowired
-        private CommunityCommentDao commentDao;
+@Service
+@RequiredArgsConstructor
+public class CommentService {
 
-        @Override
-        public void createComment(CommentCreateDto dto) {
-            commentDao.insert(dto);
-        }
+	private final CommunityCommentDao commentDao;
 
-        @Override
-        public List<CommentCreateDto> getCommentsByTarget(Long targetId, TargetType targetType) {
-            return commentDao.findByTargetId(targetId, targetType);
-        }
-    }
+	public void createComment(CommentCreateDto commentDto) {
+		// 임시로 user_id를 1로 세팅
+		if (commentDto.getUser_id() == null) {
+			commentDto.setUser_id(1L);
+		}
 
+		commentDao.insert(commentDto);
+	}
+
+	// 특정 게시글 댓글 조회
+	public List<CommentCreateDto> getComments(Long targetId, String targetType) {
+		return commentDao.findByTargetId(targetId, Enum.valueOf(com.ama.don.common.enums.TargetType.class, targetType));
+	}
+
+	// 수정
+	public void updateComment(CommentCreateDto dto) {
+		commentDao.update(dto);
+	}
+
+	// 삭제
+	public void deleteComment(Long comment_id) {
+		commentDao.delete(comment_id);
+	}
 }

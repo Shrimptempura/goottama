@@ -21,6 +21,7 @@ public class CommentCreateDto {
 	private String comment_content;
 	private Long parent_comment_id;
 	private Timestamp created_at;
+	private Timestamp modified_at;
 
 	private Long targetId;
 	private TargetType targetType;

@@ -38,3 +38,8 @@
 	transform: scale(1.2);
 	transition: transform 0.2s ease;
 }
+
+.reply-item {
+	margin-left: 30px;
+	background: #f9f9f9;
+}
