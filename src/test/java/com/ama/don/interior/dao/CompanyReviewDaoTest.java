@@ -49,7 +49,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
     // isExistScoreTable + insertScoreTable
     @DisplayName("리뷰 작성시 첫번째 리뷰면 생성해야 함")
     @Test
-    void insert() {
+    void insertCompanyReview() {
         // 다형성 리뷰 생성 + 업체 리뷰 생성
         CreateReviewSet dto = createPolyReviewAndCompanyReview();
         Long companyId = dto.getCompanyReviewDto().getCompanyId();
@@ -81,7 +81,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         companyReviewDao.createScoreTable(dto.getCompanyReviewDto());
 
         // 첫번째 리뷰의 계산으로 얻은 총 별점
-        CompanyScoreAvgDto avgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
+        CompanyScoreAvgDto avgDto = companyReviewDao.findScoreAvgByCompanyId(companyId);
         assertThat(avgDto).isNotNull();
         double firstAvg = avgDto.getAvgTotalRate();
 
@@ -92,7 +92,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         // 다른 회원 업체 리뷰 작성
         CompanyReviewCreateDto forceReviewDto = createCheckCompanyReview(companyId, reviewId);
 
-        int secondReview = companyReviewDao.insert(forceReviewDto);
+        int secondReview = companyReviewDao.insertCompanyReview(forceReviewDto);
         assertThat(secondReview).isEqualTo(1);
 
         int updated = companyReviewDao.addScoreOnCreate(forceReviewDto);
@@ -102,7 +102,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(updated).isEqualTo(1);
 
         // 첫번째 + 두번째 리뷰의 평균 뽑기
-        CompanyScoreAvgDto SecondAvgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
+        CompanyScoreAvgDto SecondAvgDto = companyReviewDao.findScoreAvgByCompanyId(companyId);
         assertThat(SecondAvgDto).isNotNull();
         double secondAvg = SecondAvgDto.getAvgTotalRate();
 
@@ -114,14 +114,14 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
 
     @DisplayName("업체 점수 테이블 평균 점수 꺼내기")
     @Test
-    void getAvgScoreByCompanyId() {
+    void findScoreAvgByCompanyId() {
         // 다형성 리뷰 + 업체 리뷰
         CreateReviewSet dto = createPolyReviewAndCompanyReview();
         Long companyId = dto.getCompanyReviewDto().getCompanyId();
 
         companyReviewDao.createScoreTable(dto.getCompanyReviewDto());
 
-        CompanyScoreAvgDto avgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
+        CompanyScoreAvgDto avgDto = companyReviewDao.findScoreAvgByCompanyId(companyId);
         assertThat(avgDto).isNotNull();
 
         double totalRate = avgDto.getAvgTotalRate();
@@ -149,7 +149,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
 
         assertThat(dto.getCompanyReviewDto().getConstructionField()).isEqualTo(read.getConstructionField());
         assertThat(dto.getCommonReviewDto().getUserId()).isEqualTo(read.getUserId());
-        assertThat(read.getUserNickName()).isNotNull();
+        assertThat(read.getUserNickname()).isNotNull();
     }
 
     @DisplayName("홈에서 보는 업체리뷰 리스트들")
@@ -182,7 +182,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(list.get(0).getReviewDate().truncatedTo(ChronoUnit.SECONDS))
                 .isEqualTo(dto.getCommonReviewDto().getReviewDate().truncatedTo(ChronoUnit.SECONDS));
         assertThat(list.get(0).getReviewContent()).isEqualTo(dto.getCommonReviewDto().getReviewContent());
-        assertThat(list.get(0).getUserNickName()).isNotNull();
+        assertThat(list.get(0).getUserNickname()).isNotNull();
     }
 
     @DisplayName("업체 리뷰 개수 구하기")
@@ -321,7 +321,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         companyReviewDao.createScoreTable(dto.getCompanyReviewDto());
 
         // 첫번째 리뷰의 계산으로 얻은 총 별점
-        CompanyScoreAvgDto avgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
+        CompanyScoreAvgDto avgDto = companyReviewDao.findScoreAvgByCompanyId(companyId);
         assertThat(avgDto).isNotNull();
 
         double firstAvg = avgDto.getAvgTotalRate();
@@ -355,7 +355,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         assertThat(adjusted).isEqualTo(1);
         assertThat(averaged).isEqualTo(1);
 
-        CompanyScoreAvgDto afterAvgDto = companyReviewDao.getAvgScoreByCompanyId(companyId);
+        CompanyScoreAvgDto afterAvgDto = companyReviewDao.findScoreAvgByCompanyId(companyId);
         assertThat(afterAvgDto).isNotNull();
         assertThat(afterAvgDto.getAvgTotalRate()).isNotEqualTo(firstAvg);
     }
@@ -373,7 +373,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         // 해당 리뷰로 첫 점수 테이블 생성
         companyReviewDao.createScoreTable(firstReview.getCompanyReviewDto());
 
-        double firstAvg = companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgTotalRate();
+        double firstAvg = companyReviewDao.findScoreAvgByCompanyId(companyId).getAvgTotalRate();
 
         // 2번째 리뷰, 같은 회사에 연결
         ReviewDto secondReviewDto = createPolyReview(companyId);
@@ -384,7 +384,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         secondReview.setScheduleRate(10);
         secondReview.setCommunicationRate(10);
 
-        companyReviewDao.insert(secondReview);
+        companyReviewDao.insertCompanyReview(secondReview);
         companyReviewDao.addScoreOnCreate(secondReview);
         companyReviewDao.averageOnCreate(secondReview);
 
@@ -421,7 +421,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
             companyReviewDao.updateAverageScores(adjustDto);
 
             // 두 번재 리뷰 점수는 모두 10
-            double secondAvg = companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgTotalRate();
+            double secondAvg = companyReviewDao.findScoreAvgByCompanyId(companyId).getAvgTotalRate();
             double secondMatch = 10.0;
 
             assertThat(companyReviewDao.countByCompanyId(companyId)).isEqualTo(1);
@@ -437,7 +437,7 @@ class CompanyReviewDaoTest extends AbstractCompanyTestSupport {
         reviewCount = companyReviewDao.countByCompanyId(companyId);
         if (reviewCount == 1) {
             companyReviewDao.resetScoresIfOne(companyId);
-            assertThat(companyReviewDao.getAvgScoreByCompanyId(companyId).getAvgTotalRate()).isEqualTo(0);
+            assertThat(companyReviewDao.findScoreAvgByCompanyId(companyId).getAvgTotalRate()).isEqualTo(0);
         }
     }
 

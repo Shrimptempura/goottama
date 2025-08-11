@@ -18,7 +18,7 @@ public class CompanyReviewDto {
     private Long reviewId;          // 리뷰 아이디
     private Long userId;            // 유저 아이디
 
-    private String userNickName;            // 유저 닉네임
+    private String userNickname;            // 유저 닉네임
     private String userImg;          // 유저 프로필 사진
     
     private String structureType;       // 건물 유형
