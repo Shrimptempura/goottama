@@ -21,24 +21,24 @@ function loadContent(menuType) {
             targetUrl = '/admin/reports/report_page';
             break;
 
-        case 'search':
-            targetUrl = '/admin/search/advanced_search';
+        case 'sanctions':
+            targetUrl = '/admin/sanctions/sanctions_page';
             break;
 
-        case 'log':
-            targetUrl = '/admin/log/log_viewer';
+        case 'logs':
+            targetUrl = '/admin/logs/logs_page';
             break;
 
         case 'statistics':
-            targetUrl = '/admin/statistics/statistics';
+            targetUrl = '/admin/statistics/statistics_page';
             break;
 
-        case 'access_control':
-            targetUrl = '/admin/access_control/access_control';
+        case 'posts':
+            targetUrl = '/admin/posts/posts_page';
             break;
 
-        case 'permission':
-            targetUrl = '/admin/permission/permission_setting';
+        case 'reviews':
+            targetUrl = '/admin/reviews/reviews_page';
             break;
 
         default:
@@ -66,7 +66,13 @@ async function callSpecificPageJSFunction(menuType) {
     const scriptMap = {
         'notices' : '/static/js/admin/NoticePageScript.js',
         'users' : '/static/js/admin/UserPageScript.js',
-        'reports' : '/static/js/admin/ReportPageScript.js'
+        'reports' : '/static/js/admin/ReportPageScript.js',
+        'dashboard' : '/static/js/admin/DashboardPageScript.js',
+        'sanctions' : '/static/js/admin/SanctionPageScript.js',
+        'posts' : '/static/js/admin/PostPageScript.js',
+        'reviews' : '/static/js/admin/ReviewPageScript.js',
+        'statistics' : '/static/js/admin/StatisticsPageScript.js',
+        'logs' : '/static/js/admin/LogsPageScript.js'
     };
 
     const scriptPath = scriptMap[menuType];
@@ -94,30 +100,22 @@ async function callSpecificPageJSFunction(menuType) {
 
 // 페이지 별 초기화 함수 실행 함수
 function callSpecificPageInitFunction(menuType) {
-    switch(menuType) {
-        case 'notices' :
-            if (typeof initNoticePage === 'function') {
-                initNoticePage();
-            } else {
-                console.error("initNoticePage could not found")
-            }
-            break;
+    const initFunctions = {
+        'notices': () => typeof initNoticePage === 'function' ? initNoticePage() : console.error("initNoticePage not found"),
+        'users': () => typeof initUserPage === 'function' ? initUserPage() : console.error("initUserPage not found"),
+        'reports': () => typeof initReportPage === 'function' ? initReportPage() : console.error("initReportPage not found"),
+        'reviews': () => typeof initReviewPage === 'function' ? initReviewPage() : console.error("initReviewPage not found"),
+        'statistics': () => typeof initStatisticsPage === 'function' ? initStatisticsPage() : console.error("initStatisticsPage not found"),
+        'posts': () => typeof initPostPage === 'function' ? initPostPage() : console.error("initPostPage not found"),
+        'dashboard': () => typeof initDashboardPage === 'function' ? initDashboardPage() : console.error("initDashboardPage not found"),
+        'logs': () => typeof initLogPage === 'function' ? initLogPage() : console.error("initLogPage not found"),
+        'sanctions': () => typeof initSanctionPage === 'function' ? initSanctionPage() : console.error("initSanctionPage not found")
+    };
 
-        case 'users' :
-            if (typeof initUserPage === 'function') {
-                initUserPage();
-            } else {
-                console.error("initUserPage could not found")
-            }
-            break;
+    const runInitFunction = initFunctions[menuType];
 
-        case 'reports' :
-            if (typeof initReportPage === 'function') {
-                initReportPage();
-            } else {
-                console.error("initReportPage could not found")
-            }
-            break;
+    if (runInitFunction) {
+        runInitFunction();
     }
 }
 
