@@ -1,7 +1,7 @@
 package com.ama.don.common.config;
 
 import com.ama.don.admin.service.userManage.CustomUserDetailsService;
-import com.ama.don.admin.service.userActivityLog.LoginSuccessHandler;
+import com.ama.don.admin.service.userActivityLog.memberPart.LoginSuccessHandler;
 import com.ama.don.interior.dev.DevAutoLoginBaseMember;
 import com.ama.don.member.dao.LoginDao;
 import jakarta.servlet.DispatcherType;

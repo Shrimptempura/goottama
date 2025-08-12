@@ -1,8 +1,9 @@
-package com.ama.don.admin.service.userActivityLog;
+package com.ama.don.admin.service.userActivityLog.memberPart;
 
 import com.ama.don.admin.dao.ManageUserIDao;
 import com.ama.don.admin.dto.userDTO.UserActivityDto;
 import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
+import com.ama.don.admin.service.userActivityLog.SaveUserActivityLog;
 import com.ama.don.member.dto.JoinformDto;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.JoinPoint;
