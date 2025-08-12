@@ -104,5 +104,6 @@ public interface ShopIDao {
 
 	// 로그 기록용 메서드
 	public Long findLatestProductInquiryByUserIdAndTargetId(Long userId, String targetId);
+	public Long findLatestOrderIdByUserId(Long userId);
 
 }

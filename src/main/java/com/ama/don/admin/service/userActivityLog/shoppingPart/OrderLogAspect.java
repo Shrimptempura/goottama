@@ -21,80 +21,49 @@ import java.util.Map;
 @Aspect
 @Component
 @RequiredArgsConstructor
-public class ProductInquiryLogAspect {
+public class OrderLogAspect {
 
     private static final Logger log = LoggerFactory.getLogger(ProductInquiryLogAspect.class);
 
     private final SaveUserActivityLog userActivityLog;
     private final ShopIDao shopIDao;
 
-    @Pointcut("execution(* com.ama.don.shop.service.productinquiry.ShopProductInquiryWriteService.execute(..)) && args(model)")
-    public void writeInquiry() {}
+    @Pointcut("execution(* com.ama.don.shop.service.orderservice.ShopOrderWriteService.execute(..)) && args(model)")
+    public void writeOrder() {}
 
-    @Pointcut("execution(* com.ama.don.shop.service.productinquiry.ShopProductInquiryUpdateService.execute(..)) && args(model)")
-    public void updateInquiry() {}
+    @Pointcut("execution(* com.ama.don.shop.service.orderservice.ShopOrderUpdateService.execute(..)) && args(model)")
+    public void updateOrder() {}
 
-    @Pointcut("execution(* com.ama.don.shop.service.productinquiry.ShopProductInquiryDeleteService.execute(..)) && args(model)")
-    public void deleteInquiry() {}
-
-    @AfterReturning("writeInquiry()")
-    public void logWriteInquiry(Model model) {
+    @AfterReturning("writeOrder()")
+    public void logOrderWrite(Model model) {
         HttpServletRequest request = getRequestFromModel(model);
         if (request == null) return;
 
         Long userId = getUserId();
         if (userId == null) return;
 
-        String productId = request.getParameter("product_id");
-
-        Long inquiryId = shopIDao.findLatestProductInquiryByUserIdAndTargetId(userId, productId);
-        if (inquiryId == null) {
-            log.warn("Failed to retrieve the latest inquiry ID for user {} and product {}.", userId, productId);
+        Long orderId = shopIDao.findLatestOrderIdByUserId(userId);
+        if (orderId == null) {
+            log.warn("Failed to retrieve the latest order ID for user {}.", userId);
             return;
         }
-        String details = "User " + userId + " made a new inquiry with ID " + inquiryId + " for product ID " + productId;
-        UserActivityDto userActivityDto = createUserActivityDto(userId, "SHOP_INQUIRY_WRITE", "SHOP", String.valueOf(inquiryId),
-                details);
+        String details = String.format("User %d created a new order with ID %d.", userId, orderId);
+        UserActivityDto userActivityDto = createUserActivityDto(userId, "ORDER", "SHOP", String.valueOf(orderId), details);
         saveLog(userActivityDto);
     }
 
-    @AfterReturning("updateInquiry()")
-    public void logUpdateInquiry(Model model) {
+    @AfterReturning("updateOrder()")
+    public void logOrderUpdate(Model model) {
         HttpServletRequest request = getRequestFromModel(model);
         if (request == null) return;
 
         Long userId = getUserId();
         if (userId == null) return;
 
-        String inquiryId = request.getParameter("pinquiry_id");
-        String details = "User " + userId + " updated inquiry ID " + inquiryId;
-        UserActivityDto userActivityDto = createUserActivityDto(userId, "SHOP_INQUIRY_UPDATE", "SHOP", String.valueOf(inquiryId),
-                details);
+        String orderId = request.getParameter("order_id");
+        String details = String.format("User %d update a order with ID %s.", userId, orderId);
+        UserActivityDto userActivityDto = createUserActivityDto(userId, "ORDER", "SHOP", orderId, details);
         saveLog(userActivityDto);
-    }
-
-    @AfterReturning("deleteInquiry()")
-    public void logDeleteInquiry(Model model) {
-        HttpServletRequest request = getRequestFromModel(model);
-        if (request == null) return;
-
-        Long userId = getUserId();
-        if (userId == null) return;
-
-        String inquiryId = request.getParameter("pinquiry_id");
-        String details = "User " + userId + " deleted inquiry ID " + inquiryId;
-        UserActivityDto userActivityDto = createUserActivityDto(userId, "SHOP_INQUIRY_DELETE", "SHOP", String.valueOf(inquiryId),
-                details);
-        saveLog(userActivityDto);
-    }
-
-    private HttpServletRequest getRequestFromModel(Model model) {
-        Map<String, Object> map = model.asMap();
-        HttpServletRequest request = (HttpServletRequest) map.get("request");
-        if (request == null) {
-            log.warn("HttpServletRequest object not found in Model.");
-        }
-        return request;
     }
 
     private Long getUserId() {
@@ -104,6 +73,15 @@ public class ProductInquiryLogAspect {
             log.error("Failed to find logged-in user. Error: {}", e.getMessage());
             return null;
         }
+    }
+
+    private HttpServletRequest getRequestFromModel(Model model) {
+        Map<String, Object> map = model.asMap();
+        HttpServletRequest request = (HttpServletRequest) map.get("request");
+        if (request == null) {
+            log.warn("HttpServletRequest object not found in Model.");
+        }
+        return request;
     }
 
     private UserActivityDto createUserActivityDto(Long userId, String type, String targetType, String targetId, String details) {
