@@ -29,10 +29,9 @@ public class ShoppingReviewLogAspect {
     private static final Logger log = LoggerFactory.getLogger(JoinLogAspect.class);
 
     private final SaveUserActivityLog userActivityLog;
-    private final ManageUserIDao manageUserIDao;
     private final ReviewDao reviewDao;
 
-    @Pointcut("execution (* com.ama.don.shop.service.reviewservice.ShopReviewWriteService.execute(..) && args(model)")
+    @Pointcut("execution (* com.ama.don.shop.service.reviewservice.ShopReviewWriteService.execute(..)) && args(model)")
     public void shoppingReviewWriteMethod(Model model) {}
 
     @AfterReturning("shoppingReviewWriteMethod(model)")

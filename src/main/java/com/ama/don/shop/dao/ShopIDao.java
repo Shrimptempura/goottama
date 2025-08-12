@@ -101,5 +101,8 @@ public interface ShopIDao {
 	
 	
 	//주문수정을 하는데 실제로는 배송지 수정정도를 할것 그러니까 주문아이디로 배송지를 찾아서 배송지를 deliver_update를 하면된다.
-	
+
+	// 로그 기록용 메서드
+	public Long findLatestProductInquiryByUserIdAndTargetId(Long userId, String targetId);
+
 }
