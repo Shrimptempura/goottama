@@ -26,6 +26,7 @@ import com.ama.don.shop.service.ShopServiceinter;
 import com.ama.don.shop.service.Kakaopay.ShopKakaopayService;
 import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
 import com.ama.don.shop.service.orderservice.ShopOrderViewService;
+import com.ama.don.shop.service.productinquiry.ShopProductInquiryDetailService;
 import com.ama.don.shop.service.reviewservice.ShopReviewDetailService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -401,6 +402,18 @@ public String kakaoPayFail(
 	 shopServiceinter.execute(model);
 	 
 	 return "shop/review_details";
+ }
+ 
+ @RequestMapping("/shop/product_inquiry_details")
+ public String product_inquiry_details(HttpServletRequest request,Model model) {
+	 
+	 System.out.println("product_inquiry_details");
+	 
+	 shopServiceinter=new ShopProductInquiryDetailService(iDao);
+	 shopServiceinter.execute(model);
+	 
+	 
+	 return "shop/product_inquiry_details";
  }
  
  

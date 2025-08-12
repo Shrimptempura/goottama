@@ -60,7 +60,7 @@ public class ShopReviewDetailService implements ShopServiceinter{
 
 		
 		//사용자의 상품 리뷰 리스트			
-		ArrayList<ShopReviewFlatDto> shopReviewFlatDtos=iDao.find_review_by_userid(userid);
+		ArrayList<ShopReviewFlatDto> shopReviewFlatDtos=iDao.review_by_userid(userid);
 		
 		model.addAttribute("review",shopReviewFlatDtos);
 		
