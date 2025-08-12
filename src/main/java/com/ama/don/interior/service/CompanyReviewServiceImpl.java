@@ -1,5 +1,6 @@
 package com.ama.don.interior.service;
 
+import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.dto.ReviewDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.common.service.ReviewService;
@@ -89,7 +90,24 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
     @Transactional(readOnly = true)
     @Override
     public CompanyReviewDto getReviewDetail(Long reviewId) {
-        return companyReviewDao.getReviewDetail(reviewId);
+        CompanyReviewDto dto = companyReviewDao.getReviewDetail(reviewId);
+        if (dto == null) {
+            return null;
+        }
+
+        List<FileDto> imgs = fileService.getFileList(TargetType.INTERIOR_REVIEW, reviewId);
+        dto.setImages(imgs);
+        dto.setThumbnail(
+                imgs.stream()
+                        .filter(FileDto::isThumbnail)
+                        .findFirst()
+                        .orElse(null)
+        );
+        Long userId = companyAuthService.getLoginUserId();
+        dto.setAuthor(userId.equals(dto.getUserId()));
+        dto.setOwner(companyAuthService.isOwner(dto.getCompanyId()));
+
+        return dto;
     }
 
     // 홈에서 보는 리뷰 최신순 리스트

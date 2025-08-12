@@ -117,6 +117,7 @@
     <!-- 유저가 저장한 리뷰 상세보기(user_detail + company_review + review + file(제외) -->
     <select id="getReviewDetail" resultType="com.ama.don.interior.dto.review.CompanyReviewDto">
         SELECT
+            c.company_id AS companyId,
             r.review_id AS reviewId,
             u.user_id AS userId,
             u.user_nickname AS userNickname,

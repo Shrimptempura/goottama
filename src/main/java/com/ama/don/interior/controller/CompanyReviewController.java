@@ -44,6 +44,12 @@ public class CompanyReviewController {
         return "redirect:/interior/myhome/{companyId}?type=reviews";     // 상세페이지 리뷰로 생각중
     }
 
+    // 리뷰 상세보기
+    @GetMapping()
+    public String getReviewDetail() {
+        return null;
+    }
+
 
 
 
