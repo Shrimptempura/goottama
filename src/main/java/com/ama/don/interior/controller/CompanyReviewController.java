@@ -1,6 +1,7 @@
 package com.ama.don.interior.controller;
 
 import com.ama.don.interior.dto.review.CompanyReviewCreateDto;
+import com.ama.don.interior.dto.review.CompanyReviewDto;
 import com.ama.don.interior.service.CompanyAuthService;
 import com.ama.don.interior.service.CompanyReviewService;
 import lombok.RequiredArgsConstructor;
@@ -45,9 +46,14 @@ public class CompanyReviewController {
     }
 
     // 리뷰 상세보기
-    @GetMapping()
-    public String getReviewDetail() {
-        return null;
+    @GetMapping("/interior/review-detail")
+    public String getReviewDetail(@RequestParam Long reviewId,
+                                  Model model,
+                                  RedirectAttributes ra) {
+        CompanyReviewDto review = companyReviewService.getReviewDetail(reviewId);
+        model.addAttribute("review", review);
+        ra.addAttribute("reviewId", reviewId);
+        return "interior/review-detail";
     }
 
 

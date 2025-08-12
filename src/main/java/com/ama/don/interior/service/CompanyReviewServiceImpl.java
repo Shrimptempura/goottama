@@ -92,7 +92,8 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
     public CompanyReviewDto getReviewDetail(Long reviewId) {
         CompanyReviewDto dto = companyReviewDao.getReviewDetail(reviewId);
         if (dto == null) {
-            return null;
+            log.warn("CRService - 리뷰가 없습니다. - reviewId: {}", reviewId);
+            throw new IllegalStateException("리뷰가 없습니다." + reviewId);
         }
 
         List<FileDto> imgs = fileService.getFileList(TargetType.INTERIOR_REVIEW, reviewId);
@@ -104,6 +105,8 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
                         .orElse(null)
         );
         Long userId = companyAuthService.getLoginUserId();
+        
+        // 추후 사용될 수 있음
         dto.setAuthor(userId.equals(dto.getUserId()));
         dto.setOwner(companyAuthService.isOwner(dto.getCompanyId()));
 

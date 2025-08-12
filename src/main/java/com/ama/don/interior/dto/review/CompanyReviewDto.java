@@ -35,6 +35,7 @@ public class CompanyReviewDto {
     private int reviewLikes;    // 좋아요 수(단순 클릭, 중복 제거)
 
     // file 및 서비스 소유 관련
+    // 서비스에서 한 dto로 편의상보내기 위해 나중에 대입해줌
     private List<FileDto> images;
     private FileDto thumbnail;
 
