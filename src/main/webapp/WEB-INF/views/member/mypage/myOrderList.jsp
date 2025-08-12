@@ -62,7 +62,7 @@
     </c:choose>
 
     <div class="back-to-shop">
-        <a href="home">← 쇼핑 하러가기</a>
+        <a href="/shop/home">← 쇼핑 하러가기</a>
     </div>
 </div>
 

@@ -133,7 +133,7 @@ public class MemberController {
 			model.addAttribute("loginMember", memberDto);
 			return "member/mypage/editProfile_view";
 		}
-//		세션 갱신
+		//세션 갱신
 		memberUpdateService.refreshAuthentication(memberDto.getLogin_id());
 		
 		return "redirect:/mypage/editProfile_view";
@@ -172,13 +172,11 @@ public class MemberController {
 		
 		MemberDto memberDto = loginMemberService.getCurrentLoginMemberDto();
 		withdrawalService.deletedMember(agree, reason, memberDto);
-
 		
 		//스프링 시큐리티 로그아웃(인증정보 삭제)
 		SecurityContextHolder.clearContext();
 		//세션 무효화
 		session.invalidate();
-
 		
 		return "member/withdrawalSuccess_view";
 	}
