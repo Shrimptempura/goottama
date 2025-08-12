@@ -50,10 +50,11 @@
         </c:when>
     </c:choose>
 
-    <c:url var="detailUrl" value="/interior/review-detail">
-        <c:param name="reviewId" value="${r.reviewId}"/>
+    <c:url var="tabUrl" value="/interior/myhome/${r.companyId}">
+        <c:param name="type" value="reviews"/>
+        <c:param name="focus" value="${r.reviewId}"/>
     </c:url>
-    <a href="${detailUrl}">
+    <a href="${tabUrl}">
         ${r.structureType} : ${r.areaPyeong}
     </a>
     </div>

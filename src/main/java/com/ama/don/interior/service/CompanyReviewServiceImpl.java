@@ -87,7 +87,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         }
     }
 
-    // 리뷰 상세보기
+    // 리뷰 상세보기(기능변경으로 인해 직접적으로 사용은 안함)
     @Transactional(readOnly = true)
     @Override
     public CompanyReviewDto getReviewDetail(Long reviewId) {
@@ -132,10 +132,25 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         return list;
     }
 
-    // 업체 상세페이지에서 보는 리뷰 리스트
+    // 업체 상세페이지에서 보는 리뷰 리스트, 홈 리뷰 리스트 누르면 이동
     @Transactional(readOnly = true)
     @Override
     public List<CompanyReviewDto> listByCompanyId(Long companyId) {
+        List<CompanyReviewDto> list = companyReviewDao.listByCompanyId(companyId);
+        if (list.isEmpty()) {
+            return list;
+        }
+
+        Long userId = companyAuthService.getLoginUserId();
+        // 상세페이지 주인인가 확인
+        boolean isOwner = companyAuthService.isOwner(companyId);
+
+        for (CompanyReviewDto dto : list) {
+            List<FileDto> imgs = fileService.getFileList(TargetType.INTERIOR_REVIEW, dto.getReviewId());
+            dto.setImages(imgs);
+            dto.setAuthor(userId.equals(dto.getUserId()));
+        }
+
         return companyReviewDao.listByCompanyId(companyId);
     }
 

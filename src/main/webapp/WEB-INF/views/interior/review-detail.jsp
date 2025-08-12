@@ -22,10 +22,8 @@
     </div>
 
     <div>
-        <fmt: formatDate value="${review.reviewDate}" pattern="yyyy-MM-dd HH:mm"/> <br>
-        <c:if test="${review.reviewDate} not eq ${review.reviewModify}">
-            <fmt: formatDate value="${review.reviewModify}" pattern="yyyy-MM-dd HH:mm"/> <br>
-        </c:if>
+        생성일: ${review.reviewDate} <br/>
+        수정일: ${review.reviewModify} <br/>
     </div>
 
     <div>

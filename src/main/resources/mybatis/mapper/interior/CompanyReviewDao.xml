@@ -157,6 +157,7 @@
     <!-- 업체 상세정보에서 리뷰탭 보기(사진 제외: userImg, reviewImg) -->
     <select id="listByCompanyId" resultType="com.ama.don.interior.dto.review.CompanyReviewDto">
         SELECT
+            c.company_id AS companyId,
             r.review_id AS reviewId,
             u.user_id AS userId,
             u.user_nickname AS userNickname,
@@ -172,6 +173,8 @@
         WHERE company_id = #{companyId}
             AND r.is_deleted = 0
             AND c.is_deleted = 0
+        ORDER BY COALESCE(r.review_modify, r.review_date) DESC,
+            r.review_id DESC
     </select>
 
     <!-- 업체 아이디로 업체에 대한 리뷰 수 구하기 -->
