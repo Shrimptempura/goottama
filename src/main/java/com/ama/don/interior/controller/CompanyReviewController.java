@@ -1,13 +1,17 @@
 package com.ama.don.interior.controller;
 
+import com.ama.don.interior.dto.review.CompanyReviewCreateDto;
+import com.ama.don.interior.service.CompanyAuthService;
 import com.ama.don.interior.service.CompanyReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -15,17 +19,29 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class CompanyReviewController {
 
     private final CompanyReviewService companyReviewService;
+    private final CompanyAuthService companyAuthService;
 
     // 리뷰 등록 폼으로 이동
-    @GetMapping("/interior/myhome/{companyId}/reviews-add")
-    public String addReviewForm(@PathVariable Long companyId, Model model) {
-        return "interior/create-company-review-form";
+    @GetMapping("/interior/myhome/{companyId}/review-form")
+    public String showCreateReviewForm(@PathVariable Long companyId, Model model) {
+        CompanyReviewCreateDto form = new CompanyReviewCreateDto();
+        form.setCompanyId(companyId);
+        model.addAttribute("form", form);
+
+        return "interior/review-form";
     }
 
     // 리뷰 등록 처리
-    @PostMapping("interior/myhome/{companyId}review-add")
-    public String addReview(@PathVariable Long companyId) {
-        return "redirect:/interior/myhome/{companyId}/reviews";     // 상세페이지 리뷰로 생각중
+    @PostMapping("/interior/myhome/{companyId}/review-form")
+    public String createReview(@PathVariable Long companyId,
+                            @ModelAttribute("form") CompanyReviewCreateDto form,
+                            @RequestParam("files") List<MultipartFile> files,
+                            RedirectAttributes ra) {
+        form.setCompanyId(companyId);
+        ra.addAttribute("companyId", companyId);
+        Long reviewId = companyReviewService.createReview(form, files);
+
+        return "redirect:/interior/myhome/{companyId}?type=reviews";     // 상세페이지 리뷰로 생각중
     }
 
 
