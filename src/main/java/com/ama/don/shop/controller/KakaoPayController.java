@@ -26,6 +26,7 @@ import com.ama.don.shop.service.ShopServiceinter;
 import com.ama.don.shop.service.Kakaopay.ShopKakaopayService;
 import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
 import com.ama.don.shop.service.orderservice.ShopOrderViewService;
+import com.ama.don.shop.service.reviewservice.ShopReviewDetailService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -47,6 +48,8 @@ public class KakaoPayController{
  
 /// ✅ 즉시 적용 - 카카오페이 콜백용 Controller 수정
 
+	
+//카카오페이 응답을 처리	
 //주문 승인
 @GetMapping("/shop/kakaopaysuccess")
 public String kakaoPaySuccess(@RequestParam(value = "pg_token", required = false) String pgToken,HttpServletRequest request,Model model) {
@@ -386,9 +389,19 @@ public String kakaoPayFail(
 	
 	
 	 return "shop/debug";
-
  }
  
+ 
+ @RequestMapping("/shop/review_details")
+ public String review_details(HttpServletRequest request,Model model) {
+	 
+	 System.out.println("shop/review_details");
+	 
+	 shopServiceinter=new ShopReviewDetailService(iDao);
+	 shopServiceinter.execute(model);
+	 
+	 return "shop/review_details";
+ }
  
  
 }

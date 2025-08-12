@@ -58,8 +58,12 @@ public interface ShopIDao {
     public void cart_update(Long cart_id, int cart_quantity);
     
     //Review IDao
-  	public ArrayList<ShopReviewFlatDto> review_list(Long target_id);
-  	public void review_write(ShopReviewFlatDto shopReviewFlatDto);
+  	public ArrayList<ShopReviewFlatDto> review_list(Long target_id);		//상품 리뷰를 확인하기 리스트
+	public ShopReviewFlatDto review(Long review_id);							//단일 리뷰 확인하기
+	public ArrayList<ShopReviewFlatDto> find_review_by_userid(Long user_id);	//사용자의 쇼핑 리뷰 리스트
+  	public void review_write(ShopReviewFlatDto shopReviewFlatDto);			//상품 리뷰 쓰기
+	public void review_delete(Long review_id);							//리뷰 삭제하기
+	public void review_update(Long review_id, String review_title, String review_content);	//리뷰 수정하기
   	
     //product_inquiry iDao
   	public ArrayList<ShopProductInquiryFlatDto> product_inquiry_list(Long productid);			//단일 상품 문의 리스트
@@ -99,6 +103,7 @@ public interface ShopIDao {
 	
 	//User_detail IDao
 	public ShopReviewFlatDto user_info(Long user_id);
+	
 
 	
 	

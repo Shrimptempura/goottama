@@ -924,15 +924,26 @@ function debugInquiries() {
         	<c:forEach var="review" items="${review_list}" varStatus="status">
         		<div class="review-item">
         			<div class="review-content-area">
+        				
+        				<!-- 리뷰 제목 -->
         				<div class="review-top">
         					<h4 class="review-item-title">${review.review_title}</h4>
         					<span class="review-author">작성자: ${review.user_nickname != null ? review.user_nickname : sessionScope.user_id}</span>
         				</div>
+        				
+        				<!-- 리뷰 내용 -->
         				<div class="review-bottom">
         					<div class="review-text">
         						<p>${review.review_content != null ? review.review_content : '정말 좋은 상품입니다! 배송도 빠르고 품질도 만족스럽습니다.'}</p>
         					</div>
         				</div>
+        				
+        				<!-- 삭제 버튼 -->
+        				<c:if test="${review.user_id==loginMember.user_id }">
+	 						<button class="review-delete" onclick="location.href='review_delete?review_id=${review.review_id }&target_id=${review.target_id }&user_id=${review.user_id }'">삭제버튼</button>
+	        				<button class="review-update" onclick="location.href='review_update_view?review_id=${review.review_id }'">수정버튼</button>
+        				</c:if>
+        				
         			</div>
         		</div>
         	</c:forEach>
