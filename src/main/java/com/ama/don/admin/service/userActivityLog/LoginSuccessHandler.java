@@ -7,6 +7,8 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -18,6 +20,8 @@ import java.time.Instant;
 @Component
 @RequiredArgsConstructor
 public class LoginSuccessHandler implements AuthenticationSuccessHandler {
+
+    private static final Logger log = LoggerFactory.getLogger(LoginSuccessHandler.class);
 
     private final SaveUserActivityLog getUserActivityList;
 
@@ -44,7 +48,11 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
             userActivityDto.setUser_activity_time(Timestamp.from(Instant.now()));
             userActivityDto.setUser_activity_details("Login IP : " + ipAddress);
 
-            getUserActivityList.saveUserActivity(userActivityDto);
+            try {
+                getUserActivityList.saveUserActivity(userActivityDto);
+            } catch (Exception e) {
+                log.error("Failed to save login activity log for user ID: {}. Error: {}", userId, e.getMessage(), e);
+            }
         }
 
         response.sendRedirect("/");
