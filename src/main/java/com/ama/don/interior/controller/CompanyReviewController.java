@@ -1,5 +1,6 @@
 package com.ama.don.interior.controller;
 
+import com.ama.don.interior.dto.review.CompanyHomeReviewDto;
 import com.ama.don.interior.dto.review.CompanyReviewCreateDto;
 import com.ama.don.interior.dto.review.CompanyReviewDto;
 import com.ama.don.interior.service.CompanyAuthService;
@@ -55,6 +56,7 @@ public class CompanyReviewController {
         ra.addAttribute("reviewId", reviewId);
         return "interior/review-detail";
     }
+
 
 
 

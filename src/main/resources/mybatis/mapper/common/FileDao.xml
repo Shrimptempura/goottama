@@ -169,10 +169,10 @@
 			file_path,
 			target_type,
 			target_id,
-			thumbnail
+			is_thumbnail AS thumbnail
 		FROM file
 		WHERE target_type = #{targetType}
-			AND thumbnail = 1
+			AND is_thumbnail = 1
 			AND target_id IN
 			<foreach collection="targetIds" item="id" open="(" separator="," close=")">
 				#{id}
