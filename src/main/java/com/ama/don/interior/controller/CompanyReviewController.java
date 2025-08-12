@@ -3,6 +3,7 @@ package com.ama.don.interior.controller;
 import com.ama.don.interior.dto.review.CompanyHomeReviewDto;
 import com.ama.don.interior.dto.review.CompanyReviewCreateDto;
 import com.ama.don.interior.dto.review.CompanyReviewDto;
+import com.ama.don.interior.dto.review.CompanyReviewUpdateDto;
 import com.ama.don.interior.service.CompanyAuthService;
 import com.ama.don.interior.service.CompanyReviewService;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,7 @@ public class CompanyReviewController {
         return "redirect:/interior/myhome/{companyId}?type=reviews";     // 상세페이지 리뷰로 생각중
     }
 
-    // 리뷰 상세보기
+    // 리뷰 상세보기(레거시)
     @GetMapping("/interior/review-detail")
     public String getReviewDetail(@RequestParam Long reviewId,
                                   Model model,
@@ -55,6 +56,64 @@ public class CompanyReviewController {
         model.addAttribute("review", review);
         ra.addAttribute("reviewId", reviewId);
         return "interior/review-detail";
+    }
+
+    // 리뷰 수정 폼
+    @GetMapping("/interior/myhome/{companyId}/reviews/{reviewId}/edit")
+    public String showReviewEditForm(@PathVariable Long companyId,
+                                     @PathVariable Long reviewId,
+                                     Model model,
+                                     RedirectAttributes ra) {
+        if (!companyReviewService.isAuthor(reviewId)) {
+            ra.addFlashAttribute("error", "수정 권한이 없습니다");
+            return "redirect:/interior/myhome/" + companyId + "?type=reviews&focus=" + reviewId;
+        }
+//        model.addAttribute("companyId", companyId);
+        CompanyReviewDto form = companyReviewService.getReviewDetail(reviewId);
+        model.addAttribute("form", form);
+        return "interior/review-edit";
+    }
+
+    // 리뷰 수정 처리
+    @PostMapping("/interior/myhome/{companyId}/reviews/{reviewId}/edit")
+    public String updateReview(@PathVariable Long companyId,
+                               @PathVariable Long reviewId,
+                               @ModelAttribute("form")CompanyReviewUpdateDto form,
+                               @RequestParam("files") List<MultipartFile> files,
+                               RedirectAttributes ra) {
+        if (!hasAtLeastOne(files)) {
+            ra.addFlashAttribute("error", "이미지는 최소 1장이 필요합니다.");
+            return "redirect:/interior/myhome/" + companyId + "/reviews/" + reviewId + "/edit";
+        }
+
+        try {
+            form.setReviewId(reviewId);;
+            companyReviewService.updateReview(form, files);
+            ra.addFlashAttribute("msg", "리뷰가 수정되었습니다.");
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", e.getMessage());
+            return "redirect:/interior/myhome/" + companyId + "/reviews/" + reviewId + "/edit";
+        }
+        return "redirect:/interior/myhome/" + companyId + "?type=reviews&focus=" + reviewId;
+    }
+
+    // ra.addAttribute 방법을 return + 문자열로 통일성 맞추서 고치기(한 2개?)
+    // 로그 추가 안했음
+
+    // === static helper method =======
+    // 최소 파일은 1개
+    private static boolean hasAtLeastOne(List<MultipartFile> files) {
+        if (files == null) {
+            return false;
+        }
+
+        for (MultipartFile file : files) {
+            if (file != null && !file.isEmpty()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 

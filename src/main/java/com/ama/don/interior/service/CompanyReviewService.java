@@ -27,4 +27,10 @@ public interface CompanyReviewService {
 
     // 리뷰 삭제(소프트)
     void deleteReview(Long reviewId);
+
+    // 작성 주체 확인
+    boolean isAuthor(Long reviewId);
+
+    // 리뷰 수정 뷰
+    CompanyReviewUpdateDto getEditView(Long reviewId);
 }

@@ -151,7 +151,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             dto.setAuthor(userId.equals(dto.getUserId()));
         }
 
-        return companyReviewDao.listByCompanyId(companyId);
+        return list;
     }
 
     // 업체 리뷰 평점 조회
@@ -262,6 +262,25 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             log.error("CRService - 리뷰 삭제 실패 - reviewId: {}", reviewId, e);
             throw new IllegalStateException("리뷰 삭제 실패", e);
         }
+    }
+
+    // 작성 주체 확인
+    @Transactional(readOnly = true)
+    @Override
+    public boolean isAuthor(Long reviewId) {
+        Long userId = companyAuthService.getLoginUserId();
+        return companyReviewDao.existByReviewIdAndUserId(reviewId, userId);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public CompanyReviewUpdateDto getEditView(Long reviewId) {
+        CompanyReviewUpdateDto dto = companyReviewDao.getEditView(reviewId);
+        if (dto == null) {
+            throw new IllegalStateException("리뷰를 찾지 못함 " + reviewId);
+        }
+
+        return dto;
     }
 
 
