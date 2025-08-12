@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Slf4j
@@ -98,12 +99,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
         List<FileDto> imgs = fileService.getFileList(TargetType.INTERIOR_REVIEW, reviewId);
         dto.setImages(imgs);
-        dto.setThumbnail(
-                imgs.stream()
-                        .filter(FileDto::isThumbnail)
-                        .findFirst()
-                        .orElse(null)
-        );
+
         Long userId = companyAuthService.getLoginUserId();
         
         // 추후 사용될 수 있음
@@ -117,7 +113,23 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
     @Transactional(readOnly = true)
     @Override
     public List<CompanyHomeReviewDto> findRecentForHome() {
-        return companyReviewDao.findRecentForHome();
+        List<CompanyHomeReviewDto> list = companyReviewDao.findRecentForHome();
+        if (list.isEmpty()) {
+            return list;
+        }
+
+        List<Long> reviewIds = new ArrayList<>(list.size());
+        for (CompanyHomeReviewDto dto : list) {
+            reviewIds.add(dto.getReviewId());
+        }
+
+        // 썸네일만 배치 조회
+        Map<Long, FileDto> map = fileService.getThumbnailList(TargetType.INTERIOR_REVIEW, reviewIds);
+        for (CompanyHomeReviewDto dto : list) {
+            dto.setThumbnail(map.get(dto.getReviewId()));
+        }
+
+        return list;
     }
 
     // 업체 상세페이지에서 보는 리뷰 리스트

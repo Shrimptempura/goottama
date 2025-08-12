@@ -5,6 +5,7 @@ import com.ama.don.common.enums.TargetType;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface FileService {
     // 생성(여러장은 반복)
@@ -21,4 +22,7 @@ public interface FileService {
 
     // 타겟 일치 모두 삭제
     void deleteAllByTargetId(TargetType targetType, Long targetId);
+
+    // 2쿼리 IN 사용할 썸네일만 조회하기
+    Map<Long, FileDto> getThumbnailList(TargetType targetType, List<Long> targetIds);
 }

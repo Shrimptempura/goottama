@@ -14,8 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -146,6 +145,28 @@ public class FileServiceImpl implements FileService {
         }
         fileDao.interDeleteAllByTarget(targetType, targetId);
         log.info("FileService - 타겟 전체 DB 삭제 완료");
+    }
+
+    // IN2쿼리에 쓸 썸네일 리스트만 조회
+    // 시간 비용줄일려고 map 사용
+    @Override
+    public Map<Long, FileDto> getThumbnailList(TargetType targetType, List<Long> targetIds) {
+        if (targetType == null || targetIds == null) {
+            log.warn("FileService - 썸네일들만 조회 실패 - targetType: {}, targetIds: {}", targetType, targetIds);
+            throw new IllegalArgumentException("썸네일 리스트 조회 실패");
+        }
+
+        if (targetIds.isEmpty()) {
+            return Collections.emptyMap();
+        }
+
+        List<FileDto> list = fileDao.interFindThumbnailList(targetType, targetIds);
+        Map<Long, FileDto> map = new HashMap<>(list.size() * 2);
+        for (FileDto file : list) {
+            map.put(file.getTarget_id(), file);
+        }
+        
+        return map;
     }
 
 }

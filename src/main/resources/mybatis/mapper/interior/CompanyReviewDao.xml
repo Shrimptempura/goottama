@@ -140,6 +140,7 @@
     <!-- 다형성 리뷰테이블에서 type으로 거르고 desc -->
     <select id="findRecentForHome" resultType="com.ama.don.interior.dto.review.CompanyHomeReviewDto">
         SELECT
+            c.company_id AS companyId,
             r.review_id AS reviewId,
             c.area_pyeong AS areaPyeong,
             c.structure_type AS structureType,

@@ -62,4 +62,8 @@ public interface FileDao {
 	// 인테리어 사용, 타겟으로 모두 삭제
 	int interDeleteAllByTarget(@Param("targetType") TargetType targetType,
 										 @Param("targetId") Long targetId);
+	
+	// 인테리어 사용, 2쿼리IN 사용할 썸네일만 조회
+	List<FileDto> interFindThumbnailList(@Param("targetType") TargetType targetType,
+										 @Param("targetIds") List<Long> targetIds);
 }
