@@ -38,8 +38,8 @@ public interface CompanyPostDao {
     // post, company_post, company, company_detail, file | count(view, like, scrap)
     // (post + company_post), (company + company_detail) 쿼리 조인처리
     // getPostAndCompanyPostById, getCompanyBasicInfoById
-    CompanyPostDetailDto getPostAndCompanyPostById(@Param("companyPostId") Long companyPostId);
-    CompanyPostDetailDto getCompanyBasicInfoById(@Param("companyId") Long companyId);
+    CompanyPostDetailSplitDto getPostAndCompanyPostById(@Param("companyPostId") Long companyPostId);
+    CompanyPostBasicInfoDto getCompanyBasicInfoById(@Param("companyId") Long companyId);
 
     // 조회수 증가
     int increaseHit(@Param("companyPostId") Long companyPostId);

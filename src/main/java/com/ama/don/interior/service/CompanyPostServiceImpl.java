@@ -1,6 +1,7 @@
 package com.ama.don.interior.service;
 
 import com.ama.don.common.dao.PostDao;
+import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dao.CompanyPostDao;
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -106,9 +108,43 @@ public class CompanyPostServiceImpl implements CompanyPostService {
         return List.of();
     }
 
+    @Transactional
     @Override
     public CompanyPostDetailView getPostDetail(Long companyPostId) {
-        return null;
+        CompanyPostDetailSplitDto post = companyPostDao.getPostAndCompanyPostById(companyPostId);
+
+        if (post == null) {
+            log.warn("CompanyPostService - 게시글 상세 정보 없음 - companyPostId: {}", companyPostId);
+            throw new IllegalStateException("게시글이 없습니다. companyPostId: " + companyPostId);
+        }
+
+        Long companyId = post.getCompanyId();
+        CompanyPostBasicInfoDto company = companyPostDao.getCompanyBasicInfoById(companyId);
+
+        if (company == null) {
+            log.warn("CompanyPostService - 회사 정보 없음 - companyId: {}", companyId);
+            throw new IllegalStateException("회사 정보가 없습니다. companyId: " + companyId);
+        }
+
+        // 조회수 증가
+        companyPostDao.increaseHit(companyPostId);
+
+        List<FileDto> images;
+        try {
+            images = fileService.getFileList(TargetType.INTERIOR_POST, companyPostId);
+        } catch (Exception e) {
+            log.warn("CompanyPostService - 이미지 조회 실패(관용) - companyPostId: {}", companyPostId, e);
+            images = Collections.emptyList();
+        }
+
+        // 게시글 좋아요, 스크랩 추후 로직 추가 (본인 인증 필요)
+
+        CompanyPostDetailView view = new CompanyPostDetailView();
+        view.setPost(post);
+        view.setCompany(company);
+        view.setImages(images);
+
+        return view;
     }
 
     @Override
@@ -126,6 +162,7 @@ public class CompanyPostServiceImpl implements CompanyPostService {
 
     }
 
+    // 파일이 문제없으면 리스트로 반환
     private static List<MultipartFile> nonEmptyFiles(List<MultipartFile> files) {
         List<MultipartFile> list = new ArrayList<>();
         if (files != null) {

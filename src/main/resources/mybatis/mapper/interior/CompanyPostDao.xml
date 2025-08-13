@@ -153,7 +153,8 @@
             c.area_pyeong AS areaPyeong,
             c.style AS style,
             c.construction_detail AS constructionDetail,
-            c.company_post_count AS companyPostCount
+            c.company_post_count AS companyPostCount,
+            c.updated_at AS updatedAt
         FROM company_post c
         JOIN post p ON p.post_id = c.post_id
         WHERE company_post_id = #{companyPostId}
@@ -163,6 +164,7 @@
     <select id="getCompanyBasicInfoById" resultType="com.ama.don.interior.dto.post.CompanyPostBasicInfoDto">
         SELECT
             c.company_id AS companyId,
+            d.company_detail_id AS companyDetailId,
             d.company_name AS companyName,
             d.company_intro AS companyIntro
         FROM company c
