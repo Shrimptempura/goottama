@@ -113,6 +113,7 @@ public String kakaoPaySuccess(@RequestParam(value = "pg_token", required = false
             model.addAttribute("approval", approval);
             model.addAttribute("success", true);
             //
+            //
             // 6. 주문 완료 후 조회
             OrderFlatDto orderInfo = iDao.order_detail_flat(order_id);
             ArrayList<OrderFlatDto> orderProductsList = iDao.order_products_flat(order_id);
