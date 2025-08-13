@@ -26,7 +26,7 @@ public class ReviewWriteDto {
 	private int review_count; // 게시글 조회수
 	private int review_like_count; // 게시글 좋아요 수
 
-	private Long targetId; // 대상 아이디
+	private Long targetId;
 	private TargetType targetType;
 
 }
