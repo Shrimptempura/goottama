@@ -85,7 +85,7 @@
 		)
 	</insert>
 
-	<!-- 다형성 조회 id, target, date -->
+	<!-- 인테리어, 다형성 조회 id, target, date -->
 	<select id="polyFindById" resultType="java.lang.Integer">
 		SELECT
 		    post_id,
@@ -96,7 +96,7 @@
 		WHERE post_id = #{post_id}
 	</select>
 
-	<!-- 게시글 상세 조회 -->
+	<!-- 인테리어, 게시글 상세 조회 -->
 	<select id="findById" resultType="com.ama.don.common.dto.PostDto">
 		SELECT
 			post_id,

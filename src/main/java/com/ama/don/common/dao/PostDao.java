@@ -21,9 +21,10 @@ public interface PostDao {
 	// 업체 다형성 게시글 생성
 	int insertPolyPostForCompany(PostDto dto);
 
-	// 다형성 조회
+	// 인테리어, 다형성 조회
 	void polyFindById(Long postId);
 
+	// 인테리어, 게시글 조회
 	PostDto findById(Long postId);
 
 }
