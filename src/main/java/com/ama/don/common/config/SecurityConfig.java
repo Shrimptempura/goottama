@@ -80,7 +80,7 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                 )
                 .userDetailsService(customUserDetailsService)
-//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // 로그인 없이 모두 허용
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // 로그인 없이 모두 허용
                 .csrf(csrf -> csrf.disable());
         return http.build();
     }

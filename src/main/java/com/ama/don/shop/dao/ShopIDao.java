@@ -58,13 +58,18 @@ public interface ShopIDao {
     public void cart_update(Long cart_id, int cart_quantity);
     
     //Review IDao
-  	public ArrayList<ShopReviewFlatDto> review_list(Long target_id);
-  	public void review_write(ShopReviewFlatDto shopReviewFlatDto);
+  	public ArrayList<ShopReviewFlatDto> review_list(Long target_id);		//상품 리뷰를 확인하기 리스트
+	public ShopReviewFlatDto review(Long review_id);							//단일 리뷰 확인하기
+	public ArrayList<ShopReviewFlatDto> review_by_userid(Long user_id);	//사용자의 쇼핑 리뷰 리스트
+  	public void review_write(ShopReviewFlatDto shopReviewFlatDto);			//상품 리뷰 쓰기
+	public void review_delete(Long review_id);							//리뷰 삭제하기
+	public void review_update(Long review_id, String review_title, String review_content);	//리뷰 수정하기
   	
     //product_inquiry iDao
   	public ArrayList<ShopProductInquiryFlatDto> product_inquiry_list(Long productid);			//단일 상품 문의 리스트
   	public ShopProductInquiryFlatDto product_inquiry(Long pinquiryid);							//단일 상품 특정 문의 조회
-
+  	public ArrayList<ShopProductInquiryFlatDto> product_inquiry_by_userid(Long user_id);			//사용자 상품 리스트 조회
+  	
   	public void product_inquiry_write(Long userid, Long productid, String pinquiry_content);	//상품문의 작성 
 	public void product_inquiry_delete(Long user_id, Long pinquiry_id);						//상품문의 삭제
 	public void product_inquiry_update(Long pinquiry_id, String pinquiry_content);			//상품 문의 수정
@@ -77,7 +82,6 @@ public interface ShopIDao {
 	//Order iDao
     
 	public void order_write(OrdersDto ordersDto);							
-	public void deliver_write(DeliverDto deliverDto);
 	public void orders_products_write(Orders_productsDto orders_productsDto);
 	public void payment_write(PaymentDto paymentDto);
 	// 주문 조회 관련
@@ -91,12 +95,16 @@ public interface ShopIDao {
 	 * public ArrayList<OrderFlatDto> user_orders_simple(Long userid); //디버깅 샘플
 	 */	//Deliver iDao
 	//Deliver iDao
-	public void deliver_update(Long order_id, String deliver_person, 
+	
+	public OrderFlatDto order_deliver_info(Long order_id);					//주문 아이디로 배송 상태 확인
+	public void deliver_write(DeliverDto deliverDto);						//배송 작성
+	public void deliver_update(Long order_id, String deliver_person, 		//배송 수정	
 			String deliver_recipient_phone, String deliver_loc, String deliver_detail_loc);
 	
 	
 	//User_detail IDao
 	public ShopReviewFlatDto user_info(Long user_id);
+	
 
 	
 	

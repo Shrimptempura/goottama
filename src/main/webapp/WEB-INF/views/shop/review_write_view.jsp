@@ -342,17 +342,7 @@ document.querySelector('.review-form').addEventListener('submit', function(e) {
         return;
     }
     
-    if (title.length < 5) {
-        alert('리뷰 제목은 5글자 이상 입력해주세요.');
-        e.preventDefault();
-        return;
-    }
-    
-    if (content.length < 10) {
-        alert('리뷰 내용은 10글자 이상 입력해주세요.');
-        e.preventDefault();
-        return;
-    }
+   
 });
 
 // 파일 크기 체크
