@@ -16,7 +16,7 @@ public interface FileDao {
 
 	// 파일 삭제
 	void delete(long file_id);
-	
+
 	// 회원파트에서 사용 파일 삭제
 	void deleteByTarget(@Param("targetType") TargetType type, @Param("targetId") long target_id);
 
