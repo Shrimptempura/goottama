@@ -68,7 +68,7 @@ public class CompanyReviewController {
             ra.addFlashAttribute("error", "수정 권한이 없습니다");
             return "redirect:/interior/myhome/" + companyId + "?type=reviews&focus=" + reviewId;
         }
-//        model.addAttribute("companyId", companyId);
+        model.addAttribute("companyId", companyId);
         CompanyReviewDto form = companyReviewService.getReviewDetail(reviewId);
         model.addAttribute("form", form);
         return "interior/review-edit";

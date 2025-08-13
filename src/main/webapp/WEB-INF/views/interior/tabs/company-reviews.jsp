@@ -42,6 +42,12 @@
             생성일: ${r.reviewDate} <br/>
             수정일: ${r.reviewModify} <br/>
         </div>
+
+        <c:if test="${r.author}">
+            <c:url var="editUrl" value="/interior/myhome/${companyId}/reviews/${r.reviewId}/edit"/>
+                <a href="${editUrl}">수정</a>
+        </c:if>
+
     </article>
 </c:forEach>
 
