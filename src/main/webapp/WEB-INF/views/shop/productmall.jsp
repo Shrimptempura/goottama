@@ -617,6 +617,24 @@ body {
 <script>
 // 🔧 수정된 JavaScript 코드
 
+
+// 페이지가 로딩되자마자, 버튼 클릭리스너를 적용한다?
+document.addEventListener('DOMContentLoaded', function(){
+	const product=document.getElementById('product');
+	
+	
+	product.addEventListener('click', function(){
+		//가까운 product-card 찾기
+		const product= e.target.closest('.product-card');
+		
+		if(!productCard) return;
+	
+
+		//버튼을 누르면 장바구니 혹은 바로구매 호출
+		
+		
+})
+
 // 🔧 수정1: 이벤트 위임을 사용한 안전한 클릭 처리
 document.addEventListener('DOMContentLoaded', function() {
     const productGrid = document.getElementById('productGrid');
@@ -625,10 +643,10 @@ document.addEventListener('DOMContentLoaded', function() {
     productGrid.addEventListener('click', function(e) {
         // 클릭된 요소에서 가장 가까운 product-card 찾기
         const productCard = e.target.closest('.product-card');
-        if (!productCard) return;
-        
+        if (!productCard) return;        
+
         // 버튼 클릭인지 확인
-        const actionBtn = e.target.closest('.action-btn');
+        
         if (actionBtn) {
             e.stopPropagation(); // 상품 카드 클릭 이벤트 차단
             

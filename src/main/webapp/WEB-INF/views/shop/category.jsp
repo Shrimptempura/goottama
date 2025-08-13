@@ -206,7 +206,9 @@ function toggleSubMenu(categoryName) {
         arrow.classList.remove('rotated');
         mainLink.classList.remove('active');
     }
+   
 }
+
 
 function setActiveSubMenu(element, categoryId) {
     // 모든 서브메뉴에서 active 클래스 제거
@@ -331,7 +333,6 @@ function closeAllSubMenus() {
     </div>
 
     <div class="card-container">
-        
 
         <!-- 상품 목록 -->
         <c:choose>

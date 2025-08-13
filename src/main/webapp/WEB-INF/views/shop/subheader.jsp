@@ -45,7 +45,7 @@
 <!-- 사용자 정보 표시 -->
 <div class="user-info">
 
-
+	<!--   -->
 
 	<!-- 로그인된 경우 -->
     <c:choose>
@@ -79,7 +79,6 @@ function goToOrderDetails() {
     location.href = "order_details?user_id=" + ${loginMember.user_id};
 }
 
-
 // 주문 내역으로 이동
 function goToOrderDetail(){
 	location.href = "debug";
@@ -94,7 +93,6 @@ function goToReviewDetail(){
 function goToProductInquiryDetail(){
 	location.href = "product_inquiry_details";
 }
-
 
 
 </script>

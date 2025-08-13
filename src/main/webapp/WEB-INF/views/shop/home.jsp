@@ -50,13 +50,18 @@ body {
     flex-shrink: 0;
     cursor: pointer;
     transition: all 0.3s ease;
+    
+    /* 이 3줄 추가 */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .banner-slide:hover {
     transform: scale(1.02);
     filter: brightness(1.1);
 }
-
+/* 
 .banner-slide:nth-child(1) {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
@@ -76,7 +81,7 @@ body {
 .banner-slide:nth-child(5) {
     background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
 }
-
+ */
 /* 배너 인디케이터 */
 .banner-indicators {
     position: absolute;
@@ -581,14 +586,35 @@ function goToProductDetail(product_id) {
    location.href = `product_detail?product_id=${product.product_id}`;
 }
 
+//배너 이미지 변경함수 (오타 수정)
+function imgchange() {
+    const images = ['banner1.png', 'banner2.png', 'banner3.png', 'banner4.png', 'banner5.png'];
+    const slideElements = document.querySelectorAll('.banner-slide'); // guerySelectorAll → querySelectorAll
+    const visibleSlide = slideElements[currentSlide]; // 변수 선언 방식 수정
+    
+    if (visibleSlide) {
+        visibleSlide.style.backgroundImage = `url('./static/uploads/shop/${images[currentSlide]}')`;
+        // backagoundImage → backgroundImage
+        console.log('이미지 변경됨:', images[currentSlide]);
+    } else {
+        console.error('슬라이드 요소를 찾을 수 없습니다');
+    }
+}
+
 
 // 배너 슬라이더 함수
+// updateSlider에서 이미지 변경 부분 제거하고 단순화
 function updateSlider() {
     const slider = document.getElementById('bannerSlider');
     const indicators = document.querySelectorAll('.indicator');
     
+    console.log('현재 슬라이드:', currentSlide);
+    
     // 슬라이더 이동
     slider.style.transform = `translateX(-${currentSlide * 20}%)`;
+    
+    // 이미지 변경
+    imgchange();
     
     // 인디케이터 업데이트
     indicators.forEach((indicator, index) => {
@@ -597,7 +623,9 @@ function updateSlider() {
 }
 
 function nextSlide() {
+	console.log('nextSlide 실행됨, 현재:', currentSlide);
     currentSlide = (currentSlide + 1) % totalSlides;
+    console.log('다음 슬라이드:', currentSlide);
     updateSlider();
 }
 
