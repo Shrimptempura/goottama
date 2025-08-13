@@ -3,7 +3,9 @@ package com.ama.don.admin.dao;
 import com.ama.don.admin.dto.sanctionsDTO.MakeSanctionDTO;
 import com.ama.don.admin.dto.sanctionsDTO.SanctionSearchDTO;
 import com.ama.don.admin.dto.sanctionsDTO.SanctionsDTO;
+import com.ama.don.admin.utils.SearchVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -28,13 +30,13 @@ public interface SanctionsIDao {
      * @return 전체 제재 내역 목록 (List of SanctionsDTO)
      * @see #countAllSanctions()
      */
-    List<SanctionsDTO> getAllSanctions();
+    List<SanctionsDTO> getAllSanctions(@Param("searchVO") SearchVO searchVO);
 
     /**
      * 모든 제재 내역의 개수를 반환한다.
      *
      * @return 전체 제재 건수
-     * @see #getAllSanctions()
+     * @see #getAllSanctions(SearchVO)
      */
     int countAllSanctions();
 
@@ -50,9 +52,9 @@ public interface SanctionsIDao {
      *
      * @param sanctionsId 조회할 제재의 고유 ID
      * @return 해당 제재의 정보 (없으면 null)
-     * @see #getAllSanctions()
+     * @see #getAllSanctions(SearchVO)
      */
-    SanctionsDTO getSanctionsById(String sanctionsId);
+    SanctionsDTO getSanctionsBySanctionId(String sanctionsId);
 
     /**
      * 조건에 따라 제재 내역을 검색한다.
@@ -66,16 +68,17 @@ public interface SanctionsIDao {
      * @return 검색 결과 목록
      * @see #countSearchSanctions(SanctionSearchDTO)
      */
-    List<SanctionsDTO> searchSanctions(SanctionSearchDTO sanctionSearchDTO);
+    List<SanctionsDTO> searchSanctions(@Param("searchVO") SearchVO searchVO,
+                                       @Param("sanctionSearchDTO") SanctionSearchDTO sanctionSearchDTO);
 
     /**
      * 조건 검색 결과의 개수를 반환한다.
      *
      * @param sanctionSearchDTO 검색 조건 객체
      * @return 검색 결과 수
-     * @see #searchSanctions(SanctionSearchDTO)
+     * @see #searchSanctions(SearchVO, SanctionSearchDTO)
      */
-    int countSearchSanctions(SanctionSearchDTO sanctionSearchDTO);
+    int countSearchSanctions(@Param("sanctionSearchDTO") SanctionSearchDTO sanctionSearchDTO);
 
     /**
      * 새로운 제재 내역을 생성한다.

@@ -47,24 +47,32 @@
 <!-- 공지 목록 출력 -->
 <table class="sanction-table">
     <tr>
-       <td>User Activity Type</td>
-       <td>날자</td>
+       <td>Sanction ID</td>
+       <td>생성 날자</td>
        <td>유저 아이디</td>
+       <td>재제 기간</td>
+       <td>재제 종류</td>
        <td>보기</td>
     </tr>
     <c:forEach items="${list}" var="sanction">
         <tr>
             <td>
-                ${log.userActivityType}
+                ${sanction.sanctionsId}
             </td>
             <td>
-                ${log.userActivityTime}
+                ${sanction.sanctionsCreatedAt}
             </td>
             <td>
-                ${log.userId}
+                ${sanction.userId}
             </td>
-            <td><button type="button" class="open-modal-btn" data-modal-target="/admin/logs/user_log_data_modal"
-                                    data-param-name="user_activity_id" data-param-value="${log.userActivityId}"> ▶ </button></td>
+            <td>
+                ${sanction.sanctionDuration}
+            </td>
+            <td>
+                ${sanction.sanctionsTypes}
+            </td>
+            <td><button type="button" class="open-modal-btn" data-modal-target="/admin/sanctions/sanction_data_modal"
+                                    data-param-name="sanctions_id" data-param-value="${sanction.sanctionsId}"> ▶ </button></td>
         </tr>
     </c:forEach>
 </table>

@@ -8,7 +8,8 @@
     <!--  공지 모든 공지 추출  -->
     <select id="getAllNotices" resultType="com.ama.don.admin.dto.noticeDTO.NoticesDto">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_CONTENT
-        FROM notices ORDER BY NOTICES_CREATED_AT DESC
+        FROM notices
+        ORDER BY NOTICES_CREATED_AT DESC
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 

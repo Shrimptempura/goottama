@@ -33,21 +33,26 @@
         VALUES(#{user_id}, #{user_activity_type}, #{user_activity_time}, #{user_activity_target_id}, #{user_activity_target_type}, #{user_activity_details})
     </insert>
 
+    <select id="getUserActivityType">
+        SELECT DISTINCT(USER_ACTIVITY_TYPE) FROM user_activity ORDER BY USER_ACTIVITY_TYPE;
+    </select>
+
+    <select id="getUserActivityTargetType">
+        SELECT DISTINCT(USER_ACTIVITY_TARGET_TYPE) FROM user_activity ORDER BY USER_ACTIVITY_TARGET_TYPE;
+    </select>
+
     <select id="getSearchUserActivity" resultType="com.ama.don.admin.dto.userDTO.UserActivityDto">
         SELECT USER_ACTIVITY_ID, USER_ID, USER_ACTIVITY_TYPE, USER_ACTIVITY_TIME, USER_ACTIVITY_TARGET_ID, USER_ACTIVITY_TARGET_TYPE, USER_ACTIVITY_DETAILS
         FROM user_activity
         <where>
-            <if test="userActivitySearchDTO.user_id != 0">
+            <if test="userActivitySearchDTO.user_id != 0 and userActivitySearchDTO.user_id != null">
                 AND USER_ID = #{userActivitySearchDTO.user_id}
             </if>
             <if test="userActivitySearchDTO.user_activity_type != null and userActivitySearchDTO.user_activity_type != ''">
                 AND USER_ACTIVITY_TYPE LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_type}, '%')
             </if>
             <if test="userActivitySearchDTO.user_activity_target != null and userActivitySearchDTO.user_activity_target != ''">
-                AND (
-                user_activity_target_id LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_target}, '%')
-                OR USER_ACTIVITY_TARGET_TYPE LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_target}, '%')
-                )
+                AND USER_ACTIVITY_TARGET_TYPE LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_target}, '%')
             </if>
             <if test="userActivitySearchDTO.user_activity_time_start != null and userActivitySearchDTO.user_activity_time_start != ''">
                 AND USER_ACTIVITY_TIME &gt;= #{userActivitySearchDTO.user_activity_time_start}
@@ -57,6 +62,9 @@
             </if>
             <if test="userActivitySearchDTO.user_activity_details != null and userActivitySearchDTO.user_activity_details != ''">
                 AND USER_ACTIVITY_DETAILS LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_details}, '%')
+            </if>
+            <if test="userActivitySearchDTO.user_activity_target_id != null and userActivitySearchDTO.user_activity_target_id != ''">
+                AND USER_ACTIVITY_TARGET_ID = #{userActivitySearchDTO.user_activity_target_id}
             </if>
         </where>
         ORDER BY USER_ACTIVITY_TIME DESC
@@ -67,17 +75,14 @@
         SELECT COUNT(*)
         FROM user_activity
         <where>
-            <if test="userActivitySearchDTO.user_id != 0">
+            <if test="userActivitySearchDTO.user_id != 0 and userActivitySearchDTO.user_id != null">
                 AND USER_ID = #{userActivitySearchDTO.user_id}
             </if>
             <if test="userActivitySearchDTO.user_activity_type != null and userActivitySearchDTO.user_activity_type != ''">
                 AND USER_ACTIVITY_TYPE LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_type}, '%')
             </if>
             <if test="userActivitySearchDTO.user_activity_target != null and userActivitySearchDTO.user_activity_target != ''">
-                AND (
-                user_activity_target_id LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_target}, '%')
-                OR USER_ACTIVITY_TARGET_TYPE LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_target}, '%')
-                )
+                AND USER_ACTIVITY_TARGET_TYPE LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_target}, '%')
             </if>
             <if test="userActivitySearchDTO.user_activity_time_start != null and userActivitySearchDTO.user_activity_time_start != ''">
                 AND USER_ACTIVITY_TIME &gt;= #{userActivitySearchDTO.user_activity_time_start}
@@ -87,6 +92,9 @@
             </if>
             <if test="userActivitySearchDTO.user_activity_details != null and userActivitySearchDTO.user_activity_details != ''">
                 AND USER_ACTIVITY_DETAILS LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_details}, '%')
+            </if>
+            <if test="userActivitySearchDTO.user_activity_target_id != null and userActivitySearchDTO.user_activity_target_id != ''">
+                AND USER_ACTIVITY_TARGET_ID = #{userActivitySearchDTO.user_activity_target_id}
             </if>
         </where>
     </select>

@@ -31,4 +31,7 @@ public interface UserActivityLogIDao {
 
     public int writeUserActivityLog(UserActivityDto userActivityDto);
 
+    public List<String> getUserActivityType();
+
+    public List<String> getUserActivityTargetType();
 }

@@ -32,6 +32,8 @@ public class GetUserActivityList {
         if (userActivitySearchDTO == null ||
                 (userActivitySearchDTO.getUser_activity_type() == null || userActivitySearchDTO.getUser_activity_type().isEmpty()) &&
                 (userActivitySearchDTO.getUser_activity_target() == null || userActivitySearchDTO.getUser_activity_target().isEmpty()) &&
+                (userActivitySearchDTO.getUser_id() == null || userActivitySearchDTO.getUser_id() == 0) &&
+                (userActivitySearchDTO.getUser_activity_target_id() == null || userActivitySearchDTO.getUser_activity_target_id().isEmpty()) &&
                 (userActivitySearchDTO.getUser_activity_time_start() == null || userActivitySearchDTO.getUser_activity_time_start().isEmpty()) &&
                 (userActivitySearchDTO.getUser_activity_time_end() == null || userActivitySearchDTO.getUser_activity_time_end().isEmpty()) &&
                 (userActivitySearchDTO.getUser_activity_details() == null || userActivitySearchDTO.getUser_activity_details().isEmpty())) {
@@ -55,6 +57,11 @@ public class GetUserActivityList {
             mapList.add(row);
         }
 
+        List<String> activityType = userActivityLogIDao.getUserActivityType();
+        List<String> activityTargetType = userActivityLogIDao.getUserActivityTargetType();
+
+        model.addAttribute("activityType", activityType);
+        model.addAttribute("activityTargetType", activityTargetType);
         model.addAttribute("list", mapList);
         model.addAttribute("searchVO", searchVO);
     }
