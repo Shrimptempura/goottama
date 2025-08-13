@@ -19,6 +19,10 @@
 			 <label for="pw">비밀번호</label>
 			 <input type="password" name="pw"  id="pw" required/><br /> 
 			 
+			 <c:if test="${param.error == 'true'}">
+  			  <p class="error">아이디 또는 비밀번호가 올바르지 않습니다.</p>
+			</c:if>
+			 
 			 <input type="submit" value="로그인" class="login-btn"/>
 		</form>
 

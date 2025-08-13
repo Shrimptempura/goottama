@@ -4,18 +4,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>상품 스크랩북</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/mypage/mypageCategory.css" />
 </head>
 <body>
 
-<a href="/mypage/myProfile"> 프로필 </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/mypage/myOrderList"> <strong>나의쇼핑</strong> </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/mypage/myReview">나의활동</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/mypage/editProfile_view">설정</a> <br />
+<div class="nav">
+<a href="/mypage/myProfile"> 프로필 </a> 
+<a href="/mypage/myOrderList"> <strong>나의쇼핑</strong> </a> 
+<a href="/mypage/myReview">나의활동</a> 
+<a href="/mypage/editProfile_view">설정</a> 
+</div>
 
-<a href="/mypage/myOrderList"> 주문배송목록 </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/mypage/myScrapbook"> <strong>상품스크랩북</strong> </a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<div class="sub-nav">
+<a href="/mypage/myOrderList"> 주문배송목록 </a>
+<a href="/mypage/myScrapbook"> <strong>상품스크랩북</strong> 
 <a href="/mypage/myInquiry"> 나의문의내역 </a>
+</div>
 
 </body>
 </html>

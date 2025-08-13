@@ -4,15 +4,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>프로필</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/mypage/mypageCategory.css" />
 </head>
 <body>
-
-<a href="/mypage/myProfile"> <strong>프로필</strong> </a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/mypage/myOrderList">나의쇼핑</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="/mypage/myReview">나의활동</a> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<div class="nav">
+<a href="/mypage/myProfile"> <strong>프로필</strong> </a> 
+<a href="/mypage/myOrderList">나의쇼핑</a> 
+<a href="/mypage/myReview">나의활동</a>
 <a href="/mypage/editProfile_view">설정</a> 
-
+</div>
 
 </body>
 </html>
