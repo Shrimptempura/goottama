@@ -67,7 +67,7 @@ $(document).ready(function() {
 			const formData = new FormData();
 			formData.append("file", file);
 			formData.append("target_type", "COMMUNITY_REVIEW");
-			formData.append("user_id", 1); // 백엔드용
+			formData.append("user_id", 1); 
 
 			fetch("/file/upload_image", {
 				method: "POST",
