@@ -12,6 +12,9 @@ public class InteriorWebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/upload/interior/**")
                 .addResourceLocations("file:///C:/ama_upload_pr/interior/");
 
+        registry.addResourceHandler("/upload/interior_review/**")
+                .addResourceLocations("file:///C:/ama_upload_pr/interior_review/");
+
         registry.addResourceHandler("/css/**")
                 .addResourceLocations("classpath:/static/css/");
 

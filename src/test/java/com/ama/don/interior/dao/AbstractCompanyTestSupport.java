@@ -150,7 +150,7 @@ public class AbstractCompanyTestSupport {
         ReviewDto dto = new ReviewDto();
         dto.setUserId(userId);
         dto.setTargetId(companyId);
-        dto.setTargetType(TargetType.valueOf("INTERIOR"));
+        dto.setTargetType(TargetType.INTERIOR_REVIEW);
         dto.setReviewContent("다형성에 적는 리뷰 내용 테스트");
 
         reviewDao.insertPolyReview(dto);
@@ -214,7 +214,7 @@ public class AbstractCompanyTestSupport {
         ReviewDto dto = new ReviewDto();
         dto.setUserId(user.getUserId());
         dto.setTargetId(companyId);
-        dto.setTargetType(TargetType.valueOf("INTERIOR"));
+        dto.setTargetType(TargetType.INTERIOR_REVIEW);
         dto.setReviewContent("다형성에 적는 리뷰 내용 테스트");
 
         reviewDao.insertPolyReview(dto);
@@ -243,7 +243,7 @@ public class AbstractCompanyTestSupport {
         PostDto dto = new PostDto();
         dto.setUser_id(userId);
         dto.setTargetId(companyId);
-        dto.setTargetType(TargetType.valueOf("INTERIOR"));
+        dto.setTargetType(TargetType.INTERIOR);
 
         postDao.insertPolyPostForCompany(dto);
 
@@ -301,7 +301,7 @@ public class AbstractCompanyTestSupport {
         dto.setCompanyPostId(companyPostId);
         dto.setCommentContent(commentContent);
         dto.setTargetId(companyPostId);
-        dto.setTargetType(TargetType.valueOf("INTERIOR"));
+        dto.setTargetType(TargetType.INTERIOR);
 
         companyCommentDao.insertCompanyComment(dto);
 
