@@ -61,6 +61,13 @@
         WHERE user_sanctions_until IS NOT NULL AND user_sanctions_until &lt; NOW()
     </update>
 
+    <update id="changeUserRole">
+        UPDATE user_login
+        SET
+        ROLES_ID = #{role}
+        WHERE USER_ID = #{userId}
+    </update>
+
     <select id="searchUsers" resultType="com.ama.don.admin.dto.userDTO.UserTotalDataDTO">
         SELECT
         D.USER_ID, D.USER_NAME, D.USER_NICKNAME, D.USER_GENDER, D.USER_BIRTH, D.USER_CREATED_AT, D.USER_TEL, D.USER_ZIPCODE, D.USER_ADDR, D.USER_EMAIL, D.USER_IMG, D.USER_STATUS, D.USER_SANCTIONS_UNTIL, L.ROLES_ID, L.LOGIN_ID

@@ -26,7 +26,13 @@
     <p>주소 : ${userData.user_addr}</p>
     <p>이멜 : ${userData.user_email}</p>
     <p>프사 : ${userData.user_img}</p>
-    <p>권한 : ${userData.roles_id}</p>
+    <p>권한 : ${userData.roles_id}
+    <br />
+    <button type="button" class="open-modal-btn"
+                    data-param-name="userInfo"
+                    data-param-value="${userData.user_id},${userData.roles_id}"
+                    data-modal-target="/admin/users/roles_modal_content"> 권한 등급 변경 </button>
+    </p>
     <p>로긴 : ${userData.login_id}</p>
     <p>제재 : ${userData.sanctions_types}</p>
     <p>상태 : ${userData.user_status}</p>

@@ -22,6 +22,9 @@ public class CommentCreateDto {
 	private Long parent_comment_id;
 	private Timestamp created_at;
 	private Timestamp modified_at;
+	
+	private boolean is_deleted; 
+
 
 	private Long targetId;
 	private TargetType targetType;

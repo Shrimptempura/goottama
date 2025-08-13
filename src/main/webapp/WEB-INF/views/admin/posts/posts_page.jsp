@@ -5,9 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-<title>Advanced Search</title>
+<title>Posts</title>
 </head>
 <body>
-    <h1>Advanced Search</h1>
+    <h1>Posts</h1>
 </body>
 </html>

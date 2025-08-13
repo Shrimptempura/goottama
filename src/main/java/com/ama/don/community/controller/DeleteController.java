@@ -1,24 +1,23 @@
 package com.ama.don.community.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.ama.don.community.service.CommunityDetailService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import com.ama.don.common.dao.PostDao;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/community")
 public class DeleteController {
 
-	@Autowired
-	private PostDao postDao;
+	private final CommunityDetailService detailService;
 
-	// 삭제 처리
 	@PostMapping("/delete")
-	public String deleteReview(@RequestParam("post_id") Long postId) {
-		postDao.delete(postId);
+	public String delete(@RequestParam("post_id") Long postId, RedirectAttributes ra) {
+		detailService.deletePost(postId);
+		ra.addFlashAttribute("msg", "삭제되었습니다.");
 		return "redirect:/community/review_view";
 	}
 }
