@@ -64,15 +64,15 @@ function loadContent(menuType) {
 // 페이지 별 JS 파일 실행 함수
 async function callSpecificPageJSFunction(menuType) {
     const scriptMap = {
-        'notices' : '/static/js/admin/NoticePageScript.js',
-        'users' : '/static/js/admin/UserPageScript.js',
-        'reports' : '/static/js/admin/ReportPageScript.js',
-        'dashboard' : '/static/js/admin/DashboardPageScript.js',
-        'sanctions' : '/static/js/admin/SanctionPageScript.js',
-        'posts' : '/static/js/admin/PostPageScript.js',
-        'reviews' : '/static/js/admin/ReviewPageScript.js',
-        'statistics' : '/static/js/admin/StatisticsPageScript.js',
-        'logs' : '/static/js/admin/LogsPageScript.js'
+        'notices' : '/static/js/admin/page-scripts/NoticePageScript.js',
+        'users' : '/static/js/admin/page-scripts/UserPageScript.js',
+        'reports' : '/static/js/admin/page-scripts/ReportPageScript.js',
+        'dashboard' : '/static/js/admin/page-scripts/DashboardPageScript.js',
+        'sanctions' : '/static/js/admin/page-scripts/SanctionPageScript.js',
+        'posts' : '/static/js/admin/page-scripts/PostPageScript.js',
+        'reviews' : '/static/js/admin/page-scripts/ReviewPageScript.js',
+        'statistics' : '/static/js/admin/page-scripts/StatisticsPageScript.js',
+        'logs' : '/static/js/admin/page-scripts/LogsPageScript.js'
     };
 
     const scriptPath = scriptMap[menuType];
