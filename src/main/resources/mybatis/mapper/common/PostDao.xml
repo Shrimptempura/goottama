@@ -112,7 +112,7 @@
 	<select id="findPostIdByCompanyPostId" resultType="java.lang.Long">
 		SELECT post_id
 		FROM post
-		WHERE target_id = #{targetId}
+		WHERE target_id = #{companyPostId}
 	</select>
 
 
