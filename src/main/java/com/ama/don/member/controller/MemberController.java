@@ -94,6 +94,7 @@ public class MemberController {
 	
 	@GetMapping("/mypage/myScrapbook")
 	public String memberScrapbook() {
+		//
 		return "member/mypage/myScrapbook";
 	}
 	
