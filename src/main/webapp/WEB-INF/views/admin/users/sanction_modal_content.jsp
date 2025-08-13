@@ -5,7 +5,7 @@
     <input type="hidden" name="user_id" value="${userId}">
     <p>
         <label for="new-sanctions-until">새로운 제재 종료일:</label>
-        <input type="date" id="new-sanctions-until" name="user_sanctions_until" required />
+        <input type="date" id="new-sanctions-until" name="user_sanctions_until" />
     </p>
     <p>
     <div class="new-user-status">사용자 상태

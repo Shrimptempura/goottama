@@ -220,9 +220,23 @@
 	
 	</select>
 	
-	
-	
-	
+	<!-- 로그 기록용 쿼리 -->
+	<select id="findLatestProductInquiryByUserIdAndTargetId" resultType="java.lang.Long">
+		SELECT pinquiry_id
+		FROM product_inquiry
+		WHERE USER_ID = #{userId}
+		AND PRODUCT_ID = #{targetId}
+		ORDER BY pinquiry_date DESC
+		LIMIT 1
+	</select>
+
+	<select id="findLatestOrderIdByUserId" resultType="java.lang.Long">
+		SELECT order_id
+		FROM orders
+		WHERE user_id = #{userId}
+		ORDER BY order_date DESC
+		LIMIT 1
+	</select>
 
 	
 </mapper>	

@@ -43,4 +43,13 @@ public interface ReviewDao {
 
     // 리뷰 개수
     int reviewCount(String targetType, Long targetId);
+
+    /**
+     * 특정 사용자가 특정 상품에 대해 가장 최근에 작성한 리뷰를 찾아내는 메서드 <br />
+     * 로그 작성용
+     * @param userId 리뷰를 작성 한 유저 아이디
+     * @param targetId 리뷰의 대상이 되는 상품 아이디
+     * @return
+     */
+    public Long findLatestReviewByUserIdAndTargetId(Long userId, String targetId);
 }

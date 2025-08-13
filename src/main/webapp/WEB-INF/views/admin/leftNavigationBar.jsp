@@ -7,6 +7,7 @@
         <button data-menu="search">Advanced Search</button>
         <button data-menu="log">Log Viewer</button>
         <button data-menu="statistics">Statistics</button>
-        <button data-menu="access_control">Access Control</button>
-        <button data-menu="permission">Permission</button>
+        <button data-menu="reviews">Reviews</button>
+        <button data-menu="posts">Posts</button>
+        <button data-menu="sanctions">Sanctions</button>
     </div>

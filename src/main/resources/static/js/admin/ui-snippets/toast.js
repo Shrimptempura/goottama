@@ -17,6 +17,8 @@ const toastMap = {
     report_delete_failure: { message: '신고 내역 삭제 실패!', type: 'failure' },
     change_user_sanctions_until_success: { message: '제재 기간이 성공적으로 변경되었습니다!', type: 'success' },
     change_user_sanctions_until_failure: { message: '제재 기간 변경에 실패했습니다!', type: 'failure' },
+    change_user_role_success: { message: '권한 등급이 공적으로 변경되었습니다!', type: 'success' },
+    change_user_role_failure: { message: '권한 등급 변경에 실패했습니다!', type: 'failure' },
     error: { message: 'error', type: 'failure' }
 };
 
