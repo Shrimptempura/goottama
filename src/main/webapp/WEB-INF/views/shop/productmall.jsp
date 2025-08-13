@@ -502,7 +502,7 @@ body {
             </c:choose>
         </div>
 
-        <!-- 정렬 바 -->
+        <%-- <!-- 정렬 바 -->
         <div class="sort-bar">
             <div class="sort-left">
                 <strong>${product_list != null ? product_list.size() : 0}</strong>개의 상품
@@ -516,7 +516,7 @@ body {
                     <option value="name">상품명순</option>
                 </select>
             </div>
-        </div>
+        </div> --%>
 
         <!-- 상품 그리드 -->
 		<div class="product-grid" id="productGrid">
@@ -580,7 +580,7 @@ body {
 		                            </c:choose>
 		                        </div>
 		
-		                        <!-- 🔧 수정2: 액션 버튼들의 이벤트 처리 개선 -->
+		                        <%-- <!-- 🔧 수정2: 액션 버튼들의 이벤트 처리 개선 -->
 		                        <div class="product-actions">
 		                            <button class="action-btn cart-btn" data-product-id="${product.product_id}" data-action="cart">
 		                                🛒 장바구니
@@ -588,7 +588,7 @@ body {
 		                            <button class="action-btn order-btn" data-product-id="${product.product_id}" data-action="order">
 		                                ⚡ 바로구매
 		                            </button>
-		                        </div>
+		                        </div> --%>
 		                    </div>
 		                </div>
 		            </c:forEach>

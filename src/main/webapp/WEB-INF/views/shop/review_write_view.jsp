@@ -292,8 +292,8 @@ body {
     </div>
     
     <!-- 리뷰 작성 폼 -->
-    <p>${user_info.user_id }</p>
-    <p>${product.product_id }</p>
+    <%-- <p>${user_info.user_id }</p>
+    <p>${product.product_id }</p> --%>
     <form class="review-form" action="review_write?user_id=${user_info.user_id }&product_id=${product.product_id}" method="post" enctype="multipart/form-data">
         <input type="hidden" name="user_id" value="${user_info.user_id}" />
         <input type="hidden" name="product_id" value="${product.product_id}" />

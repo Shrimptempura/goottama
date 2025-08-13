@@ -665,10 +665,10 @@
 
 .deliver-refund-section{
 	max-width: 800px;
-    margin: 0 auto;
-    border: 1px solid gray;
-    border-radius: 10px;
-    padding: 20px;
+    margin: 0 auto;			/* 가운데배치 */
+    border: 1px solid gray;	/* 테두리 */
+    border-radius: 10px;	/* 테두리 둥글게 */
+    padding: 20px;			
     background-color: white;
 }
 
@@ -862,7 +862,7 @@ function debugInquiries() {
 
 
 <body>
-<h2>product_detail</h2>
+<!-- <h2>product_detail</h2> -->
 
 <div class="main-container">
 
@@ -897,7 +897,7 @@ function debugInquiries() {
                 <li><a href="#productinfo">상품정보</a></li>
                 <li><a href="#review-section">리뷰</a></li>
                 <li><a href="#inquiry-section">문의</a></li>
-                <li><a href="#">배송/환불</a></li>
+                <li><a href="#deliver-refund-section">배송/환불</a></li>
             </ul>
         </div>
 
@@ -1070,7 +1070,7 @@ function debugInquiries() {
 		
 		<!-- 배송/환불 섹션 -->
 		<h3>배송/환불</h3>
-		<div class="deliver-refund-section">
+		<div id="deliver-refund-section" class="deliver-refund-section">
 			
 			<div id="deliver-section" class="deliver-section">
 				<p>배송</p>

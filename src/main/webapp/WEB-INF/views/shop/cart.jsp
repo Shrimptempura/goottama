@@ -172,8 +172,8 @@
 </head>
 <body>
 
-<h2>cart</h2>
- 
+<!-- <h2>cart</h2>
+  -->
 <div class="maincontainer">
    
     <!-- 장바구니 아이템들 -->
