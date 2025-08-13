@@ -1,11 +1,13 @@
 package com.ama.don.interior.controller;
 
+import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.review.CompanyHomeReviewDto;
 import com.ama.don.interior.dto.review.CompanyReviewCreateDto;
 import com.ama.don.interior.dto.review.CompanyReviewDto;
 import com.ama.don.interior.dto.review.CompanyReviewUpdateDto;
 import com.ama.don.interior.service.CompanyAuthService;
 import com.ama.don.interior.service.CompanyReviewService;
+import com.ama.don.interior.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -23,6 +25,7 @@ public class CompanyReviewController {
 
     private final CompanyReviewService companyReviewService;
     private final CompanyAuthService companyAuthService;
+    private final FileService fileService;
 
     // 리뷰 등록 폼으로 이동
     @GetMapping("/interior/myhome/{companyId}/review-form")
@@ -69,8 +72,11 @@ public class CompanyReviewController {
             return "redirect:/interior/myhome/" + companyId + "?type=reviews&focus=" + reviewId;
         }
         model.addAttribute("companyId", companyId);
-        CompanyReviewDto form = companyReviewService.getReviewDetail(reviewId);
+        CompanyReviewUpdateDto form = companyReviewService.getEditView(reviewId);
         model.addAttribute("form", form);
+
+        model.addAttribute("images",
+                fileService.getFileList(TargetType.INTERIOR_REVIEW, reviewId));
         return "interior/review-edit";
     }
 
@@ -78,46 +84,24 @@ public class CompanyReviewController {
     @PostMapping("/interior/myhome/{companyId}/reviews/{reviewId}/edit")
     public String updateReview(@PathVariable Long companyId,
                                @PathVariable Long reviewId,
-                               @ModelAttribute("form")CompanyReviewUpdateDto form,
+                               @ModelAttribute("form") CompanyReviewUpdateDto form,
                                @RequestParam("files") List<MultipartFile> files,
                                RedirectAttributes ra) {
-        if (!hasAtLeastOne(files)) {
-            ra.addFlashAttribute("error", "이미지는 최소 1장이 필요합니다.");
-            return "redirect:/interior/myhome/" + companyId + "/reviews/" + reviewId + "/edit";
-        }
-
         try {
-            form.setReviewId(reviewId);;
+            form.setReviewId(reviewId);
             companyReviewService.updateReview(form, files);
             ra.addFlashAttribute("msg", "리뷰가 수정되었습니다.");
+            return "redirect:/interior/myhome/" + companyId + "?type=reviews&focus=" + reviewId;
+        } catch (IllegalArgumentException e) {
+            ra.addFlashAttribute("error", e.getMessage());      // 이미지는 최소 1장이 필요합니다.
+            return "redirect:/interior/myhome/" + companyId + "/reviews/" + reviewId + "/edit";
         } catch (Exception e) {
             ra.addFlashAttribute("error", e.getMessage());
             return "redirect:/interior/myhome/" + companyId + "/reviews/" + reviewId + "/edit";
         }
-        return "redirect:/interior/myhome/" + companyId + "?type=reviews&focus=" + reviewId;
+
     }
 
     // ra.addAttribute 방법을 return + 문자열로 통일성 맞추서 고치기(한 2개?)
     // 로그 추가 안했음
-
-    // === static helper method =======
-    // 최소 파일은 1개
-    private static boolean hasAtLeastOne(List<MultipartFile> files) {
-        if (files == null) {
-            return false;
-        }
-
-        for (MultipartFile file : files) {
-            if (file != null && !file.isEmpty()) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-
-
-
-
 }

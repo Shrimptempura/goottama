@@ -45,9 +45,10 @@
 
         <c:if test="${r.author}">
             <c:url var="editUrl" value="/interior/myhome/${companyId}/reviews/${r.reviewId}/edit"/>
-                <a href="${editUrl}">수정</a>
+            <a href="${editUrl}">수정</a>
         </c:if>
-
+        <hr/>
+        <br/><br/><br/>
     </article>
 </c:forEach>
 
