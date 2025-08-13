@@ -15,10 +15,15 @@ public interface UserActivityLogIDao {
 
     public int countGetAllUserActivity();
 
+    /**
+     * activityId를 이용해 로그 조회
+     * @param activityId
+     * @return
+     */
     public UserActivityDto getUserActivityById(String activityId);
 
     public List<UserActivityDto> getUserActivityByUserId(String UserId, @Param("searchVO") SearchVO searchVO);
-
+    
     public List<UserActivityDto> getSearchUserActivity(@Param("userActivitySearchDTO") UserActivitySearchDTO userActivitySearchDTO,
                                                        @Param("searchVO") SearchVO searchVO);
 
