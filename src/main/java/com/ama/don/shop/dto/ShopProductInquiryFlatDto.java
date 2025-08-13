@@ -43,6 +43,11 @@ public class ShopProductInquiryFlatDto {
     String product_istoday;
     Timestamp product_date;
     
+    
+    //상품 이미지
+    Long product_img_id;
+	String product_imgurl;
+	String product_img_type;
 
     //product_inquiry
     long pinquiry_id;

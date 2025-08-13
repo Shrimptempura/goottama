@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.ama.don.interior.dev.DevFindTarget;
 import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.shop.dao.ShopIDao;
@@ -48,6 +49,9 @@ import com.ama.don.shop.service.productinquiry.ShopProductInquiryUpdateService;
 import com.ama.don.shop.service.productinquiry.ShopProductInquiryUpdateViewService;
 import com.ama.don.shop.service.productinquiry.ShopProductReplyViewService;
 import com.ama.don.shop.service.productinquiry.ShopProductReplyWriteService;
+import com.ama.don.shop.service.reviewservice.ShopReviewDeleteService;
+import com.ama.don.shop.service.reviewservice.ShopReviewUpdateService;
+import com.ama.don.shop.service.reviewservice.ShopReviewUpdateViewService;
 import com.ama.don.shop.service.reviewservice.ShopReviewWriteService;
 import com.ama.don.shop.service.reviewservice.ShopReviewWriteViewService;
 
@@ -99,7 +103,7 @@ public class ShopController {
 		
 		LoginMemberService loginMemberService=new LoginMemberService();
 		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
-		model.addAttribute("loginMember",memberDto);
+		model.addAttribute("loginMember",memberDto); 
 		
 		model.addAttribute("request", request);
 		shopServiceinter=new ShopProductPopularService(iDao);
@@ -192,21 +196,73 @@ public class ShopController {
 		shopServiceinter=new ShopReviewWriteService(iDao);
 		shopServiceinter.execute(model);
 		
-		
-		
 		 //
-        String user_id=request.getParameter("user_id");
+		Long userid=memberDto.getUser_id();
         String product_id=request.getParameter("product_id");
-		
 		Long productid=Long.parseLong(product_id);
-		Long userid=Long.parseLong(user_id);
-		
-		System.out.println("userid:"+userid);
-			
+		System.out.println("userid:"+userid);	
 		return "redirect:/shop/product_detail?product_id="+productid+"&userid="+userid;
 		
 	}
+
+	@RequestMapping("/shop/review_delete")
+	public String review_delete(HttpServletRequest request,Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopReviewDeleteService(iDao);
+		shopServiceinter.execute(model);
+		
+		//
+		Long userid=memberDto.getUser_id();
+        String target_id=request.getParameter("target_id");
+		Long productid=Long.parseLong(target_id);
+		System.out.println("userid:"+userid);
+			
+		return "redirect:/shop/product_detail?product_id="+productid;
+		
+	}
 	
+	@RequestMapping("/shop/review_update_view")
+	public String review_update_view(HttpServletRequest request,Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopReviewUpdateViewService(iDao);
+		shopServiceinter.execute(model);
+		
+		return "shop/review_update_view";
+	}
+	
+	@RequestMapping("/shop/review_update")
+	public String review_update(HttpServletRequest request,Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopReviewUpdateService(iDao);
+		shopServiceinter.execute(model);
+		
+		//
+		Long userid=memberDto.getUser_id();
+        String target_id=request.getParameter("target_id");
+		Long productid=Long.parseLong(target_id);
+		System.out.println("userid:"+userid);
+		
+		return "redirect:/shop/product_detail?product_id="+productid;
+	}
+	
+	
+	
+	//상품 문의 작성
 	@RequestMapping("/shop/product_inquiry_write_view")
 	public String product_inquiry_view(HttpServletRequest request,Model model) {
 		
@@ -435,6 +491,8 @@ public class ShopController {
 		return "redirect:/shop/cart?user_id=" + user_id;
 	}
 
+	
+	//주문 과정
 	@RequestMapping("/shop/order_view")
 	public String order_view(HttpServletRequest request, Model model) {
 		
@@ -463,6 +521,7 @@ public class ShopController {
 		model.addAttribute("request", request);
 		shopServiceinter = new ShopOrderWriteService(iDao,paymentMethod);
 		shopServiceinter.execute(model);
+		
 		return "shop/order_complete";
 	}
 
@@ -518,6 +577,7 @@ public class ShopController {
 	}
 	
 	
+	//결재
 	@RequestMapping("/shop/kakaopay")
 	public String kakaopay(HttpServletRequest request,Model model) {
 		

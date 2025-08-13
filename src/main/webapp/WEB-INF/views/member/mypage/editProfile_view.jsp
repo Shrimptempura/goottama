@@ -29,20 +29,24 @@
 </div>
 
 <div class="profile-container">
-
- 	<h2>회원정보 수정</h2>
   
-    <div>
-      <p class="info-text">현재 프로필 이미지</p>
-      <img class="current-img" src="${pageContext.request.contextPath}${loginMember.profileImgUrl}" alt="프로필 이미지" />
-    </div>
-    <form action="/profileImgUpload" method="post" enctype="multipart/form-data">
-    <label for="profileImg">변경할 프로필 이미지 선택</label>
-    <img id="preview" src="#" alt="미리보기 이미지" style="display:none;" />
-    <input type="file" accept="image/*" name="profileImg" id="profileImg" onchange="previewImg(event)" />
-   
-    <input type="submit" class="btn btn-submit" value="프로필 이미지 변경하기" />
-  </form>
+    <div class="profile-image-section">
+ 	 <p class="section-title">현재 프로필 이미지</p>
+  	<img class="current-img" src="${pageContext.request.contextPath}${loginMember.profileImgUrl}" alt="프로필 이미지" />
+	</div>
+
+	<form action="/profileImgUpload" method="post" enctype="multipart/form-data" class="profile-img-form">
+  	<label for="profileImg" class="file-label">새 프로필 이미지 선택</label>
+ 	 <input type="file" accept="image/*" name="profileImg" id="profileImg" onchange="previewImg(event)" />
+  
+ 	 <div class="preview-wrapper">
+    <p class="preview-title">미리보기</p>
+    <img id="preview" src="#" alt="미리보기 이미지" />
+ 	 </div>
+
+  	<input type="submit" class="btn btn-submit" value="프로필 이미지 변경하기" />
+	</form> 
+ 
  
   <form action="/editProfile" method="post">
     <label>아이디</label>

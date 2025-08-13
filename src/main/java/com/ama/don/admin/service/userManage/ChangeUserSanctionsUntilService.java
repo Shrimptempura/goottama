@@ -26,9 +26,6 @@ public class ChangeUserSanctionsUntilService {
         String userSanctionsUntilString = (String) map.get("userSanctionsUntil");
         String userStatus = (String) map.get("userStatus");
         int update = 0;
-        System.out.println("\n>>> userId : " + userId);
-        System.out.println(">>> userSanctionsUntilString : " + userSanctionsUntilString);
-        System.out.println(">>> userStatus : " + userStatus + "\n");
         Timestamp userSanctionsUntil = null;
 
         if ("suspended".equals(userStatus)) {

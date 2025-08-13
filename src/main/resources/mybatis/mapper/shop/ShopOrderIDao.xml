@@ -14,6 +14,16 @@
         values (#{user_id}, now(), '주문 완료', #{order_totalprice})
     </insert>
 
+
+	<select id="order_deliver_info" parameterType="com.ama.don.shop.dto.OrderFlatDto" resultType="com.ama.don.shop.dto.OrderFlatDto">
+		select o.order_id, o.order_status, d.deliver_id, d.deliver_status, d.deliver_date
+        from orders o 
+        left join deliver d on o.order_id = d.order_id 
+        where o.order_id = #{order_id}
+	</select>
+
+
+
     <!-- 2. 배송 정보 등록 (deliver 테이블) -->
     <insert id="deliver_write" parameterType="com.ama.don.shop.dto.DeliverDto">
         insert into deliver(

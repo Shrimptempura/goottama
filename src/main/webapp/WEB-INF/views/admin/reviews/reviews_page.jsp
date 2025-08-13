@@ -5,9 +5,9 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-<title>Permission Setting</title>
+<title>Reviews</title>
 </head>
 <body>
-    <h1>Permission Setting</h1>
+    <h1>Reviews</h1>
 </body>
 </html>

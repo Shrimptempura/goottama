@@ -68,26 +68,35 @@
 <h2>subheader</h2>
 
 <script>
-// 세션에서 user_id 가져오는 함수
-function getUserId() {
-    let userId = '${sessionScope.user_id}';
-    if (!userId || userId.trim() === '' || userId === 'null') {
-        userId = '1'; // 기본값으로 1 사용
-    }
-    return userId;
-}
 
 // 장바구니로 이동
 function goToCart() {
-    const userId = getUserId();
     location.href = "cart?user_id=" + ${loginMember.user_id};
 }
 
 // 주문내역으로 이동
 function goToOrderDetails() {
-    const userId = getUserId();
     location.href = "order_details?user_id=" + ${loginMember.user_id};
 }
+
+
+// 주문 내역으로 이동
+function goToOrderDetail(){
+	location.href = "debug";
+}
+
+// 리뷰 상세로 이동
+function goToReviewDetail(){
+	location.href = "review_details";
+}
+
+//문의 상세로 이동
+function goToProductInquiryDetail(){
+	location.href = "product_inquiry_details";
+}
+
+
+
 </script>
 
 <div class="subheader">
@@ -95,9 +104,11 @@ function goToOrderDetails() {
     <a href="category">Category</a>
     <a href="productmall">ProductMall</a>
     <a href="best">Best</a>
-    <a href="todaydeliver">Today Delivery</a>
     <a href="javascript:void(0)" onclick="goToCart()">Cart</a>
     <a href="javascript:void(0)" onclick="goToOrderDetails()">Order Details</a>
+    <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
+    <a href="javascript:void(0)" onclick="goToReviewDetail()">review</a>
+    <a href="javascript:void(0)" onclick="goToProductInquiryDetail()">product_inquiry</a>
     
    
 </div>

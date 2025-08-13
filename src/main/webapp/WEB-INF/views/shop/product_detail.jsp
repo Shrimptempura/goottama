@@ -723,7 +723,7 @@ function changeCount(value){
 
 // ========== getuserid() 함수 정의 ==========
 function getuserid() {
-    var userId = '${sessionScope.user_id}';
+    var userId = '${loginMember.user_id}';
     if (!userId || userId.trim() === '' || userId === 'null') {
         userId = '1'; // 기본값으로 1 사용
     }
@@ -840,38 +840,6 @@ function debugInquiries() {
     });
 }
 
-
-
-
-//
-function renderOrderActions(orderId){
-	
-	<p>리턴입니다.</p>	
-	return '<p>리턴입니다.</p>';
-		
-
-}
-
-function alert(){
-	console.log('=== 알람 ===');
-	alert("버튼알람");
-}
-
-
-//버튼 클릭
- const btn = document.getElementById('btn');
-    const container = document.getElementById('container');
-
-    btn.addEventListener('click', () => {
-      const p = document.createElement('p');
-      p.textContent = '새로 추가된 문단입니다.';
-      p.classList.add('my-paragraph'); // 필요하면 클래스 추가
-      container.appendChild(p);
-    });
-
-
-})
-
 //bottom bar
 //부드러운 스크롤
 // 부드러운 스크롤 효과를 위한 추가 스크립트 (CSS scroll-behavior로도 충분함)
@@ -888,45 +856,7 @@ function alert(){
             });
         });
         
-        
-//
-//전역 변수
-let paragraphCount = 0;
-
-// DOM 요소들
-const btn = document.getElementById('btn');
-const btnClear = document.getElementById('btnClear');
-
-
-const container = document.getElementById('container');
-
-// 1. 기본 문단 추가
-btn.addEventListener('click', () => {
-	console.log('버튼 클릭:', paragraphCount);
-    const p = document.createElement('p');
-    p.textContent = `새로 추가된 문단입니다. (${paragraphCount}번째)`;
-    p.classList.add('my-paragraph');
-    
-    // 기존 안내 텍스트 제거
-    if (paragraphCount === 1) {
-        container.innerHTML = '';
-    }
-    
-    container.appendChild(p);
-    updateCounter();
-    
-    // 새로 추가된 요소로 스크롤
-    p.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-});
-
-// 2. 전체 삭제
-btnClear.addEventListener('click', () => {
-    if (paragraphCount > 0 && confirm('모든 문단을 삭제하시겠습니까?')) {
-        container.innerHTML = '<p style="color: #666; font-style: italic;">여기에 새로운 문단들이 추가됩니다...</p>';
-        paragraphCount = 0;
-        updateCounter();
-    }
-});
+       
 
 </script>
 
@@ -936,14 +866,6 @@ btnClear.addEventListener('click', () => {
 
 <div class="main-container">
 
-<!-- 
-	
-	 <button id="btn">문단 추가</button>
-	 <button id="btnClear" class="btn-danger">전체 삭제</button>
-  	<div id="container">
-        <p style="color: #666; font-style: italic;">여기에 새로운 문단들이 추가됩니다...</p>
-    </div>
-      -->
      
 
     <!-- 왼쪽 섹션: 이미지, 하단바, 상품정보 -->
@@ -1002,15 +924,26 @@ btnClear.addEventListener('click', () => {
         	<c:forEach var="review" items="${review_list}" varStatus="status">
         		<div class="review-item">
         			<div class="review-content-area">
+        				
+        				<!-- 리뷰 제목 -->
         				<div class="review-top">
         					<h4 class="review-item-title">${review.review_title}</h4>
         					<span class="review-author">작성자: ${review.user_nickname != null ? review.user_nickname : sessionScope.user_id}</span>
         				</div>
+        				
+        				<!-- 리뷰 내용 -->
         				<div class="review-bottom">
         					<div class="review-text">
         						<p>${review.review_content != null ? review.review_content : '정말 좋은 상품입니다! 배송도 빠르고 품질도 만족스럽습니다.'}</p>
         					</div>
         				</div>
+        				
+        				<!-- 삭제 버튼 -->
+        				<c:if test="${review.user_id==loginMember.user_id }">
+	 						<button class="review-delete" onclick="location.href='review_delete?review_id=${review.review_id }&target_id=${review.target_id }&user_id=${review.user_id }'">삭제버튼</button>
+	        				<button class="review-update" onclick="location.href='review_update_view?review_id=${review.review_id }'">수정버튼</button>
+        				</c:if>
+        				
         			</div>
         		</div>
         	</c:forEach>
@@ -1231,24 +1164,7 @@ btnClear.addEventListener('click', () => {
             <button class="order-btn" onclick="goorder()">바로 주문하기</button>
         </div>
         
-        <script>
-        
-        
-        
-     	// 바로 주문하기
-        function goorder(){
-            let userId = getUserId();
-            if (!userId) return; // 로그인 안된 경우 함수 종료
-            
-            // 바로 주문: product_id, user_id, quantity 전달
-            location.href = 'order_view?product_id=${product.product_id}' + 
-                           '&user_id=' + userId + 
-                           '&quantity=' + count+
-            			   '&form_cart=false';
-        }
-        
-        </script>
-        
+
     </div>
 </div>
 

@@ -16,6 +16,7 @@ public class UserActivityDto {
     private long user_id;
     private String user_activity_type;
     private Timestamp user_activity_time;
-    private String user_activity_target;
+    private Long user_activity_target_id;
+    private String user_activity_target_type;
     private String user_activity_details;
 }

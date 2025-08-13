@@ -1,6 +1,7 @@
 package com.ama.don.common.config;
 
 import com.ama.don.admin.service.userManage.CustomUserDetailsService;
+import com.ama.don.admin.service.userActivityLog.memberPart.LoginSuccessHandler;
 import com.ama.don.interior.dev.DevAutoLoginBaseMember;
 import com.ama.don.member.dao.LoginDao;
 import jakarta.servlet.DispatcherType;
@@ -19,6 +20,7 @@ public class SecurityConfig {
 
     private final LoginDao loginDao;
     private final CustomUserDetailsService customUserDetailsService;
+    private final LoginSuccessHandler loginSuccessHandler; // 로그인 성공 로그
 
     // 인테리어 사용
     @Bean
@@ -68,7 +70,7 @@ public class SecurityConfig {
                         .loginProcessingUrl("/authenticate")
                         .usernameParameter("loginId")
                         .passwordParameter("pw")
-                        .defaultSuccessUrl("/", true)
+                        .successHandler(loginSuccessHandler)
                         .failureUrl("/login_view?error=true")
                 )
                 .logout(logout -> logout
@@ -78,7 +80,7 @@ public class SecurityConfig {
                         .deleteCookies("JSESSIONID")
                 )
                 .userDetailsService(customUserDetailsService)
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // 로그인 없이 모두 허용
+//                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()) // 로그인 없이 모두 허용
                 .csrf(csrf -> csrf.disable());
         return http.build();
     }

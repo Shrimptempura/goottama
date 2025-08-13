@@ -20,7 +20,7 @@ public class EditController {
 
     @GetMapping("/edit")
     public String edit(@RequestParam("post_id") Long postId, Model model) {
-        Long reviewId = detailDao.findReviewIdByPostId(postId);
+		Long reviewId = detailDao.findReviewIdByPostId(postId);
         ReviewDetailDto dto = detailDao.findById(reviewId);
         model.addAttribute("detail", dto);
         return "community/post_edit_view"; // 수정 폼 JSP 경로

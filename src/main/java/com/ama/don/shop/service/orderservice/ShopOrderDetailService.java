@@ -46,7 +46,6 @@ public class ShopOrderDetailService implements ShopServiceinter{
 		    
 		    // 1.사용자가 등록한 주문들 가져오기 (리스트로)
 		    ArrayList<OrderFlatDto> userOrders = iDao.user_orders_list(userid);
-		    
 		   
 		    System.out.println("복잡 조회 결과: " + userOrders.size() + "개");
 		    
@@ -54,8 +53,9 @@ public class ShopOrderDetailService implements ShopServiceinter{
 		    // 각 주문별 상품 목록 조회하여 Map으로 구성
 		    Map<Long, ArrayList<OrderFlatDto>> orderProductsMap = new HashMap<>();
 		    
-		    
-		    
+		    // 각 주문별 배송 정보를 조회하여 Map으로 구성 
+		    Map<Long, OrderFlatDto> orderdeliverMap=new HashMap<>();
+		   
 		    for(OrderFlatDto order : userOrders) {
 		        Long orderId = order.getOrder_id();
 		        System.out.println("주문 ID: " + orderId + ", 날짜: " + order.getOrder_date());
@@ -63,12 +63,20 @@ public class ShopOrderDetailService implements ShopServiceinter{
 		        // 2. 주문별 상품 저장 
 		        ArrayList<OrderFlatDto> products = iDao.order_products_flat(orderId);
 		        orderProductsMap.put(orderId, products);
+		      
+		        // 3. 주문 배송 상태 저장
+		        OrderFlatDto orderFlatDto=iDao.order_deliver_info(orderId);
+		        orderdeliverMap.put(orderId,orderFlatDto);
 		        
 		        System.out.println("주문 ID " + orderId + "의 상품 개수: " + products.size());
 		    }
+		    
+		    
+		   
 
 		    model.addAttribute("userOrders", userOrders);
 		    model.addAttribute("orderProductsMap", orderProductsMap);
+		    model.addAttribute("orderDeliverMap",orderdeliverMap);  // 배송 정보 추가
 		    model.addAttribute("user_id", userid);
 
 		    System.out.println("=== 최종 결과 ===");

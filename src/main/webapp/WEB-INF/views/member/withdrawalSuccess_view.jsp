@@ -4,14 +4,18 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>탈퇴 완료</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/withdrawalSuccess_view.css" />
 </head>
 <body>
 
-<form action="/member/withdrawalSuccess">
-<p> <strong>탈퇴가 완료되었습니다.</strong> </p>
-<input type="submit" value="홈으로 가기" />
-</form>
+<div class="withdrawal-success-container">
+  <h2>회원 탈퇴 완료</h2>
+  <p class="message">회원 탈퇴가 정상적으로 처리되었습니다.</p>
+  <form action="/member/withdrawalSuccess" method="get">
+    <input type="submit" class="btn-home" value="홈으로 가기" />
+  </form>
+</div>
 
 </body>
 </html>
