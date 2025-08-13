@@ -41,6 +41,9 @@
 							id="review_count_${post.review_id}">${post.review_count}</span>
 					</span> <span class="likes"> <span class="meta-label">좋아요</span> <span
 							id="review_like_count_${post.review_id}">${post.review_like_count}</span>
+					</span><span class="comments"> <span class="meta-label">댓글</span> <span
+							id="review_comment_count_${post.review_id}">
+								${post.comment_count} </span>
 					</span>
 				</div>
 

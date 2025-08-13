@@ -32,35 +32,35 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .addFilterBefore(devAutoLoginFilter(), UsernamePasswordAuthenticationFilter.class)      // 인테리어
-                .authorizeHttpRequests(auth -> auth
-                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
-                        .requestMatchers(
-                                "/",
-                                "/login_view",
-                                "/join_view",
-                                "/join",
-                                "/findLoginId_view",
-                                "/findPw_view",
-                                "/checkPwCode_view",
-                                "/emailSent_view",
-                                "/withdrawalSuccess_view",
-                                "/emailCheck",
-                                "/authenticate",
-                                "/find_loginId",
-                                "/findPw",
-                                "/checkPwCode",
-                                "/resetPw_view",
-                                "/resetPw",
-                                "/checkDuplicateId",
-                                "/checkDuplicateNickname",
-                                "/successJoin_view",
-                                "/css/**", "/js/**"
-                        ).permitAll()
-//                        .requestMatchers("/seller/**").hasRole("SELLER") // 200(판매자) 이상 권한이 필요한 페이지
-//                        .requestMatchers("/admin/**").hasRole("ADMIN") // 300(관리자) 이상 권한이 필요한 페이지
-//                        .requestMatchers("/superAdmin/**").hasRole("SUPER_ADMIN") // 400(최고운영자) 권한이 필요한 페이지
-                        .anyRequest().authenticated()
-                )
+//                .authorizeHttpRequests(auth -> auth
+//                        .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
+//                        .requestMatchers(
+//                                "/",
+//                                "/login_view",
+//                                "/join_view",
+//                                "/join",
+//                                "/findLoginId_view",
+//                                "/findPw_view",
+//                                "/checkPwCode_view",
+//                                "/emailSent_view",
+//                                "/withdrawalSuccess_view",
+//                                "/emailCheck",
+//                                "/authenticate",
+//                                "/find_loginId",
+//                                "/findPw",
+//                                "/checkPwCode",
+//                                "/resetPw_view",
+//                                "/resetPw",
+//                                "/checkDuplicateId",
+//                                "/checkDuplicateNickname",
+//                                "/successJoin_view",
+//                                "/css/**", "/js/**"
+//                        ).permitAll()
+////                        .requestMatchers("/seller/**").hasRole("SELLER") // 200(판매자) 이상 권한이 필요한 페이지
+////                        .requestMatchers("/admin/**").hasRole("ADMIN") // 300(관리자) 이상 권한이 필요한 페이지
+////                        .requestMatchers("/superAdmin/**").hasRole("SUPER_ADMIN") // 400(최고운영자) 권한이 필요한 페이지
+//                        .anyRequest().authenticated()
+//                )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                         .maximumSessions(1)

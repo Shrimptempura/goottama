@@ -18,7 +18,7 @@ public interface FileDao {
 	void deleteByTarget(@Param("targetType") TargetType type,@Param("targetId") long target_id);
 	void deleteByUploader(String file_uploader);
 	void deleteByTargetAndUploader(@Param("file_uploader")String uploader,@Param("targetType") String string,@Param("targetId") long target_id);
-	
+	// == community ====================================
 	// targetType과 targetId를 이용한 리뷰 목록 조회
 	List<FileDto> findByTarget(@Param("targetType") String targetType, @Param("targetId") Long targetId);
 

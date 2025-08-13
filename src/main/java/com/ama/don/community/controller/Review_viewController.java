@@ -58,12 +58,12 @@ public class Review_viewController {
 
 		return "community/review_view";
 	}
-		// 조회수 와 좋아요 수 조회
+
+	// 조회수 와 좋아요 수 조회
 	@GetMapping("/review_live_counts")
 	@ResponseBody
 	public List<Map<String, Object>> getLiveReviewCounts() {
-	    return CommunityPostDao.findReviewCounts();
+		return CommunityPostDao.findReviewCounts();
 	}
-
 
 }
