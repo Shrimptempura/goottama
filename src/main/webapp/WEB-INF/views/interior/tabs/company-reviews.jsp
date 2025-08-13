@@ -50,7 +50,7 @@
 
             <%-- 삭제임 --%>
             <form action="/interior/myhome/${companyId}/reviews/${r.reviewId}/delete"
-                method="post", style="display: inline-block;">
+                method="post" style="display: inline-block;">
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
                 <button type="submit" onclick="return confirm('정말 삭제할까요?');">삭제</button>
             </form>
@@ -59,6 +59,13 @@
         <br/><br/><br/>
     </article>
 </c:forEach>
+
+<c:if test="${not isOwner}">
+    <div>
+        <c:url var="createUrl" value="/interior/myhome/${companyId}/review-form"/>
+        <a href="${createUrl}">리뷰 작성</a>
+    </div>
+</c:if>
 
 <c:if test="${not empty focus}">
     <script>

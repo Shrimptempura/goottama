@@ -143,7 +143,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
         Long userId = companyAuthService.getLoginUserId();
         // 상세페이지 주인인가 확인
-        boolean isOwner = companyAuthService.isOwner(companyId);
+//        boolean isOwner = companyAuthService.isOwner(companyId);
 
         for (CompanyReviewDto dto : list) {
             List<FileDto> imgs = fileService.getFileList(TargetType.INTERIOR_REVIEW, dto.getReviewId());
@@ -226,7 +226,8 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
         } catch (IllegalArgumentException e) {
             throw e;    // 최소 이미지 1장이 필요합니다.
         } catch (Exception e) {
-            cleanUpReviewCatch(reviewId);
+            // 수정중 파일 예외시 삭제처리는 오히러 악영향일수도 있다, 일단 보류
+//            cleanUpReviewCatch(reviewId);     
             log.error("CRService - 리뷰 수정 실패 - reviewId: {}", reviewId, e);
             throw new IllegalStateException("리뷰 수정 실패", e);
         }

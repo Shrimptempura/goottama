@@ -1,11 +1,9 @@
 package com.ama.don.interior.controller;
 
 import com.ama.don.common.enums.TargetType;
-import com.ama.don.interior.dto.review.CompanyHomeReviewDto;
 import com.ama.don.interior.dto.review.CompanyReviewCreateDto;
 import com.ama.don.interior.dto.review.CompanyReviewDto;
 import com.ama.don.interior.dto.review.CompanyReviewUpdateDto;
-import com.ama.don.interior.service.CompanyAuthService;
 import com.ama.don.interior.service.CompanyReviewService;
 import com.ama.don.interior.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +22,6 @@ import java.util.List;
 public class CompanyReviewController {
 
     private final CompanyReviewService companyReviewService;
-    private final CompanyAuthService companyAuthService;
     private final FileService fileService;
 
     // 리뷰 등록 폼으로 이동
@@ -44,10 +41,10 @@ public class CompanyReviewController {
                             @RequestParam("files") List<MultipartFile> files,
                             RedirectAttributes ra) {
         form.setCompanyId(companyId);
-        ra.addAttribute("companyId", companyId);
-        Long reviewId = companyReviewService.createReview(form, files);
+        companyReviewService.createReview(form, files);
 
-        return "redirect:/interior/myhome/{companyId}?type=reviews";     // 상세페이지 리뷰로 생각중
+        // 상세페이지 리뷰로 생각중
+        return "redirect:/interior/myhome/" + companyId + "?type=reviews&focus=" + form.getReviewId();
     }
 
     // 리뷰 상세보기(레거시)
@@ -96,7 +93,7 @@ public class CompanyReviewController {
             ra.addFlashAttribute("error", e.getMessage());      // 이미지는 최소 1장이 필요합니다.
             return "redirect:/interior/myhome/" + companyId + "/reviews/" + reviewId + "/edit";
         } catch (Exception e) {
-            ra.addFlashAttribute("error", e.getMessage());
+            ra.addFlashAttribute("error", "리뷰 수정 중 오류가 발생했습니다 잠시 후 다시 시도해 주세요");
             return "redirect:/interior/myhome/" + companyId + "/reviews/" + reviewId + "/edit";
         }
     }
