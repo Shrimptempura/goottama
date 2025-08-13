@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.ama.don.common.dto.PostDto;
 import com.ama.don.community.dto.Review.ReviewDetailDto;
+
 //주석
 @Mapper
 public interface CommunityDetailDao {
@@ -13,18 +14,29 @@ public interface CommunityDetailDao {
 
 	ReviewDetailDto findById(@Param("reviewId") Long reviewId);
 
-	// 게시글 수정
+	// post게시글 수정
 	void update(PostDto dto);
 
-	// 게시글 삭제
+	// post게시글 삭제
 	void delete(Long postId);
+
+	// 리뷰 게시글 수정
+	void updateReview(ReviewDetailDto dto);
+
+	//리뷰 게시글 삭제
+	void deleteReviewByPostId(Long postId);
+
+	// 파일 삭제
+	void deleteFilesByTarget(@Param("targetType") String targetType, @Param("targetId") Long targetId);
+
+	// 댓글 소프트 삭제
+	void softDeleteCommentsByTarget(@Param("targetType") String targetType, @Param("targetId") Long targetId);
 
 	// 조회수 증가
 	void increaseViewCount(@Param("review_id") Long reviewId);
 
 	// 좋아요 수 증가
 	void increaseLikeCount(@Param("reviewId") Long reviewId);
-
 
 	// 타겟 아이디 수정
 	void update_target_id(PostDto dto);

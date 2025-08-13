@@ -13,6 +13,7 @@ import lombok.Setter;
 public class CompanyReviewUpdateDto {
 
     private Long reviewId;
+    private Long companyId;
 
     private int communicationRate;  // 소통 점수
     private int priceRate;          // 가격 점수

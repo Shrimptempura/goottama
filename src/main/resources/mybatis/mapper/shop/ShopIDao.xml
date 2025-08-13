@@ -142,6 +142,19 @@
 		where pi.pinquiry_id=#{pinquiry_id};
 	 </select>
 	 
+	 <!-- 상품 문의 조회 리스트 (사용자)-->
+	 <select id="product_inquiry_by_userid" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto" resultType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+	 	select pi.pinquiry_id,pi.pinquiry_content,pi.pinquiry_date,pi.pinquiry_status, pr.preply_content
+		,pr.preply_date,u.user_id,u.user_nickname,p.product_id,p.product_name,pimg.product_imgurl
+		from product_inquiry pi
+		left join product_reply pr on pi.pinquiry_id=pr.pinquiry_id
+		left join product p on p.product_id=pi.product_id
+		left join user_detail u on u.user_id=pi.user_id
+		left join product_img pimg on p.product_id=pimg.product_id
+		where pimg.product_img_type='메인' and
+		u.user_id=${user_id};
+	 </select>
+	 
 	 <!-- 기존 문의의 답글 존재여부 -->
 	<select id="product_reply" parameterType="long" resultType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
 	    select 
@@ -198,7 +211,7 @@
 	<!-- 단일 상품 리뷰 리스트 -->
 	<select id="review_list" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
 		select r.user_id,r.review_id,r.review_title,r.review_content,r.review_count,
-		r.review_date,r.target_id,r.target_type,
+		r.review_date,r.target_id,r.target_type,r.is_deleted,
         u.user_name,u.user_nickname
         from review r
         join user_detail u on r.user_id=u.user_id
@@ -209,8 +222,46 @@
 	<insert id="review_write" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto">
 		insert into review(user_id,review_title,review_content,target_id,target_type,review_date)
 		values (#{user_id},#{review_title},#{review_content},#{target_id},'SHOP',now());
-	
 	</insert>
+	
+	<delete id="review_delete" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		delete from review
+		where review_id=#{review_id}
+	</delete>
+	
+	<update id="review_update" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		update review 
+		set review_title=#{review_title},
+			review_content=#{review_content}
+		where review_id=#{review_id};
+	</update>
+	
+	<!-- 단일 리뷰 특정 리뷰 조회 -->
+	<select id="review" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		select r.user_id,r.review_id,r.review_title,r.review_content,r.review_count,
+		r.review_date,r.target_id,r.target_type,r.is_deleted,
+		u.user_name,u.user_nickname
+		from review r
+		join user_detail u on r.user_id=u.user_id
+		where r.review_id=#{review_id} and
+		target_type='shop';
+	</select>
+	
+	<!-- 사용자 쇼핑 리뷰 리스트 -->
+	<select id="review_by_userid" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		select r.user_id,r.review_id,r.review_title,r.review_content,r.review_count,
+		r.review_date,r.target_id,r.target_type,r.is_deleted,
+		u.user_name,u.user_nickname,
+        p.product_id,p.product_name,p.product_price,p.category_id,pi.product_imgurl,pi.product_img_type
+		from review r
+		join user_detail u on r.user_id=u.user_id
+        left join product p on p.product_id=r.target_id
+        left join product_img pi on pi.product_id=p.product_id
+        and product_img_type='메인'
+		where r.user_id=#{user_id} and
+		target_type='shop';
+	</select>
+	
 	
 	<!-- 사용자정보 찾기 -->
 	<select id="user_info" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
@@ -220,9 +271,23 @@
 	
 	</select>
 	
-	
-	
-	
+	<!-- 로그 기록용 쿼리 -->
+	<select id="findLatestProductInquiryByUserIdAndTargetId" resultType="java.lang.Long">
+		SELECT pinquiry_id
+		FROM product_inquiry
+		WHERE USER_ID = #{userId}
+		AND PRODUCT_ID = #{targetId}
+		ORDER BY pinquiry_date DESC
+		LIMIT 1
+	</select>
+
+	<select id="findLatestOrderIdByUserId" resultType="java.lang.Long">
+		SELECT order_id
+		FROM orders
+		WHERE user_id = #{userId}
+		ORDER BY order_date DESC
+		LIMIT 1
+	</select>
 
 	
 </mapper>	

@@ -47,4 +47,13 @@
         from review
         where review_id = #{reviewId}
     </select>
+
+    <select id="findLatestReviewByUserIdAndTargetId" resultType="java.lang.Long">
+        SELECT review_id AS reviewId
+        FROM review
+        WHERE user_id = #{userId}
+        AND target_id = #{targetId}
+        ORDER BY review_date DESC
+        LIMIT 1
+    </select>
 </mapper>

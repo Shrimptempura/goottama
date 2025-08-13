@@ -6,7 +6,6 @@ import com.ama.don.interior.dev.DevFindTarget;
 import com.ama.don.interior.dto.company.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,7 +25,8 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public void createCompany(CompanyCreateDto createDto, CompanyCreateLocationDto locationDto,
                               MultipartFile file) {
-        Long userId = DevFindTarget.getUserId();
+        Long userId = companyAuthService.getLoginUserId();
+        Long companyId = null;
         log.info("ComapnyService - 업체 등록 시작 - userId: {}", userId);
 
         try {
@@ -34,14 +34,15 @@ public class CompanyServiceImpl implements CompanyService {
 
             Long companyDetailId = createCompanyDetail(createDto);          // company_detail 테이블 insert
             Long locationId = createLocation(locationDto);                  // location 테이블 insert
-            Long companyId = insertCompany(userId, companyDetailId, locationId);    // company 테이블 insert
+            companyId = insertCompany(userId, companyDetailId, locationId);    // company 테이블 insert
 
             saveCompanyImg(companyId, file);
 
             log.info("CompanyService - 업체 등록 성공 - companyId: {}", companyId);
-        } catch (DataAccessException e) {
-            log.error("CompanyService - DB 오류 발생", e);
-            throw new IllegalStateException("DB 오류 발생으로 업체 등록 실패");
+        } catch (Exception e) {
+            cleanUpFileCatch(companyId);
+            log.error("CompanyService - 업체 등록 실패 - companyId: {}", companyId, e);
+            throw new IllegalStateException("업체 등록 실패", e);
         }
     }
 
@@ -116,10 +117,10 @@ public class CompanyServiceImpl implements CompanyService {
             log.info("CompanyService - 업체 수정 성공 - companyId: {}", companyId);
             return companyId;
 
-        } catch (DataAccessException e) {
-            log.error("CompanyService - DB 오류, 업체 수정 실패 - companyId: {}", companyId, e);
-            log.error("DAO 실패: {} - {}", e.getClass().getName(), e.getMessage(), e);
-            throw new IllegalStateException("DB오류 발생, 업체 수정 실패", e);
+        } catch (Exception e) {
+            cleanUpFileCatch(companyId);
+            log.error("CompanyService - 업체 수정 실패 - companyId: {}", companyId, e);
+            throw new IllegalStateException("업체 수정 실패", e);
         }
     }
 
@@ -138,9 +139,10 @@ public class CompanyServiceImpl implements CompanyService {
             log.info("CompanyService - 업체 소프트 삭제 성공 - companyId: {}, updated: {}", companyId, updated);
             return updated;
 
-        } catch (DataAccessException e) {
-            log.error("CompanyService - 업체 삭제 DB 오류 - companyId: {}", companyId, e);
-            throw new IllegalStateException("업체 삭제 실패, DB오류", e);
+        } catch (Exception e) {
+            cleanUpFileCatch(companyId);
+            log.error("CompanyService - 업체 삭제 실패 - companyId: {}", companyId, e);
+            throw new IllegalStateException("업체 삭제 실패", e);
         }
     }
 
@@ -203,6 +205,17 @@ public class CompanyServiceImpl implements CompanyService {
             log.info("CompanyService - 업체 이미지 삭제 후 새로 생성 - companyId: {}", companyId);
             fileService.deleteThumbnail(TargetType.INTERIOR, companyId);
             fileService.saveFile(TargetType.INTERIOR, companyId, file, true);
+        }
+    }
+
+    // catch 보상 정리
+    private void cleanUpFileCatch(Long companyId) {
+        if (companyId != null) {
+            try {
+                fileService.deleteThumbnail(TargetType.INTERIOR, companyId);
+            } catch (Exception failed) {
+                log.warn("CompanyService - 파일 정리 실패 - companyId: {}", companyId, failed);
+            }
         }
     }
 }

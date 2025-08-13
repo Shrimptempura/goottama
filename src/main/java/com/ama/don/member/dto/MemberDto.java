@@ -1,7 +1,5 @@
 package com.ama.don.member.dto;
 
-import java.time.LocalDateTime;
-
 import lombok.Getter;
 import lombok.Setter;
 

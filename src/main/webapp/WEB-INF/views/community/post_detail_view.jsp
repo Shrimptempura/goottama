@@ -76,16 +76,17 @@
 				class="mb-4">
 				<input type="hidden" name="targetId" value="${review.post_id}" /> <input
 					type="hidden" name="targetType" value="COMMUNITY_REVIEW" /> <input
-					type="hidden" name="userId"
+					type="hidden" name="user_id"
 					value="${sessionScope.loginUser.user_id}" />
 				<div class="mb-2">
-					<textarea name="commentContent" class="form-control" rows="3"
+					<textarea name="comment_content" class="form-control" rows="3"
 						placeholder="댓글을 입력하세요" required></textarea>
 				</div>
 				<div class="text-end">
 					<button type="submit" class="btn btn-primary btn-sm">댓글 작성</button>
 				</div>
 			</form>
+
 
 			<!-- 댓글/대댓글 목록 -->
 			<c:if test="${not empty commentList}">
@@ -189,10 +190,12 @@
 															onsubmit="return confirm('댓글을 삭제하시겠습니까?');">
 															<input type="hidden" name="comment_id"
 																value="${child.comment_id}" /> <input type="hidden"
-																name="postId" value="${review.post_id}" />
+																name="postId" value="${review.post_id}" /> <input
+																type="hidden" name="post_id" value="${review.post_id}" />
 															<button type="submit"
 																class="btn btn-sm btn-outline-danger">삭제</button>
 														</form>
+
 													</div>
 												</div>
 											</li>

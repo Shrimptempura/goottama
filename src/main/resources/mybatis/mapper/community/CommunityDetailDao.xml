@@ -47,6 +47,18 @@
 		WHERE post_id = #{post_id}
 	</update>
 
+	<!-- 리뷰 데이터 수정 -->
+	<update id="updateReview"
+		parameterType="com.ama.don.community.dto.Review.ReviewDetailDto">
+		UPDATE community_post_review
+		SET review_title =
+		#{review_title},
+		review_content = #{review_content}
+		WHERE review_id =
+		#{review_id}
+	</update>
+
+
 	<!-- 타겟 아이디 수정 -->
 	<update id="update_target_id"
 		parameterType="com.ama.don.common.dto.PostDto">
@@ -63,15 +75,40 @@
 		= #{postId}
 	</delete>
 
+	<!-- post_id 기준으로 리뷰 삭제 -->
+	<delete id="deleteReviewByPostId" parameterType="long">
+		DELETE FROM
+		community_post_review
+		WHERE post_id = #{postId}
+	</delete>
+
+	<!-- 파일 삭제 -->
+	<delete id="deleteFilesByTarget">
+		DELETE FROM file
+		WHERE target_type = #{targetType}
+		AND target_id = #{targetId}
+	</delete>
+
+	<!-- 댓글 소프트 딜리트 -->
+	<update id="softDeleteCommentsByTarget">
+		UPDATE comments
+		SET is_deleted = 1,
+		modified_at = CURRENT_TIMESTAMP
+		WHERE target_type = #{targetType}
+		AND target_id = #{targetId}
+	</update>
+
+
+
 	<!-- 게시글 수 -->
 	<select id="countTargetType" resultType="int">
 		SELECT COUNT(*)
 		FROM post
 		WHERE target_type = #{targetType}
 	</select>
-	<!-- 주석 -->
-	<!-- 주석 -->
-	<!-- 조회수 증가 -->
+
+
+	<!-- 조회수 -->
 	<update id="increaseViewCount">
 		UPDATE community_post_review
 		SET review_count =
@@ -81,7 +118,7 @@
 
 
 
-	<!-- 좋아요 수 증가 -->
+	<!-- 좋아요 수 -->
 	<update id="increaseLikeCount">
 		UPDATE community_post_review
 		SET review_like_count =

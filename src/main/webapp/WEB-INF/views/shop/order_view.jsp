@@ -229,10 +229,6 @@ input[type="text"], input[type="email"], input[type="tel"], textarea {
 	        <input type="hidden" name="product_id" value="${product.product_id}">
 	        <input type="hidden" name="quantity" value="${product.quantity}">
 	        
-	        <input type="hidden" name="totalAmount" value="${product.totalprice }" />
-	        <input type="hidden" name="product_id" value="${product.product_id }" />
-	        <input type="hidden" name="quantity" value="${product.quantity }" />
-	        
 	        
 	    </c:when>
 	    

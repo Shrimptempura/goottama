@@ -30,18 +30,22 @@
 		SELECT
 		comment_id,
 		user_id,
-		comment_content,
+		CASE WHEN is_deleted = 1 THEN '[삭제된 댓글입니다.]'
+		ELSE comment_content
+		END AS comment_content,
 		target_id AS targetId,
 		target_type AS targetType,
 		parent_comment_id,
-		created_at
+		created_at,
+		is_deleted
 		FROM comments
 		WHERE target_id = #{targetId}
 		AND target_type = #{targetType}
-		ORDER BY (parent_comment_id IS NULL) DESC, -- 부모 댓글 먼저
-		IFNULL(parent_comment_id, comment_id), -- 부모와 그 자식 묶기
-		created_at ASC -- 시간순
+		ORDER BY (parent_comment_id IS NULL) DESC,
+		IFNULL(parent_comment_id, comment_id),
+		created_at ASC
 	</select>
+
 
 	<!-- 단일 댓글/대댓글 조회 -->
 	<select id="findById"
@@ -50,11 +54,13 @@
 		comment_id,
 		user_id,
 		comment_content,
-		target_id AS targetId,
+		target_id AS
+		targetId,
 		target_type AS targetType,
 		parent_comment_id,
 		created_at
-		FROM comments
+		FROM
+		comments
 		WHERE comment_id = #{commentId}
 	</select>
 
@@ -67,10 +73,14 @@
 		WHERE comment_id = #{comment_id}
 	</update>
 
-	<!-- 댓글/대댓글 삭제 -->
-	<delete id="delete">
-		DELETE FROM comments
+	<!-- 댓글/대댓글 소프트 삭제 -->
+	<update id="delete">
+		UPDATE comments
+		SET is_deleted = 1,
+		modified_at =
+		CURRENT_TIMESTAMP
 		WHERE comment_id = #{commentId}
-	</delete>
+	</update>
+
 
 </mapper>

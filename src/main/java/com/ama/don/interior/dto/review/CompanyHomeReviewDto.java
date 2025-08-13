@@ -1,5 +1,6 @@
 package com.ama.don.interior.dto.review;
 
+import com.ama.don.common.dto.FileDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,9 @@ public class CompanyHomeReviewDto {
     private String reviewContent;   // 리뷰 내용
 
     private String location;        // 위치
+
+    // 서비스에서 넣어줄 썸네일
+    private FileDto thumbnail;
 
     // 파일 관련은 다형성 file dto로 서비스에서 해결
     // private List<String> reviewImg;       // 사진(썸네일용)

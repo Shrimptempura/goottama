@@ -23,6 +23,7 @@ public class ReviewPostDto {
 	private Timestamp review_date; // 게시글 작성 날짜
 	private int review_count; // 게시글 조회수
 	private int review_like_count; // 게시글 좋아요 수
+	private Integer comment_count;
 
 	// 커뮤니티 이미지
 	private List<FileDto> fileList;

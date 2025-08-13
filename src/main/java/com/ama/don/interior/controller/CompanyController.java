@@ -3,11 +3,11 @@ package com.ama.don.interior.controller;
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.company.*;
+import com.ama.don.interior.dto.review.CompanyReviewDto;
 import com.ama.don.interior.service.CompanyAuthService;
+import com.ama.don.interior.service.CompanyReviewService;
 import com.ama.don.interior.service.CompanyService;
 import com.ama.don.interior.service.FileService;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -25,6 +25,7 @@ public class CompanyController {
     private final CompanyService companyService;
     private final FileService fileService;
     private final CompanyAuthService authService;
+    private final CompanyReviewService companyReviewService;
 
     // 업체 등록 폼으로 이동
     @GetMapping("/interior/new-company")
@@ -68,12 +69,16 @@ public class CompanyController {
         // 상세 정보 탭
         if (type.equals("details")) {
             CompanyDetailDto detail = companyService.getDetailCompany(companyId);
-            log.info("CompanyController - detail 요청 - companyId: {}", companyId);
+            log.info("CompanyController - detail 탭 요청 - companyId: {}", companyId);
             model.addAttribute("detail", detail);
         } else if (type.equals("photos")) {
             List<FileDto> photoList = fileService.getFileList(TargetType.INTERIOR, companyId);
-            log.info("CompanyController - File 요청 - targetType: {}, targetId: {}", TargetType.INTERIOR, companyId);
+            log.info("CompanyController - photos 탭 요청 - targetType: {}, targetId: {}", TargetType.INTERIOR, companyId);
             model.addAttribute("photoList", photoList);
+        } else if (type.equals("reviews")) {
+            List<CompanyReviewDto> reviews = companyReviewService.listByCompanyId(companyId);
+            log.info("CompanyController - reviews 탭 요청 - companyId: {}", companyId);
+            model.addAttribute("reviews", reviews);
         }
 
         String tabName = switch (type) {
@@ -101,15 +106,6 @@ public class CompanyController {
                                 @RequestParam("file") MultipartFile file) {
         Long companyId = companyService.updateCompany(updateDto, file);
         return "redirect:/interior/myhome/" + companyId;
-    }
-
-    // 인테리어의 홈탭
-    @GetMapping("/interior/ihome")
-    public String showIhome(@RequestParam(defaultValue = "6") @Min(1) @Max(10) int limit,
-                        Model model) {
-        List<CompanyHomeDto> homeList = companyService.getHomeCompanyList(limit);
-        model.addAttribute("homeList", homeList);
-        return "interior/ihome";
     }
 
     // 업체 탈퇴

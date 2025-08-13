@@ -12,6 +12,10 @@ import com.ama.don.member.dto.ResetPwDto;
 import com.ama.don.member.service.MemberProfileService;
 import com.ama.don.member.service.ProfileImgUploadService;
 import com.ama.don.member.service.WithdrawalService;
+import com.ama.don.shop.dao.ShopIDao;
+import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
+
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -53,6 +57,7 @@ public class MemberController {
 	private final WithdrawalService withdrawalService;
 	private final LoginMemberService loginMemberService;
 	private final MemberUpdateService memberUpdateService;
+	private final ShopIDao iDao;
 	
 
 	@PostMapping("/resetPw")
@@ -76,12 +81,20 @@ public class MemberController {
 	}
 	
 	@GetMapping("/mypage/myOrderList")
-	public String memberOrderList() {
+	public String memberOrderList(HttpServletRequest request, Model model,MemberDto memberDto) {
+		
+		memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		model.addAttribute("request", request);
+		ShopOrderDetailService service = new ShopOrderDetailService(iDao);
+		service.execute(model);
+		
 		return "member/mypage/myOrderList";
 	}
 	
 	@GetMapping("/mypage/myScrapbook")
 	public String memberScrapbook() {
+		//
 		return "member/mypage/myScrapbook";
 	}
 	
@@ -93,11 +106,6 @@ public class MemberController {
 	@GetMapping("/mypage/myReview")
 	public String myReview() {
 		return "member/mypage/myReview";
-	}
-	
-	@GetMapping("/mypage/myFeed")
-	public String myFeed() {
-		return "member/mypage/myFeed";
 	}
 	
 	@GetMapping("/mypage/myComment")
@@ -126,14 +134,14 @@ public class MemberController {
 			model.addAttribute("loginMember", memberDto);
 			return "member/mypage/editProfile_view";
 		}
-//		세션 갱신
+		//세션 갱신
 		memberUpdateService.refreshAuthentication(memberDto.getLogin_id());
 		
 		return "redirect:/mypage/editProfile_view";
 	}
 	
 	@PostMapping("/profileImgUpload")
-	public String profileImgUpload(@RequestParam("profileImg") MultipartFile file, HttpSession session, MemberDto memberDto, Model model) throws IllegalStateException, IOException {
+	public String profileImgUpload(@RequestParam("profileImg") MultipartFile file, MemberDto memberDto, Model model) throws IllegalStateException, IOException {
 		
 		memberDto = loginMemberService.getCurrentLoginMemberDto();
 		
@@ -165,13 +173,11 @@ public class MemberController {
 		
 		MemberDto memberDto = loginMemberService.getCurrentLoginMemberDto();
 		withdrawalService.deletedMember(agree, reason, memberDto);
-
 		
 		//스프링 시큐리티 로그아웃(인증정보 삭제)
 		SecurityContextHolder.clearContext();
 		//세션 무효화
 		session.invalidate();
-
 		
 		return "member/withdrawalSuccess_view";
 	}
