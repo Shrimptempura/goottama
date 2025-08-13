@@ -44,8 +44,16 @@
         </div>
 
         <c:if test="${r.author}">
+            <%-- 수정임 --%>
             <c:url var="editUrl" value="/interior/myhome/${companyId}/reviews/${r.reviewId}/edit"/>
             <a href="${editUrl}">수정</a>
+
+            <%-- 삭제임 --%>
+            <form action="/interior/myhome/${companyId}/reviews/${r.reviewId}/delete"
+                method="post", style="display: inline-block;">
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                <button type="submit" onclick="return confirm('정말 삭제할까요?');">삭제</button>
+            </form>
         </c:if>
         <hr/>
         <br/><br/><br/>

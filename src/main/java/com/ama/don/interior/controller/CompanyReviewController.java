@@ -99,9 +99,22 @@ public class CompanyReviewController {
             ra.addFlashAttribute("error", e.getMessage());
             return "redirect:/interior/myhome/" + companyId + "/reviews/" + reviewId + "/edit";
         }
-
     }
 
-    // ra.addAttribute 방법을 return + 문자열로 통일성 맞추서 고치기(한 2개?)
-    // 로그 추가 안했음
+    // 리뷰 삭제
+    @PostMapping("/interior/myhome/{companyId}/reviews/{reviewId}/delete")
+    public String deleteReview(@PathVariable Long companyId,
+                               @PathVariable Long reviewId,
+                               RedirectAttributes ra) {
+        try {
+            companyReviewService.deleteReview(reviewId);
+            ra.addFlashAttribute("msg", "리뷰가 삭제되었습니다");
+            return "redirect:/interior/myhome/" + companyId + "?type=reviews";
+        } catch (Exception e) {
+            log.error("CRController - 리뷰 삭제 실패 - reviewId: {}", reviewId, e);
+            ra.addFlashAttribute("error", "리뷰 삭제에 실패했습니다. 관리자에게 문의바랍니다.");
+            return "redirect:/interior/myhome/" + companyId + "?type=reviews&focus=" + reviewId;
+        }
+    }
+
 }
