@@ -3,6 +3,13 @@
         background-color: #f9f9f9;
         margin: 20px;
     }
+    
+    .order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 20px;
+}
 
     h2 {
         text-align: center;

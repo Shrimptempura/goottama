@@ -2,50 +2,40 @@ package com.ama.don.member.controller;
 
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-
-import com.ama.don.member.dto.FindLoginIdDto;
-import com.ama.don.member.dto.MemberDto;
-import com.ama.don.member.dto.MemberEditDto;
-import com.ama.don.member.dto.ResetPwDto;
-import com.ama.don.member.service.MemberProfileService;
-import com.ama.don.member.service.ProfileImgUploadService;
-import com.ama.don.member.service.WithdrawalService;
-import com.ama.don.shop.dao.ShopIDao;
-import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-
-import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
+import com.ama.don.common.enums.TargetType;
+import com.ama.don.common.utils.CommunityPageVO;
+import com.ama.don.community.dto.Review.ReviewPostDto;
 import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.dto.MemberEditDto;
 import com.ama.don.member.dto.ResetPwDto;
 import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.member.service.MemberProfileService;
 import com.ama.don.member.service.MemberUpdateService;
+import com.ama.don.member.service.MypageDataService;
 import com.ama.don.member.service.ProfileImgUploadService;
 import com.ama.don.member.service.WithdrawalService;
+import com.ama.don.shop.dao.ShopIDao;
+import com.ama.don.shop.service.ShopServiceinter;
+import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
+import com.ama.don.shop.service.productinquiry.ShopProductInquiryDetailService;
+import com.ama.don.shop.service.reviewservice.ShopReviewDetailService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-
-import java.io.IOException;
 
 
 @Controller
@@ -57,6 +47,8 @@ public class MemberController {
 	private final WithdrawalService withdrawalService;
 	private final LoginMemberService loginMemberService;
 	private final MemberUpdateService memberUpdateService;
+	private final MypageDataService mypageDataService;
+	private ShopServiceinter shopServiceinter;
 	private final ShopIDao iDao;
 	
 
@@ -94,22 +86,33 @@ public class MemberController {
 	
 	@GetMapping("/mypage/myScrapbook")
 	public String memberScrapbook() {
-		//
 		return "member/mypage/myScrapbook";
 	}
 	
 	@GetMapping("/mypage/myInquiry")
-	public String myInquiry() {
+	public String myInquiry(Model model) {
+		
+		shopServiceinter = new ShopProductInquiryDetailService(iDao);
+		shopServiceinter.execute(model);
+		
 		return "member/mypage/myInquiry";
 	}
 	
 	@GetMapping("/mypage/myReview")
-	public String myReview() {
+	public String myReview(Model model) {
+		
+		shopServiceinter = new ShopReviewDetailService(iDao);
+		shopServiceinter.execute(model);
+		
 		return "member/mypage/myReview";
 	}
 	
 	@GetMapping("/mypage/myComment")
-	public String myComment() {
+	public String myComment(@RequestParam(defaultValue = "1") int page, Model model) {
+		
+		List<ReviewPostDto> list = mypageDataService.getUserCommunityReview(page);
+		model.addAttribute("communityList",list);
+		
 		return "member/mypage/myComment";
 	}
 	

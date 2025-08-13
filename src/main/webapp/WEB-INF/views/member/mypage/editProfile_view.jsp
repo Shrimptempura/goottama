@@ -18,7 +18,7 @@
 <div class="nav">
 <a href="/mypage/myProfile"> 프로필 </a>
 <a href="/mypage/myOrderList">나의쇼핑</a>
-<a href="/mypage/myReview">나의활동</a>
+<a href="/mypage/myComment">나의활동</a>
 <a href="/mypage/editProfile_view"><strong>설정</strong></a>
 </div>
 
