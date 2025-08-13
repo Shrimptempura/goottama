@@ -141,7 +141,7 @@
     </select>
 
     <!-- 업체 게시글 상세보기 중 post + company_post만 -->
-    <select id="getPostAndCompanyPostById" resultType="com.ama.don.interior.dto.post.CompanyPostDetailDto">
+    <select id="getPostAndCompanyPostById" resultType="com.ama.don.interior.dto.post.CompanyPostDetailSplitDto">
         SELECT
             p.post_id AS postId,
             p.post_date AS postDate,
@@ -160,7 +160,7 @@
     </select>
 
     <!-- 업체 게시글 상세보기 중 company + company_detail -->
-    <select id="getCompanyBasicInfoById" resultType="com.ama.don.interior.dto.post.CompanyPostDetailDto">
+    <select id="getCompanyBasicInfoById" resultType="com.ama.don.interior.dto.post.CompanyPostBasicInfoDto">
         SELECT
             c.company_id AS companyId,
             d.company_name AS companyName,

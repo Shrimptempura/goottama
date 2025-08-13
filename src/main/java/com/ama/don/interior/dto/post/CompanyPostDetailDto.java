@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+// 조회 분기에 따라 사용이 안될수도 있음
 // 업체가 작성한 게시글을 상세보는 dto
 @AllArgsConstructor
 @NoArgsConstructor

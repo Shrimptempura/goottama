@@ -108,5 +108,12 @@
 		WHERE post_id = #{post_id}
 	</select>
 
+	<!-- 인테리어, postId 찾기 보조용 -->
+	<select id="findPostIdByCompanyPostId" resultType="java.lang.Long">
+		SELECT post_id
+		FROM post
+		WHERE target_id = #{targetId}
+	</select>
+
 
 </mapper>

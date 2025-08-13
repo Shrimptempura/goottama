@@ -20,7 +20,7 @@ import java.util.List;
 @Validated
 @RequiredArgsConstructor
 @Controller
-public class HomeController {
+public class CompanyHomeController {
 
     private final CompanyService companyService;
     private final CompanyReviewService companyReviewService;

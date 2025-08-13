@@ -22,9 +22,12 @@ public interface PostDao {
 	int insertPolyPostForCompany(PostDto dto);
 
 	// 인테리어, 다형성 조회
-	void polyFindById(Long postId);
+	int polyFindById(Long postId);
 
 	// 인테리어, 게시글 조회
 	PostDto findById(Long postId);
+
+	// 인테리어 postId 찾기 보조용
+	Long findPostIdByCompanyPostId(Long companyPostId);
 
 }
