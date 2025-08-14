@@ -1,6 +1,7 @@
 package com.ama.don.member.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -32,18 +33,21 @@ public class InpuiryController {
 	}
 	
 	@GetMapping("/inquiryEmail")
-	public String inquiryEmail() {
+	public String inquiryEmail(MemberDto memberDto, Model model) {
+		
+		memberDto = loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("memberDto", memberDto);
+		
 		return "member/inquiryEmail";
 	}
 	
 	 @PostMapping("/sendInquiry")
-	 public String sendInquiry(@RequestParam("email") String email, 
-			 					@RequestParam("subject") String subject, 
+	 public String sendInquiry(@RequestParam("subject") String subject, 
 			 					@RequestParam("message") String message,
 			 					MemberDto memberDto) {
 		 memberDto = loginMemberService.getCurrentLoginMemberDto();
 		 inquiryService.insertInquiryEmail(memberDto);
-		 sendEmailService.sendInquiryEmail(email, subject, message);
+		 sendEmailService.sendInquiryEmail(memberDto, subject, message);
 		 
 		 return "redirect:/mypage/customerCenter";
 	 }
