@@ -7,6 +7,8 @@
     <select id="getAllSanctions">
         SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
         FROM sanctions
+        ORDER BY SANCTIONS_CREATED_AT DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 
     <select id="countAllSanctions">
@@ -24,104 +26,90 @@
         SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
         FROM sanctions
         WHERE USER_ID = #{param1}
+        ORDER BY SANCTIONS_CREATED_AT DESC
     </select>
 
-    <select id="searchSanctions">
-        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+    <select id="searchSanctions" resultType="com.ama.don.admin.dto.sanctionsDTO.SanctionsDTO">
+        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE,
+        SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
         FROM sanctions
         <where>
-            <if test="userId != null and userId != ''">
-                AND USER_ID = #{userId}
+            <if test="sanctionSearchDTO.userId != null and sanctionSearchDTO.userId != 0">
+                AND USER_ID = #{sanctionSearchDTO.userId}
             </if>
-            <if test="sanctionsTypes != null and sanctionsTypes != ''">
-                AND SANCTIONS_TYPES = #{sanctionsTypes}
+            <if test="sanctionSearchDTO.sanctionsTypes != null and sanctionSearchDTO.sanctionsTypes != ''">
+                AND SANCTIONS_TYPES = #{sanctionSearchDTO.sanctionsTypes}
             </if>
-            <if test="sanctionsReason != null and sanctionsReason != ''">
-                AND SANCTIONS_REASON LIKE CONCAT('%', #{sanctionsReason}, '%')
+            <if test="sanctionSearchDTO.sanctionsReason != null and sanctionSearchDTO.sanctionsReason != ''">
+                AND SANCTIONS_REASON LIKE CONCAT('%', #{sanctionSearchDTO.sanctionsReason}, '%')
             </if>
-            <if test="adminAccountId != null and adminAccountId != ''">
-                AND ADMIN_ACCOUNT_ID = #{adminAccountId}
-            </if>
-            <if test="searchStartDate != null and searchEndDate != null">
-                AND (
-                (SANCTIONS_START_DATE BETWEEN #{searchStartDate} AND #{searchEndDate})
-                OR (SANCTIONS_END_DATE BETWEEN #{searchStartDate} AND #{searchEndDate})
-                OR (SANCTIONS_CREATED_AT BETWEEN #{searchStartDate} AND #{searchEndDate})
-                )
-            </if>
-            <if test="searchStartDate != null and searchEndDate == null">
-                AND (
-                SANCTIONS_START_DATE &gt;= #{searchStartDate}
-                OR SANCTIONS_END_DATE &gt;= #{searchStartDate}
-                OR SANCTIONS_CREATED_AT &gt;= #{searchStartDate}
-                )
-            </if>
-            <if test="searchStartDate == null and searchEndDate != null">
-                AND (
-                SANCTIONS_START_DATE &lt;= #{searchEndDate}
-                OR SANCTIONS_END_DATE &lt;= #{searchEndDate}
-                OR SANCTIONS_CREATED_AT &lt;= #{searchEndDate}
-                )
-            </if>
-            <if test="durationMin != null and durationMax != null">
-                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) BETWEEN #{durationMin} AND #{durationMax}
-            </if>
-            <if test="durationMin != null and durationMax == null">
-                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) &gt;= #{durationMin}
-            </if>
-            <if test="durationMin == null and durationMax != null">
-                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) &lt;= #{durationMax}
+            <if test="sanctionSearchDTO.adminAccountId != null and sanctionSearchDTO.adminAccountId != 0">
+                AND ADMIN_ACCOUNT_ID = #{sanctionSearchDTO.adminAccountId}
             </if>
 
+            <if test="sanctionSearchDTO.searchStartDate != null and sanctionSearchDTO.searchStartDate != '' and sanctionSearchDTO.searchEndDate != null and sanctionSearchDTO.searchEndDate != ''">
+                AND (
+                (SANCTIONS_START_DATE BETWEEN #{sanctionSearchDTO.searchStartDate} AND #{sanctionSearchDTO.searchEndDate})
+                OR (SANCTIONS_END_DATE BETWEEN #{sanctionSearchDTO.searchStartDate} AND #{sanctionSearchDTO.searchEndDate})
+                OR (SANCTIONS_CREATED_AT BETWEEN #{sanctionSearchDTO.searchStartDate} AND #{sanctionSearchDTO.searchEndDate})
+                )
+            </if>
+            <if test="sanctionSearchDTO.searchStartDate != null and sanctionSearchDTO.searchStartDate != '' and (sanctionSearchDTO.searchEndDate == null or sanctionSearchDTO.searchEndDate == '')">
+                AND (
+                SANCTIONS_START_DATE &gt;= #{sanctionSearchDTO.searchStartDate}
+                OR SANCTIONS_END_DATE &gt;= #{sanctionSearchDTO.searchStartDate}
+                OR SANCTIONS_CREATED_AT &gt;= #{sanctionSearchDTO.searchStartDate}
+                )
+            </if>
+            <if test="(sanctionSearchDTO.searchStartDate == null or sanctionSearchDTO.searchStartDate == '') and sanctionSearchDTO.searchEndDate != null and sanctionSearchDTO.searchEndDate != ''">
+                AND (
+                SANCTIONS_START_DATE &lt;= #{sanctionSearchDTO.searchEndDate}
+                OR SANCTIONS_END_DATE &lt;= #{sanctionSearchDTO.searchEndDate}
+                OR SANCTIONS_CREATED_AT &lt;= #{sanctionSearchDTO.searchEndDate}
+                )
+            </if>
         </where>
+        ORDER BY SANCTIONS_CREATED_AT DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
     <select id="countSearchSanctions">
-        SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE, SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT
+        SELECT COUNT(*)
         FROM sanctions
         <where>
-            <if test="userId != null and userId != ''">
-                AND USER_ID = #{userId}
+            <if test="sanctionSearchDTO.userId != null and sanctionSearchDTO.userId != 0">
+                AND USER_ID = #{sanctionSearchDTO.userId}
             </if>
-            <if test="sanctionsTypes != null and sanctionsTypes != ''">
-                AND SANCTIONS_TYPES = #{sanctionsTypes}
+            <if test="sanctionSearchDTO.sanctionsTypes != null and sanctionSearchDTO.sanctionsTypes != ''">
+                AND SANCTIONS_TYPES = #{sanctionSearchDTO.sanctionsTypes}
             </if>
-            <if test="sanctionsReason != null and sanctionsReason != ''">
-                AND SANCTIONS_REASON LIKE CONCAT('%', #{sanctionsReason}, '%')
+            <if test="sanctionSearchDTO.sanctionsReason != null and sanctionSearchDTO.sanctionsReason != ''">
+                AND SANCTIONS_REASON LIKE CONCAT('%', #{sanctionSearchDTO.sanctionsReason}, '%')
             </if>
-            <if test="adminAccountId != null and adminAccountId != ''">
-                AND ADMIN_ACCOUNT_ID = #{adminAccountId}
-            </if>
-            <if test="searchStartDate != null and searchEndDate != null">
-                AND (
-                (SANCTIONS_START_DATE BETWEEN #{searchStartDate} AND #{searchEndDate})
-                OR (SANCTIONS_END_DATE BETWEEN #{searchStartDate} AND #{searchEndDate})
-                OR (SANCTIONS_CREATED_AT BETWEEN #{searchStartDate} AND #{searchEndDate})
-                )
-            </if>
-            <if test="searchStartDate != null and searchEndDate == null">
-                AND (
-                SANCTIONS_START_DATE &gt;= #{searchStartDate}
-                OR SANCTIONS_END_DATE &gt;= #{searchStartDate}
-                OR SANCTIONS_CREATED_AT &gt;= #{searchStartDate}
-                )
-            </if>
-            <if test="searchStartDate == null and searchEndDate != null">
-                AND (
-                SANCTIONS_START_DATE &lt;= #{searchEndDate}
-                OR SANCTIONS_END_DATE &lt;= #{searchEndDate}
-                OR SANCTIONS_CREATED_AT &lt;= #{searchEndDate}
-                )
-            </if>
-            <if test="durationMin != null and durationMax != null">
-                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) BETWEEN #{durationMin} AND #{durationMax}
-            </if>
-            <if test="durationMin != null and durationMax == null">
-                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) &gt;= #{durationMin}
-            </if>
-            <if test="durationMin == null and durationMax != null">
-                AND DATEDIFF(SANCTIONS_END_DATE, SANCTIONS_START_DATE) &lt;= #{durationMax}
+            <if test="sanctionSearchDTO.adminAccountId != null and sanctionSearchDTO.adminAccountId != 0">
+                AND ADMIN_ACCOUNT_ID = #{sanctionSearchDTO.adminAccountId}
             </if>
 
+            <if test="sanctionSearchDTO.searchStartDate != null and sanctionSearchDTO.searchStartDate != '' and sanctionSearchDTO.searchEndDate != null and sanctionSearchDTO.searchEndDate != ''">
+                AND (
+                (SANCTIONS_START_DATE BETWEEN #{sanctionSearchDTO.searchStartDate} AND #{sanctionSearchDTO.searchEndDate})
+                OR (SANCTIONS_END_DATE BETWEEN #{sanctionSearchDTO.searchStartDate} AND #{sanctionSearchDTO.searchEndDate})
+                OR (SANCTIONS_CREATED_AT BETWEEN #{sanctionSearchDTO.searchStartDate} AND #{sanctionSearchDTO.searchEndDate})
+                )
+            </if>
+            <if test="sanctionSearchDTO.searchStartDate != null and sanctionSearchDTO.searchStartDate != '' and (sanctionSearchDTO.searchEndDate == null or sanctionSearchDTO.searchEndDate == '')">
+                AND (
+                SANCTIONS_START_DATE &gt;= #{sanctionSearchDTO.searchStartDate}
+                OR SANCTIONS_END_DATE &gt;= #{sanctionSearchDTO.searchStartDate}
+                OR SANCTIONS_CREATED_AT &gt;= #{sanctionSearchDTO.searchStartDate}
+                )
+            </if>
+            <if test="(sanctionSearchDTO.searchStartDate == null or sanctionSearchDTO.searchStartDate == '') and sanctionSearchDTO.searchEndDate != null and sanctionSearchDTO.searchEndDate != ''">
+                AND (
+                SANCTIONS_START_DATE &lt;= #{sanctionSearchDTO.searchEndDate}
+                OR SANCTIONS_END_DATE &lt;= #{sanctionSearchDTO.searchEndDate}
+                OR SANCTIONS_CREATED_AT &lt;= #{sanctionSearchDTO.searchEndDate}
+                )
+            </if>
         </where>
     </select>
 

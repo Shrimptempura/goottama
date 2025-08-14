@@ -34,7 +34,6 @@
                     data-modal-target="/admin/users/roles_modal_content"> 권한 등급 변경 </button>
     </p>
     <p>로긴 : ${userData.login_id}</p>
-    <p>제재 : ${userData.sanctions_types}</p>
     <p>상태 : ${userData.user_status}</p>
     <p>정지 : ${userData.user_sanctions_until}
     <br />
@@ -42,6 +41,11 @@
                 data-param-name="userId" data-param-value="${userData.user_id}"
                 data-modal-target="/admin/users/sanction_modal_content"> 제재 기간 변경 </button>
     </p>
+    <button type="button" class="open-modal-btn"
+                    data-param-name="userId" data-param-value="${userData.user_id}"
+                    data-modal-target="/admin/sanctions/create_sanction_view"> 새 제재 부과 </button>
+
+
     <div id="ModalOverlay" class="modal-overlay">
         <div class="modal" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeModal()">&times;</button>

@@ -44,9 +44,6 @@ public class FileApiController {
         }
 
         String orgFilename = image.getOriginalFilename();
-        System.out.println("원본 파일명 (orgFilename): " + orgFilename);
-        System.out.println("원본 파일명 길이: " + orgFilename.length());
-
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         String extension = "";
         int lastDotIndex = orgFilename.lastIndexOf(".");
@@ -59,8 +56,6 @@ public class FileApiController {
         }
         // 파일의 전체 경로 (업로드 디렉토리 + 파일명)
         String fileFullPath = Paths.get(uploadDir, saveFilename).toString();
-        System.out.println("saveFilename : " + saveFilename);
-        System.out.println("fileFullPath : " + fileFullPath);
 
         try {
             long tempTargetId = -Math.abs(UUID.randomUUID().getMostSignificantBits());

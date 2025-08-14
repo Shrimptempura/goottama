@@ -19,6 +19,8 @@ const toastMap = {
     change_user_sanctions_until_failure: { message: '제재 기간 변경에 실패했습니다!', type: 'failure' },
     change_user_role_success: { message: '권한 등급이 공적으로 변경되었습니다!', type: 'success' },
     change_user_role_failure: { message: '권한 등급 변경에 실패했습니다!', type: 'failure' },
+    create_sanction_success: { message: '신규 재제 부과에 성공했습니다!', type: 'success' },
+    create_sanction_failure: { message: '신규 재제 부과에 실패했습니다!', type: 'failure' },
     error: { message: 'error', type: 'failure' }
 };
 

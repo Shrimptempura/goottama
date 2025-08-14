@@ -4,8 +4,7 @@
         <button data-menu="users">Manage Users</button>
         <button data-menu="notices">Notices</button>
         <button data-menu="reports">Reports</button>
-        <button data-menu="search">Advanced Search</button>
-        <button data-menu="log">Log Viewer</button>
+        <button data-menu="logs">Log Viewer</button>
         <button data-menu="statistics">Statistics</button>
         <button data-menu="reviews">Reviews</button>
         <button data-menu="posts">Posts</button>
