@@ -37,7 +37,8 @@ public class DevAutoLoginBaseMember implements Filter {
         // 이미 인증된 경우는 패스
         if (SecurityContextHolder.getContext().getAuthentication() == null) {
 
-            MemberDto member = loginDao.interiorFindByLoginId("aaaa");
+            // test2, test4 활성화중
+            MemberDto member = loginDao.interiorFindByLoginId("test4");
 
             if (member != null) {
                 log.info("DevAutoLoginBaseMember - DB에서 테스트 유저 조회 성공: login_id {}", member.getLogin_id());
