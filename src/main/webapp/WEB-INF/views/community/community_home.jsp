@@ -8,84 +8,116 @@
 <title>아마겟돈</title>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/community/community_home.css">
 </head>
 <body>
-	<h4>커뮤니티 홈</h4>
+	<div class="container">
+		<h1 class="page-title">커뮤니티 홈</h1>
 
-	<!-- 배너 이미지 -->
-	<div class="container mt-4">
-		<img
-			src="${pageContext.request.contextPath}/resources/images/banner.png"
-			class="img-fluid rounded" alt="메인 배너">
-	</div>
+		<!-- Hero -->
+		<section class="hero">
+			<img src="/static/img/sample/hero.jpg" alt="메인 배너">
+			<div class="hero-content">
+				<span class="hero-badge">오늘의픽</span>
+				<div class="hero-title">광@@@@@@@@@@@@@@@@@@@@@@@@@@@고</div>
+				<div class="hero-meta">닉네임 · 리뷰</div>
+			</div>
+		</section>
 
-	<!-- 기능 아이콘 -->
-	<div class="container mt-5">
-		<div class="row text-center icon-section">
-			<div class="col">
-				<img
-					src="${pageContext.request.contextPath}/images/community/images.png"><br>
-				<a href="${pageContext.request.contextPath}/community/suggest_view">추천</a>
-			</div>
-			<div class="col">
-				<img
-					src="${pageContext.request.contextPath}/images/community/images.png"><br>
-				<a
-					href="${pageContext.request.contextPath}/community/popularity_view">인기</a>
-			</div>
-			<div class="col">
-				<img
-					src="${pageContext.request.contextPath}/images/community/images.png"><br>
-				<a href="${pageContext.request.contextPath}/community/review_view">리뷰</a>
-			</div>
-			<div class="col">
-				<img
-					src="${pageContext.request.contextPath}/images/community/images.png"><br>
-				<a
-					href="${pageContext.request.contextPath}/community/house_photo_view">집사진</a>
-			</div>
-			<div class="col">
-				<img
-					src="${pageContext.request.contextPath}/images/community/images.png"><br>
-				<a
-					href="${pageContext.request.contextPath}/community/house_decoration_view">집꾸미기</a>
-			</div>
+		<!-- Quick categories -->
+		<div class="quick" aria-label="빠른 메뉴">
+			<a href="${pageContext.request.contextPath}/community/suggest_view"
+				class="quick-item">
+				<div class="quick-icon">★</div>
+				<div class="quick-label">추천</div>
+
+			</a> <a
+				href="${pageContext.request.contextPath}/community/popularity_view"
+				class="quick-item">
+				<div class="quick-icon">🔥</div>
+				<div class="quick-label">인기</div>
+
+			</a> <a href="${pageContext.request.contextPath}/community/review_view"
+				class="quick-item">
+				<div class="quick-icon">✍</div>
+				<div class="quick-label">리뷰</div>
+
+			</a> <a
+				href="${pageContext.request.contextPath}/community/house_photo_view"
+				class="quick-item">
+				<div class="quick-icon">📷</div>
+				<div class="quick-label">집사진</div>
+
+			</a> <a
+				href="${pageContext.request.contextPath}/community/house_decoration_view"
+				class="quick-item">
+				<div class="quick-icon">🧰</div>
+				<div class="quick-label">집꾸미기</div>
+			</a>
 		</div>
-	</div>
 
-	<div class="container mt-4">
-		<tr>
-			<td colspan="4"><a
-				href="${pageContext.request.contextPath}/community/suggest_view">추천</a></td>
-		</tr>
-	</div>
-	<div class="container mt-4">
-		<tr>
-			<td colspan="4"><a
-				href="${pageContext.request.contextPath}/community/popularity_view">인기</a></td>
-		</tr>
-	</div>
+		<!-- Section: 추천 + 인기 탭 -->
+		<section class="section">
+			<div class="section-head">
+				<div class="section-tabs">
+					<span class="section-tab is-active">오늘의 추천</span> <a
+						class="section-tab"
+						href="${pageContext.request.contextPath}/community/popularity_view">인기</a>
+				</div>
+				<a class="section-more"
+					href="${pageContext.request.contextPath}/community/suggest_view">더보기</a>
+			</div>
 
-	<div class="container mt-4">
-		<tr>
-			<td colspan="4"><a
-				href="${pageContext.request.contextPath}/community/review_view">리뷰</a></td>
-		</tr>
-	</div>
+			<div class="scroller">
+				<article class="card">
+					<a
+						href="${pageContext.request.contextPath}/community/post?post_id=1">
+						<div class="thumb">
+							<img src="/static/img/sample/card-1.jpg" alt="">
+						</div>
+						<div class="body">
+							<!-- 텍스트/메타 제거 -->
+						</div>
+					</a>
+				</article>
 
-	<div class="container mt-4">
-		<tr>
-			<td colspan="4"><a
-				href="${pageContext.request.contextPath}/community/house_photo_view">집사진</a></td>
-		</tr>
-	</div>
+				<article class="card">
+					<a href="#">
+						<div class="thumb">
+							<img src="/static/img/sample/card-2.jpg" alt="">
+						</div>
+						<div class="body">
+							<!-- 텍스트/메타 제거 -->
+						</div>
+					</a>
+				</article>
+			</div>
+		</section>
 
-	<div class="container mt-4">
-		<tr>
-			<td colspan="4"><a
-				href="${pageContext.request.contextPath}/community/house_decoration_view">집꾸미기</a></td>
-		</tr>
-	</div>
+		<!-- Section: 지금 인기 (원하면 유지) -->
+		<section class="section">
+			<div class="section-head">
+				<h2 class="section-title">지금 인기</h2>
+				<a class="section-more"
+					href="${pageContext.request.contextPath}/community/popularity_view">더보기</a>
+			</div>
 
+			<div class="scroller">
+				<article class="card">
+					<a href="#">
+						<div class="thumb">
+							<img src="/static/img/sample/card-3.jpg" alt="">
+						</div>
+						<div class="body">
+							<!-- 텍스트/메타 제거 -->
+						</div>
+					</a>
+				</article>
+			</div>
+		</section>
+
+		<div class="footer-space"></div>
+	</div>
 </body>
 </html>

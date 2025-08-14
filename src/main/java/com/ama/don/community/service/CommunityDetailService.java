@@ -21,17 +21,24 @@ public class CommunityDetailService {
 	}
 
 	@Transactional
+	public void deleteFilesByIds(java.util.List<Long> ids) {
+		if (ids != null && !ids.isEmpty()) {
+			detailDao.deleteFilesByIds(ids);
+		}
+	}
+
+	@Transactional
 	public void deletePost(Long postId) {
-		// (선택) 댓글 소프트 딜리트
+		// 댓글 소프트 딜리트
 		detailDao.softDeleteCommentsByTarget("COMMUNITY_REVIEW", postId);
 
-		// (선택) 파일 삭제
+		// 파일 삭제
 		detailDao.deleteFilesByTarget("COMMUNITY_REVIEW", postId);
 
-		// 1) 리뷰(자식) 먼저 삭제
+		// 리뷰 자식 먼저 삭제
 		detailDao.deleteReviewByPostId(postId);
 
-		// 2) 포스트(부모) 삭제
+		// 포스트 부모 삭제
 		detailDao.delete(postId);
 	}
 }
