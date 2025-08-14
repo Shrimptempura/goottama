@@ -5,7 +5,8 @@
   Time: 오후 5:03
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,6 +14,10 @@
 </head>
 <body>
     <h3>company-posts</h3>
+
+    <c:if test="${isOwner}">
+        <a href="${pageContext.request.contextPath}/interior/myhome/${companyId}/posts/new">게시글 작성</a>
+    </c:if>
 
 </body>
 </html>
