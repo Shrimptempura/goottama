@@ -502,7 +502,7 @@ body {
             </c:choose>
         </div>
 
-        <!-- 정렬 바 -->
+        <%-- <!-- 정렬 바 -->
         <div class="sort-bar">
             <div class="sort-left">
                 <strong>${product_list != null ? product_list.size() : 0}</strong>개의 상품
@@ -516,7 +516,7 @@ body {
                     <option value="name">상품명순</option>
                 </select>
             </div>
-        </div>
+        </div> --%>
 
         <!-- 상품 그리드 -->
 		<div class="product-grid" id="productGrid">
@@ -580,7 +580,7 @@ body {
 		                            </c:choose>
 		                        </div>
 		
-		                        <!-- 🔧 수정2: 액션 버튼들의 이벤트 처리 개선 -->
+		                        <%-- <!-- 🔧 수정2: 액션 버튼들의 이벤트 처리 개선 -->
 		                        <div class="product-actions">
 		                            <button class="action-btn cart-btn" data-product-id="${product.product_id}" data-action="cart">
 		                                🛒 장바구니
@@ -588,7 +588,7 @@ body {
 		                            <button class="action-btn order-btn" data-product-id="${product.product_id}" data-action="order">
 		                                ⚡ 바로구매
 		                            </button>
-		                        </div>
+		                        </div> --%>
 		                    </div>
 		                </div>
 		            </c:forEach>
@@ -617,6 +617,24 @@ body {
 <script>
 // 🔧 수정된 JavaScript 코드
 
+
+// 페이지가 로딩되자마자, 버튼 클릭리스너를 적용한다?
+document.addEventListener('DOMContentLoaded', function(){
+	const product=document.getElementById('product');
+	
+	
+	product.addEventListener('click', function(){
+		//가까운 product-card 찾기
+		const product= e.target.closest('.product-card');
+		
+		if(!productCard) return;
+	
+
+		//버튼을 누르면 장바구니 혹은 바로구매 호출
+		
+		
+})
+
 // 🔧 수정1: 이벤트 위임을 사용한 안전한 클릭 처리
 document.addEventListener('DOMContentLoaded', function() {
     const productGrid = document.getElementById('productGrid');
@@ -625,10 +643,10 @@ document.addEventListener('DOMContentLoaded', function() {
     productGrid.addEventListener('click', function(e) {
         // 클릭된 요소에서 가장 가까운 product-card 찾기
         const productCard = e.target.closest('.product-card');
-        if (!productCard) return;
-        
+        if (!productCard) return;        
+
         // 버튼 클릭인지 확인
-        const actionBtn = e.target.closest('.action-btn');
+        
         if (actionBtn) {
             e.stopPropagation(); // 상품 카드 클릭 이벤트 차단
             

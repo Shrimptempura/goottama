@@ -5,19 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserActivitySearchDTO {
     private long user_activity_id;
-    private long user_id;
-    private List<String> user_activity_type;
-    private Timestamp user_activity_time_start;
-    private Timestamp user_activity_time_end;
-    private List<String> user_activity_target;
+    private Long user_id;
+    private String user_activity_type;
+    private String user_activity_time_start;
+    private String user_activity_time_end;
+    private String user_activity_target;
+    private String user_activity_target_id;
     private String user_activity_details;
 }

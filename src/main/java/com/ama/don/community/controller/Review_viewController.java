@@ -23,7 +23,7 @@ import com.ama.don.community.dto.Review.ReviewPostDto;
 public class Review_viewController {
 
 	@Autowired
-	private CommunityPostDao CommunityPostDao;
+	private CommunityPostDao communityPostDao;
 
 	@Autowired
 	private FileDao fileDao;
@@ -42,10 +42,10 @@ public class Review_viewController {
 
 		String targetType = TargetType.COMMUNITY_REVIEW.name();
 
-		int totalCount = CommunityPostDao.countTargetType(targetType);
+		int totalCount = communityPostDao.countTargetType(targetType);
 		pageVO.pageCalculate(totalCount);
 
-		List<ReviewPostDto> list = CommunityPostDao.findTargetType(targetType, pageVO.getRowStart(),
+		List<ReviewPostDto> list = communityPostDao.findTargetType(targetType, pageVO.getRowStart(),
 				pageVO.getDisplayRowCount());
 
 		for (ReviewPostDto review : list) {
@@ -63,7 +63,7 @@ public class Review_viewController {
 	@GetMapping("/review_live_counts")
 	@ResponseBody
 	public List<Map<String, Object>> getLiveReviewCounts() {
-		return CommunityPostDao.findReviewCounts();
+		return communityPostDao.findReviewCounts();
 	}
 
 }

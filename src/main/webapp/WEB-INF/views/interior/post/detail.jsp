@@ -5,7 +5,8 @@
   Time: 오전 10:44
   To change this template use File | Settings | File Templates.
 --%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -37,10 +38,19 @@
     <c:if test="${not empty detail.images}">
         <div>
             <c:forEach items="${detail.images}" var="img">
-                <img src="${img.url}">
+                <img src="${img.url}"/>
             </c:forEach>
         </div>
     </c:if>
+
+    <c:set var="companyId" value="${detail.post.companyId}"/>
+    <c:url var="backPostUrl" value="/interior/myhome/${companyId}">
+        <c:param name="type" value="posts"/>
+        <%--<c:param name="posts" value="${detail.post.companyPostId}"/>--%>
+    </c:url>
+
+    <a href="${backPostUrl}">뒤로가기</a>
+
 
 </body>
 </html>

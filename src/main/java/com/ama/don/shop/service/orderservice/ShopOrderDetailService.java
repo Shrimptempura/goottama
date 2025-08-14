@@ -73,7 +73,7 @@ public class ShopOrderDetailService implements ShopServiceinter{
 		    
 		    
 		   
-
+		    	
 		    model.addAttribute("userOrders", userOrders);
 		    model.addAttribute("orderProductsMap", orderProductsMap);
 		    model.addAttribute("orderDeliverMap",orderdeliverMap);  // 배송 정보 추가

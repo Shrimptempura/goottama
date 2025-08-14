@@ -16,7 +16,7 @@ function initLogPage() {
         await fetchLogList(formData);
     });
 
-    // 공지 목록을 비동기적으로 가져오는 함수
+    // 로그 목록을 비동기적으로 가져오는 함수
     async function fetchLogList(formData) {
         try {
             const response = await fetch("/admin/logs/log_list", {
@@ -30,8 +30,8 @@ function initLogPage() {
             container.innerHTML = html;
             bindPageButtons(); // 새롭게 로드된 HTML의 페이지 버튼에 이벤트 다시 연결
         } catch (error) {
-            console.error("공지 목록을 불러오는 중 오류 발생:", error);
-            alert("공지 목록을 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요."); // TODO: toast로 바꿀 것
+            console.error("로그 목록을 불러오는 중 오류 발생:", error);
+            alert("로그 목록을 불러오는 데 실패했습니다. 잠시 후 다시 시도해주세요."); // TODO: toast로 바꿀 것
         }
     }
 

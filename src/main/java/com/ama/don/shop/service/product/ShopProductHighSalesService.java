@@ -26,7 +26,7 @@ public class ShopProductHighSalesService implements ShopServiceinter{
 		HttpServletRequest request=
 				(HttpServletRequest) map.get("request");
 
-		model.addAttribute("product_high_sales",iDao.product_high_sales_all_list());
+		model.addAttribute("product_high_sales",iDao.product_high_sales_flat_list());
 
 	}
 

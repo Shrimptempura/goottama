@@ -247,7 +247,7 @@
             <div class="product-image">
                 <c:choose>
                     <c:when test="${not empty product.product_imgurl}">
-                        <img src="${product.product_imgurl}" alt="${product.product_name}">
+                        <img src="/static/uploads/shop/${product.product_imgurl}" alt="${product.product_name}">
                     </c:when>
                     <c:otherwise>
                         <div class="no-image">이미지<br>없음</div>
@@ -271,9 +271,7 @@
             </div>
         </div>
     </div>
-    LoginMemberService loginMemberService=new LoginMemberService();
-		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
-		model.addAttribute("loginMember",memberDto);
+   <%--  
     <!-- 디버깅 정보 (개발용) - 사용자 정보 포함 -->
     <div class="debug-info">
         <strong>🔍 디버깅 정보:</strong><br>
@@ -283,7 +281,7 @@
         사용자 연락처: <span style="color: #007bff;">${loginMember.user_tel} </span><br>
         폼 제출 상태: <span id="debug_status">대기중</span><br>
         <button type="button" onclick="testUserId()" style="margin-top: 5px; padding: 5px 10px; background: #17a2b8; color: white; border: none; border-radius: 3px;">user_id 테스트</button>
-    </div>
+    </div> --%>
     
     <!-- 문의 작성 폼 - 방법 1 적용 -->
     <form class="inquiry-form" 
@@ -340,13 +338,13 @@
         </div>
         
         <!-- 공개여부 -->
-        <div class="form-group">
+        <!-- <div class="form-group">
             <label for="is_public" class="form-label">공개 설정</label>
             <select id="is_public" name="is_public" class="form-control form-select">
                 <option value="0">비공개 (나만 볼 수 있음)</option>
                 <option value="1">공개 (다른 고객도 볼 수 있음)</option>
             </select>
-        </div>
+        </div> -->
         
         <!-- 버튼 그룹 -->
         <div class="btn-group">

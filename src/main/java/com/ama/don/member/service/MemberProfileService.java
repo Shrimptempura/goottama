@@ -88,4 +88,5 @@ public class MemberProfileService implements MemberProfileServiceInter{
 		return updated;
 	}
 
+
 }

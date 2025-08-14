@@ -1,5 +1,7 @@
 package com.ama.don.community.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -40,5 +42,13 @@ public interface CommunityDetailDao {
 
 	// 타겟 아이디 수정
 	void update_target_id(PostDto dto);
+	
+	// 파일 목록 조회
+	List<com.ama.don.common.dto.FileDto> selectFilesByTarget(
+	        @org.apache.ibatis.annotations.Param("targetType") String targetType,
+	        @org.apache.ibatis.annotations.Param("targetId") Long targetId);
+
+	int deleteFilesByIds(@org.apache.ibatis.annotations.Param("ids") java.util.List<Long> ids);
+
 
 }

@@ -20,4 +20,5 @@ public class SanctionsDTO {
     private String sanctions_reason;
     private int admin_account_id;
     private Timestamp sanctions_created_at;
+    private String sanctions_duration;
 }

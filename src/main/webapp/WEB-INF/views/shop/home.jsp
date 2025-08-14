@@ -587,7 +587,7 @@ function updateSlider() {
     const slider = document.getElementById('bannerSlider');
     const indicators = document.querySelectorAll('.indicator');
     
-    // 슬라이더 이동
+    // 슬라이더 이동 (이 부분이 빠져있었음)
     slider.style.transform = `translateX(-${currentSlide * 20}%)`;
     
     // 인디케이터 업데이트

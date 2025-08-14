@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -103,9 +104,27 @@ public class CompanyPostServiceImpl implements CompanyPostService {
         return List.of();
     }
 
+    // 업체 상세페이지의 게시글 탭의 리스트
+    @Transactional
     @Override
     public List<CompanyPostPreviewDto> listByCompanyId(Long companyId) {
-        return List.of();
+        List<CompanyPostPreviewDto> posts = companyPostDao.getCompanyPostPreview(companyId);
+        if (posts.isEmpty()) {
+//            throw new IllegalStateException("게시글 리스트가 없습니다. companyId: " + companyId);
+            return posts;
+        }
+
+        List<Long> companyPostIds = new ArrayList<>(posts.size());
+        for (CompanyPostPreviewDto dto : posts) {
+            companyPostIds.add(dto.getCompanyPostId());
+        }
+
+        Map<Long, FileDto> map = fileService.getThumbnailList(TargetType.INTERIOR_POST, companyPostIds);
+        for (CompanyPostPreviewDto dto : posts) {
+            dto.setThumbnail(map.get(dto.getCompanyPostId()));
+        }
+
+        return posts;
     }
 
     @Transactional

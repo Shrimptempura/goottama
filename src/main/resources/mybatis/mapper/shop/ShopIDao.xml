@@ -34,7 +34,7 @@
 		where p.product_id=#{product_id};
 	</select>
 	
-	<!-- 특정 상품을 검색 (주문내역이 많은 상품) 8개 리스트 -->
+	<!-- 특정 상품을 검색 (주문내역이 많은 상품) 20개 리스트 -->
 	<select id="product_popular_flat_list" resultType="com.ama.don.shop.dto.ProductFlatDto">
 	     SELECT 
 	        p.product_id, p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
@@ -44,7 +44,7 @@
 	    GROUP BY 
 	        p.product_id
 	    ORDER BY order_count DESC, p.product_id DESC
-	    limit 8
+	    limit 20
 	</select>
 	
 	<!-- 특정 상품을 검색 주문 내역이 많은 상품  전체 내림차순 -->
@@ -59,7 +59,7 @@
 	    ORDER BY order_count DESC, p.product_id DESC  
 	</select>
 	
-	<!-- 특정 상품을 검색 (세일 비율이 높은 상품) 8개 리스트 -->
+	<!-- 특정 상품을 검색 (세일 비율이 높은 상품) 20개 리스트 -->
 	<select id="product_high_sales_flat_list" resultType="com.ama.don.shop.dto.ProductFlatDto">
 	    SELECT p.product_id as product_id,
 	           p.product_name as product_name,
@@ -73,7 +73,7 @@
 	                             AND pi.product_img_type = '메인'
 	    WHERE p.product_discountrate > 0
 	    ORDER BY p.product_discountrate DESC
-	    LIMIT 8
+	    LIMIT 20
 	</select>
 	
 	<!-- 특정 상품을 검색 (세일 비율이 높은 상품) 전체 내림차순 -->
@@ -205,7 +205,8 @@
          p.product_mall_name,
          pi.product_imgurl,
          pi.product_img_type                        
-        order by count(r.target_id) desc;
+        order by count(r.target_id) desc
+        limit 20;
 	</select>
 	
 	<!-- 단일 상품 리뷰 리스트 -->

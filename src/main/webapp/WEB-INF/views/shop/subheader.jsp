@@ -45,7 +45,7 @@
 <!-- 사용자 정보 표시 -->
 <div class="user-info">
 
-
+	<!--   -->
 
 	<!-- 로그인된 경우 -->
     <c:choose>
@@ -79,7 +79,6 @@ function goToOrderDetails() {
     location.href = "order_details?user_id=" + ${loginMember.user_id};
 }
 
-
 // 주문 내역으로 이동
 function goToOrderDetail(){
 	location.href = "debug";
@@ -96,7 +95,6 @@ function goToProductInquiryDetail(){
 }
 
 
-
 </script>
 
 <div class="subheader">
@@ -106,10 +104,10 @@ function goToProductInquiryDetail(){
     <a href="best">Best</a>
     <a href="javascript:void(0)" onclick="goToCart()">Cart</a>
     <a href="javascript:void(0)" onclick="goToOrderDetails()">Order Details</a>
-    <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
+   <!--  <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
     <a href="javascript:void(0)" onclick="goToReviewDetail()">review</a>
-    <a href="javascript:void(0)" onclick="goToProductInquiryDetail()">product_inquiry</a>
-    
+    <a href="javascript:void(0)" onclick="goToProductInquiryDetail()">product_inquiry</a> -->
+    <!--  -->
    
 </div>
 </body>
