@@ -1013,9 +1013,9 @@ function debugInquiries() {
 		                        <!-- 보다 중요한건 카카오페이결제인데 -->
 		                        
 		                        <!-- JavaScript로 제어될 내 문의 영역 -->
-		                        <div class="my-inquiry-section" style="display: none;">
+		                        <%-- <div class="my-inquiry-section" style="display: none;">
 		                            <p class="my-inquiry-text">내 문의: ${inquiry.user_id}</p>
-		                        </div>
+		                        </div> --%>
 		                    </div>
 		                    
 		                    <button><a href="product_reply_view?product_id=${inquiry.product_id }&pinquiry_id=${inquiry.pinquiry_id }"> 답변달기</a></button>

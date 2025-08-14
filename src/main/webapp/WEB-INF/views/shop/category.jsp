@@ -339,7 +339,7 @@ function closeAllSubMenus() {
             <c:when test="${not empty list}">
                 <c:forEach items="${list}" var="product">
                     <div class="card">
-                        <div>상품 ID: ${product.product_id}</div>
+                        <%-- <div>상품 ID: ${product.product_id}</div> --%>
                         
                         <c:choose>
                             <c:when test="${empty product.product_img_id or empty product.product_imgurl}">

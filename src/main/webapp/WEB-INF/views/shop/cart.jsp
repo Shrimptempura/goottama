@@ -244,7 +244,7 @@
                 <div class="empty-cart">
                     <h3>장바구니가 비어있습니다.</h3>
                     <p>원하는 상품을 장바구니에 담아보세요!</p>
-                    <a href="products">쇼핑하러 가기</a>
+                    <a href="category">쇼핑하러 가기</a>
                 </div>
             </c:otherwise>
         </c:choose>
