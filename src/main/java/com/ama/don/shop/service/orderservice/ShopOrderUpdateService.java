@@ -18,11 +18,11 @@ import com.ama.don.shop.service.ShopServiceinter;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class ShopOrderUpdateSerivce implements ShopServiceinter{
+public class ShopOrderUpdateService implements ShopServiceinter{
 	
 
 	private ShopIDao iDao;
-	public ShopOrderUpdateSerivce(ShopIDao iDao) {
+	public ShopOrderUpdateService(ShopIDao iDao) {
 		this.iDao=iDao;
 	}
 	@Override

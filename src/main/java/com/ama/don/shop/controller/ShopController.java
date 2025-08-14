@@ -36,7 +36,7 @@ import com.ama.don.shop.service.cart.ShopCartWriteService;
 import com.ama.don.shop.service.category.ShopCategoryService;
 import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
 import com.ama.don.shop.service.orderservice.ShopOrderModifyViewService;
-import com.ama.don.shop.service.orderservice.ShopOrderUpdateSerivce;
+import com.ama.don.shop.service.orderservice.ShopOrderUpdateService;
 import com.ama.don.shop.service.orderservice.ShopOrderViewService;
 import com.ama.don.shop.service.orderservice.ShopOrderWriteService;
 import com.ama.don.shop.service.product.ShopProductHighSalesService;
@@ -402,6 +402,24 @@ public class ShopController {
 		return "redirect:/shop/product_detail?product_id="+productid;
 	}
 	
+	@RequestMapping("/shop/product_like")
+	public String product_like(HttpServletRequest request,Model model) {
+		
+		System.out.println("");
+		/*
+		 * model.addAttribute("request",request); shopServiceinter=new
+		 * ShopProductLikeService(iDao); shopServiceinter.execute(model);
+		 */
+		
+		String product_id=request.getParameter("product_id");
+		
+		String user_id=request.getParameter("user_id");
+		String pl_istrue=request.getParameter("pl_istrue");
+		
+		Long productid=Long.parseLong(product_id);
+		
+		return "redirect:/shop/product_detail?product_id="+productid;
+	}
 
 	@RequestMapping("/shop/productmall")
 	public String exhibition(HttpServletRequest request, Model model) {
@@ -549,7 +567,7 @@ public class ShopController {
 		model.addAttribute("loginMember",memberDto);
 		
 		model.addAttribute("request",request); 
-		shopServiceinter=new ShopOrderUpdateSerivce(iDao); 
+		shopServiceinter=new ShopOrderUpdateService(iDao); 
 		shopServiceinter.execute(model);
 		String order_id = request.getParameter("order_id");
 	
