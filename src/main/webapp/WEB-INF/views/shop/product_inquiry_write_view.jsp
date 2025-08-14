@@ -266,7 +266,9 @@
                     </c:if>
                 </div>
                 <div class="current-price">
-                    <fmt:formatNumber value="${product.product_price}" pattern="#,###"/>원
+                	<!-- 상품가격을 바꾸는 것 -->
+                    <fmt:formatNumber value="${product.product_price * (1-product.product_discountrate)}" pattern="#,###"/>원
+                    
                 </div>
             </div>
         </div>
@@ -349,7 +351,7 @@
         <!-- 버튼 그룹 -->
         <div class="btn-group">
             <button type="submit" class="btn btn-primary">💌 문의 등록</button>
-            <a href="productDetail?product_id=${product.product_id}" class="btn btn-secondary">🔙 상품으로 돌아가기</a>
+            <a href="product_detail?product_id=${product.product_id}" class="btn btn-secondary">🔙 상품으로 돌아가기</a>
         </div>
     </form>
 </div>

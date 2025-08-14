@@ -543,8 +543,12 @@ body {
 </div>
 
 <script>
+
+
 // 배너 슬라이더 변수
 let currentSlide = 0;
+const slides = document.querySelectorAll('.banner-slide');
+
 const totalSlides = 5;
 let slideInterval;
 

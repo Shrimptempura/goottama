@@ -890,7 +890,13 @@ function debugInquiries() {
                 </c:if>
             </div>
         </div>
-
+		
+		<div class="product-like">
+			
+			<button class="product-like" onclick="location.href='product_like?product_id=${product.product_id}'">좋아요</button>
+		
+		</div>
+		
         <!-- 하단바 (이미지 아래) -->
         <div class="bottombar">
             <ul>
