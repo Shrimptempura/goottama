@@ -1,9 +1,7 @@
 package com.ama.don.community.dto.Review;
 
 import java.sql.Timestamp;
-import java.util.List;
 
-import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
 
 import lombok.AllArgsConstructor;
