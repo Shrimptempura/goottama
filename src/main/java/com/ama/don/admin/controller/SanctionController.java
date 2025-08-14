@@ -20,18 +20,15 @@ public class SanctionController {
     private final GetSanctionList getSanctionList;
     private final GetSanctionDetail getSanctionDetail;
     private final CreateSanction createSanction;
-    private final UpdateSanction updateSanction;
     private final DeleteSanction deleteSanction;
 
     public SanctionController(GetSanctionList getSanctionList,
                               GetSanctionDetail getSanctionDetail,
                               CreateSanction createSanction,
-                              UpdateSanction updateSanction,
                               DeleteSanction deleteSanction) {
         this.getSanctionList = getSanctionList;
         this.getSanctionDetail = getSanctionDetail;
         this.createSanction = createSanction;
-        this.updateSanction = updateSanction;
         this.deleteSanction = deleteSanction;
     }
 
@@ -84,6 +81,15 @@ public class SanctionController {
         model.addAttribute("request", request);
         boolean isSuccess = createSanction.execute(model);
         String resultMessage = isSuccess ? "create_sanction_success" : "create_sanction_failure";
+        return "redirect:/admin/admin_index?menu=sanctions&result=" + resultMessage;
+    }
+
+    @GetMapping("/admin/sanctions/delete_sanction")
+    public String deleteSanctionBySanctionId(Model model,
+                                 @RequestParam("sanctions_id") String sanctionId) {
+        model.addAttribute("sanctionId", sanctionId);
+        boolean isSuccess = deleteSanction.execute(model);
+        String resultMessage = isSuccess ? "delete_sanction_success" : "delete_sanction_failure";
         return "redirect:/admin/admin_index?menu=sanctions&result=" + resultMessage;
     }
 

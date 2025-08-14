@@ -13,7 +13,9 @@ public class DeleteSanction {
         this.sanctionsIDao = sanctionsIDao;
     }
 
-    public void execute(Model model) {
+    public boolean execute(Model model) {
+        boolean result = false;
 
+        return result;
     }
 }
