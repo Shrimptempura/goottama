@@ -28,7 +28,7 @@
     <c:choose>
         <c:when test="${not empty review}">
             <c:forEach var="reviews" items="${review}">
-                <div class="review-card">
+                <div class="review-card" onclick="location.href='${pageContext.request.contextPath}/shop/product_detail?product_id=${reviews.product_id}'">
                     <div class="review-image">
                         <img src="/static/uploads/shop/${reviews.product_imgurl}" alt="상품 이미지">
                     </div>
