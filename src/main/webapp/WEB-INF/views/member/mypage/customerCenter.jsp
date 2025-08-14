@@ -5,8 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <title>아마겟돈 고객센터</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/mypage/customerCenter.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/mypage/mypageCategory.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/mypage/customerCenter.css" />
 </head>
 <body>
   <div class="nav">
