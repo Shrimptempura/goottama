@@ -3,11 +3,9 @@ package com.ama.don.interior.controller;
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.company.*;
+import com.ama.don.interior.dto.post.CompanyPostPreviewDto;
 import com.ama.don.interior.dto.review.CompanyReviewDto;
-import com.ama.don.interior.service.CompanyAuthService;
-import com.ama.don.interior.service.CompanyReviewService;
-import com.ama.don.interior.service.CompanyService;
-import com.ama.don.interior.service.FileService;
+import com.ama.don.interior.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -26,6 +24,7 @@ public class CompanyController {
     private final FileService fileService;
     private final CompanyAuthService authService;
     private final CompanyReviewService companyReviewService;
+    private final CompanyPostService companyPostService;
 
     // 업체 등록 폼으로 이동
     @GetMapping("/interior/new-company")
@@ -79,6 +78,10 @@ public class CompanyController {
             List<CompanyReviewDto> reviews = companyReviewService.listByCompanyId(companyId);
             log.info("CompanyController - reviews 탭 요청 - companyId: {}", companyId);
             model.addAttribute("reviews", reviews);
+        } else if (type.equals("posts")) {
+            List<CompanyPostPreviewDto> posts = companyPostService.listByCompanyId(companyId);
+            log.info("CompanyController - posts 탭 요청 - companyId: {}", companyId);
+            model.addAttribute("posts", posts);
         }
 
         String tabName = switch (type) {

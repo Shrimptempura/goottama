@@ -21,6 +21,12 @@ public class FileDto {
 	private Long target_id; // 게시글 ID
 	private boolean thumbnail;
 
+	// 인테리어 사용
+	public String getUrl() {
+		String dir = target_type.name().toLowerCase();
+		return "/upload/" + dir + "/" + file_name;
+	}
+
 	@Override
 	public String toString() {
 		return "FileDto{" + "file_id=" + file_id + ", file_uploader='" + file_uploader + '\'' + ", file_name='"
