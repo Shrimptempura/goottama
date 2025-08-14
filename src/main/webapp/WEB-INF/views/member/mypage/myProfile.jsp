@@ -16,5 +16,7 @@
 <a href="/mypage/editProfile_view">설정</a> 
 </div>
 
+<!-- 프로필 사진,닉네임,커뮤게시글 목록 -->
+
 </body>
 </html>
