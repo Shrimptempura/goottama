@@ -68,11 +68,9 @@ public class MemberController {
 	}
 	
 	@GetMapping("/mypage/myProfile")
-	public String memberProfile(@RequestParam(defaultValue = "1") int page, Model model,MemberDto memberDto) {
+	public String memberProfile(Model model,MemberDto memberDto) {
 		
-		List<ReviewPostDto> list = mypageDataService.getUserCommunityReview(page);
 		memberDto=loginMemberService.getCurrentLoginMemberDto();
-		model.addAttribute("communityList",list);
 		model.addAttribute("loginMember", memberDto);
 		
 		return "member/mypage/myProfile";
@@ -114,11 +112,7 @@ public class MemberController {
 	}
 	
 	@GetMapping("/mypage/myComment")
-	public String myComment(@RequestParam(defaultValue = "1") int page, Model model) {
-		
-		List<ReviewPostDto> list = mypageDataService.getUserCommunityReview(page);
-		model.addAttribute("communityList",list);
-		
+	public String myComment(Model model) {	
 		return "member/mypage/myComment";
 	}
 	

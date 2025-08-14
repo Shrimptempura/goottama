@@ -16,13 +16,5 @@
 <a href="/mypage/editProfile_view">설정</a> 
 </div>
 
-<p class="section-title">현재 프로필 이미지</p>
-  	<img class="current-img" src="${pageContext.request.contextPath}${loginMember.profileImgUrl}" alt="프로필 이미지" />
-  	<div class="info-text">${loginMember.login_id}</div>
-  	<div class="info-text">${loginMember.user_created_at}</div>
-<c:forEach var="review" items="${communityList}">
-    <label class="community-title">${review.review_title}</label>
-    <p class="community-content">${review.review_content}</p>
-</c:forEach>
 </body>
 </html>
