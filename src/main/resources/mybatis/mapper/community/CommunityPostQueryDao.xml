@@ -17,7 +17,6 @@
 		'COMMUNITY_REVIEW' AS targetType,
 		r.review_title AS title,
 		r.review_content AS content,
-		p.created_at AS createdAt,
 		r.review_count AS viewCount,
 		r.review_like_count AS likeCount,
 		(
@@ -40,7 +39,6 @@
 		'COMMUNITY_HOUSEPHOTO' AS targetType,
 		h.housephoto_title AS title,
 		h.housephoto_content AS content,
-		p.created_at AS createdAt,
 		h.housephoto_count AS viewCount,
 		h.housephoto_like_count AS likeCount,
 		(
@@ -63,7 +61,6 @@
 		'COMMUNITY_HOUSEDECORATION' AS targetType,
 		d.housedecoration_title AS title,
 		d.housedecoration_content AS content,
-		p.created_at AS createdAt,
 		d.housedecoration_count AS viewCount,
 		d.housedecoration_like_count AS likeCount,
 		(
@@ -82,7 +79,6 @@
 				t.targetType = #{targetType}
 			</if>
 		</where>
-		ORDER BY t.createdAt DESC
 	</select>
 
 </mapper>

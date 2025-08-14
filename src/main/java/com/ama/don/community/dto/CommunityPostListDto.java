@@ -11,7 +11,7 @@ public class CommunityPostListDto {
 	private String targetType; // 'COMMUNITY_REVIEW' / 'COMMUNITY_HOUSEPHOTO' / 'COMMUNITY_HOUSEDECORATION'
 	private String title; // *_title
 	private String content; // *_content
-	private java.sql.Timestamp createdAt; // post.created_at
+//	private java.sql.Timestamp createdAt; // post.created_at
 	private int viewCount; // *_count
 	private int likeCount; // *_like_count
 	private int commentCount; // comments count (is_deleted=0)

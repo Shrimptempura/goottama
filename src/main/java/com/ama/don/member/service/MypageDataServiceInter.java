@@ -2,12 +2,11 @@ package com.ama.don.member.service;
 
 import java.util.List;
 
-import org.springframework.ui.Model;
-
-import com.ama.don.community.dto.Review.ReviewPostDto;
+import com.ama.don.community.dto.CommunityPostListDto;
+import com.ama.don.member.dto.MemberDto;
 
 public interface MypageDataServiceInter {
 	
-	List<ReviewPostDto> getUserCommunityReview(int page);
+	List<CommunityPostListDto> getUserCommunityReview(MemberDto memberDto);
 
 }

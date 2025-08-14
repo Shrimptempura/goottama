@@ -31,9 +31,9 @@
                 <div class="community-card">
                     <div class="community-thumbnail">
                         <c:choose>
-                            <c:when test="${not empty post.fileList}">
+                          <%--   <c:when test="${not empty post.fileList}">
                                 <img src="${post.fileList[0].file_path}" alt="썸네일" />
-                            </c:when>
+                            </c:when> --%>
                             <c:otherwise>
                                 <img src="/img/no-image.png" alt="이미지 없음" />
                             </c:otherwise>
