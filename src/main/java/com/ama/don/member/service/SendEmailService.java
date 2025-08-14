@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import com.ama.don.member.config.EmailConfig;
 import com.ama.don.member.dto.FindPwDto;
 import com.ama.don.member.dto.JoinformDto;
+import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.utill.EmailSHA;
 
 import jakarta.mail.internet.MimeMessage;
@@ -57,7 +58,7 @@ public class SendEmailService implements SendEmailServiceInter{
 			helper.setTo(to);
 			helper.setSubject(subject);
 			helper.setText(content,true);
-			helper.setFrom(emailConfig.getFrom());
+			helper.setFrom(emailConfig.getFrom(),"아마겟돈");
 			
 			mailSender.send(message);
 			
@@ -85,7 +86,7 @@ public class SendEmailService implements SendEmailServiceInter{
 			helper.setTo(to);
 			helper.setSubject(subject);
 			helper.setText(content,true);
-			helper.setFrom(emailConfig.getFrom());
+			helper.setFrom(emailConfig.getFrom(),"아마겟돈");
 			
 			mailSender.send(message);
 			
@@ -96,16 +97,23 @@ public class SendEmailService implements SendEmailServiceInter{
 	}
 
 	@Override
-	public void sendInquiryEmail(String email, String subject, String message) {
+	public void sendInquiryEmail(MemberDto memberDto,String subject, String message) {
 		
 		try {
 			MimeMessage mail = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(mail, true, "UTF-8");
+			String email = memberDto.getUser_email();
+			
+			String content = "<div>"
+				    + "<p><strong>보낸 사람 이메일:</strong> " + email + "</p>"
+				    + "<p><strong>내용:</strong><br/>" + message + "</p>"
+				    + "</div>";
 			
 			helper.setTo(emailConfig.getFrom());
 			helper.setSubject(subject);
-			helper.setText(message,true);
+			helper.setText(content,true);
 			helper.setFrom(email);
+			helper.setReplyTo(email);
 			
 			mailSender.send(mail);
 			
