@@ -16,11 +16,11 @@ import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.common.utils.CommunityPageVO;
 import com.ama.don.community.dao.CommunityPostDao;
-import com.ama.don.community.dto.Review.ReviewPostDto;
+import com.ama.don.community.dto.HousePhoto.HousePhotoPostDto; // DTO 경로 맞게 변경
 
 @Controller
 @RequestMapping("/community")
-public class Review_viewController {
+public class HousePhoto_viewController {
 
 	@Autowired
 	private CommunityPostDao communityPostDao;
@@ -29,41 +29,40 @@ public class Review_viewController {
 	private FileDao fileDao;
 
 	// 글쓰기 페이지 이동
-	@GetMapping("/write_con")
+	@GetMapping("/write_housephoto")
 	public String writeView() {
-		return "community/write_view";
+		return "community/write_view"; // JSP 경로에 맞게 변경
 	}
 
-	// 리뷰 목록
-	@GetMapping("/review_view")
-	public String reviewList(@RequestParam(defaultValue = "1") int page, Model model) {
+	// 하우스포토 목록
+	@GetMapping("/housephoto_view")
+	public String housePhotoList(@RequestParam(defaultValue = "1") int page, Model model) {
 		CommunityPageVO pageVO = new CommunityPageVO();
 		pageVO.setPage(page);
 
-		String targetType = TargetType.COMMUNITY_REVIEW.name();
+		String targetType = TargetType.COMMUNITY_HOUSEPHOTO.name();
 
 		int totalCount = communityPostDao.countTargetType(targetType);
 		pageVO.pageCalculate(totalCount);
 
-		List<ReviewPostDto> list = communityPostDao.findReviewViewTargetType(targetType, pageVO.getRowStart(),
+		List<HousePhotoPostDto> list = communityPostDao.findHousePhotoTargetType(targetType, pageVO.getRowStart(),
 				pageVO.getDisplayRowCount());
 
-		for (ReviewPostDto review : list) {
-			List<FileDto> fileList = fileDao.findByTargetId(TargetType.COMMUNITY_REVIEW, review.getPost_id());
-			review.setFileList(fileList);
+		for (HousePhotoPostDto photo : list) {
+			List<FileDto> fileList = fileDao.findByTargetId(TargetType.COMMUNITY_HOUSEPHOTO, photo.getPost_id());
+			photo.setFileList(fileList);
 		}
 
-		model.addAttribute("reviewList", list);
+		model.addAttribute("housePhotoList", list);
 		model.addAttribute("pageVO", pageVO);
 
-		return "community/review_view";
+		return "community/house_photo_view";
 	}
 
 	// 조회수 와 좋아요 수 조회
-	@GetMapping("/review_live_counts")
+	@GetMapping("/housephoto_live_counts")
 	@ResponseBody
-	public List<Map<String, Object>> getLiveReviewCounts() {
-		return communityPostDao.findReviewCounts();
+	public List<Map<String, Object>> getLiveHousePhotoCounts() {
+		return communityPostDao.findHousePhotoCounts();
 	}
-
 }

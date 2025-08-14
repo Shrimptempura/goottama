@@ -31,8 +31,8 @@
 		BY post_id DESC
 	</select>
 
-	<!-- 페이징된 게시글 목록 -->
-	<select id="findTargetType"
+	<!-- review 페이징 된 게시글 목록 -->
+	<select id="findReviewViewTargetType"
 		resultType="com.ama.don.community.dto.Review.ReviewPostDto">
 		SELECT
 		p.post_id,
@@ -62,15 +62,40 @@
 		#{count}
 	</select>
 
-	<select id="countTargetType" resultType="int"
-		parameterType="string">
-		SELECT COUNT(*)
-		FROM post
-		WHERE target_type =
-		#{targetType}
+	<!-- housephoto 페이징 된 게시글 목록 -->
+	<select id="findHousePhotoTargetType"
+		resultType="com.ama.don.community.dto.HousePhoto.HousePhotoPostDto">
+		SELECT
+		p.post_id AS post_id
+		, cph.housephoto_id AS
+		housephoto_id
+		, cph.user_id AS user_id
+		, cph.housephoto_title AS
+		housephoto_title
+		, cph.housephoto_content AS housephoto_content
+		,
+		p.created_at AS post_date
+		, IFNULL(cph.housephoto_count, 0) AS
+		view_count
+		, IFNULL(cph.housephoto_like_count,0) AS like_count
+		, (
+		SELECT COUNT(1)
+		FROM comments cm
+		WHERE cm.target_type = #{targetType}
+		AND cm.target_id = cph.housephoto_id
+		) AS comment_count
+		FROM post p
+		JOIN
+		community_post_housephoto cph
+		ON cph.post_id = p.post_id
+		WHERE
+		p.target_type = #{targetType}
+		ORDER BY p.post_id DESC
+		LIMIT #{start},
+		#{count}
 	</select>
 
-	<!-- db 값 불러오기 조회수 좋아요 수 댓글 수 -->
+	<!-- review db 값 불러오기 조회수 좋아요 수 댓글 수 -->
 	<select id="findReviewCounts" resultType="map">
 		SELECT
 		review_id,
@@ -81,10 +106,37 @@
 		SELECT COUNT(*)
 		FROM comments c
 		WHERE c.target_id = community_post_review.post_id
-		AND c.target_type = 'COMMUNITY_REVIEW'
+		AND c.target_type =
+		'COMMUNITY_REVIEW'
 		AND c.is_deleted = 0
 		) AS comment_count
-		FROM community_post_review
+		FROM
+		community_post_review
+	</select>
+
+	<!-- housephoto db 값 불러오기 조회수 좋아요 수 댓글 수 -->
+	<select id="findHousePhotoCounts" resultType="map">
+		SELECT
+		p.post_id AS
+		post_id
+		, IFNULL(cph.housephoto_count, 0) AS view_count
+		,
+		IFNULL(cph.housephoto_like_count,0) AS like_count
+		FROM post p
+		JOIN
+		community_post_housephoto cph
+		ON cph.post_id = p.post_id
+		WHERE
+		p.target_type = 'COMMUNITY_HOUSEPHOTO'
+	</select>
+
+	<!-- 타입 별 총 수 -->
+	<select id="countTargetType" resultType="int"
+		parameterType="string">
+		SELECT COUNT(*)
+		FROM post
+		WHERE target_type =
+		#{targetType}
 	</select>
 
 </mapper>
