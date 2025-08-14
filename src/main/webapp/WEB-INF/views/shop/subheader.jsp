@@ -107,7 +107,7 @@ function goToProductInquiryDetail(){
    <!--  <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
     <a href="javascript:void(0)" onclick="goToReviewDetail()">review</a>
     <a href="javascript:void(0)" onclick="goToProductInquiryDetail()">product_inquiry</a> -->
-    
+    <!--  -->
    
 </div>
 </body>
