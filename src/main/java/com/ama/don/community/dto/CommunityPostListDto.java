@@ -3,7 +3,7 @@ package com.ama.don.community.dto;
 import java.sql.Timestamp;
 import com.ama.don.common.enums.TargetType;
 import lombok.*;
-
+//수정
 @Getter
 @Setter
 @NoArgsConstructor
