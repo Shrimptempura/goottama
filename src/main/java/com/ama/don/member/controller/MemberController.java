@@ -68,7 +68,13 @@ public class MemberController {
 	}
 	
 	@GetMapping("/mypage/myProfile")
-	public String memberProfile() {
+	public String memberProfile(@RequestParam(defaultValue = "1") int page, Model model,MemberDto memberDto) {
+		
+		List<ReviewPostDto> list = mypageDataService.getUserCommunityReview(page);
+		memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("communityList",list);
+		model.addAttribute("loginMember", memberDto);
+		
 		return "member/mypage/myProfile";
 	}
 	

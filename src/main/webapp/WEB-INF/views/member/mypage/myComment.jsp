@@ -46,9 +46,13 @@
                             <span class="meta-date">
                                 <fmt:formatDate value="${post.review_date}" pattern="yyyy.MM.dd" />
                             </span>
-                            <span class="meta-count">조회 ${post.review_count}</span>
-                            <span class="meta-like">좋아요 ${post.review_like_count}</span>
-                            <span class="meta-comment">댓글 ${post.comment_count}</span>
+                            <span class="meta-count">
+ 								 조회 <span id="review_count_${post.review_id}">${post.review_count}</span>
+							</span>
+							<span class="meta-like">
+ 								 좋아요 <span id="review_like_count_${post.review_id}">${post.review_like_count}</span>
+							</span>
+                            <span class="meta-comment" id="review_comment_count_${post.review_id}"> 댓글 ${post.comment_count}</span>
                         </div>
                     </div>
                 </div>
