@@ -26,7 +26,7 @@ public interface CompanyPostService {
     CompanyPostUpdateDto getEditView(Long companyPostId);
 
     // 게시글 수정
-    void updatePost(CompanyPostUpdateDto dto);
+    void updatePost(CompanyPostUpdateDto dto, List<MultipartFile> files);
     
     // 게시글 삭제
     void deletePost(Long companyPostId);
