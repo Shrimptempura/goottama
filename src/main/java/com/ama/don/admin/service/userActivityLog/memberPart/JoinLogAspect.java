@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
+import org.springframework.ui.Model;
 
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -27,11 +28,11 @@ public class JoinLogAspect {
     private final SaveUserActivityLog userActivityLog;
     private final ManageUserIDao manageUserIDao;
 
-    @Pointcut("execution(* com.ama.don.member.service.JoinService.join(..) && args(joinformDto, ..)")
-    public void joinMethod(JoinformDto joinformDto) {}
+    @Pointcut("execution(* com.ama.don.member.service.JoinService.join(..)) && args(joinformDto, model)")
+    public void joinMethod(JoinformDto joinformDto, Model model) {}
 
-    @AfterReturning("joinMethod(joinformDto)")
-    public void logUserJoin(JoinPoint joinPoint, JoinformDto joinformDto) {
+    @AfterReturning("joinMethod(joinformDto, model)")
+    public void logUserJoin(JoinPoint joinPoint, JoinformDto joinformDto, Model model) {
 
         if (joinformDto == null) {
             log.warn("JoinFormDto is null. Cannot log user join activity.");
@@ -50,14 +51,12 @@ public class JoinLogAspect {
             return;
         }
 
-        UserActivityDto userActivityDto = new UserActivityDto();
-        userActivityDto.setUser_id(userTotalDataDTO.getUser_id());
-        userActivityDto.setUser_activity_type("USER_JOIN");
-        userActivityDto.setUser_activity_time(Timestamp.from(Instant.now()));
-        userActivityDto.setUser_activity_details("User joined with ID : " + loginId);
-        userActivityDto.setUser_activity_target_type("USER");
-        userActivityDto.setUser_activity_target_id(userTotalDataDTO.getUser_id());
-
-        userActivityLog.saveUserActivity(userActivityDto);
+        userActivityLog.createAndSaveLog(
+                userTotalDataDTO.getUser_id(),
+                "USER_JOIN",
+                "USER",
+                userTotalDataDTO.getUser_id(),
+                "User joined with ID : " + loginId
+        );
     }
 }

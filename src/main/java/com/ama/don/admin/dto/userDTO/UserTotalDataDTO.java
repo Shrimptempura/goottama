@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserTotalDataDTO {
-    private long user_id;
+    private Long user_id;
     private String user_name;
     private String user_nickname;
     private char user_gender;

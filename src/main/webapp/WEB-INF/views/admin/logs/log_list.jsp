@@ -47,6 +47,7 @@
 <!-- 공지 목록 출력 -->
 <table class="log-table">
     <tr>
+       <td>번호</td>
        <td>User Activity Type</td>
        <td>날자</td>
        <td>유저 아이디</td>
@@ -54,6 +55,9 @@
     </tr>
     <c:forEach items="${list}" var="log">
         <tr>
+            <td>
+                ${log.userActivityId}
+            </td>
             <td>
                 ${log.userActivityType}
             </td>

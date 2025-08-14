@@ -8,6 +8,7 @@
         SELECT D.USER_ID, D.USER_NAME, D.USER_NICKNAME, D.USER_CREATED_AT, L.ROLES_ID, L.LOGIN_ID, D.USER_STATUS, D.USER_SANCTIONS_UNTIL
         FROM user_detail D
         JOIN user_login L ON D.USER_ID = L.USER_ID
+        ORDER BY D.USER_CREATED_AT
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 
@@ -85,6 +86,12 @@
                     #{status}
                 </foreach>
             </if>
+            <if test="userSearchDTO.user_id != null and userSearchDTO.user_id != ''">
+                AND D.USER_ID = #{userSearchDTO.user_id}
+            </if>
+            <if test="userSearchDTO.roles_id != null and userSearchDTO.roles_id != ''">
+                AND L.ROLES_ID = #{userSearchDTO.roles_id}
+            </if>
             <if test="userSearchDTO.user_nickname != null and userSearchDTO.user_nickname != ''">
                 AND D.USER_NICKNAME LIKE CONCAT('%', #{userSearchDTO.user_nickname}, '%')
             </if>
@@ -110,6 +117,7 @@
                 AND D.USER_EMAIL LIKE CONCAT('%', #{userSearchDTO.user_email}, '%')
             </if>
         </where>
+        ORDER BY D.USER_CREATED_AT
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
     <select id="countSearchUsers" resultType="int">
