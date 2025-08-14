@@ -16,5 +16,6 @@ public interface MemberProfileServiceInter {
 	boolean updateProfile(MemberDto memberDto, MemberEditDto memberEditDto, Model model);
 	
 	UserTotalDataDTO getupdatedMember(String login_id);
+	
 
 }
