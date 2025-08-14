@@ -5,16 +5,16 @@ import java.io.IOException;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ama.don.common.dao.FileDao;
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
+import com.ama.don.member.dao.LoginDao;
 
 @Controller
 @RequestMapping("/file")
@@ -24,36 +24,44 @@ public class UploadController {
 
 	@Autowired
 	private FileDao fileDao;
+	@Autowired
+	private LoginDao loginDao;
 
-	// 이미지 업로드 - target_id가 넘어오면 그대로 저장 - target_id가 없고 temp_id가 오면
-	// temp_id(음수)를 target_id로 저장(임시 업로드) - 둘 다 없으면 서버에서 음수 temp_id 생성하여 저장
-
+	// 이미지 업로드
 	@PostMapping("/upload_image")
 	@ResponseBody
 	public String uploadImage(@RequestParam("file") MultipartFile file,
 			@RequestParam("target_type") String targetTypeStr,
 			@RequestParam(value = "target_id", required = false) Long targetId,
-			@RequestParam(value = "temp_id", required = false) Long tempId,
-			@RequestParam(value = "user_id", required = false) Long userIdParam) throws IOException {
+			@RequestParam(value = "temp_id", required = false) Long tempId) throws IOException {
 
-		Long userId = (userIdParam != null) ? userIdParam : 1L;
+		// 로그인한 사용자에서 user_id 가져오기
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
+			throw new SecurityException("로그인이 필요합니다.");
+		}
+		String loginId = auth.getName();
+		Long userId = loginDao.findUserIdByLoginId(loginId);
+		if (userId == null) {
+			throw new IllegalStateException("사용자 정보를 찾을 수 없습니다.");
+		}
 
-		// 서버에서 파일 저장
+		// 서버에 파일 저장
 		String saveName = UUID.randomUUID() + "_" + file.getOriginalFilename();
 		File saveFile = new File(uploadPath + saveName);
 		file.transferTo(saveFile);
 
-		// 임시ID 음수
+		// target_id 결정
 		Long effectiveTargetId;
 		if (targetId != null) {
 			effectiveTargetId = targetId; // 확정 업로드
 		} else if (tempId != null) {
-			effectiveTargetId = tempId; // 프론트가 생성한 임시 음수ID
+			effectiveTargetId = tempId; // 프론트 임시 ID
 		} else {
-			effectiveTargetId = -System.currentTimeMillis(); // 서버가 생성한 임시 음수ID
+			effectiveTargetId = -System.currentTimeMillis(); // 서버 임시 ID
 		}
 
-		// DTO
+		// DB 저장
 		FileDto fileDto = new FileDto();
 		fileDto.setFile_uploader(userId.toString());
 		fileDto.setTarget_type(TargetType.valueOf(targetTypeStr));
@@ -66,13 +74,12 @@ public class UploadController {
 		return effectiveTargetId.toString();
 	}
 
-	// 같은 사용자/타입의 "이전 음수 파일" 정리 현재 세션에 쓰는 temp_id는 제외하고 지우고 싶으면 keep_temp_id
-	// 전달 - keep_temp_id 없으면 음수 전부 삭제
-
+	// 임시 파일 삭제
 	@PostMapping("/delete_temp")
 	@ResponseBody
-	public void deleteTempFiles(@RequestParam("user_id") Long userId, @RequestParam("target_type") String targetTypeStr,
+	public void deleteTempFiles(@RequestParam("target_type") String targetTypeStr,
 			@RequestParam(value = "keep_temp_id", required = false) Long keepTempId) {
+		Long userId = getCurrentUserId();
 		TargetType targetType = TargetType.valueOf(targetTypeStr);
 		if (keepTempId == null) {
 			fileDao.deleteTempFiles(targetType, userId);
@@ -81,12 +88,27 @@ public class UploadController {
 		}
 	}
 
-	// 임시 target_id → 실제 target_id로 일괄 업데이트
+	// 임시 → 실제 ID 업데이트
 	@PostMapping("/confirm")
 	@ResponseBody
-	public String confirmFiles(@RequestParam("target_type") String targetTypeStr, @RequestParam("user_id") Long userId,
-			@RequestParam("temp_id") Long tempId, @RequestParam("target_id") Long targetId) {
+	public String confirmFiles(@RequestParam("target_type") String targetTypeStr, @RequestParam("temp_id") Long tempId,
+			@RequestParam("target_id") Long targetId) {
+		Long userId = getCurrentUserId();
 		fileDao.updateTargetId(TargetType.valueOf(targetTypeStr), String.valueOf(userId), tempId, targetId);
 		return "ok";
+	}
+
+	// 공통 로그인 사용자 user_id 조회 메서드
+	private Long getCurrentUserId() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
+			throw new SecurityException("로그인이 필요합니다.");
+		}
+		String loginId = auth.getName();
+		Long userId = loginDao.findUserIdByLoginId(loginId);
+		if (userId == null) {
+			throw new IllegalStateException("사용자 정보를 찾을 수 없습니다.");
+		}
+		return userId;
 	}
 }

@@ -5,32 +5,46 @@
 
 <mapper namespace="com.ama.don.member.dao.LoginDao">
 
-	<select id="findByMember" parameterType="string" resultType="com.ama.don.member.dto.MemberDto">
-	SELECT UL.LOGIN_ID,UL.ROLES_ID,UL.USER_PASSWORD,UD.USER_ID,UD.USER_NAME,UD.USER_NICKNAME,
-	UD.USER_GENDER,UD.USER_BIRTH,UD.USER_CREATED_AT,UD.USER_TEL,UD.USER_ZIPCODE,UD.USER_ADDR,
-	UD.USER_EMAIL,UD.USER_IMG, UD.USER_STATUS, UD.USER_SANCTIONS_UNTIL FROM user_login UL
-	JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
-	WHERE UL.LOGIN_ID = #{loginId}
+	<select id="findByMember" parameterType="string"
+		resultType="com.ama.don.member.dto.MemberDto">
+		SELECT
+		UL.LOGIN_ID,UL.ROLES_ID,UL.USER_PASSWORD,UD.USER_ID,UD.USER_NAME,UD.USER_NICKNAME,
+		UD.USER_GENDER,UD.USER_BIRTH,UD.USER_CREATED_AT,UD.USER_TEL,UD.USER_ZIPCODE,UD.USER_ADDR,
+		UD.USER_EMAIL,UD.USER_IMG, UD.USER_STATUS, UD.USER_SANCTIONS_UNTIL
+		FROM user_login UL
+		JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
+		WHERE UL.LOGIN_ID = #{loginId}
 	</select>
-	
+
 	<select id="findByLoginId" resultType="string">
-	SELECT UL.LOGIN_ID FROM user_login UL
-	JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
-	WHERE UD.USER_NAME = #{name} AND UD.USER_EMAIL = #{email}
+		SELECT UL.LOGIN_ID FROM user_login UL
+		JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
+		WHERE UD.USER_NAME = #{name} AND UD.USER_EMAIL = #{email}
 	</select>
-	
+
 	<select id="findMemberCount" resultType="integer">
-	SELECT COUNT(*) FROM user_login UL
-	JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
-	WHERE UL.login_id = #{loginId} AND UD.USER_EMAIL = #{email}
+		SELECT COUNT(*) FROM user_login UL
+		JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
+		WHERE UL.login_id = #{loginId} AND UD.USER_EMAIL = #{email}
 	</select>
 
 	<!-- 지우지 말것, autologin 관련 -->
-	<select id="interiorFindByLoginId" resultType="com.ama.don.member.dto.MemberDto">
+	<select id="interiorFindByLoginId"
+		resultType="com.ama.don.member.dto.MemberDto">
 		SELECT ul.*, ud.*
 		FROM user_login ul
-		JOIN user_detail ud ON ul.user_id = ud.user_id
+		JOIN user_detail ud ON
+		ul.user_id = ud.user_id
 		WHERE ul.login_id = #{login_id}
+	</select>
+
+	<!-- 커뮤니티 사용 -->
+	<select id="findUserIdByLoginId" parameterType="string"
+		resultType="long">
+		SELECT ul.user_id
+		FROM user_login ul
+		WHERE ul.login_id = #{login_id}
+		LIMIT 1
 	</select>
 
 </mapper>

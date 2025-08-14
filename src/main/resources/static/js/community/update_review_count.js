@@ -15,7 +15,7 @@ function updateReviewCounts() {
 		.catch(err => console.error("❌ fetch 실패:", err));
 }
 
-// ✅ 페이지 진입 시 단 1회만 갱신
+// 페이지 진입 시 단 1회만 갱신
 window.addEventListener("pageshow", () => {
 	updateReviewCounts();
 });

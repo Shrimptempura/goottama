@@ -4,6 +4,7 @@ import com.ama.don.community.dao.CommunityCommentDao;
 import com.ama.don.community.dto.Comment.CommentCreateDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,12 +14,12 @@ public class CommentService {
 
 	private final CommunityCommentDao commentDao;
 
+	@Transactional
 	public void createComment(CommentCreateDto commentDto) {
-		// 임시로 user_id를 1로 세팅
+		// 서비스에서 user_id 검증
 		if (commentDto.getUser_id() == null) {
-			commentDto.setUser_id(1L);
+			throw new IllegalArgumentException("user_id가 없습니다.");
 		}
-
 		commentDao.insert(commentDto);
 	}
 
@@ -28,11 +29,13 @@ public class CommentService {
 	}
 
 	// 수정
+	@Transactional
 	public void updateComment(CommentCreateDto dto) {
 		commentDao.update(dto);
 	}
 
 	// 삭제
+	@Transactional
 	public void deleteComment(Long comment_id) {
 		commentDao.delete(comment_id);
 	}
