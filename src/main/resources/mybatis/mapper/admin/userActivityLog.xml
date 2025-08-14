@@ -8,6 +8,7 @@
     <select id="getAllUserActivity">
         SELECT USER_ACTIVITY_ID, USER_ID, USER_ACTIVITY_TYPE, USER_ACTIVITY_TIME, USER_ACTIVITY_TARGET_ID, USER_ACTIVITY_TARGET_TYPE, USER_ACTIVITY_DETAILS
         FROM user_activity
+        ORDER BY USER_ACTIVITY_TIME DESC
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 
@@ -25,6 +26,7 @@
         SELECT USER_ACTIVITY_ID, USER_ID, USER_ACTIVITY_TYPE, USER_ACTIVITY_TIME, USER_ACTIVITY_TARGET_ID, USER_ACTIVITY_TARGET_TYPE, USER_ACTIVITY_DETAILS
         FROM user_activity
         WHERE USER_ID = #{UserId}
+        ORDER BY USER_ACTIVITY_TIME DESC
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 

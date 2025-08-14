@@ -34,7 +34,6 @@
                     data-modal-target="/admin/users/roles_modal_content"> 권한 등급 변경 </button>
     </p>
     <p>로긴 : ${userData.login_id}</p>
-    <p>제재 : ${userData.sanctions_types}</p>
     <p>상태 : ${userData.user_status}</p>
     <p>정지 : ${userData.user_sanctions_until}
     <br />

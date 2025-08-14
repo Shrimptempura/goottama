@@ -2,10 +2,15 @@ package com.ama.don.admin.service.sanctionService;
 
 import com.ama.don.admin.dao.ManageUserIDao;
 import com.ama.don.admin.dao.SanctionsIDao;
+import com.ama.don.admin.dto.sanctionsDTO.MakeSanctionDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.transaction.annotation.Transactional; // Import the Transactional annotation
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 @Service
@@ -19,9 +24,9 @@ public class CreateSanction {
         this.manageUserIDao = manageUserIDao;
     }
 
+    @Transactional
     public boolean execute(Model model) {
-        boolean result = false;
-        Map<String, Object> map=model.asMap();
+        Map<String, Object> map = model.asMap();
         HttpServletRequest request = (HttpServletRequest) map.get("request");
         String userId = request.getParameter("user_id");
         String sanctionType = request.getParameter("sanctions_types");
@@ -30,7 +35,24 @@ public class CreateSanction {
         String sanctions_start_date_str = request.getParameter("sanctions_start_date");
         String sanctions_end_date_str = request.getParameter("sanctions_end_date");
 
+        Timestamp sanction_start = strToTimestamp(sanctions_start_date_str);
+        Timestamp sanction_end = strToTimestamp(sanctions_end_date_str);
 
-        return result;
+        MakeSanctionDTO makeSanctionDTO = new MakeSanctionDTO(userId, sanctionType, sanction_start, sanction_end, sanctionReason, adminId);
+
+        try {
+            sanctionsIDao.makeSanction(makeSanctionDTO);
+            manageUserIDao.updateUserSanctionsAndStatus(userId, sanction_end, "suspended");
+            return true;
+        } catch (Exception e) {
+            System.err.println("Transaction failed for user " + userId + ": " + e.getMessage());
+            return false;
+        }
+    }
+
+    public Timestamp strToTimestamp(String strDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+        LocalDateTime strDateToLocalDateTime = LocalDateTime.parse(strDate, formatter);
+        return Timestamp.valueOf(strDateToLocalDateTime);
     }
 }
