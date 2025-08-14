@@ -16,10 +16,11 @@
     <h2>review-from</h2>
     <form action="/interior/myhome/${form.companyId}/review-form" method="post" enctype="multipart/form-data">
         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+        <input type="hidden" name="companyId" value="${form.companyId}">
 
         <div>
             <label>내용</label><br>
-            <textarea name="reviewContent" value="${form.reviewContent}" rows="10" cols="50" required></textarea>
+            <textarea name="reviewContent" rows="10" cols="50" required>${form.reviewContent}</textarea>
         </div>
 
         <div>
@@ -33,13 +34,13 @@
 
         <div>
             <label>소통 점수</label>
-            <input type="number" name="communicationRate" min="1" max="10" required>
+            <input type="number" name="communicationRate" min="1" max="10" step="1" required>
             <label>가격 점수</label>
-            <input type="number" name="priceRate" min="1" max="10" required>
+            <input type="number" name="priceRate" min="1" max="10" step="1" required>
             <label>결과 점수</label>
-            <input type="number" name="resultRate" min="1" max="10" required>
+            <input type="number" name="resultRate" min="1" max="10" step="1" required>
             <label>일정 점수</label>
-            <input type="number" name="scheduleRate" min="1" max="10" required>
+            <input type="number" name="scheduleRate" min="1" max="10" step="1" required>
         </div>
 
         <div>

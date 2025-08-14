@@ -3,6 +3,7 @@ package com.ama.don.common.dao;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ama.don.common.dto.PostDto;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface PostDao {
@@ -21,9 +22,13 @@ public interface PostDao {
 	// 업체 다형성 게시글 생성
 	int insertPolyPostForCompany(PostDto dto);
 
-	// 다형성 조회
-	void polyFindById(Long postId);
+	// 인테리어, 다형성 조회
+	int polyFindById(@Param("postId") Long postId);
 
-	PostDto findById(Long postId);
+	// 인테리어, 게시글 조회
+	PostDto findById(@Param("postId") Long postId);
+
+	// 인테리어 postId 찾기 보조용
+	Long findPostIdByCompanyPostId(@Param("companyPostId") Long companyPostId);
 
 }

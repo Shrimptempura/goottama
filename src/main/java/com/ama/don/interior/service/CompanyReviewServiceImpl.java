@@ -143,7 +143,7 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
 
         Long userId = companyAuthService.getLoginUserId();
         // 상세페이지 주인인가 확인
-        boolean isOwner = companyAuthService.isOwner(companyId);
+//        boolean isOwner = companyAuthService.isOwner(companyId);
 
         for (CompanyReviewDto dto : list) {
             List<FileDto> imgs = fileService.getFileList(TargetType.INTERIOR_REVIEW, dto.getReviewId());
@@ -203,7 +203,19 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             }
 
             // 이미지 삭제 생성
-            saveReviewImages(reviewId, files, true);
+            // 현재 리뷰 수정폼에서 선택한 파일이 1장이라도 있는지 - hasLeastOne
+            if (hasAtLeastOne(files)) {
+                // 새로운 파일이 있으니까 삭제후 새로 저장
+                log.info("CRService - 리뷰 수정폼에서 새로운 파일 선택함 - reviewId: {}", reviewId);
+                saveReviewImages(reviewId, files, true);
+            } else {
+                // 이미지 수정을 안한 경우, 이전 이미지를 읽기만 해서 값의 오류만 확인
+                List<FileDto> currentFiles = fileService.getFileList(TargetType.INTERIOR_REVIEW, reviewId);
+                if (currentFiles == null || currentFiles.isEmpty()) {
+                    throw new IllegalArgumentException("최소 이미지 1장이 필요합니다.");
+                }
+            }
+
 
             // 점수 조정
             CompanyScoreAdjustDto adjust = recycleScoreOnEdit(companyId, updateReviewDto, origin);
@@ -211,8 +223,11 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
             companyReviewDao.updateAverageScores(adjust);
 
             log.info("CRService - 리뷰 수정 성공 - reviewId: {}", reviewId);
+        } catch (IllegalArgumentException e) {
+            throw e;    // 최소 이미지 1장이 필요합니다.
         } catch (Exception e) {
-            cleanUpReviewCatch(reviewId);
+            // 수정중 파일 예외시 삭제처리는 오히러 악영향일수도 있다, 일단 보류
+//            cleanUpReviewCatch(reviewId);     
             log.error("CRService - 리뷰 수정 실패 - reviewId: {}", reviewId, e);
             throw new IllegalStateException("리뷰 수정 실패", e);
         }
@@ -374,5 +389,20 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
                 log.warn("CRService - 파일 정리 실패 - reviewId: {}", reviewId, failed);
             }
         }
+    }
+
+    // 업로드 파일이 1개라도 있는지
+    private static boolean hasAtLeastOne(List<MultipartFile> files) {
+        if (files == null) {
+            return false;
+        }
+
+        for (MultipartFile file : files) {
+            if (file != null && !file.isEmpty()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

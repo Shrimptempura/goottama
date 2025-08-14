@@ -5,6 +5,7 @@
   Time: 오후 1:00
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,9 @@
 <body>
     <h3>create-company-form</h3>
 
-    <form action="${pageContext.request.contextPath}/interior/new-company" method="post" enctype="multipart/form-data">
+    <form action="<c:url value='/interior/new-company'/>" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
         <label>업체명:</label>
         <input type="text" name="companyName" value="${detail.companyName}" required><br/>
 
@@ -37,7 +40,7 @@
         <input type="text" name="companyCareer" value="${detail.companyCareer}" required><br/>
 
         <label>소개:</label>
-        <input type="text" name="companyIntro" value="${detail.companyIntro}" required><br/>
+        <textarea name="companyIntro" rows="10" cols="30" required>${detail.companyIntro}</textarea><br/>
 
         <label>대표 이미지:</label>
         <input type="file" name="file" accept="image/*" required><br/>
