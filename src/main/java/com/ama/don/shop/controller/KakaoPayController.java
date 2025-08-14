@@ -119,6 +119,7 @@ public String kakaoPaySuccess(@RequestParam(value = "pg_token", required = false
             ArrayList<OrderFlatDto> orderProductsList = iDao.order_products_flat(order_id);
                 
             // JSP로 전달
+            model.addAttribute("kakaotid",kakaotid);
             model.addAttribute("orderInfo", orderInfo);
             model.addAttribute("orderProducts", orderProductsList);
             model.addAttribute("order_id", order_id);

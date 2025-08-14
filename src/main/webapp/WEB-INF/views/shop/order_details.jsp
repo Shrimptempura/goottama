@@ -190,7 +190,7 @@ body {
 </style>
 </head>
 <body>
-
+<%-- 
 
 <!-- 사용자 세션을 받아서 처리 -->
 
@@ -219,16 +219,15 @@ body {
 		</c:forEach>
 		<!--  -->
 
-
+ --%>
 <div class="main-content">
     <h2 class="page-header">주문 내역</h2>
-
+<%-- 
     <!-- 디버깅 정보 (개발용) -->
     <div class="debug-info">
         <h4>디버깅 정보</h4>
         <p>사용자 ID: ${user_id} | 주문 개수: ${userOrders.size()}개 | 상품맵 크기: ${orderProductsMap.size()}</p>
-    </div>
-
+    </div> --%>
     <c:choose>
         <c:when test="${not empty userOrders}">
             <c:forEach var="order" items="${userOrders}">
@@ -275,10 +274,10 @@ body {
 						                <button id="update_orders" class="btn btn-primary">주문 수정하기</button>
 						            </a>
 						            
-						            <!-- 추가 버튼들 (필요시) -->
+						            <%-- <!-- 추가 버튼들 (필요시) -->
 						            <a href="cancel_order?order_id=${order.order_id}">
-						                <button class="btn btn-danger">주문 취소</button>
-						            </a>
+						                <button class="btn btn-danger" >주문 취소</button>
+						            </a> --%>
 						        </div>
                             </c:when>
                             <c:otherwise>
