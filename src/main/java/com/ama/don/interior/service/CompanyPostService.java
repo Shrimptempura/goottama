@@ -29,6 +29,6 @@ public interface CompanyPostService {
     void updatePost(CompanyPostUpdateDto dto, List<MultipartFile> files);
     
     // 게시글 삭제
-    void deletePost(Long companyPostId);
+    Long deletePost(Long companyPostId);
 
 }

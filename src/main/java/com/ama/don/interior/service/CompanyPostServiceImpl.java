@@ -9,7 +9,6 @@ import com.ama.don.interior.dto.post.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -84,9 +83,26 @@ public class CompanyPostServiceImpl implements CompanyPostService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<CompanyHomePostDto> getHomePostsLatest() {
-        return List.of();
+        List<CompanyHomePostDto> list = companyPostDao.findCompanyPostByLatest();
+        if (list.isEmpty()) {
+            return list;
+        }
+
+        List<Long> companyPostIds = new ArrayList<>(list.size());
+        for (CompanyHomePostDto dto : list) {
+            companyPostIds.add(dto.getCompanyPostId());
+        }
+        
+        // 썸네일만 배치 조회
+        Map<Long, FileDto> map = fileService.getThumbnailList(TargetType.INTERIOR_POST, companyPostIds);
+        for (CompanyHomePostDto dto : list) {
+            dto.setThumbnail(map.get(dto.getCompanyPostId()));
+        }
+
+        return list;
     }
 
     @Override
@@ -249,7 +265,7 @@ public class CompanyPostServiceImpl implements CompanyPostService {
 
     @Transactional
     @Override
-    public void deletePost(Long companyPostId) {
+    public Long deletePost(Long companyPostId) {
         if (companyPostId == null) {
             log.warn("CompanyPostService - 삭제할 아이디가 없습니다 - companyPostId: {}", companyPostId);
             throw new IllegalArgumentException("삭제할 아이디가 없습니다.");
@@ -291,6 +307,7 @@ public class CompanyPostServiceImpl implements CompanyPostService {
             safeDeleteAllFiles(TargetType.INTERIOR_POST, companyPostId);
         }
         log.info("CompanyPostService - 게시글 삭제 성공 - companyPostId: {}", companyPostId);
+        return companyId;
     }
 
     // 파일이 문제없으면 리스트로 반환

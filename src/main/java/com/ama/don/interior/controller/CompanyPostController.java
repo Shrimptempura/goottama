@@ -105,5 +105,18 @@ public class CompanyPostController {
         return "redirect:/interior/posts/" + companyPostId;
     }
 
+    // 게시글 삭제
+    @PostMapping("/interior/posts/{companyPostId}/delete")
+    public String deletePost(@PathVariable Long companyPostId,
+                             RedirectAttributes ra) {
+        try {
+            Long companyId = companyPostService.deletePost(companyPostId);
+            return "redirect:/interior/myhome/" + companyId + "?type=posts";
+        } catch (Exception e) {
+            ra.addFlashAttribute("error", "삭제 중 오류가 발생했습니다.");
+            return "redirect:/interior/posts/" + companyPostId;
+        }
+    }
+
 
 }

@@ -42,7 +42,7 @@
     <c:if test="${not empty detail.images}">
         <div>
             <c:forEach items="${detail.images}" var="img">
-                <img src="${img.url}"/>
+                <img src="${img.url}" style="width: 200px; height: 200px;"/>
             </c:forEach>
         </div>
     </c:if>
@@ -58,6 +58,15 @@
     <c:if test="${isOwner}">
         <c:url var="editUrl" value="/interior/posts/${detail.post.companyPostId}/edit"/>
         <a href="${editUrl}">수정하기</a>
+    </c:if>
+
+    <c:if test="${isOwner}">
+        <form action="<c:url value='/interior/posts/${detail.post.companyPostId}/delete'/>"
+              method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <input type="hidden" name="companyId" value="${detail.post.companyId}"/>
+            <button type="submit">삭제하기</button>
+        </form>
     </c:if>
 
 
