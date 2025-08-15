@@ -60,7 +60,7 @@ public class SecurityConfig {
                                 "/css/**", "/js/**"
                         ).permitAll()
 //                        .requestMatchers("/seller/**").hasRole("SELLER") // 200(판매자) 이상 권한이 필요한 페이지
-//                        .requestMatchers("/admin/**").hasRole("ADMIN") // 300(관리자) 이상 권한이 필요한 페이지
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // 300(관리자) 이상 권한이 필요한 페이지
 //                        .requestMatchers("/superAdmin/**").hasRole("SUPER_ADMIN") // 400(최고운영자) 권한이 필요한 페이지
                         .anyRequest().authenticated()
                 )
