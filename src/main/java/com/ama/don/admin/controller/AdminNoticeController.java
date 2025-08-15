@@ -87,7 +87,6 @@ public class AdminNoticeController {
      * - `searchVO`: 페이지네이션 관련 정보 담김.<br/>
      * - `noticeSearchVO`: 공지 검색 조건(제목, 내용 등) 담김.
      * @param searchVO 클라이언트에서 전달되는 {@link com.ama.don.admin.utils.SearchVO} 객체.<br/>
-
      * 페이지네이션 정보를 담고 있음.
      * @param noticeSearchDTO 클라이언트에서 전달되는 {@link NoticeSearchDTO} 객체.<br/>
      * 공지사항 목록에 적용될 검색 조건 담고 있음.

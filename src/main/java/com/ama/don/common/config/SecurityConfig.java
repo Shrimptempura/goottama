@@ -44,7 +44,6 @@ public class SecurityConfig {
                                 "/interior/ihome",
                                 "/shop/home",
                                 "/community_home",
-                                "/notices/**",
                                 "/admin/attachments/download",
                                 "/findLoginId_view",
                                 "/findPw_view",
