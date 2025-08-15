@@ -128,7 +128,7 @@
         }
 
         // 사용자 ID 가져오기
-        let userId = '${sessionScope.user_id}';
+        let userId = '${loginMember.user_id}';
         if (!userId || userId.trim() === '' || userId === 'null') {
             userId = '1'; // 기본값으로 1 사용
         }
@@ -148,7 +148,7 @@
     
     // 사용자 ID 가져오기 (유틸리티 함수)
     function getUserId() {
-        let userId = '${sessionScope.user_id}';
+        let userId = '${loginMember.user_id}';
         if (!userId || userId.trim() === '' || userId === 'null') {
             userId = '1'; // 기본값으로 1 사용
         }

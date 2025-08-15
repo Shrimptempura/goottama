@@ -179,6 +179,46 @@
 		values (#{pinquiry_id},#{preply_content},now());
 	 </insert>
 	 
+	 <!--상품 찜 조회-->
+	 <select id="product_like_list" parameterType="com.ama.don.shop.dto.ProductLikeFlatDto">
+	 	select pl.plike_id,pl.plike_islike,pl.plike_date,
+	 	p.product_id,p.category_id,p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
+		p.product_madein,p.product_release,p.product_as_manager_phone,p.product_type,p.product_color,
+		p.product_istoday,p.product_date,
+	 	pi.product_img_id,pi.product_imgurl,pi.product_img_type
+	 	from product_like pl
+	 	join product p on pl.product_id=p.product_id
+	 	left join product_img pi on pi.product_id=p.product_id
+	 	and pi.product_img_type='메인'
+	 	where pl.user_id=#{user_id} and pl.plike_islike='Y'
+	 	ORDER BY p.product_id DESC;
+	 </select>
+	 
+	 <!--상품 종아요 조회-->
+	 <select id="product_like_status" parameterType="com.ama.don.shop.dto.ProductLikeDto" resultType="string">
+	 	select plike_islike
+	 	from product_like
+	 	where user_id=#{user_id} and product_id=#{product_id};
+	 </select>
+	 
+	 <!--상품 종아요 생성-->
+	 <insert id="product_like_write" parameterType="com.ama.don.shop.dto.ProductLikeDto">
+	 	insert into product_like(user_id,product_id,plike_islike,plike_date)
+	 	values (#{user_id},#{product_id},#{plike_islike},now())
+	 </insert>
+	
+	 <update id="product_like_update" parameterType="com.ama.don.shop.dto.ProductLikeDto">
+	 	update product_like 
+	 	set plike_islike=#{plike_islike}, plike_date=now()
+	 	where user_id=#{user_id} and product_id=#{product_id} 
+	 </update>
+	 
+	 <!--상품 좋아요 삭제-->
+	 <delete id="product_like_delete" parameterType="com.ama.don.shop.dto.ProductLikeDto">
+	 	delete from product_like
+	 	where user_id=#{user_id} and product_id=#{product_id} 
+	 </delete>
+	 
 	<!--상품 상품몰로 검색  -->
 	<select id="product_mall_list" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ProductFlatDto">
 		select p.product_id,p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
