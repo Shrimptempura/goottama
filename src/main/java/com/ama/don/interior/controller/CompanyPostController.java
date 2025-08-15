@@ -92,7 +92,7 @@ public class CompanyPostController {
     @PostMapping("/interior/posts/{companyPostId}/edit")
     public String updatePost(@PathVariable Long companyPostId,
                              @ModelAttribute("form") CompanyPostUpdateDto form,
-                             @RequestParam("files") List<MultipartFile> files) {
+                             @RequestParam(value = "files", required = false) List<MultipartFile> files) {
         form.setCompanyPostId(companyPostId);
 
         try {

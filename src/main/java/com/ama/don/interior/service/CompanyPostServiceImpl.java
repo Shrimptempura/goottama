@@ -247,9 +247,50 @@ public class CompanyPostServiceImpl implements CompanyPostService {
         log.info("CompanyPostService - 게시글 수정 성공 - postId: {}, companyPostId: {}, companyId: {}", postId, companyPostId, companyId);
     }
 
+    @Transactional
     @Override
     public void deletePost(Long companyPostId) {
+        if (companyPostId == null) {
+            log.warn("CompanyPostService - 삭제할 아이디가 없습니다 - companyPostId: {}", companyPostId);
+            throw new IllegalArgumentException("삭제할 아이디가 없습니다.");
+        }
+        log.info("CompanyPostService - 업체 게시글 삭제 시작 - companyPostId: {}", companyPostId);
 
+        CompanyPostDetailSplitDto post = companyPostDao.getPostAndCompanyPostById(companyPostId);
+        if (post == null) {
+            log.warn("CompanyPostService - 삭제 게시글 조회 실패 - companyPostId: {}", companyPostId);
+            throw new IllegalStateException("게시글 조회 실패");
+        }
+        Long companyId = post.getCompanyId();
+
+        if (!companyAuthService.isOwner(companyId)) {
+            log.warn("CompanyPostService - 본인 게시글 인증 실패(권한 없음) - companyPostId: {}", companyPostId);
+            throw new AccessDeniedException("삭제 권한이 없습니다.");
+        }
+
+        // 삭제는 하위 -> 상위 순으로
+        int child = companyPostDao.deleteCompanyPostById(companyPostId);
+        if (child == 0) {
+            log.error("CompanyService - 하위 게시글 삭제 실패 - companyPostId: {}", companyPostId);
+            throw new IllegalStateException("하위 게시글 삭제 실패");
+        }
+
+        Long postId = post.getPostId();
+        int parent = companyPostDao.deletePolyPostById(postId);
+        if (parent == 0) {
+            log.error("CompanyService - 상위 게시글 삭제 실패 - postId: {}", postId);
+            throw new IllegalStateException("상위 게시글 삭제 실패");
+        }
+        
+        // 댓글, 좋아요, 스크랩
+
+        try {
+            fileService.deleteAllByTargetId(TargetType.INTERIOR_POST, companyPostId);
+            log.info("CompanyPostService - 파일 삭제 성공 - companyPostId: {}", companyPostId);
+        } catch (Exception e) {
+            safeDeleteAllFiles(TargetType.INTERIOR_POST, companyPostId);
+        }
+        log.info("CompanyPostService - 게시글 삭제 성공 - companyPostId: {}", companyPostId);
     }
 
     // 파일이 문제없으면 리스트로 반환
