@@ -42,7 +42,9 @@ public class CompanyHomeController {
         List<CompanyHomeDto> companyList = companyService.getHomeCompanyList(limit);
         List<CompanyHomeReviewDto> reviewList = companyReviewService.findRecentForHome();
         List<CompanyHomePostDto> latestList = companyPostService.getHomePostsLatest();
+        List<CompanyHomePostDto> randomtList = companyPostService.getHomePostsRandom();
 
+        model.addAttribute("randomList", randomtList);
         model.addAttribute("latestList", latestList);
         model.addAttribute("companyList", companyList);
         model.addAttribute("reviewList", reviewList);

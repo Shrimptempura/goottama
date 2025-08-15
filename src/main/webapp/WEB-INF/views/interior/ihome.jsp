@@ -60,5 +60,54 @@
     </div>
 </c:forEach>
 
+<h2>최신 게시글 리스트</h2>
+<c:forEach var="p" items="${latestList}">
+    <div style="display: inline-block; text-align: center; width: 200px;">
+
+    <c:choose>
+        <c:when test="${not empty p.thumbnail}">
+        <img src="/upload/interior_post/${p.thumbnail.file_name}"
+             style="display: block; width: 100px; height: 100px;">
+        </c:when>
+    </c:choose>
+
+    <c:url var="tabUrl" value="/interior/posts/${p.companyPostId}">
+        <c:param name="type" value="posts"/>
+        <c:param name="focus" value="${p.companyPostId}"/>
+    </c:url>
+
+    <a href="${tabUrl}">
+        ${p.companyPostTitle} <br/>
+        ${p.areaPyeong} <br/>
+        ${p.style}
+    </a>
+    </div>
+</c:forEach>
+
+<h2>랜덤 게시글 리스트</h2>
+<c:forEach var="p" items="${randomList}">
+    <div style="display: inline-block; text-align: center; width: 200px;">
+
+        <c:choose>
+            <c:when test="${not empty p.thumbnail}">
+                <img src="/upload/interior_post/${p.thumbnail.file_name}"
+                     style="display: block; width: 100px; height: 100px;">
+            </c:when>
+        </c:choose>
+
+        <c:url var="tabUrl" value="/interior/posts/${p.companyPostId}">
+            <c:param name="type" value="posts"/>
+            <c:param name="focus" value="${p.companyPostId}"/>
+        </c:url>
+
+        <a href="${tabUrl}">
+                ${p.companyPostTitle} <br/>
+                ${p.areaPyeong} <br/>
+                ${p.style}
+        </a>
+    </div>
+</c:forEach>
+
+
 </body>
 </html>

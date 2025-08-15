@@ -107,7 +107,23 @@ public class CompanyPostServiceImpl implements CompanyPostService {
 
     @Override
     public List<CompanyHomePostDto> getHomePostsRandom() {
-        return List.of();
+        List<CompanyHomePostDto> list = companyPostDao.findCompanyPostByRandom();
+        if (list.isEmpty()) {
+            return list;
+        }
+
+        List<Long> companyPostIds = new ArrayList<>(list.size());
+        for (CompanyHomePostDto dto : list) {
+            companyPostIds.add(dto.getCompanyPostId());
+        }
+
+        // 썸네일만 배치 조회
+        Map<Long, FileDto> map = fileService.getThumbnailList(TargetType.INTERIOR_POST, companyPostIds);
+        for (CompanyHomePostDto dto : list) {
+            dto.setThumbnail(map.get(dto.getCompanyPostId()));
+        }
+
+        return list;
     }
 
     @Override
