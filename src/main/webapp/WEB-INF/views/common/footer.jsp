@@ -33,7 +33,7 @@
         <div class="footer-section">
             <h4>기타 메뉴</h4>
             <ul class="footer-social-links">
-                <li><a href="admin/notices/notice_page">공지사항</a></li>
+                <li><a href="/admin/notices/notice_page">공지사항</a></li>
                 <li><a
                     href="/admin/reports/reportForm?targetType=ECT&targetId=0"
                     class="report-link"

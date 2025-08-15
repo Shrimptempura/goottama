@@ -44,32 +44,6 @@ public class AdminNoticeController {
     }
 
     /**
-     * 공지 검색을 위한 HTTP POST 요청 처리함.<br/>
-     * 클라이언트로부터 전달된 검색 조건과 페이지네이션 정보를 받아, 조건에 맞는 공지 목록을 조회 후 반환함.
-     *
-     * @param model Spring UI Model. 뷰로 데이터 전달에 사용됨.<br/>
-     * - `searchVO`: 페이지네이션 관련 정보 담김.<br/>
-     * - `noticeSearchVO`: 공지 검색 조건(제목, 내용 등) 담김.
-     * @param searchVO 클라이언트에서 전달되는 {@link com.ama.don.admin.utils.SearchVO} 객체.<br/>
-
-     * 페이지네이션 정보를 담고 있음.
-     * @param noticeSearchDTO 클라이언트에서 전달되는 {@link NoticeSearchDTO} 객체.<br/>
-     * 공지사항 목록에 적용될 검색 조건 담고 있음.
-     * @return 공지 목록의 일부만 반환하는 뷰의 경로 ("admin/notices/notice_list") 반환됨.<br/>
-     * 이는 비동기 검색(예: Ajax) 결과로 사용될 수 있음.
-     */
-    @PostMapping("/admin/notices/notice_list")
-    public String noticeList(Model model,
-                             @ModelAttribute SearchVO searchVO,
-                             @ModelAttribute NoticeSearchDTO noticeSearchDTO) {
-        model.addAttribute("searchVO", searchVO);
-        model.addAttribute("noticeSearchDTO", noticeSearchDTO);
-        getNoticeListService.execute(model);
-
-        return "admin/notices/notice_list";
-    }
-
-    /**
      * 공지사항 목록 페이지로 처음 접속하거나, 페이지네이션 및 검색 조건이 적용된 상태로
      * 전체 공지사항 목록을 로드하기 위한 GET 요청을 처리함.<br/>
      *
@@ -78,7 +52,6 @@ public class AdminNoticeController {
      *
      * @param model Spring UI Model. 뷰로 데이터를 전달하는 데 사용됨.<br/>
      * - `searchVO`: 페이지네이션(현재 페이지, 페이지당 항목 수 등) 관련 정보가 담긴 객체.<br/>
-ommunitySearchVO} 객체.<br/>
      * - `noticeSearchDTO`: 공지사항 검색 조건(예: 제목 검색어, 내용 검색어 등)이 담긴 객체.
      * @param searchVO 클라이언트로부터 전달되는 {@link com.ama.don.admin.utils.SearchVO} 객체.<br/>
 
@@ -107,6 +80,32 @@ ommunitySearchVO} 객체.<br/>
     }
 
     /**
+     * 공지 검색을 위한 HTTP POST 요청 처리함.<br/>
+     * 클라이언트로부터 전달된 검색 조건과 페이지네이션 정보를 받아, 조건에 맞는 공지 목록을 조회 후 반환함.
+     *
+     * @param model Spring UI Model. 뷰로 데이터 전달에 사용됨.<br/>
+     * - `searchVO`: 페이지네이션 관련 정보 담김.<br/>
+     * - `noticeSearchVO`: 공지 검색 조건(제목, 내용 등) 담김.
+     * @param searchVO 클라이언트에서 전달되는 {@link com.ama.don.admin.utils.SearchVO} 객체.<br/>
+
+     * 페이지네이션 정보를 담고 있음.
+     * @param noticeSearchDTO 클라이언트에서 전달되는 {@link NoticeSearchDTO} 객체.<br/>
+     * 공지사항 목록에 적용될 검색 조건 담고 있음.
+     * @return 공지 목록의 일부만 반환하는 뷰의 경로 ("admin/notices/notice_list") 반환됨.<br/>
+     * 이는 비동기 검색(예: Ajax) 결과로 사용될 수 있음.
+     */
+    @PostMapping("/admin/notices/notice_list")
+    public String noticeList(Model model,
+                             @ModelAttribute SearchVO searchVO,
+                             @ModelAttribute NoticeSearchDTO noticeSearchDTO) {
+        model.addAttribute("searchVO", searchVO);
+        model.addAttribute("noticeSearchDTO", noticeSearchDTO);
+        getNoticeListService.execute(model);
+
+        return "admin/notices/notice_list";
+    }
+
+    /**
      * 공지 조회
      * @param model
      * @param noticesId
@@ -117,6 +116,13 @@ ommunitySearchVO} 객체.<br/>
         model.addAttribute("noticesId", noticesId);
         getNoticeDetail.execute(model);
         return "admin/notices/notice_detail";
+    }
+
+    @GetMapping("/admin/notices/notice_data_modal")
+    public String noticeDataModal(Model model, @RequestParam("notices_id") String noticesId){
+        model.addAttribute("noticesId", noticesId);
+        getNoticeDetail.execute(model);
+        return "admin/notices/notice_data_modal";
     }
 
     /**
@@ -167,7 +173,7 @@ ommunitySearchVO} 객체.<br/>
     /**
      * 공지사항 수정 화면을 반환함.
      * @param model
-     * @param request
+     * @param noticesId
      * @return
      */
     @RequestMapping("/admin/notices/notice_modify_view")
@@ -238,12 +244,5 @@ ommunitySearchVO} 객체.<br/>
         String message = result ? "delete_success" : "delete_failure";
         System.out.println(">>> "+message);
         return "redirect:notice_page";
-    }
-
-    @GetMapping("/admin/notices/notice_data_modal")
-    public String noticeDataModal(Model model, @RequestParam("notices_id") String noticesId){
-        model.addAttribute("noticesId", noticesId);
-        getNoticeDetail.execute(model);
-        return "admin/notices/notice_data_modal";
     }
 }
