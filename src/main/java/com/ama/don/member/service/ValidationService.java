@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import com.ama.don.member.dao.JoinDao;
 import com.ama.don.member.dao.ValidationDao;
 import com.ama.don.member.dto.JoinformDto;
 import com.ama.don.member.utill.EmailSHA;
@@ -61,7 +60,6 @@ public class ValidationService implements ValidationServiceInter {
 		HttpServletRequest request=(HttpServletRequest) map.get("request");
 		
 		String code=request.getParameter("code");
-		String id=request.getParameter("id");
 		
 		if (joinformDto == null) {
 			model.addAttribute("emailValFail", "세션이 만료되었거나 유효하지 않은 접근입니다.");
@@ -77,6 +75,47 @@ public class ValidationService implements ValidationServiceInter {
 		}
 		model.addAttribute("emailValFail","이메일 인증 실패");
 		return isRight;
+	}
+
+	@Override
+	public boolean pwCodeValidation(String inputcode, HttpSession session, Model model) {
+
+		String sessionCode = (String) session.getAttribute("authCode");
+		
+		if (sessionCode != null && sessionCode.equals(inputcode)) {
+			return true;
+		}
+		model.addAttribute("pwCode_error","코드가 일치하지 않습니다.");
+		return false;
+	}
+
+	public boolean nicknameEditCheck(String nickname) {
+		if (validationDao.nicknameEditCheck(nickname) > 0) {
+			return false;
+		}
+		return true;
+		
+	}
+
+	@Override
+	public boolean loginDuplicate(String loginId) {
+
+		if (validationDao.loginIdDuplicate(loginId) > 0) {
+			return true;
+		}else {
+			return false;
+		}
+		
+		
+	}
+
+	@Override
+	public boolean nicknameDuplicate(String nickname) {
+		if (validationDao.nicknameDuplicate(nickname) > 0) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 }

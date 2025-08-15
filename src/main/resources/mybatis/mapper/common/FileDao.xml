@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.common.dao.FileDao">
+
+	<!-- 파일 저장 -->
+	<insert id="create"
+		parameterType="com.ama.don.common.dto.FileDto" useGeneratedKeys="true"
+		keyProperty="file_id">
+		INSERT INTO file (
+		file_uploader, file_name, file_path,
+		target_type, target_id
+		) VALUES (
+		#{file_uploader}, #{file_name},
+		#{file_path}, #{target_type}, #{target_id}
+		)
+	</insert>
+
+	<!-- 타겟 아이디 수정 -->
+	<update id="updateTargetId">
+		UPDATE file
+		SET target_id = #{new_target_id}
+		WHERE
+		target_type = #{target_type}
+		AND file_uploader = #{file_uploader}
+		AND
+		target_id = #{old_target_id}
+	</update>
+
+	<!--임시 업로드된 파일삭제 -->
+	<delete id="deleteTempFiles">
+  		<![CDATA[
+  		DELETE FROM file
+  		WHERE target_type = #{target_type}
+    		AND file_uploader = #{file_uploader}
+    		AND target_id < 0
+ 		 ]]>
+	</delete>
+
+	<!-- 임시 파일 삭제(특정 temp_id는 보존) -->
+	<delete id="deleteTempFilesExcept">
+  		<![CDATA[
+ 		DELETE FROM file
+  		WHERE target_type = #{target_type}
+   		 AND file_uploader = #{file_uploader}
+  		  AND target_id < 0
+  		  AND target_id != #{keep_temp_id}
+ 		 ]]>
+	</delete>
+
+	<delete id="deleteByTarget">
+		DELETE FROM file WHERE TARGET_TYPE = #{target_type}
+		and target_id =
+		#{target_id}
+	</delete>
+
+	<delete id="deleteByUploader">
+		DELETE FROM file WHERE file_uploader =
+		#{file_uploader}
+	</delete>
+
+	<delete id="deleteByTargetAndUploader">
+		DELETE FROM file WHERE FILE_UPLOADER =
+		#{file_uploader} AND TARGET_TYPE =
+		#{targetType} AND TARGET_ID =
+		#{targetId}
+	</delete>
+
+
+	<!-- 특정 게시글에 연결된 파일 조회 -->
+	<!-- 인테리어도 같이 씁니다 -->
+	<select id="findByTargetId"
+		resultType="com.ama.don.common.dto.FileDto">
+		SELECT
+		file_id,
+		target_type,
+		target_id,
+		file_name,
+		file_path,
+		file_uploader
+		FROM file
+		WHERE target_type = #{target_type}
+		AND target_id
+		=
+		#{target_id}
+	</select>
+
+	<update id="deleteProfileImg">
+		update user_detail set user_img = null WHERE USER_IMG
+		= #{oldFileName}
+	</update>
+
+	<update id="createProfileImg">
+		update user_detail set user_img = #{fileName} where
+		user_id = #{user_id}
+	</update>
+
+
+
+
+	<!-- 인테리어 사용, 파일 생성 -->
+	<insert id="interCreate"
+		parameterType="com.ama.don.common.dto.FileDto" useGeneratedKeys="true"
+		keyProperty="file_id">
+		INSERT INTO file (
+		file_uploader,
+		file_name,
+		file_path,
+		target_type,
+		target_id,
+		is_thumbnail)
+		VALUES (
+		#{file_uploader},
+		#{file_name},
+		#{file_path},
+		#{target_type},
+		#{target_id},
+		#{thumbnail}
+		)
+	</insert>
+
+	<!-- 인테리어 사용, 파일 조회(리스트) -->
+	<select id="interFindByTarget"
+		resultType="com.ama.don.common.dto.FileDto">
+		SELECT
+		file_id,
+		file_uploader,
+		file_name,
+		file_path,
+		target_id,
+		target_type,
+		is_thumbnail
+		FROM file
+		WHERE target_type = #{targetType}
+		AND
+		target_id = #{targetId}
+		ORDER BY file_id DESC
+	</select>
+
+	<!-- 인테리어 사용, 파일 단건 조회 -->
+	<select id="interFindById"
+		resultType="com.ama.don.common.dto.FileDto">
+		SELECT
+		file_id,
+		file_uploader,
+		file_name,
+		file_path,
+		target_id,
+		target_type,
+		is_thumbnail
+		FROM file
+		WHERE file_id = #{fileId}
+	</select>
+
+
+	<!-- 인테리어 사용, 썸네일 1장 찾기 -->
+	<select id="interFindThumbnail"
+		resultType="com.ama.don.common.dto.FileDto">
+		SELECT
+		file_id,
+		file_uploader,
+		file_name,
+		file_path,
+		target_id,
+		target_type,
+		is_thumbnail
+		FROM file
+		WHERE target_id = #{targetId}
+		AND
+		target_type = #{targetType}
+		AND is_thumbnail = 1
+		LIMIT 1
+	</select>
+
+	<!-- 인테리어 사용, 파일 단건 삭제 -->
+	<delete id="interDeletedById">
+		DELETE FROM file
+		WHERE file_id = #{fileId}
+	</delete>
+
+	<!-- 인테리어 사용, target 모두 삭제 -->
+	<delete id="interDeleteAllByTarget">
+		DELETE FROM file
+		WHERE target_type = #{targetType}
+		AND
+		target_id = #{targetId}
+	</delete>
+
+	<!-- 인테리어 사용, 2배치 IN 썸네일들만 조회 -->
+	<select id="interFindThumbnailList"
+		resultType="com.ama.don.common.dto.FileDto">
+		SELECT
+		file_id,
+		file_uploader,
+		file_name,
+		file_path,
+		target_type,
+		target_id,
+		is_thumbnail AS thumbnail
+		FROM file
+		WHERE target_type =
+		#{targetType}
+		AND is_thumbnail = 1
+		AND target_id IN
+		<foreach collection="targetIds" item="id" open="("
+			separator="," close=")">
+			#{id}
+		</foreach>
+	</select>
+</mapper>

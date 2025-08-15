@@ -8,43 +8,112 @@
 	<!-- 게시글 목록 조회 -->
 	<select id="findByTarget"
 		resultType="com.ama.don.common.dto.PostDto">
-		SELECT * FROM post
+		SELECT
+		post_id,
+		user_id,
+		post_title,
+		post_content,
+		post_date,
+		post_count,
+		post_like_count,
+		target_type AS targetType,
+		target_id AS
+		targetId
+		FROM post
 		WHERE target_type = #{targetType}
-		AND target_id = #{targetId}
 		ORDER BY post_id DESC
-	</select>
-
-	<!-- 게시글 하나 조회 -->
-	<select id="findById" parameterType="long"
-		resultType="com.ama.don.common.dto.PostDto">
-		SELECT * FROM post WHERE post_id = #{postId}
 	</select>
 
 	<!-- 게시글 작성 -->
 	<insert id="create"
-		parameterType="com.ama.don.common.dto.PostDto">
-		INSERT INTO post (user_id, post_title, post_content, post_date, post_count,
-		post_like_count, post_img, target_type, target_id)
-		VALUES (#{user_id}, #{post_title}, #{post_content}, CURRENT_TIMESTAMP,
-		#{post_count}, #{post_like_count}, #{post_img}, #{targetType},
-		#{targetId})
+		parameterType="com.ama.don.common.dto.PostDto" useGeneratedKeys="true"
+		keyProperty="post_id">
+		INSERT INTO post (
+		user_id, post_title, post_content,
+		post_date, post_count,
+		post_like_count,
+		target_type
+		)
+		VALUES (
+		#{user_id}, #{post_title}, #{post_content},
+		CURRENT_TIMESTAMP, 0, 0,
+		#{targetType}
+		)
 	</insert>
+
 
 	<!-- 게시글 수정 -->
 	<update id="update"
 		parameterType="com.ama.don.common.dto.PostDto">
 		UPDATE post
 		SET post_title = #{post_title},
-		post_content = #{post_content},
-		post_img = #{post_img},
+		post_content =
+		#{post_content},
 		target_type = #{targetType},
 		target_id = #{targetId}
 		WHERE post_id = #{post_id}
 	</update>
 
-	<!-- 게시글 삭제 -->
-	<delete id="delete" parameterType="long">
-		DELETE FROM post WHERE post_id = #{postId}
-	</delete>
+	<!-- 게시글 작성 -->
+	<insert id="polyTest" parameterType="com.ama.don.common.dto.PostDto"
+		useGeneratedKeys="true" keyProperty="post_id">
+		INSERT INTO post (
+		user_id,
+		target_type
+		)
+		VALUES (
+		#{user_id},
+		#{targetType}
+		)
+	</insert>
+
+
+
+	<!-- 업체에서 사용하는 다형성 게시글 생성 -->
+	<insert id="insertPolyPostForCompany"
+			parameterType="com.ama.don.common.dto.PostDto"
+			useGeneratedKeys="true"
+			keyProperty="post_id">
+		INSERT INTO post (
+			user_id,
+		    target_id,
+		    target_type)
+		VALUES (
+			#{user_id},
+		    #{targetId},
+		    #{targetType}
+		)
+	</insert>
+
+	<!-- 인테리어, 다형성 조회 id, target, date -->
+	<select id="polyFindById" resultType="java.lang.Integer">
+		SELECT
+		    post_id,
+		    target_id,
+		    target_type,
+		    post_date
+		FROM post
+		WHERE post_id = #{post_id}
+	</select>
+
+	<!-- 인테리어, 게시글 상세 조회 -->
+	<select id="findById" resultType="com.ama.don.common.dto.PostDto">
+		SELECT
+			post_id,
+			user_id,
+			post_title,
+			post_content,
+			post_date
+		FROM post
+		WHERE post_id = #{post_id}
+	</select>
+
+	<!-- 인테리어, postId 찾기 보조용 -->
+	<select id="findPostIdByCompanyPostId" resultType="java.lang.Long">
+		SELECT post_id
+		FROM post
+		WHERE target_id = #{companyPostId}
+	</select>
+
 
 </mapper>

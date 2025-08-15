@@ -1,11 +1,12 @@
 package com.ama.don.admin.service.noticeService;
 
 import com.ama.don.admin.dao.NoticesIDao;
-import com.ama.don.admin.dto.NoticeSearchVO;
-import com.ama.don.admin.dto.NoticesDto;
+import com.ama.don.admin.dto.noticeDTO.NoticeSearchDTO;
+import com.ama.don.admin.dto.noticeDTO.NoticesDto;
 import com.ama.don.admin.utils.SearchVO;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,13 +21,16 @@ import java.util.Map;
 public class GetNoticeListService implements NoticeServiceInterface{
 
     private final NoticesIDao noticesIDao;
-    public GetNoticeListService(NoticesIDao noticesIDao) {
+    private final TUIImageControlService tUIImageControlService;
+
+    public GetNoticeListService(NoticesIDao noticesIDao, TUIImageControlService tUIImageControlService) {
         this.noticesIDao = noticesIDao;
+        this.tUIImageControlService = tUIImageControlService;
     }
 
     /**
      * 공지사항 목록 조회 작업을 실행함.<br/>
-     * 모델에서 검색 조건(`NoticeSearchVO`)과 페이지네이션 정보(`SearchVO`)를 추출함.<br/>
+     * 모델에서 검색 조건(`NoticeSearchDTO`)과 페이지네이션 정보(`SearchVO`)를 추출함.<br/>
      * 검색 조건 유무에 따라 전체 공지 또는 검색된 공지를 DB에서 조회하고,<br/>
      * 페이지 계산을 수행한 뒤, 조회된 데이터를 맵 형태로 가공하여 모델에 추가함.
      *
@@ -36,28 +40,24 @@ public class GetNoticeListService implements NoticeServiceInterface{
     @Override
     public void execute(Model model) {
         Map<String, Object> map = model.asMap();
-        NoticeSearchVO noticeSearchVO = (NoticeSearchVO) map.get("noticeSearchVO");
+        NoticeSearchDTO noticeSearchDTO = (NoticeSearchDTO) map.get("noticeSearchDTO");
         SearchVO searchVO = (SearchVO) map.get("searchVO");
         List<Map<String, Object>> mapList = new ArrayList<>();
         List<NoticesDto> dtoList;
         int total;
 
         // 검색 조건이 없거나 비어있으므로 전체 공지사항을 가져옴
-        if (noticeSearchVO == null ||
-                (noticeSearchVO.getNoticeTitle() == null || noticeSearchVO.getNoticeTitle().isEmpty()) &&
-                (noticeSearchVO.getNoticeContent() == null || noticeSearchVO.getNoticeContent().isEmpty()) &&
-                (noticeSearchVO.getNoticeDateStart() == null || noticeSearchVO.getNoticeDateStart().isEmpty()) &&
-                (noticeSearchVO.getNoticeDateEnd() == null || noticeSearchVO.getNoticeDateEnd().isEmpty())) {
+        if (noticeSearchDTO == null ||
+                (noticeSearchDTO.getNoticeTitle() == null || noticeSearchDTO.getNoticeTitle().isEmpty()) &&
+                (noticeSearchDTO.getNoticeContent() == null || noticeSearchDTO.getNoticeContent().isEmpty()) &&
+                (noticeSearchDTO.getNoticeDateStart() == null || noticeSearchDTO.getNoticeDateStart().isEmpty()) &&
+                (noticeSearchDTO.getNoticeDateEnd() == null || noticeSearchDTO.getNoticeDateEnd().isEmpty())) {
             total = noticesIDao.countAllNotices();
             dtoList = noticesIDao.getAllNotices(searchVO);
         // 검색 조건이 있으면 검색 된 공지사항을 가져옴
         } else {
-            System.out.println("제목: " + noticeSearchVO.getNoticeTitle());
-            System.out.println("내용: " + noticeSearchVO.getNoticeContent());
-            System.out.println("시작일: " + noticeSearchVO.getNoticeDateStart());
-            System.out.println("종료일: " + noticeSearchVO.getNoticeDateEnd());
-            total = noticesIDao.countSearchNotice(noticeSearchVO);
-            dtoList = noticesIDao.searchNotice(noticeSearchVO, searchVO);
+            total = noticesIDao.countSearchNotice(noticeSearchDTO);
+            dtoList = noticesIDao.searchNotice(noticeSearchDTO, searchVO);
         }
 
         searchVO.pageCalculate(total);

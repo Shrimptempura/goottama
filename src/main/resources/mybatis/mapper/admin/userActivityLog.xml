@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.admin.dao.UserActivityLogIDao">
+
+    <select id="getAllUserActivity">
+        SELECT USER_ACTIVITY_ID, USER_ID, USER_ACTIVITY_TYPE, USER_ACTIVITY_TIME, USER_ACTIVITY_TARGET_ID, USER_ACTIVITY_TARGET_TYPE, USER_ACTIVITY_DETAILS
+        FROM user_activity
+        ORDER BY USER_ACTIVITY_TIME DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+
+    <select id="countGetAllUserActivity">
+        SELECT COUNT(*) FROM user_activity
+    </select>
+
+    <select id="getUserActivityById">
+        SELECT USER_ACTIVITY_ID, USER_ID, USER_ACTIVITY_TYPE, USER_ACTIVITY_TIME, USER_ACTIVITY_TARGET_ID, USER_ACTIVITY_TARGET_TYPE, USER_ACTIVITY_DETAILS
+        FROM user_activity
+        WHERE USER_ACTIVITY_ID = #{activityId}
+    </select>
+
+    <select id="getUserActivityByUserId">
+        SELECT USER_ACTIVITY_ID, USER_ID, USER_ACTIVITY_TYPE, USER_ACTIVITY_TIME, USER_ACTIVITY_TARGET_ID, USER_ACTIVITY_TARGET_TYPE, USER_ACTIVITY_DETAILS
+        FROM user_activity
+        WHERE USER_ID = #{UserId}
+        ORDER BY USER_ACTIVITY_TIME DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+
+    <insert id="writeUserActivityLog">
+        INSERT INTO user_activity(USER_ID, USER_ACTIVITY_TYPE, USER_ACTIVITY_TIME, USER_ACTIVITY_TARGET_ID, USER_ACTIVITY_TARGET_TYPE, USER_ACTIVITY_DETAILS)
+        VALUES(#{user_id}, #{user_activity_type}, #{user_activity_time}, #{user_activity_target_id}, #{user_activity_target_type}, #{user_activity_details})
+    </insert>
+
+    <select id="getUserActivityType">
+        SELECT DISTINCT(USER_ACTIVITY_TYPE) FROM user_activity ORDER BY USER_ACTIVITY_TYPE;
+    </select>
+
+    <select id="getUserActivityTargetType">
+        SELECT DISTINCT(USER_ACTIVITY_TARGET_TYPE) FROM user_activity ORDER BY USER_ACTIVITY_TARGET_TYPE;
+    </select>
+
+    <select id="getSearchUserActivity" resultType="com.ama.don.admin.dto.userDTO.UserActivityDto">
+        SELECT USER_ACTIVITY_ID, USER_ID, USER_ACTIVITY_TYPE, USER_ACTIVITY_TIME, USER_ACTIVITY_TARGET_ID, USER_ACTIVITY_TARGET_TYPE, USER_ACTIVITY_DETAILS
+        FROM user_activity
+        <where>
+            <if test="userActivitySearchDTO.user_id != 0 and userActivitySearchDTO.user_id != null">
+                AND USER_ID = #{userActivitySearchDTO.user_id}
+            </if>
+            <if test="userActivitySearchDTO.user_activity_type != null and userActivitySearchDTO.user_activity_type != ''">
+                AND USER_ACTIVITY_TYPE LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_type}, '%')
+            </if>
+            <if test="userActivitySearchDTO.user_activity_target != null and userActivitySearchDTO.user_activity_target != ''">
+                AND USER_ACTIVITY_TARGET_TYPE LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_target}, '%')
+            </if>
+            <if test="userActivitySearchDTO.user_activity_time_start != null and userActivitySearchDTO.user_activity_time_start != ''">
+                AND USER_ACTIVITY_TIME &gt;= #{userActivitySearchDTO.user_activity_time_start}
+            </if>
+            <if test="userActivitySearchDTO.user_activity_time_end != null and userActivitySearchDTO.user_activity_time_end != ''">
+                AND USER_ACTIVITY_TIME &lt;= #{userActivitySearchDTO.user_activity_time_end}
+            </if>
+            <if test="userActivitySearchDTO.user_activity_details != null and userActivitySearchDTO.user_activity_details != ''">
+                AND USER_ACTIVITY_DETAILS LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_details}, '%')
+            </if>
+            <if test="userActivitySearchDTO.user_activity_target_id != null and userActivitySearchDTO.user_activity_target_id != ''">
+                AND USER_ACTIVITY_TARGET_ID = #{userActivitySearchDTO.user_activity_target_id}
+            </if>
+        </where>
+        ORDER BY USER_ACTIVITY_TIME DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+
+    <select id="countGetSearchUserActivity">
+        SELECT COUNT(*)
+        FROM user_activity
+        <where>
+            <if test="userActivitySearchDTO.user_id != 0 and userActivitySearchDTO.user_id != null">
+                AND USER_ID = #{userActivitySearchDTO.user_id}
+            </if>
+            <if test="userActivitySearchDTO.user_activity_type != null and userActivitySearchDTO.user_activity_type != ''">
+                AND USER_ACTIVITY_TYPE LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_type}, '%')
+            </if>
+            <if test="userActivitySearchDTO.user_activity_target != null and userActivitySearchDTO.user_activity_target != ''">
+                AND USER_ACTIVITY_TARGET_TYPE LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_target}, '%')
+            </if>
+            <if test="userActivitySearchDTO.user_activity_time_start != null and userActivitySearchDTO.user_activity_time_start != ''">
+                AND USER_ACTIVITY_TIME &gt;= #{userActivitySearchDTO.user_activity_time_start}
+            </if>
+            <if test="userActivitySearchDTO.user_activity_time_end != null and userActivitySearchDTO.user_activity_time_end != ''">
+                AND USER_ACTIVITY_TIME &lt;= #{userActivitySearchDTO.user_activity_time_end}
+            </if>
+            <if test="userActivitySearchDTO.user_activity_details != null and userActivitySearchDTO.user_activity_details != ''">
+                AND USER_ACTIVITY_DETAILS LIKE CONCAT('%', #{userActivitySearchDTO.user_activity_details}, '%')
+            </if>
+            <if test="userActivitySearchDTO.user_activity_target_id != null and userActivitySearchDTO.user_activity_target_id != ''">
+                AND USER_ACTIVITY_TARGET_ID = #{userActivitySearchDTO.user_activity_target_id}
+            </if>
+        </where>
+    </select>
+
+</mapper>

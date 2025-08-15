@@ -1,0 +1,26 @@
+package com.ama.don.admin.dto.reportDTO;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+
+/**
+ * 신고 검색을 위한 전용 VO <br>
+ * 신고일 범위 검색을 위해 reportDateStart와 reportDateEnd을 받는다.
+ */
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+public class ReportSearchDTO {
+    private Long userId;
+    private String reportContent;
+    private String targetType;
+    private Long targetId;
+    private List<String> reportStatus;
+    private String reportDateStart;
+    private String reportDateEnd;
+}

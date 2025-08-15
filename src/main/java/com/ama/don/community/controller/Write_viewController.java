@@ -1,56 +1,53 @@
 package com.ama.don.community.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ama.don.community.dao.Write_viewDao;
-import com.ama.don.community.dto.Write_viewDto;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
+import com.ama.don.common.enums.TargetType;
+import com.ama.don.community.dto.Review.ReviewWriteDto;
+import com.ama.don.community.service.Write_viewService;
 
 @Controller
+@RequestMapping("/community")
 public class Write_viewController {
 
 	@Autowired
-	private Write_viewDao write_viewDao;
+	private Write_viewService write_viewService;
 
-	private final String uploadDir = "C:/upload/";
+	@GetMapping("/write_view")
+	public String write_form() {
 
-	@GetMapping("/Community/write_view")
-	public String writeForm() {
 		return "community/write_view";
 	}
 
 	@PostMapping("/write")
-	public String writePost(@RequestParam("title") String title, @RequestParam("content") String content,
-			@RequestParam("imgFile") MultipartFile imgFile, Model model) {
+	@ResponseBody
+	public Map<String, Object> write_post(@RequestParam("review_title") String reviewTitle,
+			@RequestParam("review_content") String reviewContent, @RequestParam("target_type") String targetTypeStr) {
 
-		Write_viewDto dto = new Write_viewDto();
-		dto.setTitle(title);
-		dto.setContent(content);
+		Long userId = 1L;
+		
+		ReviewWriteDto dto = new ReviewWriteDto();
+		dto.setReview_title(reviewTitle);
+		dto.setReview_content(reviewContent);
+		dto.setTargetType(TargetType.valueOf(targetTypeStr));
 
-		if (!imgFile.isEmpty()) {
-			String originalFilename = imgFile.getOriginalFilename();
-			String saveFileName = UUID.randomUUID() + "_" + originalFilename;
+		// 서비스 호출
+		ReviewWriteDto savedDto = write_viewService.createReviewWithPost(userId, dto);
+		Long postId = savedDto.getPost_id();
 
-			try {
-				File saveFile = new File(uploadDir + saveFileName);
-				imgFile.transferTo(saveFile);
-				dto.setImg(saveFileName);
-			} catch (IOException e) {
-				e.printStackTrace();
-				model.addAttribute("msg", "이미지 업로드 실패");
-				return "community/write_view";
-			}
-		}
-
-		write_viewDao.insertPost(dto);
-
-		return "redirect:/community/review_view";
+		// JSON 응답
+		Map<String, Object> result = new HashMap<>();
+		result.put("post_id", postId);
+		return result;
 	}
+
 }

@@ -1,10 +1,6 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.interior.dto.request.CompanyCreateDto;
-import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
-import com.ama.don.interior.dto.request.CompanyInsertDto;
-import com.ama.don.interior.dto.response.CompanyDetailDto;
-import com.ama.don.interior.dto.response.CompanySummaryDto;
+import com.ama.don.interior.dto.company.*;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -133,4 +129,63 @@ class CompanyDaoTest extends AbstractCompanyTestSupport {
         assertThat(result.getCompanyRate()).isNull();
     }
 
+    @DisplayName("업체 수정, company_detail 테이블 수정")
+    @Test
+    void updateCompanyDetail() {
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
+        Long companyId = dto.getCompanyId();
+
+        CompanyUpdateDto updateDto = new CompanyUpdateDto();
+        updateDto.setCompanyId(companyId);
+        updateDto.setCompanyName("testCompanyName");
+        updateDto.setCompanyAddr("testCompanyAddr");
+        updateDto.setCompanyField("testCompanyField");
+        updateDto.setCompanyLicense("testCompanyLicense");
+        updateDto.setCompanyAs("testCompanyAs");
+        updateDto.setCompanyCareer("testCompanyCareer");
+        updateDto.setCompanyIntro("testCompanyIntro");
+
+        int updateCount = companyDao.updateCompanyDetail(updateDto);
+
+        assertThat(updateCount).isEqualTo(1);
+    }
+
+    @DisplayName("위치 테이블만 수정")
+    @Test
+    void updateLocation() {
+        TestCompanyContext ctx = insertTestCompanyContext();
+
+        Long companyId = ctx.getCompanyId();
+        String companyAddr = ctx.getDetail().getCompanyAddr();
+
+        CompanyUpdateDto updateDto = new CompanyUpdateDto();
+        updateDto.setCompanyDetailId(companyId);
+        updateDto.setCompanyAddr("testCompanyAddr");
+
+        companyDao.updateCompanyDetail(updateDto);
+
+        String updatedCompanyAddr = updateDto.getCompanyAddr();
+
+        assertThat(updatedCompanyAddr).isNotEqualTo(companyAddr);
+
+        CompanyUpdateLocationDto updateLocationDto = new CompanyUpdateLocationDto();
+        updateLocationDto.setLocationId(ctx.getLocation().getLocationId());
+        updateLocationDto.setLocationAddr("testCompanyAddr");
+
+        assertThat(updateLocationDto.getLocationAddr()).isEqualTo("testCompanyAddr");
+    }
+
+    @DisplayName("업체 비활성화 is_deleted = 1")
+    @Test
+    void updateCompanyDelete() {
+        CompanyInsertDto dto = insertTestCompanyWithUserLocationAndDetail();
+        Long companyId = dto.getCompanyId();
+
+        int result = companyDao.deleteCompany(companyId);
+        assertThat(result).isNotNull();
+        assertThat(result).isEqualTo(1);
+
+        Optional<Long> findTry = companyDao.findCompanyIdByUserId(dto.getUserId());
+        assertThat(findTry).isEmpty();
+    }
 }

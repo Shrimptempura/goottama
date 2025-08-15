@@ -6,9 +6,10 @@
 <mapper namespace="com.ama.don.admin.dao.NoticesIDao">
 
     <!--  공지 모든 공지 추출  -->
-    <select id="getAllNotices" resultType="com.ama.don.admin.dto.NoticesDto">
+    <select id="getAllNotices" resultType="com.ama.don.admin.dto.noticeDTO.NoticesDto">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_CONTENT
-        FROM notices ORDER BY NOTICES_CREATED_AT DESC
+        FROM notices
+        ORDER BY NOTICES_CREATED_AT DESC
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 
@@ -18,46 +19,46 @@
     </select>
 
     <!--  아이디로 공지 검색  -->
-    <select id="getNoticeById" resultType="com.ama.don.admin.dto.NoticesDto">
+    <select id="getNoticeById" resultType="com.ama.don.admin.dto.noticeDTO.NoticesDto">
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_CONTENT
         FROM notices WHERE NOTICES_ID=#{param1}
     </select>
 
-    <select id="searchNotice" resultType="com.ama.don.admin.dto.NoticesDto" >
+    <select id="searchNotice" resultType="com.ama.don.admin.dto.noticeDTO.NoticesDto" >
         SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_CONTENT
         FROM notices
         <where>
-            <if test="noticeSearchVO.noticeTitle != null and noticeSearchVO.noticeTitle != ''">
-                AND NOTICES_TITLE LIKE CONCAT('%', #{noticeSearchVO.noticeTitle}, '%')
+            <if test="noticeSearchDTO.noticeTitle != null and noticeSearchDTO.noticeTitle != ''">
+                AND NOTICES_TITLE LIKE CONCAT('%', #{noticeSearchDTO.noticeTitle}, '%')
             </if>
-            <if test="noticeSearchVO.noticeContent != null and noticeSearchVO.noticeContent != ''">
-                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchVO.noticeContent}, '%')
+            <if test="noticeSearchDTO.noticeContent != null and noticeSearchDTO.noticeContent != ''">
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchDTO.noticeContent}, '%')
             </if>
-            <if test="noticeSearchVO.noticeDateStart != null and noticeSearchVO.noticeDateStart != ''">
-                AND NOTICES_CREATED_AT &gt;= #{noticeSearchVO.noticeDateStart}
+            <if test="noticeSearchDTO.noticeDateStart != null and noticeSearchDTO.noticeDateStart != ''">
+                AND NOTICES_CREATED_AT &gt;= #{noticeSearchDTO.noticeDateStart}
             </if>
-            <if test="noticeSearchVO.noticeDateEnd != null and noticeSearchVO.noticeDateEnd != ''">
-                AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
+            <if test="noticeSearchDTO.noticeDateEnd != null and noticeSearchDTO.noticeDateEnd != ''">
+                AND NOTICES_CREATED_AT &lt;= #{noticeSearchDTO.noticeDateEnd}
             </if>
         </where>
-        ORDER BY ORDER BY NOTICES_CREATED_AT DESC
+        ORDER BY NOTICES_CREATED_AT DESC
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
     <select id="countSearchNotice" resultType="int">
         SELECT COUNT(*)
         FROM notices
         <where>
-            <if test="noticeSearchVO.noticeTitle != null and noticeSearchVO.noticeTitle != ''">
-                AND NOTICES_TITLE LIKE CONCAT('%', #{noticeSearchVO.noticeTitle}, '%')
+            <if test="noticeSearchDTO.noticeTitle != null and noticeSearchDTO.noticeTitle != ''">
+                AND NOTICES_TITLE LIKE CONCAT('%', #{noticeSearchDTO.noticeTitle}, '%')
             </if>
-            <if test="noticeSearchVO.noticeContent != null and noticeSearchVO.noticeContent != ''">
-                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchVO.noticeContent}, '%')
+            <if test="noticeSearchDTO.noticeContent != null and noticeSearchDTO.noticeContent != ''">
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchDTO.noticeContent}, '%')
             </if>
-            <if test="noticeSearchVO.noticeDateStart != null and noticeSearchVO.noticeDateStart != ''">
-                AND NOTICES_CREATED_AT &gt;= #{noticeSearchVO.noticeDateStart}
+            <if test="noticeSearchDTO.noticeDateStart != null and noticeSearchDTO.noticeDateStart != ''">
+                AND NOTICES_CREATED_AT &gt;= #{noticeSearchDTO.noticeDateStart}
             </if>
-            <if test="noticeSearchVO.noticeDateEnd != null and noticeSearchVO.noticeDateEnd != ''">
-                AND NOTICES_CREATED_AT &lt;= #{noticeSearchVO.noticeDateEnd}
+            <if test="noticeSearchDTO.noticeDateEnd != null and noticeSearchDTO.noticeDateEnd != ''">
+                AND NOTICES_CREATED_AT &lt;= #{noticeSearchDTO.noticeDateEnd}
             </if>
         </where>
     </select>
@@ -82,4 +83,8 @@
     <delete id="deleteNotice">
         DELETE FROM notices WHERE NOTICES_ID = #{param1}
     </delete>
+
+    <select id="getLatestNoticeId">
+        SELECT MAX(notices_id) FROM notices
+    </select>
 </mapper>

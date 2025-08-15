@@ -1,8 +1,8 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.interior.dto.request.CompanyCreateDto;
-import com.ama.don.interior.dto.request.CompanyCreateLocationDto;
-import com.ama.don.interior.dto.request.CompanyInsertDto;
+import com.ama.don.interior.dto.company.CompanyCreateDto;
+import com.ama.don.interior.dto.company.CompanyCreateLocationDto;
+import com.ama.don.interior.dto.company.CompanyInsertDto;
 import com.ama.don.member.dto.JoinformDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

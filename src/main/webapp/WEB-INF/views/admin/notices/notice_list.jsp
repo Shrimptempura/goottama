@@ -1,6 +1,8 @@
+<!-- notice_list.jsp -->
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <div class="info">
     전체 글 : ${searchVO.totRow} <br>
     현재 페이지 / 전체 페이지 : ${searchVO.page } / ${searchVO.totPage }
@@ -47,6 +49,7 @@
     <tr>
        <td>제목</td>
        <td>날자</td>
+       <td>보기</td>
     </tr>
     <c:forEach items="${list}" var="notice">
         <tr>
@@ -58,6 +61,8 @@
             <td>
             <fmt:formatDate value="${notice.noticesCreatedAt}" pattern="yyyy-MM-dd"/>
             </td>
+            <td><button type="button" class="open-modal-btn" data-modal-target="/admin/notices/notice_data_modal"
+                                    data-param-name="notices_id" data-param-value="${notice.noticesId}"> ▶ </button></td>
         </tr>
     </c:forEach>
 </table>

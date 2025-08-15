@@ -1,10 +1,11 @@
 package com.ama.don.admin.service.noticeService;
 
 import com.ama.don.admin.dao.NoticesIDao;
-import com.ama.don.admin.dto.NoticesDto;
-import com.ama.don.admin.temp.tFileDto;
+import com.ama.don.admin.dto.noticeDTO.NoticesDto;
+import com.ama.don.common.dto.FileDto;
 import com.ama.don.admin.temp.FileIDao;
 import com.ama.don.admin.utils.FileUtil;
+import com.ama.don.common.enums.TargetType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -25,16 +26,18 @@ public class NoticeModify implements NoticeServiceInterface{
     private final NoticesIDao noticesIDao;
     private final FileIDao fileIDao;
     private final FileUtil fileUtil;
+    private final TUIImageControlService tUIImageControlService;
 
-    public NoticeModify(NoticesIDao noticesIDao, FileIDao fileIDao, FileUtil fileUtil) {
+    public NoticeModify(NoticesIDao noticesIDao, FileIDao fileIDao, FileUtil fileUtil, TUIImageControlService tUIImageControlService) {
         this.noticesIDao = noticesIDao;
         this.fileIDao = fileIDao;
         this.fileUtil = fileUtil;
+        this.tUIImageControlService = tUIImageControlService;
     }
 
     /**
      * 공지사항 수정 작업을 실행함.<br/>
-     * 모델에서 수정될 공지 정보({@link com.ama.don.admin.dto.NoticesDto}),<br/>
+     * 모델에서 수정될 공지 정보({@link NoticesDto}),<br/>
      * 삭제할 첨부파일 ID 목록({@link java.util.List}<{@link java.lang.Long}>),<br/>
      * 그리고 새로 추가될 파일 데이터({@link org.springframework.web.multipart.MultipartHttpServletRequest})를 받아 처리함.<br/>
      * 공지사항 본문 수정, 기존 파일 삭제, 새 파일 저장 순으로 작업 진행됨.
@@ -53,6 +56,7 @@ public class NoticeModify implements NoticeServiceInterface{
         MultipartHttpServletRequest mtfRequest = (MultipartHttpServletRequest) map.get("mtfRequest");
         boolean result = false;
         int noticesId = modifiedNotice.getNotices_id();
+        String noticeContent = modifiedNotice.getNotices_content();
         result = noticesIDao.modifyNotice(modifiedNotice);
         if (!result) {
             throw new RuntimeException("공지사항 수정 실패 : " + noticesId);
@@ -61,9 +65,9 @@ public class NoticeModify implements NoticeServiceInterface{
         // 첨부파일 삭제
         if (deleteFileIds != null && !deleteFileIds.isEmpty()) {
             for (Long fileId : deleteFileIds) {
-                tFileDto fileToDelete = fileIDao.getFileById(fileId);
+                FileDto fileToDelete = fileIDao.getFileById(fileId);
                 if (fileToDelete != null) {
-                    boolean fileDeleted = fileUtil.deleteFile(fileToDelete.getFile_path());
+                    boolean fileDeleted = fileUtil.deleteFile(fileToDelete.getFile_path(), fileToDelete.getFile_uploader());
                     if (fileDeleted) {
                         fileIDao.deleteFile(fileId);
                         System.out.println("첨부 파일 삭제 성공 : " + fileToDelete.getFile_name());
@@ -82,14 +86,14 @@ public class NoticeModify implements NoticeServiceInterface{
                 try {
                     String savedFilename = fileUtil.saveFile(file);
                     if (savedFilename != null) {
-                        tFileDto tFileDto = new tFileDto();
-                        tFileDto.setTarget_type("ADMIN");;
-                        tFileDto.setTarget_id(currentNoticeId);;
-                        tFileDto.setFile_name(file.getOriginalFilename());;
-                        tFileDto.setFile_path(savedFilename);;
-                        tFileDto.setFile_uploader("관리자");
+                        FileDto fileDto = new FileDto();
+                        fileDto.setTarget_type(TargetType.ADMIN);
+                        fileDto.setTarget_id(currentNoticeId);
+                        fileDto.setFile_name(file.getOriginalFilename());
+                        fileDto.setFile_path(savedFilename);
+                        fileDto.setFile_uploader("관리자");
 
-                        fileIDao.insertFile(tFileDto);
+                        fileIDao.insertFile(fileDto);
                     }
                 } catch (Exception e) {
                     System.err.println("새 첨부파일 저장 중 오류 발생: " + file.getOriginalFilename());
@@ -98,6 +102,8 @@ public class NoticeModify implements NoticeServiceInterface{
                 }
             }
         }
+        tUIImageControlService.processTuiEditorImages((long)noticesId, noticeContent);
+        System.out.println(">>> " + noticeContent);
         model.addAttribute("modifyResult", result);
         System.out.println("공지 수정 및 첨부파일 수정 성공 : " + currentNoticeId);
     }

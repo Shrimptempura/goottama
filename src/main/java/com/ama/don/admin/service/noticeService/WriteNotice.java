@@ -1,10 +1,11 @@
 package com.ama.don.admin.service.noticeService;
 
 import com.ama.don.admin.dao.NoticesIDao;
-import com.ama.don.admin.dto.NoticesDto;
-import com.ama.don.admin.temp.tFileDto;
+import com.ama.don.admin.dto.noticeDTO.NoticesDto;
+import com.ama.don.common.dto.FileDto;
 import com.ama.don.admin.temp.FileIDao;
 import com.ama.don.admin.utils.FileUtil;
+import com.ama.don.common.enums.TargetType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -28,16 +29,18 @@ public class WriteNotice implements NoticeServiceInterface{
     private final NoticesIDao noticesIDao;
     private final FileIDao fileIDao;
     private final FileUtil fileUtil;
+    private final TUIImageControlService tUIImageControlService;
 
-    public WriteNotice(NoticesIDao noticesIDao, FileIDao fileIDao, FileUtil fileUtil) {
+    public WriteNotice(NoticesIDao noticesIDao, FileIDao fileIDao, FileUtil fileUtil, TUIImageControlService tUIImageControlService) {
         this.noticesIDao = noticesIDao;
         this.fileIDao = fileIDao;
         this.fileUtil = fileUtil;
+        this.tUIImageControlService = tUIImageControlService;
     }
 
     /**
      * 새로운 공지사항 작성 작업을 실행함.<br/>
-     * 모델에서 공지사항 정보({@link com.ama.don.admin.dto.NoticesDto})와<br/>
+     * 모델에서 공지사항 정보({@link NoticesDto})와<br/>
      * 첨부된 파일 데이터({@link org.springframework.web.multipart.MultipartHttpServletRequest})를 받아 처리함.<br/>
      * 먼저 공지사항 본문을 DB에 저장하고, 이어서 첨부파일들을 물리적으로 저장하고 DB에 파일 정보 기록함.<br/>
      *
@@ -67,14 +70,14 @@ public class WriteNotice implements NoticeServiceInterface{
                 try {
                     String savedFilename = fileUtil.saveFile(file); // 실제 파일 저장
                     if (savedFilename != null) {
-                        tFileDto tFileDto = new tFileDto();
-                        tFileDto.setTarget_type("ADMIN");
-                        tFileDto.setTarget_id(savedNoticeId);
-                        tFileDto.setFile_name(file.getOriginalFilename()); // 원본 파일명
-                        tFileDto.setFile_path(savedFilename); // 서버에 저장된 파일명
-                        tFileDto.setFile_uploader("관리자");
+                        FileDto fileDto = new FileDto();
+                        fileDto.setTarget_type(TargetType.ADMIN);
+                        fileDto.setTarget_id(savedNoticeId);
+                        fileDto.setFile_name(file.getOriginalFilename()); // 원본 파일명
+                        fileDto.setFile_path(savedFilename); // 서버에 저장된 파일명
+                        fileDto.setFile_uploader("관리자");
 
-                        fileIDao.insertFile(tFileDto);
+                        fileIDao.insertFile(fileDto);
                     }
                 } catch (IOException e) {
                     System.err.println("첨부파일 저장 중 오류 발생: " + file.getOriginalFilename());
@@ -83,6 +86,7 @@ public class WriteNotice implements NoticeServiceInterface{
                 }
             }
         }
+        tUIImageControlService.processTuiEditorImages((long)newNotice.getNotices_id(), newNotice.getNotices_content());
         model.addAttribute("writeResult", result);
         System.out.println("공지사항 및 첨부파일 DB 저장 성공!");
     }

@@ -131,13 +131,28 @@
 			<artifactId>mariadb-java-client</artifactId>
 			<version>3.3.3</version>
 		</dependency>
-		
-		<!--0723 mail-->
+
+		<!-- 0724 mail-->
 		<dependency>
-   			 <groupId>com.sun.mail</groupId>
-  			  <artifactId>javax.mail</artifactId>
-   			 <version>1.6.2</version>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+
+
+		<!-- mockito-inline 0808 -->
+		<!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<version>5.14.2</version>
+			<scope>test</scope>
+		</dependency>
+
 
 	</dependencies>
 

@@ -1,19 +1,19 @@
 package com.ama.don.member.controller;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ama.don.member.dto.FindLoginIdDto;
 import com.ama.don.member.dto.FindPwDto;
-import com.ama.don.member.dto.LoginformDto;
-import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.dto.ResetPwDto;
 import com.ama.don.member.service.FindMemberService;
-import com.ama.don.member.service.LoginService;
+import com.ama.don.member.service.ValidationService;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -23,13 +23,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class LoginController {
 	
-	private final LoginService loginService;
 	private final FindMemberService findMemberService;
+	private final ValidationService validationService;
 	
 	@GetMapping("/")
-	public String index() {
-		return "list";
-	}
+	   public String index() {
+	    
+	      return "list";
+	   }
 	
 	@GetMapping("/login_view")
 	public String login_view() {
@@ -43,7 +44,8 @@ public class LoginController {
 	}
 	
 	@GetMapping("/findPw_view")
-	public String findPw_view(Model model) {		
+	public String findPw_view(Model model) {	
+		model.addAttribute("findPwDto", new FindPwDto()); 
 		return "member/findPw_view";
 	}
 	
@@ -51,7 +53,6 @@ public class LoginController {
 	public String find_loginId(@Valid @ModelAttribute FindLoginIdDto findLoginIdDto,BindingResult bindingResult,Model model) {
 		
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("findLoginIdDto", findLoginIdDto);
 			return "member/findLoginId_view";
 		}
 		
@@ -60,16 +61,16 @@ public class LoginController {
 			model.addAttribute("id_error","해당 정보로 가입된 아이디가 없습니다.");
 			return "member/findLoginId_view";
 		}
+		
 		model.addAttribute("loginId",loginId);
 		
 		return "member/findLoginId_view";
 	}
 	
-	@GetMapping("/findPw")
+	@PostMapping("/findPw")
 	public String findPw(@Valid @ModelAttribute FindPwDto findPwDto,BindingResult bindingResult,HttpSession session,Model model) {
 		
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("findPwDto", findPwDto);
+		if (bindingResult.hasErrors()) {	
 			return "member/findPw_view";
 		}
 		
@@ -78,33 +79,19 @@ public class LoginController {
 		if (!success) {
 			return"member/findPw_view";
 		}
-		
-		return null; //성공 시 인증코드 입력 화면으로
+		return "member/checkPwCode_view"; //성공 시 인증코드 입력 화면으로
 	}
 	
-	@PostMapping("/login")
-	public String login(@Valid@ModelAttribute LoginformDto loginformDto, BindingResult bindingResult,HttpSession session,Model model) {
+	@PostMapping("/checkPwCode")
+	public String checkPwCode(@RequestParam("inputCode") String inputCode,HttpSession session,Model model) {
 		
-		// 입력값 검증 실패 시 메시지를 model에 담아 로그인페이지로
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("loginformDto", loginformDto);
-			return "member/login_view";
+		boolean isRight = validationService.pwCodeValidation(inputCode, session, model);
+		
+		if (isRight == true) {
+			model.addAttribute("resetPwDto", new ResetPwDto());
+			return "member/resetPw_view";
 		}
 		
-		//로그인 성공시 memberdto반환
-		MemberDto memberDto = loginService.login(loginformDto, session);
-		if (memberDto == null) {  //로그인 실패
-			model.addAttribute("login_error","아이디 또는 비밀호가 틀렸습니다.");
-			return "member/login_view";
-		}	
-		return "redirect:/";  //로그인 성공
+		return "member/checkPwCode_view";
 	}
-	
-	@PostMapping("/logout")
-	public String logout(HttpSession session) {
-		loginService.logout(session);
-		return "redirect:/login_view";
-	}
-
-
 }

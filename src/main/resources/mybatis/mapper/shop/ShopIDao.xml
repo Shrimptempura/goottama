@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ama.don.shop.dao.ShopIDao">
+
+	<!-- 다수 상품 -->
+	<select id="product_list" parameterType="com.ama.don.shop.dto.ProductFlatDto" resultType="com.ama.don.shop.dto.ProductFlatDto">
+		select p.product_id,p.product_name,p.product_price,p.product_discountrate, p.product_mall_name, pi.product_imgurl,pi.product_img_type
+		from product p
+		left outer join product_img pi on p.product_id=pi.product_id
+		and pi.product_img_type='메인';
+		
+	</select>
+	
+	<!-- 상품 상세에 나타내는 단일 상품 (이미지는 다수)-->			<!-- 별칭추가하면 mybatis가 dto와 1:1매칭을 잘한다. -->
+	<select id="product" parameterType="Long" resultType="com.ama.don.shop.dto.ProductFlatDto">
+		select p.product_id,p.category_id,p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
+		p.product_madein,p.product_release,p.product_as_manager_phone,p.product_type,p.product_color,
+		p.product_istoday,p.product_date,
+		pi.product_img_id,pi.product_imgurl,pi.product_img_type
+		from product p
+		left outer join product_img pi on p.product_id = pi.product_id
+		                                   and pi.product_img_type = '메인'
+		where p.product_id=#{product_id};
+	</select>
+	
+	<!-- 단일의 상품을 받아서 이미지를 상품의 이미지를 가져오는 리스트 -->
+	<select id="productimgs" parameterType="Long" resultType="com.ama.don.shop.dto.ProductFlatDto">
+		select pi.product_imgurl,pi.product_img_type,pi.product_img_id,p.product_id
+		from product_img pi
+		join product p on pi.product_id=p.product_id
+		where p.product_id=#{product_id};
+	</select>
+	
+	<!-- 특정 상품을 검색 (주문내역이 많은 상품) 20개 리스트 -->
+	<select id="product_popular_flat_list" resultType="com.ama.don.shop.dto.ProductFlatDto">
+	     SELECT 
+	        p.product_id, p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
+	        pi.product_imgurl,pi.product_img_type,COALESCE(COUNT(op.product_id), 0) as order_count
+	    FROM product p LEFT JOIN product_img pi ON p.product_id = pi.product_id AND pi.product_img_type = '메인'
+	    LEFT JOIN orders_products op ON p.product_id = op.product_id
+	    GROUP BY 
+	        p.product_id
+	    ORDER BY order_count DESC, p.product_id DESC
+	    limit 20
+	</select>
+	
+	<!-- 특정 상품을 검색 주문 내역이 많은 상품  전체 내림차순 -->
+	<select id="product_popular_all_list" resultType="com.ama.don.shop.dto.ProductFlatDto">
+	    SELECT 
+	        p.product_id, p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
+	        pi.product_imgurl,pi.product_img_type,COALESCE(COUNT(op.product_id), 0) as order_count
+	    FROM product p LEFT JOIN product_img pi ON p.product_id = pi.product_id AND pi.product_img_type = '메인'
+	    LEFT JOIN orders_products op ON p.product_id = op.product_id WHERE pi.product_imgurl IS NOT NULL  -- 메인 이미지가 있는 상품만
+	    GROUP BY 
+	        p.product_id 
+	    ORDER BY order_count DESC, p.product_id DESC  
+	</select>
+	
+	<!-- 특정 상품을 검색 (세일 비율이 높은 상품) 20개 리스트 -->
+	<select id="product_high_sales_flat_list" resultType="com.ama.don.shop.dto.ProductFlatDto">
+	    SELECT p.product_id as product_id,
+	           p.product_name as product_name,
+	           p.product_price as product_price,
+	           p.product_discountrate as product_discountrate,
+	           p.product_mall_name as product_mall_name,
+	           pi.product_imgurl as product_imgurl,
+	           pi.product_img_type as product_img_type
+	    FROM product p
+	    LEFT JOIN product_img pi ON p.product_id = pi.product_id 
+	                             AND pi.product_img_type = '메인'
+	    WHERE p.product_discountrate > 0
+	    ORDER BY p.product_discountrate DESC
+	    LIMIT 20
+	</select>
+	
+	<!-- 특정 상품을 검색 (세일 비율이 높은 상품) 전체 내림차순 -->
+	<select id="product_high_sales_all_list" resultType="com.ama.don.shop.dto.ProductFlatDto">
+	    SELECT p.product_id as product_id,
+	           p.product_name as product_name,
+	           p.product_price as product_price,
+	           p.product_discountrate as product_discountrate,
+	           p.product_mall_name as product_mall_name,
+	           pi.product_imgurl as product_imgurl,
+	           pi.product_img_type as product_img_type
+	    FROM product p
+	    LEFT JOIN product_img pi ON p.product_id = pi.product_id 
+	                             AND pi.product_img_type = '메인'
+	    WHERE p.product_discountrate > 0
+	    ORDER BY p.product_discountrate DESC
+	</select>	
+	
+	<!-- 상품 카테고리별 리스트 -->
+	<select id="product_category" resultType="com.ama.don.shop.dto.ProductFlatDto">
+	 
+		SELECT p.product_id,p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
+		    pi.product_img_id,pi.product_imgurl,pi.product_img_type,c.category_main,c.category_sub
+		FROM product p
+		LEFT JOIN product_img pi ON p.product_id = pi.product_id
+		                         AND pi.product_img_type = '메인'
+		LEFT JOIN category c ON p.category_id = c.category_id 
+		WHERE p.category_id = #{param1};
+	</select>
+		
+	<!-- 단일 상품 문의&답글 조회 리스트 -->
+	<select id="product_inquiry_list" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto" resultType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+		select pi.pinquiry_id,pi.pinquiry_content,pi.pinquiry_date,pi.pinquiry_status, pr.preply_content
+		,pr.preply_date,u.user_id,u.user_nickname,p.product_id
+		from product_inquiry pi
+		left join product_reply pr on pi.pinquiry_id=pr.pinquiry_id
+		left join product p on p.product_id=pi.product_id
+		left join user_detail u on u.user_id=pi.user_id
+		where p.product_id=#{p.product_id};
+	</select>
+	
+	<!-- 단일 상품 문의 작성 -->
+	<insert id="product_inquiry_write">
+		insert into product_inquiry(user_id,product_id,pinquiry_content,pinquiry_date,pinquiry_status)
+		values(#{param1},#{param2},#{param3},now(),'미답변');
+	 </insert>
+	 	
+	 <update id="product_inquiry_update" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+	 	update product_inquiry set pinquiry_content=#{pinquiry_content}
+		where pinquiry_id=#{pinquiry_id};
+	 </update>
+	 
+	 <!-- 단일 상품 문의 삭제 -->
+	 <delete id="product_inquiry_delete" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+		delete from product_inquiry
+			where pinquiry_id=#{pinquiry_id}
+			and user_id=#{user_id}
+	</delete>
+	 
+	 <!-- 단일 상품 특정 문의 조회 -->
+	 <select id="product_inquiry" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto" resultType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+		select pi.pinquiry_id,pi.pinquiry_content,pi.pinquiry_date,pi.pinquiry_status,pi.product_id
+		,u.user_nickname
+		from product_inquiry pi
+		left join user_detail u on u.user_id=pi.user_id		
+		where pi.pinquiry_id=#{pinquiry_id};
+	 </select>
+	 
+	 <!-- 상품 문의 조회 리스트 (사용자)-->
+	 <select id="product_inquiry_by_userid" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto" resultType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+	 	select pi.pinquiry_id,pi.pinquiry_content,pi.pinquiry_date,pi.pinquiry_status, pr.preply_content
+		,pr.preply_date,u.user_id,u.user_nickname,p.product_id,p.product_name,pimg.product_imgurl
+		from product_inquiry pi
+		left join product_reply pr on pi.pinquiry_id=pr.pinquiry_id
+		left join product p on p.product_id=pi.product_id
+		left join user_detail u on u.user_id=pi.user_id
+		left join product_img pimg on p.product_id=pimg.product_id
+		where pimg.product_img_type='메인' and
+		u.user_id=${user_id};
+	 </select>
+	 
+	 <!-- 기존 문의의 답글 존재여부 -->
+	<select id="product_reply" parameterType="long" resultType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+	    select 
+	        preply_id,
+	        pinquiry_id,
+	        preply_content,
+	        preply_date
+	    from product_reply 
+	    where pinquiry_id = #{pinquiry_id}
+	    order by preply_date desc
+	</select>
+	
+	<!-- 문의 답글 삭제 -->
+	<delete id="product_reply_delete" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+		delete from product_reply
+		where pinquiry_id=#{pinquiry_id}
+	</delete>
+	 
+	 <!-- 문의 답글 작성 -->
+	 <insert id="product_reply_write" parameterType="com.ama.don.shop.dto.ShopProductInquiryFlatDto">
+	 	insert into product_reply(pinquiry_id,preply_content,preply_date) 
+		values (#{pinquiry_id},#{preply_content},now());
+	 </insert>
+	 
+	<!--상품 상품몰로 검색  -->
+	<select id="product_mall_list" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ProductFlatDto">
+		select p.product_id,p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
+		    pi.product_imgurl,pi.product_img_type
+		from product p
+		left join product_img pi on p.product_id = pi.product_id
+		                         and pi.product_img_type = '메인'
+		where product_mall_name=#{product_mall_name}
+	</select> 
+	
+	<!-- 상품 리뷰 수가 많은 상품 리스트 -->
+	<select id="product_best_list" parameterType="com.ama.don.shop.dto.ProductFlatDto" resultType="com.ama.don.shop.dto.ProductFlatDto">
+		select p.product_id,p.product_name,p.product_price,p.product_discountrate,p.product_mall_name,
+		    pi.product_imgurl,pi.product_img_type,count(r.target_id) as review_count
+		from product p
+		left join product_img pi on p.product_id = pi.product_id
+		                         and pi.product_img_type = '메인'
+        left join review r on r.target_id=p.product_id
+								and r.target_type = 'SHOP'
+        group by p.product_id,
+         p.product_name,
+         p.product_price,
+         p.product_discountrate,
+         p.product_mall_name,
+         pi.product_imgurl,
+         pi.product_img_type                        
+        order by count(r.target_id) desc
+        limit 20;
+	</select>
+	
+	<!-- 단일 상품 리뷰 리스트 -->
+	<select id="review_list" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		select r.user_id,r.review_id,r.review_title,r.review_content,r.review_count,
+		r.review_date,r.target_id,r.target_type,r.is_deleted,
+        u.user_name,u.user_nickname
+        from review r
+        join user_detail u on r.user_id=u.user_id
+        where r.target_id=#{target_id} and
+        target_type='shop';
+	</select>
+	
+	<insert id="review_write" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		insert into review(user_id,review_title,review_content,target_id,target_type,review_date)
+		values (#{user_id},#{review_title},#{review_content},#{target_id},'SHOP',now());
+	</insert>
+	
+	<delete id="review_delete" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		delete from review
+		where review_id=#{review_id}
+	</delete>
+	
+	<update id="review_update" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		update review 
+		set review_title=#{review_title},
+			review_content=#{review_content}
+		where review_id=#{review_id};
+	</update>
+	
+	<!-- 단일 리뷰 특정 리뷰 조회 -->
+	<select id="review" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		select r.user_id,r.review_id,r.review_title,r.review_content,r.review_count,
+		r.review_date,r.target_id,r.target_type,r.is_deleted,
+		u.user_name,u.user_nickname
+		from review r
+		join user_detail u on r.user_id=u.user_id
+		where r.review_id=#{review_id} and
+		target_type='shop';
+	</select>
+	
+	<!-- 사용자 쇼핑 리뷰 리스트 -->
+	<select id="review_by_userid" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		select r.user_id,r.review_id,r.review_title,r.review_content,r.review_count,
+		r.review_date,r.target_id,r.target_type,r.is_deleted,
+		u.user_name,u.user_nickname,
+        p.product_id,p.product_name,p.product_price,p.category_id,pi.product_imgurl,pi.product_img_type
+		from review r
+		join user_detail u on r.user_id=u.user_id
+        left join product p on p.product_id=r.target_id
+        left join product_img pi on pi.product_id=p.product_id
+        and product_img_type='메인'
+		where r.user_id=#{user_id} and
+		target_type='shop';
+	</select>
+	
+	
+	<!-- 사용자정보 찾기 -->
+	<select id="user_info" parameterType="com.ama.don.shop.dto.ShopReviewFlatDto" resultType="com.ama.don.shop.dto.ShopReviewFlatDto">
+		select u.user_id,u.user_name,u.user_nickname
+		from user_detail u
+		where user_id=#{user_id};
+	
+	</select>
+	
+	<!-- 로그 기록용 쿼리 -->
+	<select id="findLatestProductInquiryByUserIdAndTargetId" resultType="java.lang.Long">
+		SELECT pinquiry_id
+		FROM product_inquiry
+		WHERE USER_ID = #{userId}
+		AND PRODUCT_ID = #{targetId}
+		ORDER BY pinquiry_date DESC
+		LIMIT 1
+	</select>
+
+	<select id="findLatestOrderIdByUserId" resultType="java.lang.Long">
+		SELECT order_id
+		FROM orders
+		WHERE user_id = #{userId}
+		ORDER BY order_date DESC
+		LIMIT 1
+	</select>
+
+	
+</mapper>	
