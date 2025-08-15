@@ -18,6 +18,7 @@
 
 <form action="review_update">
 	<!---->
+	<!---->
 	리뷰 아이디: ${review.review_id }
 	<br />
 		사용자 아이디: ${review.user_id }
