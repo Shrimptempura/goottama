@@ -13,6 +13,7 @@ public class InterceptorWebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+
         registry.addInterceptor(shopReviewWriteInterceptor)
                 .addPathPatterns("/shop/review_write");
     }
