@@ -12,37 +12,45 @@
             <li><a href="community_home" data-page="community">커뮤니티</a></li>
         </ul>
         <div class="header-navbar-auth">
-                    <c:choose>
-                        <c:when test="${pageContext.request.userPrincipal != null}">
-                            <a href="mypage/myProfile" data-page="mypage">마이페이지</a>
-                            <a href="logout" data-page="logout">로그아웃</a>
-                        </c:when>
-                        <c:otherwise>
-                            <a href="login_view" data-page="login">로그인</a>
-                            <a href="join_view" data-page="join">회원가입</a>
-                        </c:otherwise>
-                    </c:choose>
-                </div>
+                <c:choose>
+                    <c:when test="${pageContext.request.userPrincipal != null}">
+                        <a href="mypage/myProfile" data-page="mypage">마이페이지</a>
+                        <a href="logout" data-page="logout">로그아웃</a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="login_view" data-page="login">로그인</a>
+                        <a href="join_view" data-page="join">회원가입</a>
+                    </c:otherwise>
+                </c:choose>
+            </div>
     </nav>
 </header>
+
 <style>
     body {
         padding-top: 60px;
     }
 
-    .header-navbar-container {
+    header {
+        border-bottom: 1px solid #e0e0e0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
         width: 100%;
-        height: 60px;
-        background-color: #ffffff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 20px;
         position: fixed;
         top: 0;
         left: 0;
         z-index: 1000;
+        background-color: #ffffff;
+    }
+
+    .header-navbar-container {
+        width: 100%;
+        max-width: 60%;
+        height: 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 20px;
+        margin: 0 auto;
     }
 
     .header-navbar-logo a {
@@ -54,11 +62,10 @@
 
     .header-navbar-links {
         list-style: none;
-        margin: 0;
+        margin: 0 auto 0 0;
         padding: 0;
         display: flex;
         align-items: center;
-        margin-right: auto;
     }
 
     .header-navbar-links li {
@@ -71,6 +78,10 @@
         font-size: 16px;
         padding: 10px 15px;
         transition: color 0.3s ease;
+    }
+
+    .header-navbar-auth {
+        margin-left: 20px;
     }
 
     .header-navbar-auth a {
@@ -88,6 +99,7 @@
         font-weight: bold;
     }
 </style>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const currentPath = window.location.pathname;

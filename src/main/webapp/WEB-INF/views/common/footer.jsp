@@ -17,7 +17,7 @@
             <p>
                 전화: 02-1234-5678
                 <br>
-                이메일: Armageddon@Armageddon.com
+                이메일: Armageddon@goott.com
                 <br>
                 운영시간: 평일 09:00 ~ 18:00
             </p>
@@ -30,11 +30,24 @@
                 <li><a href="#">인스타그램</a></li>
             </ul>
         </div>
+        <div class="footer-section">
+            <h4>기타 메뉴</h4>
+            <ul class="footer-social-links">
+                <li><a href="admin/notices/notice_page">공지사항</a></li>
+                <li><a
+                    href="/admin/reports/reportForm?targetType=ECT&targetId=0"
+                    class="report-link"
+                    onclick="window.open(this.href, '신고하기', 'width=500,height=400'); return false;">
+                    신고하기
+                </a></li>
+            </ul>
+        </div>
     </div>
     <div class="footer-bottom">
         <p>&copy; 2025 Goott Armageddon All Rights Reserved.</p>
     </div>
 </footer>
+
 <style>
     footer {
         background-color: #F7F9FA;
