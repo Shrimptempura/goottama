@@ -127,6 +127,7 @@ public class CompanyPostServiceImpl implements CompanyPostService {
         return posts;
     }
 
+    // 게시글 상세정보
     @Transactional
     @Override
     public CompanyPostDetailView getPostDetail(Long companyPostId) {
@@ -200,6 +201,7 @@ public class CompanyPostServiceImpl implements CompanyPostService {
         return view;
     }
 
+    // 게시글 수정
     @Transactional
     @Override
     public void updatePost(CompanyPostUpdateDto dto, List<MultipartFile> files) {

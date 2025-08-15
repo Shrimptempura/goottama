@@ -18,11 +18,15 @@
 
     <div>
         작성일: ${detail.post.postDate}
-        조회수: ${detail.post.companyPostCount}
+        조회수: ${detail.post.companyPostCount} <br/>
+        <c:if test="${not empty detail.post.updatedAt}">
+            수정일: ${detail.post.updatedAt}
+        </c:if>
     </div>
 
     <div>
-        내용: ${detail.post.companyPostContent}
+        제목: ${detail.post.companyPostTitle} <br/>
+        내용: ${detail.post.companyPostContent} <br/>
     </div>
 
     <div>
@@ -50,6 +54,11 @@
     </c:url>
 
     <a href="${backPostUrl}">뒤로가기</a>
+
+    <c:if test="${isOwner}">
+        <c:url var="editUrl" value="/interior/posts/${detail.post.companyPostId}/edit"/>
+        <a href="${editUrl}">수정하기</a>
+    </c:if>
 
 
 </body>
