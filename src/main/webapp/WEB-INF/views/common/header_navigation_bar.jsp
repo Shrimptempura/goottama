@@ -7,9 +7,9 @@
             <a href="/">ProjectLogo</a>
         </div>
         <ul class="header-navbar-links">
-            <li><a href="interior/ihome" data-page="interior">인테리어</a></li>
-            <li><a href="shop/home" data-page="shopping">쇼핑</a></li>
-            <li><a href="community_home" data-page="community">커뮤니티</a></li>
+            <li><a href="/interior/ihome" data-page="interior">인테리어</a></li>
+            <li><a href="/shop/home" data-page="shopping">쇼핑</a></li>
+            <li><a href="/community_home" data-page="community">커뮤니티</a></li>
         </ul>
         <div class="header-navbar-auth">
                 <c:choose>
