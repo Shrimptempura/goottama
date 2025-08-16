@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .requestMatchers(
                                 "/",
+                                "/notice/**",
                                 "/login_view",
                                 "/join_view",
                                 "/join",
@@ -61,7 +62,7 @@ public class SecurityConfig {
                                 "/checkDuplicateNickname",
                                 "/successJoin_view",
                                 "/admin/reports/submit_report",
-                                "admin/reports/close_window",
+                                "/admin/reports/close_window",
                                 "/css/**", "/js/**"
                         ).permitAll()
                         .requestMatchers("/admin/reports/reportForm").authenticated()
