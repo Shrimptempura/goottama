@@ -1083,7 +1083,7 @@ function saveproductliketodatabase() {
 						        onclick="location.href='report_write_view?targetType=shop&targetId=${review.review_id}'">
 						    신고하기
 						</button>-->
-        				
+        				<!---->
         			</div>
         		</div>
         	</c:forEach>
