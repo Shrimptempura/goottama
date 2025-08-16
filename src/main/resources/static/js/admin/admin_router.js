@@ -41,6 +41,10 @@ function loadContent(menuType) {
             targetUrl = '/admin/reviews/reviews_page';
             break;
 
+        case 'withdrawals':
+            targetUrl = '/admin/withdrawal/withdrawal_reason_page';
+            break;
+
         default:
             targetUrl = '/admin/admin_dashboard';
             break;
@@ -72,6 +76,7 @@ async function callSpecificPageJSFunction(menuType) {
         'posts' : '/static/js/admin/page-scripts/PostPageScript.js',
         'reviews' : '/static/js/admin/page-scripts/ReviewPageScript.js',
         'statistics' : '/static/js/admin/page-scripts/StatisticsPageScript.js',
+        'withdrawals' : '/static/js/admin/page-scripts/WithdrawalPageScript.js',
         'logs' : '/static/js/admin/page-scripts/LogsPageScript.js'
     };
 
@@ -109,6 +114,7 @@ function callSpecificPageInitFunction(menuType) {
         'posts': () => typeof initPostPage === 'function' ? initPostPage() : console.error("initPostPage not found"),
         'dashboard': () => typeof initDashboardPage === 'function' ? initDashboardPage() : console.error("initDashboardPage not found"),
         'logs': () => typeof initLogPage === 'function' ? initLogPage() : console.error("initLogPage not found"),
+        'withdrawals': () => typeof initWithdrawalPage === 'function' ? initWithdrawalPage() : console.error("initWithdrawalPage not found"),
         'sanctions': () => typeof initSanctionPage === 'function' ? initSanctionPage() : console.error("initSanctionPage not found")
     };
 

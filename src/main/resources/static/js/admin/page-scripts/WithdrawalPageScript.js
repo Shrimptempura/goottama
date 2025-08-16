@@ -1,7 +1,7 @@
-// StatisticsPageScript.js
-function initStatisticsPage() {
-    const form = document.getElementById("statisticsSearchForm");
-    const container = document.getElementById("statisticsListContainer");
+// WithdrawalPageScript.js
+function initWithdrawalPage() {
+    const form = document.getElementById("withdrawalReasonSearchForm");
+    const container = document.getElementById("withdrawalReasonListContainer");
 
     // 초기 로드 시점에도 페이지 버튼에 이벤트 바인딩
     bindPageButtons();
@@ -13,13 +13,13 @@ function initStatisticsPage() {
         const formData = new FormData(form);
         formData.set("page", 1); // 검색 시 항상 1페이지로
 
-        await fetchStatisticsList(formData);
+        await fetchWithdrawalList(formData);
     });
 
     // 공지 목록을 비동기적으로 가져오는 함수
-    async function fetchStatisticsList(formData) {
+    async function fetchWithdrawalList(formData) {
         try {
-            const response = await fetch("/admin/statistics/statistics_list", {
+            const response = await fetch("/admin/withdrawal/withdrawal_reason_list", {
                 method: "POST",
                 body: formData,
             });
@@ -49,7 +49,7 @@ function initStatisticsPage() {
                     const formData = new FormData(form);
                     formData.set("page", page); // 숨겨진 페이지 input 값을 직접 업데이트하는 대신 formData에 설정
 
-                    await fetchStatisticsList(formData);
+                    await fetchWithdrawalList(formData);
                 };
             }
         });

@@ -9,4 +9,5 @@
         <button data-menu="reviews">Reviews</button>
         <button data-menu="posts">Posts</button>
         <button data-menu="sanctions">Sanctions</button>
+        <button data-menu="withdrawals">Withdrawal Reason</button>
     </div>
