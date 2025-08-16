@@ -42,8 +42,6 @@
     </select>
 
     <!-- 게시글 내 댓글 전체 조회 -->
-    <!-- 댓글 같은 경우는 댓글 조회후 file 조회를 하면 너무 여러번 반복이라 -->
-    <!-- file을 조인함 -->
     <select id="findCommentsByPostId" resultType="com.ama.don.interior.dto.comment.CompanyCommentTreeDto">
         SELECT
             c.user_id AS userId,

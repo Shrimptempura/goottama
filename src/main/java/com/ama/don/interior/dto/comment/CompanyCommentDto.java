@@ -1,5 +1,6 @@
 package com.ama.don.interior.dto.comment;
 
+import com.ama.don.common.enums.TargetType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,10 @@ public class CompanyCommentDto {
     private String commentContent;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private boolean isDeleted;
+    private Boolean deleted;
+
+    private Long targetId;
+    private TargetType targetType;
     
     // 댓글 이미지
     private String userProfileImgPath;
