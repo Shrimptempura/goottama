@@ -1077,6 +1077,12 @@ function saveproductliketodatabase() {
 	 						<button class="review-delete" onclick="location.href='review_delete?review_id=${review.review_id }&target_id=${review.target_id }&user_id=${review.user_id }'">삭제버튼</button>
 	        				<button class="review-update" onclick="location.href='review_update_view?review_id=${review.review_id }'">수정버튼</button>
         				</c:if>
+						
+						<!--신고버튼-->
+						<!--<button class="review-report" 
+						        onclick="location.href='report_write_view?targetType=shop&targetId=${review.review_id}'">
+						    신고하기
+						</button>-->
         				
         			</div>
         		</div>
@@ -1162,7 +1168,7 @@ function saveproductliketodatabase() {
 		                    <div class="inquiry-actions" style="display: none;">
 		                        <button class="btn-edit" onclick="location.href='product_inquiry_update_view?pinquiry_id=${inquiry.pinquiry_id}'">수정</button>
 		                        <button class="btn-delete" onclick="location.href='product_inquiry_delete?pinquiry_id=${inquiry.pinquiry_id}&user_id=${inquiry.user_id}&product_id=${inquiry.product_id }'">삭제</button>
-		                    </div>
+							</div>
 		                </div>
 		                
 		                <div class="inquiry-content">
