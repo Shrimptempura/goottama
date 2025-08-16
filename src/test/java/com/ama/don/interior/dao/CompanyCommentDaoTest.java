@@ -88,7 +88,7 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         CompanyCommentCreateDto thirdComment = createComment(thirdUserId, companyPostId, "세 번째 댓글");
 
         // 댓글 리스트
-        List<CompanyCommentTreeDto> list = companyCommentDao.findCommentsByPostId(companyPostId);
+        List<CompanyCommentTreeDto> list = companyCommentDao.findCommentsByPostId(companyPostId, TargetType.INTERIOR_POST);
 
         assertThat(list.size()).isEqualTo(3);
         assertThat(list)
@@ -246,7 +246,7 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         Long replyCommentId = replyComment.getCommentId();
 
         // 전체 댓글 리스트 조회
-        List<CompanyCommentTreeDto> list = companyCommentDao.findCommentsByPostId(companyPostId);
+        List<CompanyCommentTreeDto> list = companyCommentDao.findCommentsByPostId(companyPostId, TargetType.INTERIOR_POST);
         assertThat(list.size()).isEqualTo(2);
 
         // 부모 댓글이 있는지 확인 
@@ -291,7 +291,7 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         CompanyCommentCreateDto lastComment = createComment(thirdUserId, companyPostId, "세번째 댓글");
 
         // 전체 댓글 리스트 조회
-        List<CompanyCommentTreeDto> list = companyCommentDao.findCommentsByPostId(companyPostId);
+        List<CompanyCommentTreeDto> list = companyCommentDao.findCommentsByPostId(companyPostId, TargetType.INTERIOR_POST);
         assertThat(list.size()).isEqualTo(4);
 
         int commentCount = companyCommentDao.countCommentsByTarget(companyPostId, TargetType.INTERIOR);
@@ -320,7 +320,7 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         CompanyCommentCreateDto thirdComment = createComment(otherUserId, companyPostId, "세번째 댓글");
 
         // 댓글 조회
-        List<CompanyCommentTreeDto> list = companyCommentDao.findCommentsByPostId(companyPostId);
+        List<CompanyCommentTreeDto> list = companyCommentDao.findCommentsByPostId(companyPostId, TargetType.INTERIOR_POST);
         assertThat(list).hasSize(3);
 
         // 게시글 삭제전 댓글 전체 삭제 경우
@@ -328,7 +328,7 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         assertThat(allDeleted).isEqualTo(3);
 
         // 댓글 조회 및 확인
-        for (CompanyCommentTreeDto comment : companyCommentDao.findCommentsByPostId(companyPostId)) {
+        for (CompanyCommentTreeDto comment : companyCommentDao.findCommentsByPostId(companyPostId, TargetType.INTERIOR_POST)) {
             assertThat(comment.isDeleted()).isTrue();
         }
     }
