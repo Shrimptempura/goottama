@@ -45,7 +45,13 @@
         </div>
     </div>
     <div class="footer-bottom">
+        <p style="font-family: 'Courier New', monospace; font-size: 1.2em;">
+           i&#295; &part;&#936;(r,t)/&part;t = Ĥ&#936;(r,t)
+         </p>
         <p>&copy; 2025 Goott Armageddon All Rights Reserved.</p>
+
+
+
     </div>
 </footer>
 
