@@ -59,11 +59,11 @@
     </delete>
     
       <!-- 5-1. 장바구니 단일 품목 지우기 -->
-    <delete id="cart_update" parameterType="map">
+    <update id="cart_update" parameterType="map">
         update cart 
     	set cart_quantity = #{cart_quantity}
     	where cart_id = #{cart_id}
-    </delete>
+    </update>
     
     
     

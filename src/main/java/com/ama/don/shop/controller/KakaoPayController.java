@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import com.ama.don.admin.service.userManage.CustomUserDetailsService;
 import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.service.LoginMemberService;
 import com.ama.don.shop.dao.ShopIDao;
@@ -27,6 +27,7 @@ import com.ama.don.shop.service.Kakaopay.ShopKakaopayService;
 import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
 import com.ama.don.shop.service.orderservice.ShopOrderViewService;
 import com.ama.don.shop.service.productinquiry.ShopProductInquiryDetailService;
+import com.ama.don.shop.service.productlike.ShopProductLikeDetailService;
 import com.ama.don.shop.service.reviewservice.ShopReviewDetailService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,8 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class KakaoPayController{
+
+    private final CustomUserDetailsService customUserDetailsService;
 	
 	
 	@Autowired
@@ -46,6 +49,10 @@ public class KakaoPayController{
 	 
 	@Autowired
 	private ShopIDao iDao;
+
+    KakaoPayController(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+    }
  
 /// ✅ 즉시 적용 - 카카오페이 콜백용 Controller 수정
 
@@ -416,6 +423,17 @@ public String kakaoPayFail(
 	 
 	 
 	 return "shop/product_inquiry_details";
+ }
+ 
+ @RequestMapping("/shop/product_like_details")
+ public String product_like_details(HttpServletRequest request,Model model) {
+	 
+	 System.out.println("product_like_details");
+	 
+	 shopServiceinter=new ShopProductLikeDetailService(iDao);
+	 shopServiceinter.execute(model);
+	 
+	 return "shop/product_like_details";
  }
  
  

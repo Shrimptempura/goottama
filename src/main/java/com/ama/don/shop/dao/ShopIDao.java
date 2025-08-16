@@ -17,6 +17,7 @@ import com.ama.don.shop.dto.Orders_productsDto;
 import com.ama.don.shop.dto.PaymentDto;
 import com.ama.don.shop.dto.ProductDto;
 import com.ama.don.shop.dto.ProductFlatDto;
+import com.ama.don.shop.dto.ProductLikeFlatDto;
 import com.ama.don.shop.dto.ShopProductInquiryFlatDto;
 import com.ama.don.shop.dto.ShopReviewFlatDto;
 
@@ -79,6 +80,15 @@ public interface ShopIDao {
 	public ArrayList<ShopProductInquiryFlatDto> product_reply(Long pinquiry_id);  				//답글 존재 여부 확인
 	public void product_reply_write(Long pinquiry_id, String preply_content);					//답글 작성
 	public void product_reply_delete(Long pinquiry_id);											//답글 삭제
+	
+	
+	//product_like
+	public ArrayList<ProductLikeFlatDto> product_like_list(Long userid);				//찜 상품 리스트
+	public String product_like_status(Long user_id, Long product_id);					//찜 조회
+	public void product_like_write(Long user_id, Long product_id, String plike_islike);		//작성
+	public void product_like_update(Long user_id, Long product_id, String plike_islike); 		//수정
+	public void product_like_delete(Long user_id, Long product_id);							//삭제	
+	
 	//Order iDao
     
 	public void order_write(OrdersDto ordersDto);							
@@ -113,5 +123,4 @@ public interface ShopIDao {
 	// 로그 기록용 메서드
 	public Long findLatestProductInquiryByUserIdAndTargetId(Long userId, String targetId);
 	public Long findLatestOrderIdByUserId(Long userId);
-
 }

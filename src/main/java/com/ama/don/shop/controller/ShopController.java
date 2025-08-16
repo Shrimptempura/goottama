@@ -36,7 +36,7 @@ import com.ama.don.shop.service.cart.ShopCartWriteService;
 import com.ama.don.shop.service.category.ShopCategoryService;
 import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
 import com.ama.don.shop.service.orderservice.ShopOrderModifyViewService;
-import com.ama.don.shop.service.orderservice.ShopOrderUpdateSerivce;
+import com.ama.don.shop.service.orderservice.ShopOrderUpdateService;
 import com.ama.don.shop.service.orderservice.ShopOrderViewService;
 import com.ama.don.shop.service.orderservice.ShopOrderWriteService;
 import com.ama.don.shop.service.product.ShopProductHighSalesService;
@@ -49,6 +49,7 @@ import com.ama.don.shop.service.productinquiry.ShopProductInquiryUpdateService;
 import com.ama.don.shop.service.productinquiry.ShopProductInquiryUpdateViewService;
 import com.ama.don.shop.service.productinquiry.ShopProductReplyViewService;
 import com.ama.don.shop.service.productinquiry.ShopProductReplyWriteService;
+import com.ama.don.shop.service.productlike.ShopProductLikeService;
 import com.ama.don.shop.service.reviewservice.ShopReviewDeleteService;
 import com.ama.don.shop.service.reviewservice.ShopReviewUpdateService;
 import com.ama.don.shop.service.reviewservice.ShopReviewUpdateViewService;
@@ -169,6 +170,27 @@ public class ShopController {
 		shopServiceinter.execute(model);
 
 		return "shop/product_detail";
+	}
+	
+	
+	@RequestMapping("/shop/product_like")
+	public String product_like(HttpServletRequest request,Model model) {
+		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
+		model.addAttribute("request",request);
+		shopServiceinter=new ShopProductLikeService(iDao);
+		shopServiceinter.execute(model);
+		
+		
+		System.out.println("product_like");
+		//
+		String product_id=request.getParameter("product_id");
+		Long productid=Long.parseLong(product_id);
+		
+		return "redirect:/shop/product_detail?product_id="+productid;
 	}
 	
 	@RequestMapping("/shop/review_write_view")
@@ -439,6 +461,10 @@ public class ShopController {
 	@RequestMapping("/shop/cart")
 	public String cart(HttpServletRequest request, Model model) {
 		
+		LoginMemberService loginMemberService=new LoginMemberService();
+		MemberDto memberDto=loginMemberService.getCurrentLoginMemberDto();
+		model.addAttribute("loginMember",memberDto);
+		
 		System.out.println("cartlist");
 		model.addAttribute("request", request);
 		shopServiceinter = new ShopCartService(iDao);
@@ -549,7 +575,7 @@ public class ShopController {
 		model.addAttribute("loginMember",memberDto);
 		
 		model.addAttribute("request",request); 
-		shopServiceinter=new ShopOrderUpdateSerivce(iDao); 
+		shopServiceinter=new ShopOrderUpdateService(iDao); 
 		shopServiceinter.execute(model);
 		String order_id = request.getParameter("order_id");
 	

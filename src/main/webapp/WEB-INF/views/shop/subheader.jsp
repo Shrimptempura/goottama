@@ -94,6 +94,10 @@ function goToProductInquiryDetail(){
 	location.href = "product_inquiry_details";
 }
 
+//찜 상세로 이동
+function goToProductLikeDetail(){
+	location.href="product_like_details";
+}
 
 </script>
 
@@ -104,10 +108,12 @@ function goToProductInquiryDetail(){
     <a href="best">Best</a>
     <a href="javascript:void(0)" onclick="goToCart()">Cart</a>
     <a href="javascript:void(0)" onclick="goToOrderDetails()">Order Details</a>
-   <!--  <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
+   <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
     <a href="javascript:void(0)" onclick="goToReviewDetail()">review</a>
-    <a href="javascript:void(0)" onclick="goToProductInquiryDetail()">product_inquiry</a> -->
+    <a href="javascript:void(0)" onclick="goToProductInquiryDetail()">product_inquiry</a>
+	<a href="javascript:void(0)" onclick="goToProductLikeDetail()">product_like</a>
     <!--  -->
+    
    
 </div>
 </body>

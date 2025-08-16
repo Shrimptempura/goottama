@@ -4,12 +4,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+
 <!DOCTYPE html>
 <html>
 <head>
 <%@ include file="subheader.jsp" %>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
+<!--font awesome-->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
 </head>
 
 <style>
@@ -84,6 +89,49 @@
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     box-sizing: border-box;
     object-fit: cover;
+}
+
+/* 좋아요 기능 수정된 스타일 */
+.product-like {
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.like-btn {
+    cursor: pointer;
+    font-size: 24px;
+    color: #333;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.like-btn:hover {
+    background-color: #f8f9fa;
+}
+
+.like-btn .fa-heart {
+    transition: color 0.3s ease;
+}
+
+.like-btn .fa-solid {
+    color: #ff5a5f; /* 좋아요 눌렀을 때 빨간색 */
+}
+
+.like-btn .fa-regular {
+    color: #666; /* 기본 상태는 회색 */
+}
+
+.like-count {
+    font-weight: bold;
+    color: #333;
 }
 
 .bottombar{
@@ -822,6 +870,9 @@ function deleteInquiry(inquiryId) {
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', function() {
     console.log('페이지 로드 완료, 문의 확인 시작');
+	
+	//
+	initializeLikeStatus();
     checkMyInquiries();
 });
 
@@ -855,8 +906,78 @@ function debugInquiries() {
                 }
             });
         });
+		
+// 전역 변수로 현재 좋아요 상태 관리
+let isLiked = false;
+		
+// 서버에서 받은 초기 좋아요 상태로 UI 설정
+function initializeLikeStatus() {
+    const initialStatus = '${userLikeStatus}'; // 서버에서 전달: 'Y', 'N', 또는 null
+    const likeBtn = document.getElementById('likeBtn');
+    
+    console.log('서버에서 받은 초기 상태:', initialStatus);
+    
+    if (likeBtn) {
+        const likeIcon = likeBtn.querySelector('i');
         
-       
+        if (initialStatus === 'Y') {
+            // 이미 좋아요한 상태
+            likeIcon.classList.remove('fa-regular');
+            likeIcon.classList.add('fa-solid');
+            isLiked = true;
+            console.log('초기 상태: 좋아요 (빨간 하트)');
+        } else {
+            // 좋아요하지 않은 상태 (N 또는 null)
+            likeIcon.classList.remove('fa-solid');
+            likeIcon.classList.add('fa-regular');
+            isLiked = false;
+            console.log('초기 상태: 좋아요 안함 (빈 하트)');
+        }
+    }
+}
+
+// 좋아요 버튼 클릭 - Y/N 전송 방식
+function saveproductliketodatabase() {
+    const likeBtn = document.getElementById('likeBtn');
+    const likeIcon = likeBtn.querySelector('i');
+    
+    // 현재 상태 토글
+    isLiked = !isLiked;
+    
+    // UI 즉시 업데이트
+    if (isLiked) {
+        // 좋아요 상태로 변경
+        likeIcon.classList.remove('fa-regular');
+        likeIcon.classList.add('fa-solid');
+        console.log('UI 변경: 좋아요 (빨간 하트)');
+    } else {
+        // 좋아요 취소 상태로 변경
+        likeIcon.classList.remove('fa-solid');
+        likeIcon.classList.add('fa-regular');
+        console.log('UI 변경: 좋아요 취소 (빈 하트)');
+    }
+    
+    // 서버로 전송할 값 결정
+    const sendValue = isLiked ? 'Y' : 'N';
+    
+    const userId = getuserid();
+    const productId = '${product.product_id}';
+    
+    console.log('서버로 전송:', {
+        userId: userId,
+        productId: productId,
+        plike_isliked: sendValue,
+        action: sendValue === 'Y' ? '좋아요 저장' : '좋아요 삭제'
+    });
+    
+    // 서버로 전송
+    const url = "product_like?product_id=" + productId + 
+               "&user_id=" + userId + 
+               "&plike_islike=" + sendValue;
+    
+    console.log('전송 URL:', url);
+    location.href = url;
+}
 
 </script>
 
@@ -890,7 +1011,20 @@ function debugInquiries() {
                 </c:if>
             </div>
         </div>
-
+		
+		<!-- 좋아요 및 북마크 버튼 (수정됨) -->
+		<div class="product-like">
+		    <!-- onclick을 button에 추가하고, id="likeCount" 추가 -->
+		    <button id="likeBtn" class="like-btn" onclick="saveproductliketodatabase()">
+		        <i class="fa-regular fa-heart"></i>	
+				<p>${userLikeStatus }</p>
+		    </button>
+		    
+		    <!--<button class="bookmark-btn">
+		        <i class="fa-regular fa-bookmark"></i>
+		    </button>-->
+		</div>
+		
         <!-- 하단바 (이미지 아래) -->
         <div class="bottombar">
             <ul>
@@ -943,7 +1077,13 @@ function debugInquiries() {
 	 						<button class="review-delete" onclick="location.href='review_delete?review_id=${review.review_id }&target_id=${review.target_id }&user_id=${review.user_id }'">삭제버튼</button>
 	        				<button class="review-update" onclick="location.href='review_update_view?review_id=${review.review_id }'">수정버튼</button>
         				</c:if>
-        				
+						
+						<!--신고버튼-->
+						<!--<button class="review-report" 
+						        onclick="location.href='report_write_view?targetType=shop&targetId=${review.review_id}'">
+						    신고하기
+						</button>-->
+        				<!---->
         			</div>
         		</div>
         	</c:forEach>
@@ -1028,7 +1168,7 @@ function debugInquiries() {
 		                    <div class="inquiry-actions" style="display: none;">
 		                        <button class="btn-edit" onclick="location.href='product_inquiry_update_view?pinquiry_id=${inquiry.pinquiry_id}'">수정</button>
 		                        <button class="btn-delete" onclick="location.href='product_inquiry_delete?pinquiry_id=${inquiry.pinquiry_id}&user_id=${inquiry.user_id}&product_id=${inquiry.product_id }'">삭제</button>
-		                    </div>
+							</div>
 		                </div>
 		                
 		                <div class="inquiry-content">

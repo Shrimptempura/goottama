@@ -108,10 +108,9 @@ input[type="text"], input[type="email"], input[type="tel"], textarea {
 <form id="orderForm" action="/shop/kakaopay" method="post">
 	
 	<!-- 세션에서 user_id 가져오기, 없으면 기본값 1 -->
-	<c:set var="currentUserId" value="${not empty sessionScope.user_id ? sessionScope.user_id : '1'}" />
+	<c:set var="currentUserId" value="${not empty loginMember.user_id ? loginMember.user_id : '1'}" />
 	<input type="hidden" name="user_id" value="${currentUserId}">
 	<input type="hidden" name="order_id" value="0">
-    
     <!-- 주문자 정보 -->
     <h3>주문자 정보</h3>
     <table border="1">
@@ -434,10 +433,12 @@ function findAddress() {
 
 // 세션에서 user_id 가져오는 함수
 function getUserId() {
-    let userId = '${sessionScope.user_id}';
+    let userId = '${loginMember.user_id}';
     if (!userId || userId.trim() === '' || userId === 'null') {
         userId = '1'; // 기본값으로 1 사용
+		
     }
+	console.log('user_id:'+userId);
     return userId;
 }
 
