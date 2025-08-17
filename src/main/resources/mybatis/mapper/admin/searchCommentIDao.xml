@@ -17,6 +17,12 @@
         FROM comments
     </select>
 
+    <select id="countNewCommentsLast24Hours" resultType="int">
+        SELECT COUNT(*)
+        FROM comments
+        WHERE CREATED_AT >= NOW() - INTERVAL 1 DAY
+    </select>
+
     <select id="getCommentByCommentId" resultType="com.ama.don.admin.dto.commentsForAdminDTO.CommentsForAdminDTO">
         SELECT COMMENT_ID, USER_ID, COMMENT_CONTENT, CREATED_AT, MODIFIED_AT, IS_DELETED, TARGET_ID, TARGET_TYPE
         FROM comments

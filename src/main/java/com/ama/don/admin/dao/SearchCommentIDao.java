@@ -46,4 +46,6 @@ public interface SearchCommentIDao {
      * @return
      */
     int countSearchComment(@Param("commentsSearchForAdminDTO") CommentsSearchForAdminDTO commentsSearchForAdminDTO);
+
+    int countNewCommentsLast24Hours();
 }

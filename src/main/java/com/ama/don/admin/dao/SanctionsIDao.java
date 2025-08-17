@@ -101,4 +101,6 @@ public interface SanctionsIDao {
      * @return 성공 시 true, 실패 시 false
      */
     int deleteSanction(String userId);
+
+    List<SanctionsDTO> recent5Sanctions();
 }

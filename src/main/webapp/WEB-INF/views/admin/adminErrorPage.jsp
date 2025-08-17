@@ -9,7 +9,7 @@
     <title>관리자 에러페이지</title>
 </head>
 <body>
-    <div style="border: 1px solid red; padding: 20px; background-color: #ffe6e6;">
+    <div style="border: 1px solid red; padding: 20px; background-color: #ffe6e6; color: #212121;">
         <h1>🚨 관리자 시스템 오류</h1>
 
         <c:if test="${not empty errorTitle}">

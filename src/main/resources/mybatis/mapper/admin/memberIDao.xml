@@ -69,6 +69,26 @@
         WHERE USER_ID = #{userId}
     </update>
 
+    <select id="countNewUsersLast24Hours" resultType="int">
+        SELECT COUNT(*)
+        FROM user_detail
+        WHERE USER_CREATED_AT >= NOW() - INTERVAL 1 DAY
+    </select>
+
+    <select id="countNewUsersLast7Days" resultType="int">
+        SELECT COUNT(*)
+        FROM user_detail
+        WHERE USER_CREATED_AT >= NOW() - INTERVAL 7 DAY
+    </select>
+
+    <select id="getDailyUserRegistrations" resultType="java.util.Map">
+        SELECT DATE(USER_CREATED_AT) AS registration_date, COUNT(USER_ID) AS user_count
+        FROM user_detail
+        WHERE USER_CREATED_AT >= NOW() - INTERVAL 30 DAY
+        GROUP BY registration_date
+        ORDER BY registration_date ASC
+    </select>
+
     <select id="searchUsers" resultType="com.ama.don.admin.dto.userDTO.UserTotalDataDTO">
         SELECT
         D.USER_ID, D.USER_NAME, D.USER_NICKNAME, D.USER_GENDER, D.USER_BIRTH, D.USER_CREATED_AT, D.USER_TEL, D.USER_ZIPCODE, D.USER_ADDR, D.USER_EMAIL, D.USER_IMG, D.USER_STATUS, D.USER_SANCTIONS_UNTIL, L.ROLES_ID, L.LOGIN_ID

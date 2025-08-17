@@ -29,6 +29,12 @@
         SELECT COUNT(*) FROM post
     </select>
 
+    <select id="countNewPostsLast24Hours" resultType="int">
+        SELECT COUNT(*)
+        FROM post
+        WHERE post_date >= NOW() - INTERVAL 1 DAY
+    </select>
+
     <select id="getPostByPostId" resultType="com.ama.don.admin.dto.postForAdminDTO.PostForAdminDTO">
         SELECT
             COALESCE(cp.company_post_id, p.post_id) AS post_id,

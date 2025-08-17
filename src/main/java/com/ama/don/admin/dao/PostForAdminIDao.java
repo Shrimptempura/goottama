@@ -21,4 +21,6 @@ public interface PostForAdminIDao {
                                      @Param("postSearchForAdminDTO") PostSearchForAdminDTO postSearchForAdminDTO);
 
     int countSearchPost(@Param("postSearchForAdminDTO") PostSearchForAdminDTO postSearchForAdminDTO);
+
+    int countNewPostsLast24Hours();
 }
