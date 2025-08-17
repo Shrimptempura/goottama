@@ -3,10 +3,12 @@ package com.ama.don.interior.controller;
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dao.CompanyPostDao;
+import com.ama.don.interior.dto.comment.CompanyCommentTreeDto;
 import com.ama.don.interior.dto.post.CompanyPostCreateDto;
 import com.ama.don.interior.dto.post.CompanyPostDetailView;
 import com.ama.don.interior.dto.post.CompanyPostUpdateDto;
 import com.ama.don.interior.service.CompanyAuthService;
+import com.ama.don.interior.service.CompanyCommentService;
 import com.ama.don.interior.service.CompanyPostService;
 import com.ama.don.interior.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +31,7 @@ public class CompanyPostController {
     private final CompanyPostService companyPostService;
     private final CompanyAuthService companyAuthService;
     private final FileService fileService;
+    private final CompanyCommentService companyCommentService;
 
     // 게시글 작성 폼
     @GetMapping("/interior/myhome/{companyId}/posts/new")
@@ -66,6 +69,9 @@ public class CompanyPostController {
         // 본인 인증
         boolean isOwner = companyAuthService.isOwner(detail.getPost().getCompanyId());
         model.addAttribute("isOwner", isOwner);
+
+        List<CompanyCommentTreeDto> comments = companyCommentService.listComments(companyPostId);
+        model.addAttribute("comments", comments);
 
         return "interior/post/detail";
     }
@@ -116,6 +122,16 @@ public class CompanyPostController {
             ra.addFlashAttribute("error", "삭제 중 오류가 발생했습니다.");
             return "redirect:/interior/posts/" + companyPostId;
         }
+    }
+
+    // 댓글 작성
+    @PostMapping("/interior/posts/{companyPostId}/comments")
+    public String addComment(@PathVariable Long companyPostId,
+                             @RequestParam(required = false) Long parentCommentId,
+                             @RequestParam("content") String content) {
+        companyCommentService.addComment(companyPostId, parentCommentId, content);
+
+        return "redirect:/interior/posts/" + companyPostId;
     }
 
 

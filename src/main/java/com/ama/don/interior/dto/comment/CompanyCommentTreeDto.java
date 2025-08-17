@@ -23,7 +23,7 @@ public class CompanyCommentTreeDto {
     private String commentContent;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private boolean isDeleted;
+    private Boolean deleted;
 
     // 댓글 이미지
     private String userProfileImgPath;

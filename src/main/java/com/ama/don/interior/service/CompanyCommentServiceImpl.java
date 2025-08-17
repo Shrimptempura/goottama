@@ -5,12 +5,16 @@ import com.ama.don.interior.dao.CompanyCommentDao;
 import com.ama.don.interior.dao.CompanyPostDao;
 import com.ama.don.interior.dto.comment.CompanyCommentCreateDto;
 import com.ama.don.interior.dto.comment.CompanyCommentDto;
+import com.ama.don.interior.dto.comment.CompanyCommentTreeDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.tags.shaded.org.apache.xpath.operations.Bool;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -70,14 +74,26 @@ public class CompanyCommentServiceImpl implements CompanyCommentService {
         return createDto.getCommentId();
     }
 
+    // 댓글 단건 조회
     @Override
     public CompanyCommentDto getCommentDetail(Long commentId) {
         return null;
     }
 
+    // 댓글 리스트 전체 조회
     @Override
-    public List<CompanyCommentDto> listComments(Long companyPostId) {
-        return List.of();
+    public List<CompanyCommentTreeDto> listComments(Long companyPostId) {
+        if (companyPostId == null || companyPostId <= 0) {
+            log.warn("CompanyCommentService - 유효하지 않은 게시글 아이디 입니다. - companyPostId: {}", companyPostId);
+            throw new IllegalArgumentException("companyPostId는 1 이상이어야 합니다.");
+        }
+
+        List<CompanyCommentTreeDto> comments = companyCommentDao.findCommentsByPostId(companyPostId, TargetType.INTERIOR_POST);
+        if (comments == null || comments.isEmpty()) {
+            return List.of();
+        }
+
+        return comments;
     }
 
     @Override
@@ -118,7 +134,7 @@ public class CompanyCommentServiceImpl implements CompanyCommentService {
 
     // 대댓글 확인
     private Long parentCommentCheck(Long companyPostId, Long parentCommentId) {
-        if (parentCommentId == null || parentCommentId < 0) {
+        if (parentCommentId == null || parentCommentId <= 0) {
             return null;
         }
 
@@ -136,7 +152,7 @@ public class CompanyCommentServiceImpl implements CompanyCommentService {
             throw new IllegalArgumentException("부모 댓글의 타입이 일치 하지 않습니다. parent.targetType: " + parent.getTargetType());
         }
 
-        if (parent.getDeleted().equals(Boolean.TRUE)) {
+        if (Boolean.TRUE.equals(parent.getDeleted())) {
             throw new IllegalArgumentException("삭제된 댓글에는 대댓글을 달 수 없습니다.");
         }
 

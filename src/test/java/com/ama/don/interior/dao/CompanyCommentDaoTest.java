@@ -166,7 +166,7 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         getComment = companyCommentDao.findById(commentId);
 
         assertThat(deleted).isEqualTo(1);
-        assertThat(getComment.isDeleted()).isEqualTo(true);
+        assertThat(getComment.getDeleted()).isEqualTo(true);
     }
 
     @DisplayName("업체 게시글에 쓰는 대댓글, 깊이는 1")
@@ -329,7 +329,7 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
 
         // 댓글 조회 및 확인
         for (CompanyCommentTreeDto comment : companyCommentDao.findCommentsByPostId(companyPostId, TargetType.INTERIOR_POST)) {
-            assertThat(comment.isDeleted()).isTrue();
+            assertThat(comment.getDeleted()).isTrue();
         }
     }
 }
