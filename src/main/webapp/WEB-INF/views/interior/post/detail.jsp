@@ -72,6 +72,20 @@
 <hr/>
 <%--  댓글 테스트 --%>
 <h3>댓글</h3>
+<form action="<c:url value='/interior/posts/${detail.post.companyPostId}/comments'/>" method="post"
+        style="margin-bottom: 10px;">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+    <textarea name="content" rows="3" cols="70" required placeholder="댓글 내용을 입력하세요"></textarea>
+    <button type="submit">등록</button>
+</form>
+
+<c:forEach items="${comments}" var="cmt">
+    <c:if test="${cmt.parentCommentId == null}">
+        <div>
+            ${cmt.userId} - ${cmt.createdAt}
+        </div>
+    </c:if>
+</c:forEach>
 
 
 
