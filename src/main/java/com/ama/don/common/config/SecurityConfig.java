@@ -63,6 +63,7 @@ public class SecurityConfig {
                                 "/successJoin_view",
                                 "/admin/reports/submit_report",
                                 "/admin/reports/close_window",
+                                "/static/**",
                                 "/css/**", "/js/**"
                         ).permitAll()
                         .requestMatchers("/admin/reports/reportForm").authenticated()
