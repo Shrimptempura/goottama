@@ -54,7 +54,8 @@ public class WithdrawalReasonController {
     }
 
     @GetMapping("/admin/withdrawal/withdrawal_reason_modal")
-    public String withdrawalDataModal(Model model, @RequestParam("withdrawalId") Long withdrawalId){
+    public String withdrawalDataModal(Model model,
+                                      @RequestParam("withdrawalId") Long withdrawalId){
         model.addAttribute("withdrawalId", withdrawalId);
         getWithdrawalDetail.execute(model);
         return "admin/withrawal_reason/withdrawal_reason_modal";

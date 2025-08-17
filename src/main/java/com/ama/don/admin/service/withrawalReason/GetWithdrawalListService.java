@@ -34,8 +34,8 @@ public class GetWithdrawalListService {
                 (withdrawalReasonSearchDTO.getWithdrawal_reason() == null || withdrawalReasonSearchDTO.getWithdrawal_reason().isEmpty()) &&
                         withdrawalReasonSearchDTO.getWithdraw_id() == null &&
                         (withdrawalReasonSearchDTO.getWithdrawal_reason_id() == null || withdrawalReasonSearchDTO.getWithdrawal_reason_id().isEmpty()) && // isEmpty() 추가
-                        withdrawalReasonSearchDTO.getWithdrawal_date_start() == null &&
-                        withdrawalReasonSearchDTO.getWithdrawal_date_end() == null) {
+                        (withdrawalReasonSearchDTO.getWithdrawal_date_start() == null || withdrawalReasonSearchDTO.getWithdrawal_date_start().isEmpty()) &&
+                        (withdrawalReasonSearchDTO.getWithdrawal_date_end() == null || withdrawalReasonSearchDTO.getWithdrawal_date_end().isEmpty())) {
             total = withdrawalReasonForAdminIDao.countAllWithdrawalReason();
             withdrawalReasonDTOS = withdrawalReasonForAdminIDao.getAllWithdrawalReason(searchVO);
         // 검색 조건이 있으면 검색된 탈퇴 사유를 가져옴
