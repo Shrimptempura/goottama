@@ -124,15 +124,4 @@ public class CompanyPostController {
         }
     }
 
-    // 댓글 작성
-    @PostMapping("/interior/posts/{companyPostId}/comments")
-    public String addComment(@PathVariable Long companyPostId,
-                             @RequestParam(required = false) Long parentCommentId,
-                             @RequestParam("content") String content) {
-        companyCommentService.addComment(companyPostId, parentCommentId, content);
-
-        return "redirect:/interior/posts/" + companyPostId;
-    }
-
-
 }
