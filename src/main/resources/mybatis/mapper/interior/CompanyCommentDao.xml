@@ -57,7 +57,7 @@
         WHERE
             c.target_type = #{targetType}
             AND c.target_id = #{companyPostId}
-        ORDER BY c.parent_comment_id, c.created_at DESC
+        ORDER BY c.parent_comment_id, c.created_at ASC
     </select>
 
     <!-- 댓글 수정 -->

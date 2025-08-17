@@ -4,6 +4,7 @@ import com.ama.don.common.dao.PostDao;
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.enums.TargetType;
+import com.ama.don.community.service.CommentService;
 import com.ama.don.interior.dao.CompanyPostDao;
 import com.ama.don.interior.dto.post.*;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,7 @@ public class CompanyPostServiceImpl implements CompanyPostService {
     private final CompanyAuthService companyAuthService;
     private final PostDao postDao;
     private final FileService fileService;
+    private final CompanyCommentService companyCommentService;
 
     // 업체 게시글 생성
     @Transactional
@@ -300,6 +302,9 @@ public class CompanyPostServiceImpl implements CompanyPostService {
             throw new AccessDeniedException("삭제 권한이 없습니다.");
         }
 
+        // 댓글, 좋아요, 스크랩
+        companyCommentService.deleteAllByPost(companyPostId);
+
         // 삭제는 하위 -> 상위 순으로
         int child = companyPostDao.deleteCompanyPostById(companyPostId);
         if (child == 0) {
@@ -313,8 +318,6 @@ public class CompanyPostServiceImpl implements CompanyPostService {
             log.error("CompanyService - 상위 게시글 삭제 실패 - postId: {}", postId);
             throw new IllegalStateException("상위 게시글 삭제 실패");
         }
-        
-        // 댓글, 좋아요, 스크랩
 
         try {
             fileService.deleteAllByTargetId(TargetType.INTERIOR_POST, companyPostId);

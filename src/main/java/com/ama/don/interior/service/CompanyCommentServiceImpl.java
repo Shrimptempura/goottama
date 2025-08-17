@@ -6,15 +6,13 @@ import com.ama.don.interior.dao.CompanyPostDao;
 import com.ama.don.interior.dto.comment.CompanyCommentCreateDto;
 import com.ama.don.interior.dto.comment.CompanyCommentDto;
 import com.ama.don.interior.dto.comment.CompanyCommentTreeDto;
+import com.ama.don.interior.dto.comment.CompanyCommentUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.tags.shaded.org.apache.xpath.operations.Bool;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -77,7 +75,17 @@ public class CompanyCommentServiceImpl implements CompanyCommentService {
     // 댓글 단건 조회
     @Override
     public CompanyCommentDto getCommentDetail(Long commentId) {
-        return null;
+        if (commentId == null || commentId <= 0) {
+            log.warn("CompanyCommentService - 유효하지 않은 댓글아이디입니다 - commentId: {}", commentId);
+            throw new IllegalArgumentException("commentId는 1 이상이어야 합니다.");
+        }
+
+        CompanyCommentDto comment = companyCommentDao.findById(commentId);
+        if (comment == null) {
+            throw new IllegalStateException("댓글이 존재하지 않습니다. commentId: " + commentId);
+        }
+
+        return comment;
     }
 
     // 댓글 리스트 전체 조회
@@ -96,19 +104,95 @@ public class CompanyCommentServiceImpl implements CompanyCommentService {
         return comments;
     }
 
+    // 댓글 수정
+    @Transactional
     @Override
     public void updateMyComment(Long commentId, String commentContent) {
+        if (commentId == null || commentId <= 0) {
+            log.warn("CompanyCommentService - 유효하지 않은 아이디 - commentId: {}", commentId);
+            throw new IllegalArgumentException("commentId는 1 이상이어야 합니다.");
+        }
 
+        String content = commentContentCheck(commentId, commentContent);
+        Long userId = companyAuthService.getLoginUserId();
+
+        if (userId == null) {
+            log.warn("CompanyCommentService - 비 로그인 상태 - commentId: {}", commentId);
+            throw new AccessDeniedException("로그인이 필요합니다.");
+        }
+
+        CompanyCommentDto comment = companyCommentDao.findById(commentId);
+
+        if (!userId.equals(comment.getUserId())) {
+            throw new AccessDeniedException("본인의 댓글만 수정 가능합니다.");
+        }
+
+        if (Boolean.TRUE.equals(comment.getDeleted())) {
+            throw new IllegalStateException("삭제된 댓글은 수정 불가능 합니다.");
+        }
+
+        CompanyCommentUpdateDto updateDto = new CompanyCommentUpdateDto();
+        updateDto.setCommentId(commentId);
+        updateDto.setCommentContent(content);
+        updateDto.setUserId(userId);
+
+        int updated = companyCommentDao.updateCompanyComment(updateDto);
+        if (updated != 1) {
+            log.error("CompanyCommentService - 댓글 수정 실패 - commentId: {}, userId: {}", commentId, userId);
+            throw new IllegalStateException("댓글 수정 실패");
+        }
+
+        log.info("CompanyCommentService - 댓글 수정 성공 - commentId: {}, userId: {}", commentId, userId);
     }
 
+    // 댓글 단건 삭제
+    @Transactional
     @Override
     public void deleteMyComment(Long commentId) {
+        if (commentId == null || commentId <= 0) {
+            log.warn("CompanyCommentService - 유효하지 않은 아이디 - commentId: {}", commentId);
+            throw new IllegalArgumentException("commentId는 1 이상이어야 합니다.");
+        }
 
+        Long userId = companyAuthService.getLoginUserId();
+        if (userId == null) {
+            log.warn("CompanyCommentService - 비 로그인 상태 - commentId: {}", commentId);
+            throw new AccessDeniedException("로그인이 필요합니다.");
+        }
+
+        CompanyCommentDto comment = companyCommentDao.findById(commentId);
+
+        if (!userId.equals(comment.getUserId())) {
+            throw new AccessDeniedException("본인의 댓글만 삭제 가능합니다.");
+        }
+
+        if (Boolean.TRUE.equals(comment.getDeleted())) {
+            log.info("CompanyCommentService - 이미 삭제된 댓글 - commentId: {}, userId: {}", commentId, userId);
+            return;
+        }
+
+        // 소프트 삭제
+        int deleted = companyCommentDao.softDeleteCompanyComment(commentId, userId);
+        if (deleted != 1) {
+            log.error("CompanyCommentService - 댓글 삭제 실패 - commentId: {}, userId: {}", commentId, userId);
+            throw new IllegalStateException("댓글 삭제 실패");
+        }
+
+        log.info("CompanyCommentService - 댓글 삭제 성공 - commentId: {}, userId: {}", commentId, userId);
     }
 
+    // 게시글의 모든 댓글 삭제
+    @Transactional
     @Override
     public void deleteAllByPost(Long companyPostId) {
+        if (companyPostId == null || companyPostId <= 0) {
+            log.warn("CompanyCommentService - 유효하지 않은 아이디 - companyPostId: {}", companyPostId);
+            throw new IllegalArgumentException("companyPostId 1 이상이어야 합니다.");
+        }
 
+        // 전체 행
+        int allDeleted = companyCommentDao.softDeleteCommentsByPostId(companyPostId, TargetType.INTERIOR_POST);
+        log.info("CompanyCommentService - 게시글의 전체 댓글 삭제 - companyPostId: {}, allDeleted: {}", companyPostId, allDeleted);
     }
 
     // 댓글 내용 검증
