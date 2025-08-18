@@ -358,4 +358,5 @@ document.querySelector('input[type="file"]').addEventListener('change', function
 </script>
 
 </body>
+<%@ include file="../list.jsp" %>
 </html>

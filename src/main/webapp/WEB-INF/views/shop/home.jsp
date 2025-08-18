@@ -712,4 +712,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 </body>
+<%@ include file="../list.jsp" %>
 </html>

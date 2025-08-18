@@ -303,4 +303,5 @@ body {
 </div>
 
 </body>
+<%@ include file="../list.jsp" %>
 </html>

@@ -12,7 +12,10 @@
 </head>
 <body>
 
+
    <h2>kakaopayredirect</h2>
     
-
+    
+</body>
+<%@ include file="../list.jsp" %>    
 </html>

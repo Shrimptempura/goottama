@@ -8,7 +8,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="../list.jsp" %>
 
 <title>Insert title here</title>
 
@@ -51,8 +50,8 @@
     <c:choose>
         <c:when test="${not empty loginMember.user_id}">
 
-            <span>현재 사용자: 
-                <p>${loginMember.user_nickname }</p> 
+            <span>
+                <p>${loginMember.user_nickname }님 안녕하세요</p> 
             </span>
         </c:when>
        
@@ -66,7 +65,6 @@
 </div>
 
 <h2>subheader</h2>
-
 <script>
 
 // 장바구니로 이동
