@@ -2,7 +2,6 @@ package com.ama.don.member.controller;
 
 
 import java.io.IOException;
-import java.util.List;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,9 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ama.don.common.enums.TargetType;
-import com.ama.don.common.utils.CommunityPageVO;
-import com.ama.don.community.dto.Review.ReviewPostDto;
+import com.ama.don.admin.dto.postForAdminDTO.PostSearchForAdminDTO;
+import com.ama.don.admin.service.postViewerForAdmin.GetPostListService;
+import com.ama.don.admin.utils.SearchVO;
 import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.dto.MemberEditDto;
 import com.ama.don.member.dto.ResetPwDto;
@@ -117,7 +116,16 @@ public class MemberController {
 	}
 	
 	@GetMapping("/mypage/myComment")
-	public String myComment(Model model) {	
+	public String myComment(Model model,MemberDto memberDto,SearchVO searchVO) {	
+		if (searchVO == null) {
+            searchVO = new SearchVO();
+        }
+		model.addAttribute("searchVO", searchVO);
+		PostSearchForAdminDTO dto = new PostSearchForAdminDTO();
+	    model.addAttribute("postSearchForAdminDTO", dto);
+		memberDto=loginMemberService.getCurrentLoginMemberDto();
+		mypageDataService.excute(model, memberDto);
+		
 		return "member/mypage/myComment";
 	}
 	
