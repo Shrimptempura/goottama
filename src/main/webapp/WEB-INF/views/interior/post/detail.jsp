@@ -18,11 +18,15 @@
 
     <div>
         작성일: ${detail.post.postDate}
-        조회수: ${detail.post.companyPostCount}
+        조회수: ${detail.post.companyPostCount} <br/>
+        <c:if test="${not empty detail.post.updatedAt}">
+            수정일: ${detail.post.updatedAt}
+        </c:if>
     </div>
 
     <div>
-        내용: ${detail.post.companyPostContent}
+        제목: ${detail.post.companyPostTitle} <br/>
+        내용: ${detail.post.companyPostContent} <br/>
     </div>
 
     <div>
@@ -38,7 +42,7 @@
     <c:if test="${not empty detail.images}">
         <div>
             <c:forEach items="${detail.images}" var="img">
-                <img src="${img.url}"/>
+                <img src="${img.url}" style="width: 200px; height: 200px;"/>
             </c:forEach>
         </div>
     </c:if>
@@ -50,6 +54,40 @@
     </c:url>
 
     <a href="${backPostUrl}">뒤로가기</a>
+
+    <c:if test="${isOwner}">
+        <c:url var="editUrl" value="/interior/posts/${detail.post.companyPostId}/edit"/>
+        <a href="${editUrl}">수정하기</a>
+    </c:if>
+
+    <c:if test="${isOwner}">
+        <form action="<c:url value='/interior/posts/${detail.post.companyPostId}/delete'/>"
+              method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <input type="hidden" name="companyId" value="${detail.post.companyId}"/>
+            <button type="submit">삭제하기</button>
+        </form>
+    </c:if>
+
+<hr/>
+<%--  댓글 테스트 --%>
+<h3>댓글</h3>
+<form action="<c:url value='/interior/posts/${detail.post.companyPostId}/comments'/>" method="post"
+        style="margin-bottom: 10px;">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+    <textarea name="content" rows="3" cols="70" required placeholder="댓글 내용을 입력하세요"></textarea>
+    <button type="submit">등록</button>
+</form>
+
+<c:forEach items="${comments}" var="cmt">
+    <c:if test="${cmt.parentCommentId == null}">
+        <div>
+            ${cmt.userId} - ${cmt.createdAt}
+        </div>
+    </c:if>
+</c:forEach>
+
+
 
 
 </body>

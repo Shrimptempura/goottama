@@ -1,5 +1,6 @@
 package com.ama.don.interior.dto.post;
 
+import com.ama.don.common.dto.FileDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,6 +27,9 @@ public class CompanyHomePostDto {
     // ui 전달 값x, 테스트 및 필터링
     private LocalDateTime postDate;     // 다형성 생성일
     private String region;              // 지역구
+    
+    // 서비스에서 넣어줄 썸네일
+    private FileDto thumbnail;
 
     // 파일 관련은 다형성 file dto로 서비스에서 해결
     // private String postImg;         // 사진, 썸네일용

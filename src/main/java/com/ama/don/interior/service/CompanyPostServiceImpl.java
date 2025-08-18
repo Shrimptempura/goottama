@@ -4,12 +4,12 @@ import com.ama.don.common.dao.PostDao;
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.enums.TargetType;
+import com.ama.don.community.service.CommentService;
 import com.ama.don.interior.dao.CompanyPostDao;
 import com.ama.don.interior.dto.post.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +28,7 @@ public class CompanyPostServiceImpl implements CompanyPostService {
     private final CompanyAuthService companyAuthService;
     private final PostDao postDao;
     private final FileService fileService;
+    private final CompanyCommentService companyCommentService;
 
     // 업체 게시글 생성
     @Transactional
@@ -84,14 +85,47 @@ public class CompanyPostServiceImpl implements CompanyPostService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<CompanyHomePostDto> getHomePostsLatest() {
-        return List.of();
+        List<CompanyHomePostDto> list = companyPostDao.findCompanyPostByLatest();
+        if (list.isEmpty()) {
+            return list;
+        }
+
+        List<Long> companyPostIds = new ArrayList<>(list.size());
+        for (CompanyHomePostDto dto : list) {
+            companyPostIds.add(dto.getCompanyPostId());
+        }
+        
+        // 썸네일만 배치 조회
+        Map<Long, FileDto> map = fileService.getThumbnailList(TargetType.INTERIOR_POST, companyPostIds);
+        for (CompanyHomePostDto dto : list) {
+            dto.setThumbnail(map.get(dto.getCompanyPostId()));
+        }
+
+        return list;
     }
 
     @Override
     public List<CompanyHomePostDto> getHomePostsRandom() {
-        return List.of();
+        List<CompanyHomePostDto> list = companyPostDao.findCompanyPostByRandom();
+        if (list.isEmpty()) {
+            return list;
+        }
+
+        List<Long> companyPostIds = new ArrayList<>(list.size());
+        for (CompanyHomePostDto dto : list) {
+            companyPostIds.add(dto.getCompanyPostId());
+        }
+
+        // 썸네일만 배치 조회
+        Map<Long, FileDto> map = fileService.getThumbnailList(TargetType.INTERIOR_POST, companyPostIds);
+        for (CompanyHomePostDto dto : list) {
+            dto.setThumbnail(map.get(dto.getCompanyPostId()));
+        }
+
+        return list;
     }
 
     @Override
@@ -127,6 +161,7 @@ public class CompanyPostServiceImpl implements CompanyPostService {
         return posts;
     }
 
+    // 게시글 상세정보
     @Transactional
     @Override
     public CompanyPostDetailView getPostDetail(Long companyPostId) {
@@ -166,19 +201,132 @@ public class CompanyPostServiceImpl implements CompanyPostService {
         return view;
     }
 
+    // 게시글 수정 뷰
+    @Transactional(readOnly = true)
     @Override
     public CompanyPostUpdateDto getEditView(Long companyPostId) {
-        return null;
+        if (companyPostId == null) {
+            log.warn("CompanyPostService - 게시글을 찾을 수 없습니다 - companyPostId: {}", companyPostId);
+            throw new IllegalArgumentException("companyPostId가 없습니다.");
+        }
+
+        // basic은 회사 정보라 수정필요 없음
+        CompanyPostDetailSplitDto post = companyPostDao.getPostAndCompanyPostById(companyPostId);
+        if (post == null) {
+            log.warn("CompanyPostService - 수정 뷰 조회 실패(없음) - companyPostId: {}", companyPostId);
+            throw new IllegalStateException("게시글이 없습니다. companyPostId: " + companyPostId);
+        }
+        Long companyId = post.getCompanyId();
+
+        if (!companyAuthService.isOwner(companyId)) {
+            log.warn("CompanyPostService - 본인 게시글이 아닙니다 권한 없음 - companyPostId: {}", companyPostId);
+            throw new AccessDeniedException("수정 권한이 없습니다.");
+        }
+
+        CompanyPostUpdateDto view = new CompanyPostUpdateDto();
+        view.setCompanyPostId(companyPostId);
+        view.setCompanyPostContent(post.getCompanyPostContent());
+        view.setCompanyPostTitle(post.getCompanyPostTitle());
+        view.setStyle(post.getStyle());
+        view.setAreaPyeong(post.getAreaPyeong());
+        view.setSpaceType(post.getSpaceType());
+        view.setConstructionDetail(post.getConstructionDetail());
+
+        return view;
     }
 
+    // 게시글 수정
+    @Transactional
     @Override
-    public void updatePost(CompanyPostUpdateDto dto) {
+    public void updatePost(CompanyPostUpdateDto dto, List<MultipartFile> files) {
+        if (dto == null || dto.getCompanyPostId() == null) {
+            log.warn("CompanyPostService - 수정 대상의 아이디가 없습니다. - dto: {}", dto);
+            throw new IllegalArgumentException("수정 대상 아이디가 없습니다.");
+        }
+        Long companyPostId = dto.getCompanyPostId();
 
+        if (isBlank(dto.getCompanyPostTitle()) || isBlank(dto.getCompanyPostContent()) ) {
+            log.warn("CompanyPostService - 제목과 내용은 필수 입니다.");
+            throw new IllegalArgumentException("제목과 내용은 필수 입니다.");
+        }
+
+        CompanyPostDetailSplitDto post = companyPostDao.getPostAndCompanyPostById(dto.getCompanyPostId());
+        if (post == null) {
+            log.warn("CompanyPostService - 게시글을 찾지 못했습니다 - companyPostId: {}", dto.getCompanyPostId());
+            throw new IllegalStateException("게시글을 찾지 못했습니다. companyPostId: " + dto.getCompanyPostId());
+        }
+        Long companyId = post.getCompanyId();
+        Long postId = post.getPostId();
+
+        if (!companyAuthService.isOwner(companyId)) {
+            log.warn("CompanyPostService - 본인 게시글이 아닙니다 권한 없음 - companyPostId: {}", companyPostId);
+            throw new AccessDeniedException("수정 권한이 없습니다.");
+        }
+
+        // 파일 수정 (targetId = companyPostId)
+        try {
+            savePostImages(companyPostId, files, true);
+            log.info("CompanyPostService - 파일 수정 성공 - postId: {}, companyPostId: {}, companyId: {}", postId, companyPostId, companyId);
+        } catch (Exception e) {
+            safeDeleteAllFiles(TargetType.INTERIOR_POST, companyPostId);
+            log.error("CompanyPostService - 파일 수정 실패 - companyPostId: {}", companyPostId, e);
+            throw new IllegalStateException("파일 수정 실패", e);
+        }
+
+        int updated = companyPostDao.updatePost(dto);
+        if (updated == 0) {
+            log.error("CompanyPostService - 게시글 수정 실패 - postId: {}, companyPostId: {}, companyId: {}", postId, companyPostId, companyId);
+            throw new IllegalStateException("게시글 수정 실패");
+        }
+        log.info("CompanyPostService - 게시글 수정 성공 - postId: {}, companyPostId: {}, companyId: {}", postId, companyPostId, companyId);
     }
 
+    @Transactional
     @Override
-    public void deletePost(Long companyPostId) {
+    public Long deletePost(Long companyPostId) {
+        if (companyPostId == null) {
+            log.warn("CompanyPostService - 삭제할 아이디가 없습니다 - companyPostId: {}", companyPostId);
+            throw new IllegalArgumentException("삭제할 아이디가 없습니다.");
+        }
+        log.info("CompanyPostService - 업체 게시글 삭제 시작 - companyPostId: {}", companyPostId);
 
+        CompanyPostDetailSplitDto post = companyPostDao.getPostAndCompanyPostById(companyPostId);
+        if (post == null) {
+            log.warn("CompanyPostService - 삭제 게시글 조회 실패 - companyPostId: {}", companyPostId);
+            throw new IllegalStateException("게시글 조회 실패");
+        }
+        Long companyId = post.getCompanyId();
+
+        if (!companyAuthService.isOwner(companyId)) {
+            log.warn("CompanyPostService - 본인 게시글 인증 실패(권한 없음) - companyPostId: {}", companyPostId);
+            throw new AccessDeniedException("삭제 권한이 없습니다.");
+        }
+
+        // 댓글, 좋아요, 스크랩
+        companyCommentService.deleteAllByPost(companyPostId);
+
+        // 삭제는 하위 -> 상위 순으로
+        int child = companyPostDao.deleteCompanyPostById(companyPostId);
+        if (child == 0) {
+            log.error("CompanyService - 하위 게시글 삭제 실패 - companyPostId: {}", companyPostId);
+            throw new IllegalStateException("하위 게시글 삭제 실패");
+        }
+
+        Long postId = post.getPostId();
+        int parent = companyPostDao.deletePolyPostById(postId);
+        if (parent == 0) {
+            log.error("CompanyService - 상위 게시글 삭제 실패 - postId: {}", postId);
+            throw new IllegalStateException("상위 게시글 삭제 실패");
+        }
+
+        try {
+            fileService.deleteAllByTargetId(TargetType.INTERIOR_POST, companyPostId);
+            log.info("CompanyPostService - 파일 삭제 성공 - companyPostId: {}", companyPostId);
+        } catch (Exception e) {
+            safeDeleteAllFiles(TargetType.INTERIOR_POST, companyPostId);
+        }
+        log.info("CompanyPostService - 게시글 삭제 성공 - companyPostId: {}", companyPostId);
+        return companyId;
     }
 
     // 파일이 문제없으면 리스트로 반환

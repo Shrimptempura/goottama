@@ -1,7 +1,9 @@
 package com.ama.don.interior.controller;
 
 import com.ama.don.interior.dto.company.CompanyHomeDto;
+import com.ama.don.interior.dto.post.CompanyHomePostDto;
 import com.ama.don.interior.dto.review.CompanyHomeReviewDto;
+import com.ama.don.interior.service.CompanyPostService;
 import com.ama.don.interior.service.CompanyReviewService;
 import com.ama.don.interior.service.CompanyService;
 import jakarta.validation.constraints.Max;
@@ -24,6 +26,7 @@ public class CompanyHomeController {
 
     private final CompanyService companyService;
     private final CompanyReviewService companyReviewService;
+    private final CompanyPostService companyPostService;
 
     @GetMapping("/interior/home")
     public String interiorHome() {
@@ -38,7 +41,11 @@ public class CompanyHomeController {
                                    Model model) {
         List<CompanyHomeDto> companyList = companyService.getHomeCompanyList(limit);
         List<CompanyHomeReviewDto> reviewList = companyReviewService.findRecentForHome();
+        List<CompanyHomePostDto> latestList = companyPostService.getHomePostsLatest();
+        List<CompanyHomePostDto> randomtList = companyPostService.getHomePostsRandom();
 
+        model.addAttribute("randomList", randomtList);
+        model.addAttribute("latestList", latestList);
         model.addAttribute("companyList", companyList);
         model.addAttribute("reviewList", reviewList);
         return "interior/ihome";
