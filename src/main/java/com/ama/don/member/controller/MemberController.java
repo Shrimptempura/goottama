@@ -72,6 +72,8 @@ public class MemberController {
 		
 		memberDto=loginMemberService.getCurrentLoginMemberDto();
 		model.addAttribute("loginMember", memberDto);
+		shopServiceinter = new ShopReviewDetailService(iDao);
+		shopServiceinter.execute(model);
 		
 		return "member/mypage/myProfile";
 	}

@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/mypage/withdrawal_view.css" />
 </head>
 <body>
+<%@ include file="../../common/header_navigation_bar.jsp" %>
 
 <div class="withdrawal-container">
   <h2>회원탈퇴 신청</h2>
@@ -44,5 +45,7 @@
     </div>
   </form>
 </div>
+
+<%@ include file="../../common/footer.jsp" %>
 </body>
 </html>

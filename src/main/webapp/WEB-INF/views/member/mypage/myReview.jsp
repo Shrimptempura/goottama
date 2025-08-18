@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/mypage/myReview.css" />
 </head>
 <body>
+<%@ include file="../../common/header_navigation_bar.jsp" %>
 
 <div class="nav">
 <a href="/mypage/myProfile"> 프로필</a> 
@@ -56,5 +57,7 @@
         </c:otherwise>
     </c:choose>
 </div>
+
+<%@ include file="../../common/footer.jsp" %>
 </body>
 </html>

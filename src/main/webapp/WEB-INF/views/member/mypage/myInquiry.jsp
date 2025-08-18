@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/mypage/myInquiry.css" />
 </head>
 <body>
+<%@ include file="../../common/header_navigation_bar.jsp" %>
 
 <div class="nav">
 <a href="/mypage/myProfile"> 프로필 </a> 
@@ -23,6 +24,7 @@
 <a href="/mypage/myScrapbook"> 상품스크랩북 </a>
 <a href="/mypage/myInquiry"> <strong>상품문의내역</strong> </a>
 </div>
+
 <c:choose>
     <c:when test="${not empty inquiry}">
         <div class="inquiry-list">
@@ -50,5 +52,7 @@
         </div>
     </c:otherwise>
 </c:choose>
+
+<%@ include file="../../common/footer.jsp" %>
 </body>
 </html>

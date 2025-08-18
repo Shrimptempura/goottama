@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/findLoginId_view.css" />
 </head>
 <body>
+<%@ include file="../common/header_navigation_bar.jsp" %>
+
 <div class="container">
     <h3>아이디 찾기</h3>
 
@@ -34,5 +36,7 @@
     </form:form>
     <a href="/login_view">로그인 하기</a>
 </div>
+
+<%@ include file="../common/footer.jsp" %>
 </body>
 </html>
