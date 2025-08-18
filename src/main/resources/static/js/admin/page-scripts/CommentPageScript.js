@@ -1,7 +1,7 @@
-// ReviewPageScript.js
-function initReviewPage() {
-    const form = document.getElementById("reviewSearchForm");
-    const container = document.getElementById("reviewListContainer");
+// CommentPageScript.js
+function initCommentPage() {
+    const form = document.getElementById("commentSearchForm");
+    const container = document.getElementById("commentListContainer");
 
     // 초기 로드 시점에도 페이지 버튼에 이벤트 바인딩
     bindPageButtons();
@@ -13,13 +13,13 @@ function initReviewPage() {
         const formData = new FormData(form);
         formData.set("page", 1); // 검색 시 항상 1페이지로
 
-        await fetchReviewList(formData);
+        await fetchCommentList(formData);
     });
 
     // 공지 목록을 비동기적으로 가져오는 함수
-    async function fetchReviewList(formData) {
+    async function fetchCommentList(formData) {
         try {
-            const response = await fetch("/admin/reviews/review_list", {
+            const response = await fetch("/admin/comments/comment_list", {
                 method: "POST",
                 body: formData,
             });
@@ -49,7 +49,7 @@ function initReviewPage() {
                     const formData = new FormData(form);
                     formData.set("page", page); // 숨겨진 페이지 input 값을 직접 업데이트하는 대신 formData에 설정
 
-                    await fetchReviewList(formData);
+                    await fetchCommentList(formData);
                 };
             }
         });

@@ -19,7 +19,7 @@
                     <input type="text" name="user_activity_type" placeholder="활동 유형" value="${userActivitySearchDTO.user_activity_type}">
                     <div>
                     <c:forEach var="type" items="${activityType}">
-                        ${type},
+                        ∎${type}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                     </c:forEach>
                     </div>
                 </label>
@@ -27,7 +27,7 @@
                     <input type="text" name="user_activity_target" placeholder="대상" value="${userActivitySearchDTO.user_activity_target}">
                     <div>
                      <c:forEach var="type" items="${activityTargetType}">
-                        ${type},
+                        ∎${type}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                      </c:forEach>
                      </div>
                 </label>

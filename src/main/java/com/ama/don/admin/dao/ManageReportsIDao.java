@@ -54,6 +54,12 @@ public interface ManageReportsIDao {
     List<ReportDTO> inProgressingReports();
 
     /**
+     * 진행중인 신고 건 수를 반환
+     * @return
+     */
+    int countInProgressingReports();
+
+    /**
      * 신고 조건 검색 결과 목록을 반환한다.
      * <p>
      * 검색 조건: <br>
@@ -111,4 +117,6 @@ public interface ManageReportsIDao {
      * @return
      */
     public String getReportStatusByTarget(String targetType, Long targetId);
+
+    List<ReportDTO> recent5Reports();
 }

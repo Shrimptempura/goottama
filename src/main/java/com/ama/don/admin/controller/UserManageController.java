@@ -1,8 +1,10 @@
 package com.ama.don.admin.controller;
 
 import com.ama.don.admin.dto.userDTO.UserSearchDTO;
+import com.ama.don.admin.service.sanctionService.CreateSanction;
 import com.ama.don.admin.service.userManage.*;
 import com.ama.don.admin.utils.SearchVO;
+import com.ama.don.interior.dev.DevFindTarget;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,18 +15,18 @@ public class UserManageController {
     private final GetUserListService getUserListService;
     private final GetUserDataForModal getUserDataForModal;
     private final GetUserDetailData getUserDetailData;
-    private final ChangeUserSanctionsUntilService changeUserSanctionsUntilService;
     private final ChangeUserRoleService changeUserRoleService;
+    private final CreateSanction createSanction;
 
     public UserManageController(ChangeUserRoleService changeUserRoleService,
-                                ChangeUserSanctionsUntilService changeUserSanctionsUntilService,
+                                CreateSanction createSanction,
                                 GetUserDetailData getUserDetailData,
                                 GetUserListService getUserListService,
                                 GetUserDataForModal getUserDataForModal) {
         this.getUserListService = getUserListService;
         this.getUserDataForModal = getUserDataForModal;
         this.getUserDetailData = getUserDetailData;
-        this.changeUserSanctionsUntilService = changeUserSanctionsUntilService;
+        this.createSanction = createSanction;
         this.changeUserRoleService = changeUserRoleService;
     }
 
@@ -79,10 +81,13 @@ public class UserManageController {
                                            @RequestParam("user_id") String userId,
                                            @RequestParam("user_sanctions_until") String userSanctionsUntil,
                                            @RequestParam("new_user_status") String userStatus) {
-        model.addAttribute("userId", userId);
-        model.addAttribute("userSanctionsUntil", userSanctionsUntil);
-        model.addAttribute("userStatus", userStatus);
-        boolean isSuccess = changeUserSanctionsUntilService.execute(model);
+
+        String sanctionReason = "관리자에 의한 재제 종료일 변경";
+        String sanctionType = "변경";
+        String adminId = String.valueOf(DevFindTarget.getUserId());
+
+        boolean isSuccess = createSanction.createSanctionFromChange(userId, userSanctionsUntil, sanctionType, sanctionReason, adminId);
+
         String resultMessage = isSuccess ? "change_user_sanctions_until_success" : "change_user_sanctions_until_failure";
         return "redirect:/admin/users/user_data_detail?user_id=" + userId + "&result=" + resultMessage;
     }

@@ -32,6 +32,8 @@ public class GetUserListService {
 
         if (userSearchDTO == null ||
                 (userSearchDTO.getUser_name() == null || userSearchDTO.getUser_name().isEmpty()) &&
+                (userSearchDTO.getUser_id() == null || userSearchDTO.getUser_id().isEmpty()) &&
+                (userSearchDTO.getRoles_id() == null || userSearchDTO.getRoles_id().isEmpty()) &&
                 (userSearchDTO.getUser_nickname() == null || userSearchDTO.getUser_nickname().isEmpty()) &&
                 (userSearchDTO.getUser_addr() == null || userSearchDTO.getUser_addr().isEmpty()) &&
                 (userSearchDTO.getUser_email() == null || userSearchDTO.getUser_email().isEmpty()) &&
@@ -62,15 +64,9 @@ public class GetUserListService {
             row.put("userGender", memberDto.getUser_gender());
             row.put("userTel", memberDto.getUser_tel());
             row.put("userZipcode", memberDto.getUser_zipcode());
-//            if (memberDto.getUser_created_at() != null) {
-//                row.put("userCreatedAt", memberDto.getUser_created_at().format(formatter));
-//            } else {
-//                row.put("userCreatedAt", null);
-//            }
             row.put("userCreatedAt", memberDto.getUser_created_at());
             row.put("userSanctionsUntil", memberDto.getUser_sanctions_until());
             row.put("userStatus", memberDto.getUser_status());
-            row.put("roleId", memberDto.getRoles_id());
             mapList.add(row);
         }
 

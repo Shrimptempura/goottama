@@ -9,6 +9,7 @@ import jakarta.servlet.Filter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -16,6 +17,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @RequiredArgsConstructor
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
 
     private final LoginDao loginDao;
@@ -36,9 +38,14 @@ public class SecurityConfig {
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .requestMatchers(
                                 "/",
+                                "/notice/**",
                                 "/login_view",
                                 "/join_view",
                                 "/join",
+                                "/interior/ihome",
+                                "/shop/home",
+                                "/community_home",
+                                "/admin/attachments/download",
                                 "/findLoginId_view",
                                 "/findPw_view",
                                 "/checkPwCode_view",
@@ -54,10 +61,14 @@ public class SecurityConfig {
                                 "/checkDuplicateId",
                                 "/checkDuplicateNickname",
                                 "/successJoin_view",
+                                "/admin/reports/submit_report",
+                                "/admin/reports/close_window",
+                                "/static/**",
                                 "/css/**", "/js/**"
                         ).permitAll()
+                        .requestMatchers("/admin/reports/reportForm").authenticated()
 //                        .requestMatchers("/seller/**").hasRole("SELLER") // 200(판매자) 이상 권한이 필요한 페이지
-//                        .requestMatchers("/admin/**").hasRole("ADMIN") // 300(관리자) 이상 권한이 필요한 페이지
+                        .requestMatchers("/admin/**").hasRole("ADMIN") // 300(관리자) 이상 권한이 필요한 페이지
 //                        .requestMatchers("/superAdmin/**").hasRole("SUPER_ADMIN") // 400(최고운영자) 권한이 필요한 페이지
                         .anyRequest().authenticated()
                 )

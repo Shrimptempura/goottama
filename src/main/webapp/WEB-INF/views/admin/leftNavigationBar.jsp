@@ -5,8 +5,8 @@
         <button data-menu="notices">Notices</button>
         <button data-menu="reports">Reports</button>
         <button data-menu="logs">Log Viewer</button>
-        <button data-menu="statistics">Statistics</button>
-        <button data-menu="reviews">Reviews</button>
+        <button data-menu="comments">Comments</button>
         <button data-menu="posts">Posts</button>
         <button data-menu="sanctions">Sanctions</button>
+        <button data-menu="withdrawals">Withdrawal Reason</button>
     </div>

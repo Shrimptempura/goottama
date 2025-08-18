@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.admin.dao.PostForAdminIDao">
+
+    <!-- 두 테이블을 LEFT JOIN하여 게시글 정보를 병합하는 SQL 조각 -->
+    <sql id="postJoin">
+        SELECT
+        COALESCE(cp.company_post_id, p.post_id) AS post_id,
+        COALESCE(cp.company_id, p.user_id) AS user_id,
+        COALESCE(cp.company_post_title, p.post_title) AS post_title,
+        COALESCE(cp.company_post_content, p.post_content) AS post_content,
+        COALESCE(cp.updated_at, p.post_date) AS post_date,
+        p.target_type, p.target_id
+        FROM post p
+        LEFT JOIN
+        company_post cp ON p.post_id = cp.post_id
+    </sql>
+
+    <select id="getAllPost" resultType="com.ama.don.admin.dto.postForAdminDTO.PostForAdminDTO">
+        <include refid="postJoin" />
+        ORDER BY p.post_date DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+
+    <select id="countAllPost" resultType="int">
+        SELECT COUNT(*) FROM post
+    </select>
+
+    <select id="countNewPostsLast24Hours" resultType="int">
+        SELECT COUNT(*)
+        FROM post
+        WHERE post_date >= NOW() - INTERVAL 1 DAY
+    </select>
+
+    <select id="getPostByPostId" resultType="com.ama.don.admin.dto.postForAdminDTO.PostForAdminDTO">
+        SELECT
+            COALESCE(cp.company_post_id, p.post_id) AS post_id,
+            COALESCE(cp.company_id, p.user_id) AS user_id,
+            COALESCE(cp.company_post_title, p.post_title) AS post_title,
+            COALESCE(cp.company_post_content, p.post_content) AS post_content,
+            COALESCE(cp.updated_at, p.post_date) AS post_date,
+            p.target_type,
+            p.target_id
+        FROM
+            post p
+        LEFT JOIN
+            company_post cp ON p.post_id = cp.post_id
+        WHERE COALESCE(cp.company_post_id, p.post_id) = #{postId}
+    </select>
+
+    <select id="searchPost" resultType="com.ama.don.admin.dto.postForAdminDTO.PostForAdminDTO">
+        <include refid="postJoin" />
+        <where>
+            <if test="postSearchForAdminDTO.post_id != null and postSearchForAdminDTO.post_id != 0">
+                AND p.post_id = #{postSearchForAdminDTO.post_id}
+            </if>
+            <if test="postSearchForAdminDTO.user_id != null and postSearchForAdminDTO.user_id != 0">
+                AND p.user_id = #{postSearchForAdminDTO.user_id}
+            </if>
+            <if test="postSearchForAdminDTO.post_title != null and postSearchForAdminDTO.post_title != ''">
+                AND COALESCE(cp.company_post_title, p.post_title) LIKE CONCAT('%', #{postSearchForAdminDTO.post_title}, '%')
+            </if>
+            <if test="postSearchForAdminDTO.post_content != null and postSearchForAdminDTO.post_content != ''">
+                AND COALESCE(cp.company_post_content, p.post_content) LIKE CONCAT('%', #{postSearchForAdminDTO.post_content}, '%')
+            </if>
+            <if test="postSearchForAdminDTO.post_date_start != null and postSearchForAdminDTO.post_date_start != ''">
+                AND COALESCE(cp.updated_at, p.post_date) &gt;= #{postSearchForAdminDTO.post_date_start}
+            </if>
+            <if test="postSearchForAdminDTO.post_date_end != null and postSearchForAdminDTO.post_date_end != ''">
+                AND COALESCE(cp.updated_at, p.post_date) &lt;= #{postSearchForAdminDTO.post_date_end}
+            </if>
+            <if test="postSearchForAdminDTO.targetId != null and postSearchForAdminDTO.targetId != 0">
+                AND p.target_id = #{postSearchForAdminDTO.targetId}
+            </if>
+            <if test="postSearchForAdminDTO.targetType != null and !postSearchForAdminDTO.targetType.isEmpty()">
+                AND p.target_type IN
+                <foreach collection="postSearchForAdminDTO.targetType" item="type" open="(" separator="," close=")">
+                    #{type}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY p.post_date DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+
+    <select id="countSearchPost" resultType="int">
+        SELECT COUNT(*) FROM post p
+        <where>
+            <if test="postSearchForAdminDTO.post_id != null and postSearchForAdminDTO.post_id != 0">
+                AND p.post_id = #{postSearchForAdminDTO.post_id}
+            </if>
+            <if test="postSearchForAdminDTO.user_id != null and postSearchForAdminDTO.user_id != 0">
+                AND p.user_id = #{postSearchForAdminDTO.user_id}
+            </if>
+            <if test="postSearchForAdminDTO.post_title != null and postSearchForAdminDTO.post_title != ''">
+                AND COALESCE((SELECT cp.company_post_title FROM company_post cp WHERE cp.post_id = p.post_id), p.post_title) LIKE CONCAT('%', #{postSearchForAdminDTO.post_title}, '%')
+            </if>
+            <if test="postSearchForAdminDTO.post_content != null and postSearchForAdminDTO.post_content != ''">
+                AND COALESCE((SELECT cp.company_post_content FROM company_post cp WHERE cp.post_id = p.post_id), p.post_content) LIKE CONCAT('%', #{postSearchForAdminDTO.post_content}, '%')
+            </if>
+            <if test="postSearchForAdminDTO.post_date_start != null and postSearchForAdminDTO.post_date_start != ''">
+                AND COALESCE((SELECT cp.updated_at FROM company_post cp WHERE cp.post_id = p.post_id), p.post_date) &gt;= #{postSearchForAdminDTO.post_date_start}
+            </if>
+            <if test="postSearchForAdminDTO.post_date_end != null and postSearchForAdminDTO.post_date_end != ''">
+                AND COALESCE((SELECT cp.updated_at FROM company_post cp WHERE cp.post_id = p.post_id), p.post_date) &lt;= #{postSearchForAdminDTO.post_date_end}
+            </if>
+            <if test="postSearchForAdminDTO.targetId != null and postSearchForAdminDTO.targetId != 0">
+                AND p.target_id = #{postSearchForAdminDTO.targetId}
+            </if>
+            <if test="postSearchForAdminDTO.targetType != null and !postSearchForAdminDTO.targetType.isEmpty()">
+                AND p.target_type IN
+                <foreach collection="postSearchForAdminDTO.targetType" item="type" open="(" separator="," close=")">
+                    #{type}
+                </foreach>
+            </if>
+        </where>
+    </select>
+</mapper>

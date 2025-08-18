@@ -12,7 +12,8 @@
 }
 
 .modal {
-  background: #fff;
+  background: #212121;
+  color: #eee;
   padding: 1.25rem;
   border-radius: 0.5rem;
   min-width: 18.75rem;

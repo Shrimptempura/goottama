@@ -1,15 +1,20 @@
 package com.ama.don.admin.controller;
 
-import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
-import com.ama.don.admin.service.userManage.ManageUserByAdmin;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.ama.don.admin.service.adminDashboard.AdminDashboardService;
+import com.ama.don.interior.dev.DevFindTarget;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class AdminController {
+
+    private final AdminDashboardService adminDashboardService;
+
+    public AdminController(AdminDashboardService adminDashboardService) {
+        this.adminDashboardService = adminDashboardService;
+    }
 
     @RequestMapping("admin/admin_index")
     public String adminIndex(Model model){
@@ -17,38 +22,12 @@ public class AdminController {
         return "admin/admin_index";
     }
 
-    @RequestMapping("admin/admin_dashboard")
-    public String dashboard(){
+    @GetMapping("/admin/admin_dashboard")
+    public String adminDashboard(Model model){
+        String adminId = String.valueOf(DevFindTarget.getUserId());
+        model.addAttribute("adminId", adminId);
+        adminDashboardService.execute(model);
         return "admin/admin_dashboard";
     }
-
-    @RequestMapping("/admin/accessDeniedPage")
-    public String accessDeniedPage(){
-        return "admin/accessDeniedPage";
-    }
-
-    @RequestMapping("admin/search/advanced_search")
-    public String advancedSearch(){
-        return "admin/search/advanced_search";
-    }
-
-    @RequestMapping("admin/log/log_viewer")
-    public String log(){
-        return "admin/log/log_viewer";
-    }
-
-    @RequestMapping("admin/statistics/statistics")
-    public String statistics(){
-        return "admin/statistics/statistics";
-    }
-
-    @RequestMapping("admin/access_control/access_control")
-    public String accessControl(){
-        return "admin/access_control/access_control";
-    }
-
-    @RequestMapping("admin/permission/permission_setting")
-    public String permission(){
-        return "admin/permission/permission_setting";
-    }
 }
+

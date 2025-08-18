@@ -37,8 +37,12 @@ function loadContent(menuType) {
             targetUrl = '/admin/posts/posts_page';
             break;
 
-        case 'reviews':
-            targetUrl = '/admin/reviews/reviews_page';
+        case 'comments':
+            targetUrl = '/admin/comments/comments_page';
+            break;
+
+        case 'withdrawals':
+            targetUrl = '/admin/withdrawal/withdrawal_reason_page';
             break;
 
         default:
@@ -70,8 +74,8 @@ async function callSpecificPageJSFunction(menuType) {
         'dashboard' : '/static/js/admin/page-scripts/DashboardPageScript.js',
         'sanctions' : '/static/js/admin/page-scripts/SanctionPageScript.js',
         'posts' : '/static/js/admin/page-scripts/PostPageScript.js',
-        'reviews' : '/static/js/admin/page-scripts/ReviewPageScript.js',
-        'statistics' : '/static/js/admin/page-scripts/StatisticsPageScript.js',
+        'comments' : '/static/js/admin/page-scripts/CommentPageScript.js',
+        'withdrawals' : '/static/js/admin/page-scripts/WithdrawalPageScript.js',
         'logs' : '/static/js/admin/page-scripts/LogsPageScript.js'
     };
 
@@ -104,11 +108,11 @@ function callSpecificPageInitFunction(menuType) {
         'notices': () => typeof initNoticePage === 'function' ? initNoticePage() : console.error("initNoticePage not found"),
         'users': () => typeof initUserPage === 'function' ? initUserPage() : console.error("initUserPage not found"),
         'reports': () => typeof initReportPage === 'function' ? initReportPage() : console.error("initReportPage not found"),
-        'reviews': () => typeof initReviewPage === 'function' ? initReviewPage() : console.error("initReviewPage not found"),
-        'statistics': () => typeof initStatisticsPage === 'function' ? initStatisticsPage() : console.error("initStatisticsPage not found"),
+        'comments': () => typeof initCommentPage === 'function' ? initCommentPage() : console.error("initCommentPage not found"),
         'posts': () => typeof initPostPage === 'function' ? initPostPage() : console.error("initPostPage not found"),
         'dashboard': () => typeof initDashboardPage === 'function' ? initDashboardPage() : console.error("initDashboardPage not found"),
         'logs': () => typeof initLogPage === 'function' ? initLogPage() : console.error("initLogPage not found"),
+        'withdrawals': () => typeof initWithdrawalPage === 'function' ? initWithdrawalPage() : console.error("initWithdrawalPage not found"),
         'sanctions': () => typeof initSanctionPage === 'function' ? initSanctionPage() : console.error("initSanctionPage not found")
     };
 

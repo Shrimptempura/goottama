@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.transaction.annotation.Transactional; // Import the Transactional annotation
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
@@ -50,9 +51,39 @@ public class CreateSanction {
         }
     }
 
+    @Transactional
+    public boolean createSanctionFromChange(String userId, String sanctionsUntilStr, String sanctionType, String sanctionReason, String adminId) {
+        Timestamp sanction_start = Timestamp.valueOf(LocalDateTime.now());
+        Timestamp sanction_end = strToTimestamp(sanctionsUntilStr);
+        String userStatus = "suspended";
+
+        MakeSanctionDTO makeSanctionDTO = new MakeSanctionDTO(userId, sanctionType, sanction_start, sanction_end, sanctionReason, adminId);
+
+        try {
+            sanctionsIDao.makeSanction(makeSanctionDTO);
+            manageUserIDao.updateUserSanctionsAndStatus(userId, sanction_end, userStatus);
+            return true;
+        } catch (Exception e) {
+            System.err.println("Transaction failed for user " + userId + " (sanction change): " + e.getMessage());
+            return false;
+        }
+    }
+
     public Timestamp strToTimestamp(String strDate) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-        LocalDateTime strDateToLocalDateTime = LocalDateTime.parse(strDate, formatter);
-        return Timestamp.valueOf(strDateToLocalDateTime);
+        // 입력 문자열의 길이를 확인하여 포맷을 동적으로 선택
+        //  현재 선택의 방식이 일관적이지 않아서 생기는 문제
+        // TODO: 선택 방식 일관화 
+        if (strDate.length() > 10) {
+            // 'yyyy-MM-dd'T'HH:mm' 형식
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            LocalDateTime strDateToLocalDateTime = LocalDateTime.parse(strDate, formatter);
+            return Timestamp.valueOf(strDateToLocalDateTime);
+        } else {
+            // 'yyyy-MM-dd' 형식 (날짜만 있는 경우)
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate strDateToLocalDate = LocalDate.parse(strDate, formatter);
+            // 자정(00:00:00)을 기준으로 Timestamp를 생성.
+            return Timestamp.valueOf(strDateToLocalDate.atStartOfDay());
+        }
     }
 }

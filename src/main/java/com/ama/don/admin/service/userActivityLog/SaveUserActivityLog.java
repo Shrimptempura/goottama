@@ -7,6 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.sql.Timestamp;
+import java.time.Instant;
+
 @Service
 public class SaveUserActivityLog {
     private static final Logger log = LoggerFactory.getLogger(SaveUserActivityLog.class);
@@ -14,6 +17,18 @@ public class SaveUserActivityLog {
 
     public SaveUserActivityLog(UserActivityLogIDao userActivityLogIDao) {
         this.userActivityLogIDao = userActivityLogIDao;
+    }
+
+    public void createAndSaveLog(Long userId, String type, String targetType, Long targetId, String details) {
+        UserActivityDto userActivityDto = new UserActivityDto();
+        userActivityDto.setUser_id(userId);
+        userActivityDto.setUser_activity_type(type);
+        userActivityDto.setUser_activity_time(Timestamp.from(Instant.now()));
+        userActivityDto.setUser_activity_target_type(targetType);
+        userActivityDto.setUser_activity_target_id(targetId);
+        userActivityDto.setUser_activity_details(details);
+
+        saveUserActivity(userActivityDto);
     }
 
     public void saveUserActivity(UserActivityDto userActivityDto) {

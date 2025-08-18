@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.admin.dao.SearchCommentIDao">
+
+    <select id="getAllComment" resultType="com.ama.don.admin.dto.commentsForAdminDTO.CommentsForAdminDTO">
+        SELECT COMMENT_ID, USER_ID, COMMENT_CONTENT, CREATED_AT, MODIFIED_AT, IS_DELETED, TARGET_ID, TARGET_TYPE
+        FROM comments
+        ORDER BY CREATED_AT DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+
+    <select id="countAllComment" resultType="int">
+        SELECT COUNT(*)
+        FROM comments
+    </select>
+
+    <select id="countNewCommentsLast24Hours" resultType="int">
+        SELECT COUNT(*)
+        FROM comments
+        WHERE CREATED_AT >= NOW() - INTERVAL 1 DAY
+    </select>
+
+    <select id="getCommentByCommentId" resultType="com.ama.don.admin.dto.commentsForAdminDTO.CommentsForAdminDTO">
+        SELECT COMMENT_ID, USER_ID, COMMENT_CONTENT, CREATED_AT, MODIFIED_AT, IS_DELETED, TARGET_ID, TARGET_TYPE
+        FROM comments
+        WHERE COMMENT_ID = #{commentId}
+    </select>
+
+    <select id="searchComments" resultType="com.ama.don.admin.dto.commentsForAdminDTO.CommentsForAdminDTO">
+        SELECT COMMENT_ID, USER_ID, COMMENT_CONTENT, CREATED_AT, MODIFIED_AT, IS_DELETED, TARGET_ID, TARGET_TYPE
+        FROM comments
+        <where>
+            <if test="commentsSearchForAdminDTO.commentId != null and commentsSearchForAdminDTO.commentId != 0">
+                AND COMMENT_ID = #{commentsSearchForAdminDTO.commentId}
+            </if>
+            <if test="commentsSearchForAdminDTO.userId != null and commentsSearchForAdminDTO.userId != 0">
+                AND USER_ID = #{commentsSearchForAdminDTO.userId}
+            </if>
+            <if test="commentsSearchForAdminDTO.commentContent != null and commentsSearchForAdminDTO.commentContent != ''">
+                AND COMMENT_CONTENT LIKE CONCAT('%', #{commentsSearchForAdminDTO.commentContent}, '%')
+            </if>
+            <if test="commentsSearchForAdminDTO.targetId != null and commentsSearchForAdminDTO.targetId != 0">
+                AND TARGET_ID = #{commentsSearchForAdminDTO.targetId}
+            </if>
+            <if test="commentsSearchForAdminDTO.targetType != null and !commentsSearchForAdminDTO.targetType.isEmpty()">
+                AND TARGET_TYPE IN
+                <foreach collection="commentsSearchForAdminDTO.targetType" item="type" open="(" separator="," close=")">
+                    #{type}
+                </foreach>
+            </if>
+            <if test="commentsSearchForAdminDTO.isDeleted != null">
+                AND IS_DELETED = #{commentsSearchForAdminDTO.isDeleted}
+            </if>
+            <if test="commentsSearchForAdminDTO.createdAtStart != null and commentsSearchForAdminDTO.createdAtEnd != null">
+                AND CREATED_AT BETWEEN #{commentsSearchForAdminDTO.createdAtStart} AND #{commentsSearchForAdminDTO.createdAtEnd}
+            </if>
+            <if test="commentsSearchForAdminDTO.createdAtStart != null and commentsSearchForAdminDTO.createdAtEnd == null">
+                AND CREATED_AT &gt;= #{commentsSearchForAdminDTO.createdAtStart}
+            </if>
+            <if test="commentsSearchForAdminDTO.createdAtStart == null and commentsSearchForAdminDTO.createdAtEnd != null">
+                AND CREATED_AT &lt;= #{commentsSearchForAdminDTO.createdAtEnd}
+            </if>
+            <if test="commentsSearchForAdminDTO.modifiedAtStart != null and commentsSearchForAdminDTO.modifiedAtEnd != null">
+                AND MODIFIED_AT BETWEEN #{commentsSearchForAdminDTO.modifiedAtStart} AND #{commentsSearchForAdminDTO.modifiedAtEnd}
+            </if>
+            <if test="commentsSearchForAdminDTO.modifiedAtStart != null and commentsSearchForAdminDTO.modifiedAtEnd == null">
+                AND MODIFIED_AT &gt;= #{commentsSearchForAdminDTO.modifiedAtStart}
+            </if>
+            <if test="commentsSearchForAdminDTO.modifiedAtStart == null and commentsSearchForAdminDTO.modifiedAtEnd != null">
+                AND MODIFIED_AT &lt;= #{commentsSearchForAdminDTO.modifiedAtEnd}
+            </if>
+        </where>
+        ORDER BY CREATED_AT DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+
+    <select id="countSearchComment" resultType="int">
+        SELECT COUNT(*)
+        FROM comments
+        <where>
+            <if test="commentsSearchForAdminDTO.commentId != null and commentsSearchForAdminDTO.commentId != 0">
+                AND COMMENT_ID = #{commentsSearchForAdminDTO.commentId}
+            </if>
+            <if test="commentsSearchForAdminDTO.userId != null and commentsSearchForAdminDTO.userId != 0">
+                AND USER_ID = #{commentsSearchForAdminDTO.userId}
+            </if>
+            <if test="commentsSearchForAdminDTO.commentContent != null and commentsSearchForAdminDTO.commentContent != ''">
+                AND COMMENT_CONTENT LIKE CONCAT('%', #{commentsSearchForAdminDTO.commentContent}, '%')
+            </if>
+            <if test="commentsSearchForAdminDTO.targetId != null and commentsSearchForAdminDTO.targetId != 0">
+                AND TARGET_ID = #{commentsSearchForAdminDTO.targetId}
+            </if>
+            <if test="commentsSearchForAdminDTO.targetType != null and !commentsSearchForAdminDTO.targetType.isEmpty()">
+                AND TARGET_TYPE IN
+                <foreach collection="commentsSearchForAdminDTO.targetType" item="type" open="(" separator="," close=")">
+                    #{type}
+                </foreach>
+            </if>
+            <if test="commentsSearchForAdminDTO.isDeleted != null">
+                AND IS_DELETED = #{commentsSearchForAdminDTO.isDeleted}
+            </if>
+            <if test="commentsSearchForAdminDTO.createdAtStart != null and commentsSearchForAdminDTO.createdAtEnd != null">
+                AND CREATED_AT BETWEEN #{commentsSearchForAdminDTO.createdAtStart} AND #{commentsSearchForAdminDTO.createdAtEnd}
+            </if>
+            <if test="commentsSearchForAdminDTO.createdAtStart != null and commentsSearchForAdminDTO.createdAtEnd == null">
+                AND CREATED_AT &gt;= #{commentsSearchForAdminDTO.createdAtStart}
+            </if>
+            <if test="commentsSearchForAdminDTO.createdAtStart == null and commentsSearchForAdminDTO.createdAtEnd != null">
+                AND CREATED_AT &lt;= #{commentsSearchForAdminDTO.createdAtEnd}
+            </if>
+            <if test="commentsSearchForAdminDTO.modifiedAtStart != null and commentsSearchForAdminDTO.modifiedAtEnd != null">
+                AND MODIFIED_AT BETWEEN #{commentsSearchForAdminDTO.modifiedAtStart} AND #{commentsSearchForAdminDTO.modifiedAtEnd}
+            </if>
+            <if test="commentsSearchForAdminDTO.modifiedAtStart != null and commentsSearchForAdminDTO.modifiedAtEnd == null">
+                AND MODIFIED_AT &gt;= #{commentsSearchForAdminDTO.modifiedAtStart}
+            </if>
+            <if test="commentsSearchForAdminDTO.modifiedAtStart == null and commentsSearchForAdminDTO.modifiedAtEnd != null">
+                AND MODIFIED_AT &lt;= #{commentsSearchForAdminDTO.modifiedAtEnd}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface ManageUserIDao {
@@ -56,4 +57,10 @@ public interface ManageUserIDao {
      * @return
      */
     public int changeUserRole(Long userId, Long role);
+
+    public int countNewUsersLast24Hours();
+
+    public int countNewUsersLast7Days();
+
+    List<Map<String, Object>> getDailyUserRegistrations();
 }

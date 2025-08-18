@@ -1,9 +1,10 @@
 package com.ama.don.admin.controller;
 
 import com.ama.don.admin.dto.sanctionsDTO.SanctionSearchDTO;
-import com.ama.don.admin.dto.sanctionsDTO.SanctionsDTO;
-import com.ama.don.admin.dto.userDTO.UserActivitySearchDTO;
-import com.ama.don.admin.service.sanctionService.*;
+import com.ama.don.admin.service.sanctionService.CreateSanction;
+import com.ama.don.admin.service.sanctionService.DeleteSanction;
+import com.ama.don.admin.service.sanctionService.GetSanctionDetail;
+import com.ama.don.admin.service.sanctionService.GetSanctionList;
 import com.ama.don.admin.utils.SearchVO;
 import com.ama.don.interior.dev.DevFindTarget;
 import jakarta.servlet.http.HttpServletRequest;

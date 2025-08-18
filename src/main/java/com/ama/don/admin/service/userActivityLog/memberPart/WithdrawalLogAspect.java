@@ -25,11 +25,13 @@ public class WithdrawalLogAspect {
     private final SaveUserActivityLog userActivityLog;
     private final ManageUserIDao manageUserIDao;
 
-    @Pointcut("execution(* com.ama.don.member.service.WithdrawalService.deletedMember(..) && args(agree, reason, memberDto) ")
+    @Pointcut("execution(* com.ama.don.member.service.WithdrawalService.deletedMember(..)) && args(agree, reason, memberDto)")
     public void withdrawalMethod(String agree, int reason, MemberDto memberDto) {}
 
-    @AfterReturning("withdrawalMethod(memberDto)")
+    @AfterReturning("withdrawalMethod(agree, reason, memberDto)")
     public void logUserWithdrawal(String agree, int reason, MemberDto memberDto) {
+
+        System.out.println("\n>>> 탈퇴 AOP 로그 메서드 호출됨.");
 
         if (!"yes".equals(agree)) {
             log.info("User did not agree to withdrawal. No log recorded.");
@@ -41,14 +43,12 @@ public class WithdrawalLogAspect {
             return;
         }
 
-        UserActivityDto userActivityDto = new UserActivityDto();
-        userActivityDto.setUser_id(memberDto.getUser_id());
-        userActivityDto.setUser_activity_type("USER_WITHDRAWAL");
-        userActivityDto.setUser_activity_time(Timestamp.from(Instant.now()));
-        userActivityDto.setUser_activity_target_type("USER");
-        userActivityDto.setUser_activity_target_id(memberDto.getUser_id());
-        userActivityDto.setUser_activity_details("User Withdrawal (Reason: " + reason + ")");
-
-        userActivityLog.saveUserActivity(userActivityDto);
+        userActivityLog.createAndSaveLog(
+                memberDto.getUser_id(),
+                "USER_WITHDRAWAL",
+                "USER",
+                memberDto.getUser_id(),
+                "User Withdrawal (Reason: " + reason + ")"
+        );
     }
 }

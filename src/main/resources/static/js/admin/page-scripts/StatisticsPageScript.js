@@ -19,7 +19,7 @@ function initStatisticsPage() {
     // 공지 목록을 비동기적으로 가져오는 함수
     async function fetchStatisticsList(formData) {
         try {
-            const response = await fetch("/admin/statisticss/statistics_list", {
+            const response = await fetch("/admin/statistics/statistics_list", {
                 method: "POST",
                 body: formData,
             });
