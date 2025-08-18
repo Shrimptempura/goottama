@@ -27,7 +27,7 @@
     <c:when test="${not empty inquiry}">
         <div class="inquiry-list">
             <c:forEach var="inquiry" items="${inquiry}">
-                <div class="inquiry-card">
+                <div class="inquiry-card" onclick="location.href='${pageContext.request.contextPath}/shop/product_detail?product_id=${inquiry.product_id}'">
                     <div class="inquiry-image">
                         <img src="/static/uploads/shop/${inquiry.product_imgurl}" alt="상품 이미지" />
                     </div>

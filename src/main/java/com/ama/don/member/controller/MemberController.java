@@ -30,6 +30,7 @@ import com.ama.don.shop.dao.ShopIDao;
 import com.ama.don.shop.service.ShopServiceinter;
 import com.ama.don.shop.service.orderservice.ShopOrderDetailService;
 import com.ama.don.shop.service.productinquiry.ShopProductInquiryDetailService;
+import com.ama.don.shop.service.productlike.ShopProductLikeDetailService;
 import com.ama.don.shop.service.reviewservice.ShopReviewDetailService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -89,7 +90,11 @@ public class MemberController {
 	}
 	
 	@GetMapping("/mypage/myScrapbook")
-	public String memberScrapbook() {
+	public String memberScrapbook(HttpServletRequest request,Model model) {
+		
+		shopServiceinter = new ShopProductLikeDetailService(iDao);
+		shopServiceinter.execute(model);
+		
 		return "member/mypage/myScrapbook";
 	}
 	

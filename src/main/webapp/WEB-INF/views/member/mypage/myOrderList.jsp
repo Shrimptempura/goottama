@@ -41,14 +41,14 @@
                             <img src="/static/uploads/shop/${product.product_imgurl}" />
                             <div class="product-info">
                                 <p><strong>상품명:</strong> ${product.product_name}</p>
-                                <p><strong>금액:</strong> ₩<fmt:formatNumber value="${product.op_price}" pattern="#,###"/></p>
+                                <p><strong>금액:</strong> <fmt:formatNumber value="${product.op_price}" pattern="#,###"/>원</p>
                                 <p><strong>수량:</strong> ${product.op_quantity}</p>
                             </div>
                         </div>
                     </c:forEach>
 
                     <div class="order-total">
-                        총 금액: ₩<fmt:formatNumber value="${order.order_totalprice}" pattern="#,###"/>
+                        총 금액: <fmt:formatNumber value="${order.order_totalprice}" pattern="#,###"/>원
                     </div>
                 </div>
             </c:forEach>
