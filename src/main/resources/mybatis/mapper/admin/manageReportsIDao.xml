@@ -7,6 +7,7 @@
     <select id="getAllReports" resultType="com.ama.don.admin.dto.reportDTO.ReportDTO">
         SELECT REPORT_ID, USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID, REPORT_STATUS
         FROM report
+        ORDER BY REPORT_DATE DESC
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 
@@ -39,7 +40,7 @@
         SELECT COUNT(*)
         FROM report
         WHERE REPORT_STATUS = 'PENDING'
-        AND REPORT_STATUS = 'IN_REVIEW'
+        OR REPORT_STATUS = 'IN_REVIEW'
 
     </select>
 
