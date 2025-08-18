@@ -93,10 +93,6 @@ table {
     margin-right: auto;
 }
 
-table tr:first-child {
-    font-weight: bold;
-}
-
 table td, table th {
     padding: 12px 15px;
     text-align: left;
