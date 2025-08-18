@@ -30,7 +30,7 @@ public class ShopCategoryService implements ShopServiceinter{
 				(HttpServletRequest) map.get("request");
 		
 		String product_id=request.getParameter("product_id");
-		
+		//
 		
 		// 카테고리 ID 파라미터 받기
         String category_id = request.getParameter("category_id");
