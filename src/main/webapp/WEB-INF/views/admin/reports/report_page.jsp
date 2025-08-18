@@ -4,21 +4,31 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
 <title>Report Page</title>
 </head>
 <body>
         <h1>Report</h1>
 
         <%-- 검색바 --%>
-        <form action="/admin/reports/report_list" method="post" id="reportSearchForm" >
+        <form action="/admin/reports/report_list" method="post" id="reportSearchForm" class="admin-search-form">
             <div class="search-form">
-                <label>신고 한 유저번호 <input type="text" name="userId" value="${reportSearchDTO.userId}"></label>
-                <label>신고내용 <input type="text" name="reportContent" placeholder="신고내용" value="${reportSearchDTO.reportContent}"></label>
-                <label>신고일 <input type="date" name="reportDateStart" value="${reportSearchDTO.reportDateStart}"></label>
-                <label>신고일 <input type="date" name="reportDateEnd" value="${reportSearchDTO.reportDateEnd}"></label>
-                <label>타겟 아이디 <input type="text" name="targetId" value="${reportSearchDTO.targetId}"></label>
-                <div class="targetType-group">targetType
+                <span class="form-label">신고 한 유저번호</span>
+                <input type="text" name="userId" value="${reportSearchDTO.userId}" class="form-input">
+
+                <span class="form-label">신고내용</span>
+                <input type="text" name="reportContent" placeholder="신고내용" value="${reportSearchDTO.reportContent}" class="form-input">
+
+                <span class="form-label">신고일 시작</span>
+                <input type="date" name="reportDateStart" value="${reportSearchDTO.reportDateStart}" class="form-input">
+
+                <span class="form-label">신고일 종료</span>
+                <input type="date" name="reportDateEnd" value="${reportSearchDTO.reportDateEnd}" class="form-input">
+
+                <span class="form-label">타겟 아이디</span>
+                <input type="text" name="targetId" value="${reportSearchDTO.targetId}" class="form-input">
+
+                <span class="form-label">타겟 타입</span>
+                <div class="targetType-group form-input">
                     <label><input type="checkbox" name="targetType" value="INTERIOR">INTERIOR</label>
                     <label><input type="checkbox" name="targetType" value="COMMUNITY">COMMUNITY</label>
                     <label><input type="checkbox" name="targetType" value="COMMUNITY_REVIEW">COMMUNITY_REVIEW</label>
@@ -29,15 +39,21 @@
                     <label><input type="checkbox" name="targetType" value="MEMBER">MEMBER</label>
                     <label><input type="checkbox" name="targetType" value="ECT">ECT</label>
                 </div>
-                <div class="report-status-group">reportStatus
+
+                <span class="form-label">신고 상태</span>
+                <div class="report-status-group form-input">
                     <label><input type="checkbox" name="reportStatus" value="PENDING">PENDING</label>
                     <label><input type="checkbox" name="reportStatus" value="IN_REVIEW">IN_REVIEW</label>
                     <label><input type="checkbox" name="reportStatus" value="RESOLVED">RESOLVED</label>
                     <label><input type="checkbox" name="reportStatus" value="REJECTED">REJECTED</label>
                     <label><input type="checkbox" name="reportStatus" value="CLOSED">CLOSED</label>
                 </div>
+
                 <input type="hidden" name="page" value="${searchVO.page}">
-                <input type="submit" value="검색" />
+
+                <span class="search-button-container">
+                    <input type="submit" value="검색" />
+                </span>
             </div>
         </form>
 

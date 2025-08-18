@@ -1,4 +1,3 @@
-<!-- notica_page.jsp -->
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -6,24 +5,31 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-<!-- <script src="static/js/admin/toast.js"></script> -->
-<!-- <link rel="stylesheet" href="static/css/admin/toast.css"> -->
 <title>Notice_page</title>
 </head>
 <body>
     <h1>Notice</h1>
 
     <%-- 검색바 --%>
-    <form action="/admin/notices/notice_list" method="post" id="noticeSearchForm" >
+    <form action="/admin/notices/notice_list" method="post" id="noticeSearchForm" class="admin-search-form">
         <div class="search-form">
-            <label>제목 <input type="text" name="noticeTitle" placeholder="제목" value="${noticeSearchDTO.noticeTitle}"></label>
-            <label>내용 <input type="text" name="noticeContent" placeholder="내용" value="${noticeSearchDTO.noticeContent}"></label>
-            <label>시작일 <input type="date" name="noticeDateStart" value="${noticeSearchDTO.noticeDateStart}"></label>
-            <label>종료일 <input type="date" name="noticeDateEnd" value="${noticeSearchDTO.noticeDateEnd}"></label>
+            <span class="form-label">제목</span>
+            <input type="text" name="noticeTitle" placeholder="제목" value="${noticeSearchDTO.noticeTitle}" class="form-input">
+
+            <span class="form-label">내용</span>
+            <input type="text" name="noticeContent" placeholder="내용" value="${noticeSearchDTO.noticeContent}" class="form-input">
+
+            <span class="form-label">시작일</span>
+            <input type="date" name="noticeDateStart" value="${noticeSearchDTO.noticeDateStart}" class="form-input">
+
+            <span class="form-label">종료일</span>
+            <input type="date" name="noticeDateEnd" value="${noticeSearchDTO.noticeDateEnd}" class="form-input">
+
             <input type="hidden" name="page" value="${searchVO.page}">
-            <input type="submit" value="검색" />
+
+            <span class="search-button-container">
+                <input type="submit" value="검색" />
+            </span>
         </div>
     </form>
 
