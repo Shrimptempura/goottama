@@ -31,9 +31,17 @@
             </label>
             <div class="target-type-group">
                 <span>타겟 타입</span>
-                <c:forEach var="type" items="${targetTypes}">
-                    <label><input type="checkbox" name="targetType" value="${type}">${type}</label>
-                </c:forEach>
+                <label><input type="checkbox" name="targetType" value="INTERIOR">INTERIOR</label>
+                <label><input type="checkbox" name="targetType" value="INTERIOR_REVIEW">INTERIOR_REVIEW</label>
+                <label><input type="checkbox" name="targetType" value="INTERIOR_POST">INTERIOR_POST</label>
+                <label><input type="checkbox" name="targetType" value="INTERIOR_PARTIAL">INTERIOR_PARTIAL</label>
+                <label><input type="checkbox" name="targetType" value="COMMUNITY">COMMUNITY</label>
+                <label><input type="checkbox" name="targetType" value="COMMUNITY_REVIEW">COMMUNITY_REVIEW</label>
+                <label><input type="checkbox" name="targetType" value="COMMUNITY_HOUSEPHOTO">COMMUNITY_HOUSEPHOTO</label>
+                <label><input type="checkbox" name="targetType" value="COMMUNITY_HOUSEDECORATION">COMMUNITY_HOUSEDECORATION</label>
+                <label><input type="checkbox" name="targetType" value="SHOP">SHOP</label>
+                <label><input type="checkbox" name="targetType" value="ADMIN">ADMIN</label>
+                <label><input type="checkbox" name="targetType" value="MEMBER">MEMBER</label>
             </div>
             <label>작성일 시작
                 <input type="date" name="post_date_start" value="${postSearchForAdminDTO.post_date_start}">

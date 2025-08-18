@@ -64,6 +64,9 @@ public class GetSanctionList {
             mapList.add(row);
         }
 
+        List<String> sanctionTypes = sanctionsIDao.getSanctionTypes();
+
+        model.addAttribute("sanctionTypesList", sanctionTypes);
         model.addAttribute("list", mapList);
         model.addAttribute("searchVO", searchVO);
     }

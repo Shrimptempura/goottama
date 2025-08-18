@@ -19,7 +19,7 @@
                 <label>user id <input type="text" name="user_id" placeholder="USER ID" value="${userSearchDTO.user_id}"></label>
                 <label>권한 <input type="text" name="roles_id" placeholder="권한" value="${userSearchDTO.roles_id}"></label>
                 <label>닉네임 <input type="text" name="user_nickname" placeholder="닉네임" value="${userSearchDTO.user_nickname}"></label>
-                <div class="user-status-group">
+                <div class="user-status-group">계정 활성 상태
                     <label><input type="checkbox" name="user_status" value="active">Active</label>
                     <label><input type="checkbox" name="user_status" value="suspended">Suspended</label>
                     <label><input type="checkbox" name="user_status" value="deleted">Deleted</label>

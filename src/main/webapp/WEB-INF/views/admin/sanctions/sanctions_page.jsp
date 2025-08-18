@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -18,6 +19,12 @@
                 </label>
                 <label>제재 유형
                     <input type="text" name="sanctionsTypes" placeholder="제재 유형" value="${sanctionSearchDTO.sanctionsTypes}">
+                    <div>
+                      <c:forEach var="type" items="${sanctionTypesList}">
+                        ∎${type}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      </c:forEach>
+                      <br/><br/>
+                    </div>
                 </label>
                 <label>제재 사유
                     <input type="text" name="sanctionsReason" placeholder="제재 사유" value="${sanctionSearchDTO.sanctionsReason}">

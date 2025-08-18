@@ -33,8 +33,8 @@
                     <label><input type="checkbox" name="reportStatus" value="PENDING">PENDING</label>
                     <label><input type="checkbox" name="reportStatus" value="IN_REVIEW">IN_REVIEW</label>
                     <label><input type="checkbox" name="reportStatus" value="RESOLVED">RESOLVED</label>
-                    <label><input type="checkbox" name="targetType" value="REJECTED">REJECTED</label>
-                    <label><input type="checkbox" name="targetType" value="CLOSED">CLOSED</label>
+                    <label><input type="checkbox" name="reportStatus" value="REJECTED">REJECTED</label>
+                    <label><input type="checkbox" name="reportStatus" value="CLOSED">CLOSED</label>
                 </div>
                 <input type="hidden" name="page" value="${searchVO.page}">
                 <input type="submit" value="검색" />
