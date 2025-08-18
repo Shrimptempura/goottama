@@ -51,6 +51,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
             try {
                 getUserActivityList.saveUserActivity(userActivityDto);
+                log.info("Successfully save login activity log for user ID {}", userId);
             } catch (Exception e) {
                 log.error("Failed to save login activity log for user ID: {}. Error: {}", userId, e.getMessage(), e);
             }
