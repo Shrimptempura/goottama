@@ -15,7 +15,7 @@
 <body>
     <h3>company-photos</h3>
     <section>
-        <p>dddddddd</p>
+        <p>사진</p>
         <c:forEach var="p" items="${photoList}">
             <c:url value="/upload/interior/${p.file_name}" var="u"/>
             <img src="${u}" alt="${c.companyName}" style="width: 200px; height: 200px;">

@@ -2,8 +2,6 @@
   Created by IntelliJ IDEA.
   User: goott4
   Date: 2025-08-06
-  Time: 오후 5:03
-  To change this template use File | Settings | File Templates.
 --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" isELIgnored="false" %>
@@ -11,29 +9,129 @@
 <html>
 <head>
     <title>업체 상세페이지 내 게시글 탭</title>
+    <style>
+        /* 탭 헤더 */
+        .cp-head {
+            display:flex; justify-content:space-between; align-items:center;
+            margin: 8px 0 14px;
+        }
+        .cp-title { font-size:18px; font-weight:800; }
+
+        /* 작성 버튼 */
+        .btn {
+            display:inline-flex; align-items:center; justify-content:center;
+            height:36px; padding:0 14px; border-radius:10px;
+            font-size:14px; text-decoration:none; cursor:pointer;
+            border:1px solid transparent; background:#4f46e5; color:#fff;
+            transition:.15s ease;
+        }
+        .btn:hover { filter:brightness(.96); }
+
+        /* 카드 그리드 */
+        .cp-grid {
+            display:grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap:14px;
+        }
+        @media (max-width: 980px) { .cp-grid { grid-template-columns: repeat(2, minmax(0,1fr)); } }
+        @media (max-width: 560px) { .cp-grid { grid-template-columns: 1fr; } }
+
+        /* 카드 */
+        .cp-card {
+            display:block;
+            border:1px solid #e5e7eb; border-radius:14px; overflow:hidden;
+            background:#fff; text-decoration:none; color:inherit;
+            box-shadow: 0 2px 10px rgba(0,0,0,.04);
+            transition: transform .12s ease, box-shadow .12s ease;
+        }
+        .cp-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0,0,0,.08);
+        }
+
+        /* 썸네일 (4:3, 커버) */
+        .cp-thumb {
+            position:relative; width:100%; aspect-ratio:4/3;
+            background:#f3f4f6;
+        }
+        .cp-thumb img {
+            position:absolute; inset:0;
+            width:100%; height:100%; object-fit:cover;
+            display:block;
+        }
+        /* 썸네일 없을 때 플레이스홀더 */
+        .cp-thumb.placeholder::after {
+            content:"No Image";
+            position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+            color:#9ca3af; font-size:13px; letter-spacing:.4px;
+            border:1px dashed #e5e7eb; border-radius:10px; margin:8px;
+        }
+
+        /* 본문 */
+        .cp-body { padding:12px 12px 14px; }
+        .cp-title-line {
+            font-size:15px; font-weight:700;
+            overflow:hidden; text-overflow:ellipsis; display:-webkit-box;
+            -webkit-box-orient:vertical; -webkit-line-clamp:2; min-height:40px;
+            color:#111827;
+        }
+        .cp-meta {
+            margin-top:8px; font-size:12px; color:#6b7280; display:flex; gap:10px; align-items:center;
+        }
+        .cp-dot { width:3px; height:3px; background:#d1d5db; border-radius:999px; display:inline-block; }
+
+        /* 탭 빈 상태 */
+        .cp-empty {
+            border:1px dashed #e5e7eb; border-radius:12px; padding:24px;
+            text-align:center; color:#6b7280; background:#fafafa;
+        }
+    </style>
 </head>
 <body>
-    <h3>company-posts</h3>
 
+<div class="cp-head">
+    <div class="cp-title">게시글</div>
     <c:if test="${isOwner}">
-        <a href="${pageContext.request.contextPath}/interior/myhome/${companyId}/posts/new">게시글 작성</a>
+        <a class="btn" href="${pageContext.request.contextPath}/interior/myhome/${companyId}/posts/new">게시글 작성</a>
     </c:if>
+</div>
 
-    <c:forEach items="${posts}" var="p">
-        <div style="display: flex; text-align: center; width: 200px;">
-            <c:if test="${not empty p.thumbnail}">
-                <img src="/upload/interior_post/${p.thumbnail.file_name}"
-                style="width: 100px; height: 80px; margin: 10px; display: inline-block">
-            </c:if>
+<c:choose>
+    <c:when test="${empty posts}">
+        <div class="cp-empty">아직 등록된 게시글이 없습니다.</div>
+    </c:when>
+    <c:otherwise>
+        <div class="cp-grid">
 
-            <c:url var="detailUrl" value="/interior/posts/${p.companyPostId}"/>
-            <a href="${detailUrl}">
-                ${p.companyPostTitle}
-                ${p.companyPostCount} | ${p.scrapCount}
-            </a>
+            <c:forEach items="${posts}" var="p">
+                <c:url var="detailUrl" value="/interior/posts/${p.companyPostId}"/>
+
+                <a class="cp-card" href="${detailUrl}">
+                    <c:choose>
+                        <c:when test="${not empty p.thumbnail}">
+                            <div class="cp-thumb">
+                                <img src="/upload/interior_post/${p.thumbnail.file_name}" alt="thumbnail">
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <div class="cp-thumb placeholder"></div>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <div class="cp-body">
+                        <div class="cp-title-line">${p.companyPostTitle}</div>
+                        <div class="cp-meta">
+                            <span>조회 ${p.companyPostCount}</span>
+                            <span class="cp-dot"></span>
+                            <span>스크랩 ${p.scrapCount}</span>
+                        </div>
+                    </div>
+                </a>
+            </c:forEach>
+
         </div>
-    </c:forEach>
-
+    </c:otherwise>
+</c:choose>
 
 </body>
 </html>
