@@ -1,6 +1,7 @@
 package com.ama.don.member.dao;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ama.don.member.dto.FindLoginIdDto;
 import com.ama.don.member.dto.FindPwDto;
@@ -21,5 +22,7 @@ public interface LoginDao {
 	// 지우면 저주 받음(아이디 찾기)
 	// 인테리어 파트 사용 중
 	MemberDto interiorFindByLoginId(String loginId);
-
+	
+	// 커뮤니티 사용
+	Long findUserIdByLoginId(@Param("login_id") String loginId);
 }

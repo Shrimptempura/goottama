@@ -15,7 +15,6 @@ $(document).ready(function() {
 			method: "POST",
 			headers: { "Content-Type": "application/x-www-form-urlencoded" },
 			body: new URLSearchParams({
-				user_id: 1, // 로그인 임시값 1
 				target_type: "COMMUNITY_REVIEW",
 				keep_temp_id: TEMP_ID
 			})
@@ -48,11 +47,11 @@ $(document).ready(function() {
 
 		Array.from(files).forEach(file => {
 			selectedFiles.push(file);
-
+			
+			// 파일 업로드
 			const formData = new FormData();
 			formData.append("file", file);
 			formData.append("target_type", "COMMUNITY_REVIEW");
-			formData.append("user_id", 1);           // 임시값 1
 			formData.append("temp_id", TEMP_ID);     // 음수 임시 ID 묶음으로 업로드
 
 			fetch("/file/upload_image", { method: "POST", body: formData })
@@ -107,10 +106,9 @@ $(document).ready(function() {
 				const postId = data.post_id;
 				console.log("글 작성 성공 post_id@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@:", postId);
 
-				// ✅ 임시(음수) 묶음을 실제 postId로 확정
+				// 임시 postId로 확정
 				const confirmParams = new URLSearchParams({
 					target_type: targetType,
-					user_id: 1,        // 실제 로그인 유저 ID로 교체
 					temp_id: TEMP_ID,  // 업로드 때 썼던 음수 ID
 					target_id: postId  // 실제 게시글 ID
 				});
