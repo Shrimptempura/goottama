@@ -5,14 +5,6 @@ const toast = document.getElementById('toast');
 
 // 메시지와 스타일을 매핑
 const toastMap = {
-    write_success: { message: '글 작성 성공!', type: 'success' },
-    write_failure: { message: '글 작성 실패!', type: 'failure' },
-    delete_success: { message: '글 삭제 성공!', type: 'success' },
-    delete_failure: { message: '글 삭제 실패!', type: 'failure' },
-    reply_success: { message: '답변 작성 성공!', type: 'success' },
-    reply_failure: { message: '답변 작성 실패!', type: 'failure' },
-    modify_success: { message: '글 수정 성공!', type: 'success' },
-    modify_failure: { message: '글 수정 실패!', type: 'failure' },
     report_delete_success: { message: '신고 내역 삭제 성공!', type: 'success' },
     report_delete_failure: { message: '신고 내역 삭제 실패!', type: 'failure' },
     change_user_sanctions_until_success: { message: '제재 기간이 성공적으로 변경되었습니다!', type: 'success' },
