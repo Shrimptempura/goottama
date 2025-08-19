@@ -103,8 +103,8 @@ function goToProductLikeDetail(){
     <a href="productmall">ProductMall</a>
     <a href="best">Best</a>
     <a href="javascript:void(0)" onclick="goToCart()">Cart</a>
-<!--     <a href="javascript:void(0)" onclick="goToOrderDetails()">Order Details</a>
-   <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
+    <a href="javascript:void(0)" onclick="goToOrderDetails()">Order Details</a>
+<!--    <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
     <a href="javascript:void(0)" onclick="goToReviewDetail()">review</a>
     <a href="javascript:void(0)" onclick="goToProductInquiryDetail()">product_inquiry</a>
 	<a href="javascript:void(0)" onclick="goToProductLikeDetail()">product_like</a> -->
