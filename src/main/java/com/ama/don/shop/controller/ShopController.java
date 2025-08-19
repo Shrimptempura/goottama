@@ -129,18 +129,6 @@ public class ShopController {
 		return "shop/product_high_sales";
 	}
 
-	/*
-	 * @RequestMapping("/shop/write_view") public String write_view() { return
-	 * "shop/write_view"; }
-	 * 
-	 * @RequestMapping("/shop/write") public String write(HttpServletRequest
-	 * request, Model model) {
-	 * 
-	 * model.addAttribute("request", request); shopServiceinter = new
-	 * ShopWriteService(iDao); shopServiceinter.execute(model);
-	 * 
-	 * return "shop/home"; }
-	 */
 	
 	//카테고리
 	@RequestMapping("/shop/category")
@@ -616,18 +604,5 @@ public class ShopController {
 		return "shop/kakaopaypayment";
 	}
 	
-	
-	
-
-	/*
-	 * @PostMapping("/kakaopay") public ResponseEntity<?>
-	 * kakaoPayReady(@RequestParam int amount) { KakaoPayReadyResponse response =
-	 * kakaoPayService.kakaoPayReady(amount); return ResponseEntity.ok(response); }
-	 * 
-	 * @GetMapping("/kakaopay/success") public ResponseEntity<?>
-	 * kakaoPaySuccess(@RequestParam String pg_token) { KakaoPayApprovalResponse
-	 * response = kakaoPayService.kakaoPayApprove(pg_token); return
-	 * ResponseEntity.ok(response); }
-	 */
 
 }

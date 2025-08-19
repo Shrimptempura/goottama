@@ -264,11 +264,7 @@ private Long saveOrderToDatabase(HttpSession session, KakaoPayApprovalResponse a
          paymentDto.setPayment_price(approval.getAmount().getTotal());
          paymentDto.setPayment_tid(approval.getTid());
          // 카카오페이 결제 정보 추가 (PaymentDto에 해당 필드들이 있다면)
-         // paymentDto.setPayment_method("KAKAO_PAY");
-         // paymentDto.setPayment_tid(approval.getTid());
-         // paymentDto.setPayment_aid(approval.getAid());
-         // paymentDto.setPayment_approved_at(approval.getApproved_at());
-         
+
          iDao.payment_write(paymentDto);
          System.out.println("✅ 결제 정보 등록 완료");
          

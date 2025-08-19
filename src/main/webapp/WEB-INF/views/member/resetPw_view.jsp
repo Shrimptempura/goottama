@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/resetPw_view.css" />
 </head>
 <body>
+<%@ include file="../common/header_navigation_bar.jsp" %>
+
 <div class="container">
     <h3>비밀번호 재설정</h3>
 
@@ -29,5 +31,7 @@
         <input type="submit" value="변경하기"/>
     </form:form>
 </div>
+
+<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

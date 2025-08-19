@@ -17,8 +17,6 @@
 <div>
 
 <form action="review_update">
-	<!---->
-	<!---->
 	리뷰 아이디: ${review.review_id }
 	<br />
 		사용자 아이디: ${review.user_id }
@@ -31,14 +29,11 @@
 	<input type="hidden" name="review_id" value="${review.review_id }"/>
 	리뷰제목: <input name="review_title" type="text" value="${review.review_title }" style="width: 300px; height: 30px"/> <br />
 	리뷰내용: <input name="review_content" type="text" value="${review.review_content }" style="width: 300px; height: 200px"/>
-
 	<br />
 	<input type="submit" value="수정" />
 
 </form>	
-
-
 </div>
-
 </body>
+<%@ include file="../list.jsp" %>
 </html>

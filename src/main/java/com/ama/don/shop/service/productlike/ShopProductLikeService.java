@@ -93,23 +93,5 @@ public class ShopProductLikeService implements ShopServiceinter {
         
         model.addAttribute("userLikeStatus", newStatus);
         
-		/*
-		 * //만약 좋아요한 상품이 존재한다면 if ("Y".equals(currentStatus)) { // 존재함 → N으로 업데이트
-		 * 
-		 * iDao.product_like_update(); iDao.product_like_update(userId, productId,
-		 * newStatus);
-		 * 
-		 * newStatus = "N"; System.out.println("🔴 좋아요 삭제 처리");
-		 * iDao.product_like_delete(userid, productid);
-		 * System.out.println("상품을 찜 목록에서 제거했습니다."); newStatus = "N";
-		 * model.addAttribute("userLikeStatus", "N");
-		 * 
-		 * 
-		 * //만약 좋아요한 상품이 존재하지 않는다면 //생성한다. } else { // 존재하지 않음 → 생성
-		 * System.out.println("🔵 좋아요 생성 처리"); iDao.product_like_write(userid,
-		 * productid, "Y"); System.out.println("상품을 찜 목록에 추가했습니다.");
-		 * model.addAttribute("userLikeStatus", "Y"); }
-		 */
-
 	}
 }

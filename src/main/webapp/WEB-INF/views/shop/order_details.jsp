@@ -190,44 +190,10 @@ body {
 </style>
 </head>
 <body>
-<%-- 
 
-<!-- 사용자 세션을 받아서 처리 -->
-
-<!-- 주문번호로 맵을 찾는다.  -->		
-		<!-- 이중 c:forEach 구문으로 사용자의 주문에 맞는 상품을 가져올 수 있다.  -->
-		<c:forEach var="order" items="${userOrders }">
-			<p>사용자의 주문들의 아이디(주문번호):${order.order_id }</p>
-			<p>사용자의 주문들의 주문날짜:${order.order_date }</p>
-			<p>주문 상품 총갯수:${orderProductsMap[order.order_id].size()}개</p>
-			<hr />
-			<c:forEach var="product" items="${orderProductsMap[order.order_id] }">
-				<img src="/static/uploads/shop/${product.product_imgurl}" width="100px" height="100px"/>
-				<p>주문상품 이름:${product.product_name }</p>
-				<p>주문상품 수량:${product.op_quantity }</p>
-				<p>주문상품 가격:${product.op_price }</p>
-					
-				<p>주문상품 가격:${product.op_price } * 수량:${product.op_quantity } 개</p>
-				<p>수량:${product.op_quantity}개 × ₩<fmt:formatNumber value="${product.op_price}" pattern="#,###"/> = ₩<fmt:formatNumber value="${product.op_totalprice}" pattern="#,###"/></p>
-
-				<p>주문상품 총 가격: ${product.op_totalprice }</p>
-				<hr />
-			</c:forEach>
-			<p>주문 총 가격: ₩${order.order_totalprice }</p>
-			<p>주문 총 가격: ₩<fmt:formatNumber value="${order.order_totalprice}" pattern="#,###"/></p>
-			<hr />
-		</c:forEach>
-		<!--  -->
-
- --%>
 <div class="main-content">
     <h2 class="page-header">주문 내역</h2>
-<%-- 
-    <!-- 디버깅 정보 (개발용) -->
-    <div class="debug-info">
-        <h4>디버깅 정보</h4>
-        <p>사용자 ID: ${user_id} | 주문 개수: ${userOrders.size()}개 | 상품맵 크기: ${orderProductsMap.size()}</p>
-    </div> --%>
+
     <c:choose>
         <c:when test="${not empty userOrders}">
             <c:forEach var="order" items="${userOrders}">
@@ -274,10 +240,6 @@ body {
 						                <button id="update_orders" class="btn btn-primary">주문 수정하기</button>
 						            </a>
 						            
-						            <%-- <!-- 추가 버튼들 (필요시) -->
-						            <a href="cancel_order?order_id=${order.order_id}">
-						                <button class="btn btn-danger" >주문 취소</button>
-						            </a> --%>
 						        </div>
                             </c:when>
                             <c:otherwise>
@@ -303,4 +265,5 @@ body {
 </div>
 
 </body>
+<%@ include file="../list.jsp" %>
 </html>

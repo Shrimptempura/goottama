@@ -19,9 +19,8 @@ public interface LoginDao {
 
 	String findByOnlyLoginId();
 
-	// 지우면 저주 받음(아이디 찾기)
 	// 인테리어 파트 사용 중
-	MemberDto interiorFindByLoginId(String loginId);
+	/* MemberDto interiorFindByLoginId(String loginId); */
 	
 	// 커뮤니티 사용
 	Long findUserIdByLoginId(@Param("login_id") String loginId);

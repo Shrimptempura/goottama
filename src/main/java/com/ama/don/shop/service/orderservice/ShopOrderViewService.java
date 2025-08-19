@@ -84,13 +84,7 @@ public class ShopOrderViewService implements ShopServiceinter{
         	model.addAttribute("product",productflatDto);
         }
         
-        //장바구니에서 들어가면 장바구니 카트
-        //상품이면 상품 곧이곧대로
-        
-        
-		
-			
-		//
+
 	}
 
 }

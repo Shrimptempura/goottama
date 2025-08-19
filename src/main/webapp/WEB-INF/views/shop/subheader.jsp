@@ -8,7 +8,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="../list.jsp" %>
 
 <title>Insert title here</title>
 
@@ -45,14 +44,12 @@
 <!-- 사용자 정보 표시 -->
 <div class="user-info">
 
-	<!--   -->
-
 	<!-- 로그인된 경우 -->
     <c:choose>
         <c:when test="${not empty loginMember.user_id}">
 
-            <span>현재 사용자: 
-                <p>${loginMember.user_nickname }</p> 
+            <span>
+                <p>${loginMember.user_nickname }님 안녕하세요</p> 
             </span>
         </c:when>
        
@@ -66,7 +63,6 @@
 </div>
 
 <h2>subheader</h2>
-
 <script>
 
 // 장바구니로 이동
@@ -108,13 +104,10 @@ function goToProductLikeDetail(){
     <a href="best">Best</a>
     <a href="javascript:void(0)" onclick="goToCart()">Cart</a>
     <a href="javascript:void(0)" onclick="goToOrderDetails()">Order Details</a>
-   <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
+<!--    <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
     <a href="javascript:void(0)" onclick="goToReviewDetail()">review</a>
     <a href="javascript:void(0)" onclick="goToProductInquiryDetail()">product_inquiry</a>
-	<a href="javascript:void(0)" onclick="goToProductLikeDetail()">product_like</a>
-    <!--  -->
-    
-   
+	<a href="javascript:void(0)" onclick="goToProductLikeDetail()">product_like</a> -->
 </div>
 </body>
 </html>
