@@ -757,5 +757,6 @@ function debugProductClick() {
 </script>
 
 </body>
+<!--  -->
  <%@ include file="./shoplist.jsp" %>
 </html>
