@@ -158,7 +158,7 @@ public class AdminNoticeController {
         Boolean result = (Boolean) model.asMap().get("writeResult");
         String message = result ? "write_success" : "write_failure";
         System.out.println(">>> "+ message);
-        return "redirect:notice_page";
+        return "redirect:/admin/admin_index?menu=notices";
     }
 
     /**
@@ -234,6 +234,6 @@ public class AdminNoticeController {
         Boolean result = (Boolean) model.asMap().get("deleteResult");
         String message = result ? "delete_success" : "delete_failure";
         System.out.println(">>> "+message);
-        return "redirect:notice_page";
+        return "redirect:/admin/admin_index?menu=notices";
     }
 }
