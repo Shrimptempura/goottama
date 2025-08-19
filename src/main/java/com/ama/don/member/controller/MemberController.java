@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ama.don.admin.dto.postForAdminDTO.PostSearchForAdminDTO;
-import com.ama.don.admin.service.postViewerForAdmin.GetPostListService;
 import com.ama.don.admin.utils.SearchVO;
 import com.ama.don.member.dto.MemberDto;
 import com.ama.don.member.dto.MemberEditDto;
