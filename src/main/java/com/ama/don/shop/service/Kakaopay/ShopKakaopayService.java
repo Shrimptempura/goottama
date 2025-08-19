@@ -288,7 +288,7 @@ public class ShopKakaopayService implements ShopServiceinter {
 				entity,
 				KakaoPayReadyResponse.class
 			);
-			
+			//
 			KakaoPayReadyResponse responseBody = response.getBody();
 			
 			String tid=responseBody.getTid();

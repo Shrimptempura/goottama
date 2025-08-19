@@ -5,9 +5,17 @@ body {
     font-family: Arial, Helvetica, sans-serif;
     background-color: #f4f6f8;
     display: flex;
+    height: 100%;
+    margin: 0;
+    flex-direction: column;
+}
+main {
+    flex: 1;
+    display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    background-color: #f4f6f8;
+    margin: 60px 0;
 }
 
 /* 로그인 박스 스타일 */

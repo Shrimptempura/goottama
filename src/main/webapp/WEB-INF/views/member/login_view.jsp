@@ -9,6 +9,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/login_view.css" />
 </head>
 <body>
+<%@ include file="../common/header_navigation_bar.jsp" %>
+
+	<main>
 	<div class="login-container">
 		<h3>LogIn</h3>
 
@@ -31,6 +34,9 @@
 			<a href="/findPw_view">비밀번호찾기</a> 
 			<a href="/join_view">회원가입</a>
 		</div>
-	</div>
+	</div> 
+	</main>
+	
+<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

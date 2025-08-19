@@ -14,6 +14,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/join_view.css" />
 </head>
 <body>
+<%@ include file="../common/header_navigation_bar.jsp" %>
 
   <h3>회원가입</h3>
 
@@ -91,5 +92,6 @@
     <input type="submit" value="가입하기" />
   </form:form>
 
+<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

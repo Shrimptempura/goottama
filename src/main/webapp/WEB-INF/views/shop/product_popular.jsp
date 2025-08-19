@@ -170,4 +170,5 @@ h2 {
 </div>
 
 </body>
+<%@ include file="../list.jsp" %>
 </html>

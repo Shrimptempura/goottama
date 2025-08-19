@@ -241,4 +241,5 @@
     </c:if>
 </div>
 </body>
+<%@ include file="../list.jsp" %>
 </html>
