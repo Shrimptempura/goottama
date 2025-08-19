@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.admin.dao.WithdrawalReasonForAdminIDao">
+
+    <select id="getAllWithdrawalReason" resultType="com.ama.don.admin.dto.userDTO.WithdrawalReasonDTO">
+        SELECT WM.WITHDRAW_ID, WM.WITHDRAWAL_DATE, WR.WITHDRAWAL_REASON_ID, WR.WITHDRAWAL_REASON
+        FROM withdrawal_member WM
+        JOIN withdrawal_reason WR ON WM.WITHDRAWAL_REASON_ID = WR.WITHDRAWAL_REASON_ID
+        ORDER BY WM.WITHDRAWAL_DATE DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+
+    <select id="countAllWithdrawalReason" resultType="int">
+        SELECT COUNT(*)
+        FROM withdrawal_member
+    </select>
+
+    <select id="getAllWithdrawalReasonByWithdrawalId" resultType="com.ama.don.admin.dto.userDTO.WithdrawalReasonDTO">
+        SELECT WM.WITHDRAW_ID, WM.WITHDRAWAL_DATE, WR.WITHDRAWAL_REASON_ID, WR.WITHDRAWAL_REASON
+        FROM withdrawal_member WM
+        JOIN withdrawal_reason WR ON WM.WITHDRAWAL_REASON_ID = WR.WITHDRAWAL_REASON_ID
+        WHERE WM.WITHDRAW_ID = #{withdrawalId}
+    </select>
+
+    <select id="searchWithdrawalReason" resultType="com.ama.don.admin.dto.userDTO.WithdrawalReasonDTO">
+        SELECT WM.WITHDRAW_ID, WM.WITHDRAWAL_DATE, WR.WITHDRAWAL_REASON_ID, WR.WITHDRAWAL_REASON
+        FROM withdrawal_member WM
+        JOIN withdrawal_reason WR ON WM.WITHDRAWAL_REASON_ID = WR.WITHDRAWAL_REASON_ID
+        <where>
+            <if test="withdrawalReasonSearchDTO.withdraw_id != null and withdrawalReasonSearchDTO.withdraw_id != 0">
+                AND WM.WITHDRAW_ID = #{withdrawalReasonSearchDTO.withdraw_id}
+            </if>
+            <if test="withdrawalReasonSearchDTO.withdrawal_reason_id != null and !withdrawalReasonSearchDTO.withdrawal_reason_id.isEmpty()">
+                AND WR.WITHDRAWAL_REASON_ID IN
+                <foreach collection="withdrawalReasonSearchDTO.withdrawal_reason_id" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="withdrawalReasonSearchDTO.withdrawal_reason != null and withdrawalReasonSearchDTO.withdrawal_reason != ''">
+                AND WR.WITHDRAWAL_REASON LIKE CONCAT('%', #{withdrawalReasonSearchDTO.withdrawal_reason}, '%')
+            </if>
+            <if test="withdrawalReasonSearchDTO.withdrawal_date_start != null and withdrawalReasonSearchDTO.withdrawal_date_end != null">
+                AND WM.WITHDRAWAL_DATE BETWEEN #{withdrawalReasonSearchDTO.withdrawal_date_start} AND #{withdrawalReasonSearchDTO.withdrawal_date_end}
+            </if>
+            <if test="withdrawalReasonSearchDTO.withdrawal_date_start != null and withdrawalReasonSearchDTO.withdrawal_date_end == null">
+                AND WM.WITHDRAWAL_DATE >= #{withdrawalReasonSearchDTO.withdrawal_date_start}
+            </if>
+            <if test="withdrawalReasonSearchDTO.withdrawal_date_start == null and withdrawalReasonSearchDTO.withdrawal_date_end != null">
+                AND WM.WITHDRAWAL_DATE &lt;= #{withdrawalReasonSearchDTO.withdrawal_date_end}
+            </if>
+        </where>
+        ORDER BY WM.WITHDRAWAL_DATE DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+
+    <select id="countSearchWithdrawalReason" resultType="int">
+        SELECT COUNT(*)
+        FROM withdrawal_member WM
+        JOIN withdrawal_reason WR ON WM.WITHDRAWAL_REASON_ID = WR.WITHDRAWAL_REASON_ID
+        <where>
+            <if test="withdrawalReasonSearchDTO.withdraw_id != null and withdrawalReasonSearchDTO.withdraw_id != 0">
+                AND WM.WITHDRAW_ID = #{withdrawalReasonSearchDTO.withdraw_id}
+            </if>
+            <if test="withdrawalReasonSearchDTO.withdrawal_reason_id != null and !withdrawalReasonSearchDTO.withdrawal_reason_id.isEmpty()">
+                AND WR.WITHDRAWAL_REASON_ID IN
+                <foreach collection="withdrawalReasonSearchDTO.withdrawal_reason_id" item="id" open="(" separator="," close=")">
+                    #{id}
+                </foreach>
+            </if>
+            <if test="withdrawalReasonSearchDTO.withdrawal_reason != null and withdrawalReasonSearchDTO.withdrawal_reason != ''">
+                AND WR.WITHDRAWAL_REASON LIKE CONCAT('%', #{withdrawalReasonSearchDTO.withdrawal_reason}, '%')
+            </if>
+            <if test="withdrawalReasonSearchDTO.withdrawal_date_start != null and withdrawalReasonSearchDTO.withdrawal_date_end != null">
+                AND WM.WITHDRAWAL_DATE BETWEEN #{withdrawalReasonSearchDTO.withdrawal_date_start} AND #{withdrawalReasonSearchDTO.withdrawal_date_end}
+            </if>
+            <if test="withdrawalReasonSearchDTO.withdrawal_date_start != null and withdrawalReasonSearchDTO.withdrawal_date_end == null">
+                AND WM.WITHDRAWAL_DATE >= #{withdrawalReasonSearchDTO.withdrawal_date_start}
+            </if>
+            <if test="withdrawalReasonSearchDTO.withdrawal_date_start == null and withdrawalReasonSearchDTO.withdrawal_date_end != null">
+                AND WM.WITHDRAWAL_DATE &lt;= #{withdrawalReasonSearchDTO.withdrawal_date_end}
+            </if>
+        </where>
+    </select>
+
+</mapper>

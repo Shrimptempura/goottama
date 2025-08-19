@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.admin.dao.ManageReportsIDao">
+    <select id="getAllReports" resultType="com.ama.don.admin.dto.reportDTO.ReportDTO">
+        SELECT REPORT_ID, USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID, REPORT_STATUS
+        FROM report
+        ORDER BY REPORT_DATE DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+
+    <select id="countAllReports">
+        SELECT COUNT(*)
+        FROM report
+    </select>
+
+    <select id="getReportByReportId" resultType="com.ama.don.admin.dto.reportDTO.ReportDTO">
+        SELECT REPORT_ID, USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID, REPORT_STATUS
+        FROM report
+        WHERE REPORT_ID = #{param1}
+    </select>
+
+    <select id="recent5Reports" resultType="com.ama.don.admin.dto.reportDTO.ReportDTO">
+        SELECT REPORT_ID, USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID, REPORT_STATUS
+        FROM report
+        ORDER BY REPORT_DATE DESC
+        LIMIT 5
+    </select>
+
+    <select id="inProgressingReports" resultType="com.ama.don.admin.dto.reportDTO.ReportDTO">
+        SELECT REPORT_ID, USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID, REPORT_STATUS
+        FROM report
+        WHERE REPORT_STATUS = 'PENDING'
+        OR REPORT_STATUS = 'IN_REVIEW'
+    </select>
+
+    <select id="countInProgressingReports" resultType="int">
+        SELECT COUNT(*)
+        FROM report
+        WHERE REPORT_STATUS = 'PENDING'
+        OR REPORT_STATUS = 'IN_REVIEW'
+
+    </select>
+
+    <select id="searchReports" resultType="com.ama.don.admin.dto.reportDTO.ReportDTO">
+        SELECT REPORT_ID, USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID, REPORT_STATUS
+        FROM report
+        <where>
+            <if test="reportSearchDTO.userId != null">
+                AND USER_ID = #{reportSearchDTO.userId}
+            </if>
+            <if test="reportSearchDTO.reportContent != null and !reportSearchDTO.reportContent.isEmpty()">
+                AND REPORT_CONTENT LIKE CONCAT('%', #{reportSearchDTO.reportContent}, '%')
+            </if>
+            <if test="reportSearchDTO.targetType != null and !reportSearchDTO.targetType.isEmpty()">
+                AND TARGET_TYPE = #{reportSearchDTO.targetType}
+            </if>
+            <if test="reportSearchDTO.targetId != null">
+                AND TARGET_ID = #{reportSearchDTO.targetId}
+            </if>
+            <if test="reportSearchDTO.reportStatus != null and !reportSearchDTO.reportStatus.isEmpty()">
+                <foreach collection="reportSearchDTO.reportStatus" item="status" open="AND REPORT_STATUS IN (" separator="," close=")">
+                    #{status}
+                </foreach>
+            </if>
+            <if test="reportSearchDTO.reportDateStart != null and reportSearchDTO.reportDateStart != ''">
+                AND REPORT_DATE &gt;= #{reportSearchDTO.reportDateStart}
+            </if>
+            <if test="reportSearchDTO.reportDateEnd != null and reportSearchDTO.reportDateEnd != ''">
+                AND REPORT_DATE &lt;= #{reportSearchDTO.reportDateEnd}
+            </if>
+        </where>
+        ORDER BY REPORT_DATE DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+    <select id="countSearchReports" resultType="int">
+        SELECT COUNT(*) FROM report
+        <where>
+            <if test="reportSearchDTO.userId != null">
+                AND USER_ID = #{reportSearchDTO.userId}
+            </if>
+            <if test="reportSearchDTO.reportContent != null and !reportSearchDTO.reportContent.isEmpty()">
+                AND REPORT_CONTENT LIKE CONCAT('%', #{reportSearchDTO.reportContent}, '%')
+            </if>
+            <if test="reportSearchDTO.targetType != null and !reportSearchDTO.targetType.isEmpty()">
+                AND TARGET_TYPE = #{reportSearchDTO.targetType}
+            </if>
+            <if test="reportSearchDTO.targetId != null">
+                AND TARGET_ID = #{reportSearchDTO.targetId}
+            </if>
+            <if test="reportSearchDTO.reportStatus != null and !reportSearchDTO.reportStatus.isEmpty()">
+                <foreach collection="reportSearchDTO.reportStatus" item="status" open="AND REPORT_STATUS IN (" separator="," close=")">
+                    #{status}
+                </foreach>
+            </if>
+            <if test="reportSearchDTO.reportDateStart != null and reportSearchDTO.reportDateStart != ''">
+                AND REPORT_DATE &gt;= #{reportSearchDTO.reportDateStart}
+            </if>
+            <if test="reportSearchDTO.reportDateEnd != null and reportSearchDTO.reportDateEnd != ''">
+                AND REPORT_DATE &lt;= #{reportSearchDTO.reportDateEnd}
+            </if>
+        </where>
+    </select>
+
+    <insert id="submitReport">
+        INSERT INTO report(USER_ID, REPORT_DATE, REPORT_CONTENT, TARGET_TYPE, TARGET_ID)
+        VALUES(#{userId}, NOW(), #{reportContent}, #{targetType}, #{targetId})
+    </insert>
+
+    <update id="handleReportStatus">
+        UPDATE report
+        SET
+        REPORT_STATUS = #{statusChanged}
+        WHERE REPORT_ID = #{reportId}
+    </update>
+
+    <delete id="deleteReport">
+        DELETE FROM report WHERE REPORT_ID = #{param1}
+    </delete>
+
+    <select id="getReportStatusByTarget">
+        SELECT REPORT_STATUS
+        FROM report
+        WHERE TARGET_TYPE = #{targetType}
+        AND TARGET_ID = #{targetId}
+    </select>
+
+</mapper>

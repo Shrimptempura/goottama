@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.interior.dao.CompanyPostDao">
+
+    <!-- === create =================================================-->
+    <!-- 다형성 게시글 생성 이후 업체 게시글 생성 -->
+    <insert id="insertCompanyPost"
+            parameterType="com.ama.don.interior.dto.post.CompanyPostCreateDto"
+            useGeneratedKeys="true"
+            keyProperty="companyPostId">
+        INSERT INTO company_post (
+            post_id,
+            company_id,
+            company_post_title,
+            company_post_content,
+            space_type,
+            area_pyeong,
+            style,
+            construction_detail)
+        VALUES (
+            #{postId},
+            #{companyId},
+            #{companyPostTitle},
+            #{companyPostContent},
+            #{spaceType},
+            #{areaPyeong},
+            #{style},
+            #{constructionDetail}
+        )
+    </insert>
+
+
+    <!-- === read =================================================-->
+    <!-- 게시글 단건 조회 -->
+    <select id="findById" resultType="com.ama.don.interior.dto.post.CompanyPostDto">
+        SELECT
+            p.post_id AS postId,
+            p.post_date AS postDate,
+            c.company_post_id AS companyPostId,
+            c.company_id AS companyId,
+            c.company_post_content AS companyPostContent,
+            c.company_post_title AS companyPostTitle,
+            c.space_type AS spaceType,
+            c.construction_detail AS constructionDetail,
+            c.style AS style,
+            c.company_post_count AS companyPostCount,
+            c.company_post_like_count AS companyPostLikeCount
+        FROM company_post c
+        JOIN post p ON c.post_id = p.post_id
+        WHERE company_post_id = #{companyPostId}
+    </select>
+
+    <!-- 홈에서 보는 최신 게시글 -->
+    <!-- 연관된 테이블(post, company_post)-->
+    <!-- 위치 정보를 얻기 위해서는(location - company - company_post) -->
+    <select id="findCompanyPostByLatest" resultType="com.ama.don.interior.dto.post.CompanyHomePostDto">
+        SELECT
+            c.company_id AS companyId,
+            cp.company_post_id AS companyPostId,
+            p.post_id AS postId,
+            cp.company_post_title AS companyPostTitle,
+            cp.area_pyeong AS areaPyeong,
+            cp.style AS style,
+            p.post_date AS postDate
+        FROM company_post cp
+        JOIN post p ON cp.post_id = p.post_id
+        JOIN company c ON cp.company_id = c.company_id
+        ORDER BY p.post_date DESC, cp.company_post_id DESC
+        LIMIT 6
+    </select>
+
+    <!-- 홈에서 보는 랜덤 게시글 -->
+    <select id="findCompanyPostByRandom" resultType="com.ama.don.interior.dto.post.CompanyHomePostDto">
+        SELECT
+            c.company_id AS companyId,
+            cp.company_post_id AS companyPostId,
+            p.post_id AS postId,
+            cp.company_post_title AS companyPostTitle,
+            cp.area_pyeong AS areaPyeong,
+            cp.style AS style,
+            p.post_date AS postDate
+        FROM company_post cp
+        JOIN post p ON cp.post_id = p.post_id
+        JOIN company c ON cp.company_id = c.company_id
+        ORDER BY RAND()
+        LIMIT 6
+    </select>
+
+    <!-- 홈에서 보는 인기 게시글 -->
+    <select id="findCompanyPostByPopular" resultType="com.ama.don.interior.dto.post.CompanyHomePostDto">
+        SELECT
+            c.company_id AS companyId,
+            cp.company_post_id AS companyPostId,
+            p.post_id AS postId,
+            cp.company_post_title AS companyPostTitle,
+            cp.area_pyeong AS areaPyeong,
+            cp.style AS style,
+            p.post_date AS postDate
+        FROM company_post cp
+        JOIN post p ON cp.post_id = p.post_id
+        JOIN company c ON cp.company_id = c.company_id
+        ORDER BY cp.company_post_like_count DESC, p.post_date DESC
+        LIMIT 6
+    </select>
+
+    <!-- 홈에서 보는 지역구 리스트 -->
+    <!-- region은 서비스에서 넣자 -->
+    <select id="findCompanyPostByRegion" resultType="com.ama.don.interior.dto.post.CompanyHomePostDto">
+        SELECT
+            c.company_id AS companyId,
+            cp.company_post_id AS companyPostId,
+            p.post_id AS postId,
+            cp.company_post_title AS companyPostTitle,
+            cp.area_pyeong AS areaPyeong,
+            cp.style AS style,
+            p.post_date AS postDate,
+            cd.company_addr AS region
+        FROM company_post cp
+        JOIN post p ON cp.post_id = p.post_id
+        JOIN company c ON cp.company_id = c.company_id
+        JOIN company_detail cd ON c.company_detail_id = cd.company_detail_id
+        WHERE cd.company_addr LIKE CONCAT ('%', #{region}, '%')
+        ORDER BY p.post_date DESC
+        LIMIT 6
+    </select>
+
+    <!-- 업체 상세페이지에서 보는 업체 게시글 목록 뷰 -->
+    <select id="getCompanyPostPreview" resultType="com.ama.don.interior.dto.post.CompanyPostPreviewDto">
+        SELECT
+            company_post_id AS companyPostId,
+            company_post_title AS companyPostTitle,
+            company_post_count AS companyPostCount,
+            scrap_count AS scrapCount
+        FROM company_post
+        WHERE company_id = #{companyId}
+        ORDER BY company_post_id DESC
+        LIMIT 8
+    </select>
+
+    <!-- 업체 게시글 상세보기 중 post + company_post만 -->
+    <select id="getPostAndCompanyPostById" resultType="com.ama.don.interior.dto.post.CompanyPostDetailSplitDto">
+        SELECT
+            p.post_id AS postId,
+            p.post_date AS postDate,
+            c.company_id AS companyId,
+            c.company_post_id AS companyPostId,
+            c.company_post_title AS companyPostTitle,
+            c.company_post_content AS companyPostContent,
+            c.space_type AS spaceType,
+            c.area_pyeong AS areaPyeong,
+            c.style AS style,
+            c.construction_detail AS constructionDetail,
+            c.company_post_count AS companyPostCount,
+            c.updated_at AS updatedAt
+        FROM company_post c
+        JOIN post p ON p.post_id = c.post_id
+        WHERE company_post_id = #{companyPostId}
+    </select>
+
+    <!-- 업체 게시글 상세보기 중 company + company_detail -->
+    <select id="getCompanyBasicInfoById" resultType="com.ama.don.interior.dto.post.CompanyPostBasicInfoDto">
+        SELECT
+            c.company_id AS companyId,
+            d.company_detail_id AS companyDetailId,
+            d.company_name AS companyName,
+            d.company_intro AS companyIntro
+        FROM company c
+        JOIN company_detail d ON d.company_detail_id = c.company_detail_id
+        WHERE company_id = #{companyId}
+    </select>
+
+    <!-- 업체 게시글 조회수 증가 -->
+    <update id="increaseHit">
+        UPDATE company_post
+        SET company_post_count = company_post_count + 1
+        WHERE company_post_id = #{companyPostId}
+    </update>
+
+
+    <!-- === update =================================================-->
+    <!-- 업체 게시글 수정 뷰 -->
+    <select id="getEditView" resultType="com.ama.don.interior.dto.post.CompanyPostUpdateDto">
+        SELECT
+            company_post_id AS companyPostId,
+            company_post_title AS companyPostTitle,
+            company_post_content AS companyPostContent,
+            space_type AS spaceType,
+            area_pyeong AS areaPyeong,
+            style AS style,
+            construction_detail AS constructionDetail
+        FROM company_post
+        WHERE company_post_id = #{companyPostId}
+    </select>
+
+    <!-- 업체 게시글 수정 -->
+    <update id="updatePost"
+            parameterType="com.ama.don.interior.dto.post.CompanyPostUpdateDto">
+        UPDATE company_post
+        SET
+            company_post_title = #{companyPostTitle},
+            company_post_content = #{companyPostContent},
+            space_type = #{spaceType},
+            area_pyeong = #{areaPyeong},
+            style = #{style},
+            construction_detail = #{constructionDetail}
+        WHERE company_post_id = #{companyPostId}
+    </update>
+
+    <!-- === delete =================================================-->
+    <!-- 게시글 실삭제 -->
+    <delete id="deleteCompanyPostById">
+        DELETE from company_post
+        WHERE company_post_id = #{companyPostId}
+    </delete>
+
+    <!-- 다형성 게시글 삭제 -->
+    <delete id="deletePolyPostById">
+        DELETE FROM post
+        WHERE post_id = #{postId}
+    </delete>
+
+</mapper>

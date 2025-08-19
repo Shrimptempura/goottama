@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.admin.dao.NoticesIDao">
+
+    <!--  공지 모든 공지 추출  -->
+    <select id="getAllNotices" resultType="com.ama.don.admin.dto.noticeDTO.NoticesDto">
+        SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_CONTENT
+        FROM notices
+        ORDER BY NOTICES_CREATED_AT DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+
+    <select id="countAllNotices" resultType="int">
+        SELECT COUNT(*)
+        FROM notices
+    </select>
+
+    <!--  아이디로 공지 검색  -->
+    <select id="getNoticeById" resultType="com.ama.don.admin.dto.noticeDTO.NoticesDto">
+        SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_CONTENT
+        FROM notices WHERE NOTICES_ID=#{param1}
+    </select>
+
+    <select id="searchNotice" resultType="com.ama.don.admin.dto.noticeDTO.NoticesDto" >
+        SELECT NOTICES_ID, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CREATED_AT, NOTICES_CONTENT
+        FROM notices
+        <where>
+            <if test="noticeSearchDTO.noticeTitle != null and noticeSearchDTO.noticeTitle != ''">
+                AND NOTICES_TITLE LIKE CONCAT('%', #{noticeSearchDTO.noticeTitle}, '%')
+            </if>
+            <if test="noticeSearchDTO.noticeContent != null and noticeSearchDTO.noticeContent != ''">
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchDTO.noticeContent}, '%')
+            </if>
+            <if test="noticeSearchDTO.noticeDateStart != null and noticeSearchDTO.noticeDateStart != ''">
+                AND NOTICES_CREATED_AT &gt;= #{noticeSearchDTO.noticeDateStart}
+            </if>
+            <if test="noticeSearchDTO.noticeDateEnd != null and noticeSearchDTO.noticeDateEnd != ''">
+                AND NOTICES_CREATED_AT &lt;= #{noticeSearchDTO.noticeDateEnd}
+            </if>
+        </where>
+        ORDER BY NOTICES_CREATED_AT DESC
+        LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
+    </select>
+    <select id="countSearchNotice" resultType="int">
+        SELECT COUNT(*)
+        FROM notices
+        <where>
+            <if test="noticeSearchDTO.noticeTitle != null and noticeSearchDTO.noticeTitle != ''">
+                AND NOTICES_TITLE LIKE CONCAT('%', #{noticeSearchDTO.noticeTitle}, '%')
+            </if>
+            <if test="noticeSearchDTO.noticeContent != null and noticeSearchDTO.noticeContent != ''">
+                AND NOTICES_CONTENT LIKE CONCAT('%', #{noticeSearchDTO.noticeContent}, '%')
+            </if>
+            <if test="noticeSearchDTO.noticeDateStart != null and noticeSearchDTO.noticeDateStart != ''">
+                AND NOTICES_CREATED_AT &gt;= #{noticeSearchDTO.noticeDateStart}
+            </if>
+            <if test="noticeSearchDTO.noticeDateEnd != null and noticeSearchDTO.noticeDateEnd != ''">
+                AND NOTICES_CREATED_AT &lt;= #{noticeSearchDTO.noticeDateEnd}
+            </if>
+        </where>
+    </select>
+
+    <!-- 공지 수정 -->
+    <update id="modifyNotice" useGeneratedKeys="true" keyProperty="notices_id">
+        UPDATE notices
+        SET
+        NOTICES_TITLE = #{notices_title},
+        NOTICES_IS_PINNED =#{notices_is_pinned},
+        NOTICES_CONTENT =#{notices_content}
+        WHERE NOTICES_ID = #{notices_id}
+    </update>
+
+    <!--  공지 작성  -->
+    <insert id="writeNotice" useGeneratedKeys="true" keyProperty="notices_id">
+        INSERT INTO notices(NOTICES_CREATED_AT, NOTICES_TITLE, NOTICES_IS_PINNED, NOTICES_CONTENT)
+        VALUES(NOW(), #{notices_title}, #{notices_is_pinned}, #{notices_content})
+    </insert>
+
+    <!--  공지 삭제  -->
+    <delete id="deleteNotice">
+        DELETE FROM notices WHERE NOTICES_ID = #{param1}
+    </delete>
+
+    <select id="getLatestNoticeId">
+        SELECT MAX(notices_id) FROM notices
+    </select>
+</mapper>

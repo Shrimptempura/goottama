@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ama.don.community.dao.CommunityPostQueryDao">
+
+	<select id="findMyPostsByType"
+		resultType="com.ama.don.community.dto.CommunityPostListDto">
+		SELECT *
+		FROM (
+		/* 리뷰 */
+		SELECT
+		p.post_id AS postId,
+		r.review_id AS targetId,
+		'COMMUNITY_REVIEW' AS targetType,
+		r.review_title AS title,
+		r.review_content AS content,
+		p.created_at AS createdAt,
+		r.review_count AS viewCount,
+		r.review_like_count AS likeCount,
+		(
+		SELECT COUNT(*)
+		FROM comments c
+		WHERE c.target_id = p.post_id
+		AND c.target_type = 'COMMUNITY_REVIEW'
+		AND c.is_deleted = 0
+		) AS commentCount
+		FROM community_post_review r
+		JOIN post p ON p.post_id = r.post_id
+		WHERE p.user_id = #{userId}
+
+		UNION ALL
+
+		/* 하우스포토 */
+		SELECT
+		p.post_id AS postId,
+		h.housephoto_id AS targetId,
+		'COMMUNITY_HOUSEPHOTO' AS targetType,
+		h.housephoto_title AS title,
+		h.housephoto_content AS content,
+		p.created_at AS createdAt,
+		h.housephoto_count AS viewCount,
+		h.housephoto_like_count AS likeCount,
+		(
+		SELECT COUNT(*)
+		FROM comments c
+		WHERE c.target_id = p.post_id
+		AND c.target_type = 'COMMUNITY_HOUSEPHOTO'
+		AND c.is_deleted = 0
+		) AS commentCount
+		FROM community_post_housephoto h
+		JOIN post p ON p.post_id = h.post_id
+		WHERE p.user_id = #{userId}
+
+		UNION ALL
+
+		/* 하우스데코레이션 */
+		SELECT
+		p.post_id AS postId,
+		d.housedecoration_id AS targetId,
+		'COMMUNITY_HOUSEDECORATION' AS targetType,
+		d.housedecoration_title AS title,
+		d.housedecoration_content AS content,
+		p.created_at AS createdAt,
+		d.housedecoration_count AS viewCount,
+		d.housedecoration_like_count AS likeCount,
+		(
+		SELECT COUNT(*)
+		FROM comments c
+		WHERE c.target_id = p.post_id
+		AND c.target_type = 'COMMUNITY_HOUSEDECORATION'
+		AND c.is_deleted = 0
+		) AS commentCount
+		FROM community_post_housedecoration d
+		JOIN post p ON p.post_id = d.post_id
+		WHERE p.user_id = #{userId}
+		) t
+		<where>
+			<if test="targetType != null and targetType != ''">
+				t.targetType = #{targetType}
+			</if>
+		</where>
+		ORDER BY t.createdAt DESC
+	</select>
+
+</mapper>
+  

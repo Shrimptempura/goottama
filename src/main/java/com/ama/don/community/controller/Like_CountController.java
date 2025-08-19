@@ -1,0 +1,27 @@
+package com.ama.don.community.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.ama.don.community.dao.CommunityDetailDao;
+
+@RestController
+@RequestMapping("/community/like")
+public class Like_CountController {
+
+	@Autowired
+	private CommunityDetailDao communityDetailDao;
+
+	@PostMapping("/toggle")
+	public String toggleLike(@RequestParam("review_id") Long reviewId) {
+		communityDetailDao.increaseLikeCount(reviewId);
+		int likeCount = communityDetailDao.findById(reviewId).getReview_like_count();
+		return String.valueOf(likeCount);
+	}
+	
+	
+
+}

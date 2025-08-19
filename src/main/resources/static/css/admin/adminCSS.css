@@ -1,0 +1,145 @@
+body{
+    max-width: 90vw;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.admin-search-form {
+    width: 100%;
+}
+
+table {
+    width: 100%;
+}
+
+.search-form {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px 20px;
+    align-items: center;
+}
+
+.search-form .form-label {
+    text-align: right;
+    font-weight: bold;
+    color: #555;
+    white-space: nowrap;
+}
+
+.search-form .form-input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+}
+
+.search-button-container {
+    grid-column: span 2;
+    text-align: right;
+}
+
+.search-button-container input[type="submit"] {
+    background-color: #4285f4;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.search-button-container input[type="submit"]:hover {
+    background-color: #0D47A1;
+}
+
+.input-description {
+    font-size: 12px;
+    color: #888;
+    margin-top: 5px;
+    line-height: 1.4;
+    white-space: normal;
+}
+
+.input-description a {
+    color: #4285f4;
+    text-decoration: none;
+}
+
+.info {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 15px;
+    line-height: 1.5;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    font-size: small;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table td, table th {
+    padding: 12px 15px;
+    text-align: left;
+}
+
+.open-modal-btn {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.open-modal-btn:hover {
+    background-color: #3367d6;
+    transform: scale(1.05);
+}
+
+.pagination-controls .page-btn {
+    display: inline-block;
+    padding: 8px 12px;
+    text-decoration: none;
+    font-size: small;
+    color: #4285f4;
+    border: 1px solid #4285f4;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination-controls .page-btn:hover:not(.disabled) {
+    background-color: #4285f4;
+    color: white;
+}
+
+.pagination-controls .page-btn.disabled {
+    color: #ccc;
+    border-color: #ccc;
+    cursor: not-allowed;
+}
+
+.pagination-controls .current {
+    display: inline-block;
+    padding: 8px 12px;
+    background-color: #4285f4;
+    color: white;
+    border-radius: 4px;
+    font-weight: bold;
+}

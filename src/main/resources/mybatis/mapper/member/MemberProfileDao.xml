@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "https://.org/dtdmybatis/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.member.dao.MemberProfileDao">
+
+	<update id="updatePw">
+	UPDATE user_login UL join user_detail UD ON UL.USER_ID = UD.USER_ID
+	SET UL.USER_PASSWORD = #{encodePw}
+	WHERE UL.LOGIN_ID = #{findPwDto.loginId} AND UD.USER_EMAIL = #{findPwDto.email}
+	</update>
+	
+	<update id="updateMember">
+	UPDATE user_login UL JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
+	SET UD.USER_NAME = #{memberEditDto.changeName}, UD.USER_NICKNAME=#{memberEditDto.changeNickname}, 
+	UD.USER_TEL =#{memberEditDto.changeTel}, UD.USER_ZIPCODE=#{memberEditDto.changeZipcode}, UD.USER_ADDR=#{memberEditDto.changeFullAddr}
+	WHERE UL.LOGIN_ID = #{memberDto.login_id}
+	</update>
+	
+	<select id="updated" parameterType="string" resultType="com.ama.don.member.dto.MemberDto">
+	SELECT UL.LOGIN_ID,UL.ROLES_ID,UL.USER_PASSWORD,UD.USER_ID,UD.USER_NAME,UD.USER_NICKNAME,
+	UD.USER_GENDER,UD.USER_BIRTH,UD.USER_CREATED_AT,UD.USER_TEL,UD.USER_ZIPCODE,UD.USER_ADDR,
+	UD.USER_EMAIL,UD.USER_IMG FROM user_login UL
+	JOIN user_detail UD ON UL.USER_ID = UD.USER_ID
+	WHERE UL.LOGIN_ID = #{login_id}
+	</select>
+
+</mapper>
