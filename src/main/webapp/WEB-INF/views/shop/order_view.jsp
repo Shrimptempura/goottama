@@ -485,5 +485,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 </body>
-<%@ include file="../list.jsp" %>
+ <%@ include file="./shoplist.jsp" %>
 </html>

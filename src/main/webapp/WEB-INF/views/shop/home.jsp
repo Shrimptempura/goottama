@@ -9,6 +9,7 @@
 <title>쇼핑몰 홈</title>
 <style>
 body {
+
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -712,5 +713,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 </body>
-<%@ include file="../list.jsp" %>
+ <%@ include file="./shoplist.jsp" %>
 </html>
