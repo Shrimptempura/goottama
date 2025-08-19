@@ -18,7 +18,7 @@ public class KakaoPayConfig {
     public static final String KAKAO_PAY_APPROVE_URL_LEGACY = "/v1/payment/approve";
     
     // ✅ SECRET_KEY (ADMIN_KEY에서 변경)		//your-api-key kakaopay 40자리
-    public static final String SECRET_KEY = "";
+    public static final String SECRET_KEY = "DEVEF6C54B19E28F78A792F15C6570541ECCC9CC";
     
     // ✅ 우리 서버의 Callback URL들
     public static final String SUCCESS_URL = "http://localhost:8505/shop/kakaopaysuccess";
