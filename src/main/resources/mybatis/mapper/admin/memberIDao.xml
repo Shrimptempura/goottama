@@ -8,7 +8,7 @@
         SELECT D.USER_ID, D.USER_NAME, D.USER_NICKNAME, D.USER_CREATED_AT, L.ROLES_ID, L.LOGIN_ID, D.USER_STATUS, D.USER_SANCTIONS_UNTIL
         FROM user_detail D
         JOIN user_login L ON D.USER_ID = L.USER_ID
-        ORDER BY D.USER_CREATED_AT
+        ORDER BY D.USER_CREATED_AT DESC
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
 
@@ -137,7 +137,7 @@
                 AND D.USER_EMAIL LIKE CONCAT('%', #{userSearchDTO.user_email}, '%')
             </if>
         </where>
-        ORDER BY D.USER_CREATED_AT
+        ORDER BY D.USER_CREATED_AT DESC
         LIMIT #{searchVO.rowStart}, #{searchVO.displayRowCount}
     </select>
     <select id="countSearchUsers" resultType="int">

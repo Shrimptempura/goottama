@@ -9,6 +9,6 @@
 <body>
     <%@ include file="./common/header_navigation_bar.jsp" %>
 	<h3>list</h3>
-    <%@ include file="./common/footer.jsp" %>
+	 <%@ include file="./common/footer.jsp" %>
 </body>
 </html>

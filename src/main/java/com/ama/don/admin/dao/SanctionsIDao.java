@@ -103,4 +103,6 @@ public interface SanctionsIDao {
     int deleteSanction(String userId);
 
     List<SanctionsDTO> recent5Sanctions();
+
+    List<String> getSanctionTypes();
 }

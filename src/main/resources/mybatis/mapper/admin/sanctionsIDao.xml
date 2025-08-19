@@ -36,6 +36,10 @@
         ORDER BY SANCTIONS_CREATED_AT DESC
     </select>
 
+    <select id="getSanctionTypes">
+        SELECT DISTINCT(SANCTIONS_TYPES) FROM sanctions
+    </select>
+
     <select id="searchSanctions" resultType="com.ama.don.admin.dto.sanctionsDTO.SanctionsDTO">
         SELECT SANCTIONS_ID, USER_ID, SANCTIONS_TYPES, SANCTIONS_START_DATE, SANCTIONS_END_DATE,
         SANCTIONS_REASON, ADMIN_ACCOUNT_ID, SANCTIONS_CREATED_AT

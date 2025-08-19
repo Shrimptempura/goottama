@@ -72,7 +72,6 @@ public class CreateSanction {
     public Timestamp strToTimestamp(String strDate) {
         // 입력 문자열의 길이를 확인하여 포맷을 동적으로 선택
         //  현재 선택의 방식이 일관적이지 않아서 생기는 문제
-        // TODO: 선택 방식 일관화 
         if (strDate.length() > 10) {
             // 'yyyy-MM-dd'T'HH:mm' 형식
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");

@@ -1019,10 +1019,6 @@ function saveproductliketodatabase() {
 		        <i class="fa-regular fa-heart"></i>	
 				<p>${userLikeStatus }</p>
 		    </button>
-		    
-		    <!--<button class="bookmark-btn">
-		        <i class="fa-regular fa-bookmark"></i>
-		    </button>-->
 		</div>
 		
         <!-- 하단바 (이미지 아래) -->
@@ -1077,13 +1073,6 @@ function saveproductliketodatabase() {
 	 						<button class="review-delete" onclick="location.href='review_delete?review_id=${review.review_id }&target_id=${review.target_id }&user_id=${review.user_id }'">삭제버튼</button>
 	        				<button class="review-update" onclick="location.href='review_update_view?review_id=${review.review_id }'">수정버튼</button>
         				</c:if>
-						
-						<!--신고버튼-->
-						<!--<button class="review-report" 
-						        onclick="location.href='report_write_view?targetType=shop&targetId=${review.review_id}'">
-						    신고하기
-						</button>-->
-        				<!---->
         			</div>
         		</div>
         	</c:forEach>
@@ -1149,13 +1138,7 @@ function saveproductliketodatabase() {
 		                            <fmt:formatDate value="${inquiry.pinquiry_date}" pattern="yyyy-MM-dd HH:mm"/>
 		                        </span>
 		                        <p>${inquiry.pinquiry_status}</p>  
-		                       	 <!-- 이거 문의하는데 시간이 필요하네 -->
-		                        <!-- 보다 중요한건 카카오페이결제인데 -->
-		                        
-		                        <!-- JavaScript로 제어될 내 문의 영역 -->
-		                        <%-- <div class="my-inquiry-section" style="display: none;">
-		                            <p class="my-inquiry-text">내 문의: ${inquiry.user_id}</p>
-		                        </div> --%>
+	
 		                    </div>
 		                    
 		                    <button><a href="product_reply_view?product_id=${inquiry.product_id }&pinquiry_id=${inquiry.pinquiry_id }"> 답변달기</a></button>
@@ -1309,4 +1292,5 @@ function saveproductliketodatabase() {
 </div>
 
 </body>
+<%@ include file="../list.jsp" %>
 </html>

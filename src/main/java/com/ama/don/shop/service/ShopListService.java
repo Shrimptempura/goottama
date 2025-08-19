@@ -33,11 +33,7 @@ public class ShopListService implements ShopServiceinter{
 		//iDao.intocart(product_id);
 		model.addAttribute("list",iDao.product_list());
 		
-		//
-		
-//		ArrayList<Product_imgDto> imgList=
-//				iDao.selectImg(bid);
-//		model.addAttribute("imgList",imgList);
+
 	}
 
 }

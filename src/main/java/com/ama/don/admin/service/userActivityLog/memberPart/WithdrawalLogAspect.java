@@ -50,5 +50,6 @@ public class WithdrawalLogAspect {
                 memberDto.getUser_id(),
                 "User Withdrawal (Reason: " + reason + ")"
         );
+        log.info("User agree to withdrawal, User id : {}", memberDto.getUser_id());
     }
 }
