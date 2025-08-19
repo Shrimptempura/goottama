@@ -32,8 +32,6 @@ public class ProfileImgUploadService {
 			dir.mkdirs(); // 디렉토리가 없으면 생성
 		}
 
-		// 프로필 이미지를 삭제학경우 기본이미지
-
 		// 선택한 파일이 없으면 리턴
 		if (file == null || file.isEmpty()) {
 			return;

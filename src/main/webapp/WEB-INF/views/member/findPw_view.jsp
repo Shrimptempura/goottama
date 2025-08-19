@@ -10,6 +10,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/findPw_view.css" />
 </head>
 <body>
+<%@ include file="../common/header_navigation_bar.jsp" %>
+
 <div class="container">
     <form:form modelAttribute="findPwDto" action="/findPw" method="post">
         <h3>비밀번호 찾기</h3>
@@ -30,5 +32,7 @@
     </form:form>
     <a href="/login_view">로그인 하기</a>
 </div>
+
+<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

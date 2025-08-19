@@ -17,7 +17,7 @@ public class MemberUpdateService {
 	 private final CustomUserDetailsService customUserDetailsService;
 
 	    /**
-	     * 로그인한 사용자의 인증 정보를 갱신합니다.
+	     * 로그인한 사용자의 인증 정보를 갱신
 	     * @param loginId 회원의 로그인 ID
 	     */
 	    public void refreshAuthentication(String loginId) {
