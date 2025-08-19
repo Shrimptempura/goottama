@@ -18,7 +18,7 @@
     <div class="top-actions">
         <c:choose>
             <c:when test="${not empty myCompanyId}">
-                <c:url var="myPageUrl" value="/css/interior/myhome/${myCompanyId}">
+                <c:url var="myPageUrl" value="/interior/myhome/${myCompanyId}">
                     <c:param name="type" value="all"/>
                 </c:url>
                 <a href="${myPageUrl}" class="btn btn-primary">내 업체 페이지</a>
