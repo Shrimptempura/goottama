@@ -1,20 +1,14 @@
 package com.ama.don.member.service;
 
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
-import com.ama.don.common.config.BCryptEncoderConfig;
+import com.ama.don.admin.service.userActivityLog.SaveUserActivityLog;
 import com.ama.don.member.dao.JoinDao;
 import com.ama.don.member.dto.JoinformDto;
-import com.ama.don.member.dto.UserDetailDto;
-import com.ama.don.member.dto.UserDetailDto.Gender;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -24,22 +18,10 @@ public class JoinService implements JoinServiceInter {
 
 	private final JoinDao joinDao;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-	private final ValidationServiceInter validationServiceInter;
+	private final SaveUserActivityLog userActivityLog;
 
 	@Override
 	public void join(JoinformDto joinformDto, Model model) {
-		
-		validationServiceInter.emailCheck(joinformDto, model);
-		validationServiceInter.loginIdCheck(joinformDto, model);
-		validationServiceInter.nicknameCheck(joinformDto, model);
-		validationServiceInter.passwordCheck(joinformDto, model);
-		
-		if (model.containsAttribute("email_error") ||
-			model.containsAttribute("id_error") ||
-			model.containsAttribute("nickname_error") ||
-			model.containsAttribute("pw_error")) {
-			return;
-		}
 		
 		// 비밀번호 암호화
 		String encodedPw = bCryptPasswordEncoder.encode(joinformDto.getPw());
@@ -49,6 +31,20 @@ public class JoinService implements JoinServiceInter {
 
 		joinDao.insertUserLogin(joinformDto);  // user_login 테이블 정보입력
 
+		// 로그 남기는 메서드입니다.. 여기 안쓰면 로그를 남길 수 없어요...
+		Long userId = joinformDto.getUserId();
+		String loginId = joinformDto.getLoginId();
+		if (userId != null && loginId != null) {
+			userActivityLog.createAndSaveLog(
+					userId,
+					"USER_JOIN",
+					"USER",
+					userId,
+					"User joined with ID: " + loginId
+			);
+		}
+
 	}
+	
 
 }

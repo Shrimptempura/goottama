@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.interior.dao.CompanyFollowDao">
+    <!-- 싹다 수정 필요 성능향상 -->
+
+    <!--  회원이 업체 팔로우 생성  -->
+    <insert id="insertFollowCompany"
+            parameterType="com.ama.don.interior.dto.follow.CompanyFollowDto"
+            useGeneratedKeys="true"
+            keyProperty="followId">
+        INSERT INTO company_follow (
+            company_id,
+            user_id,
+            follow_at)
+        VALUES (
+            #{companyId},
+            #{userId},
+            now()
+        )
+    </insert>
+
+    <!--  회원이 업체 팔로우 취소  -->
+    <delete id="deleteFollowCompany">
+        DELETE from company_follow
+        WHERE user_id = #{userId}
+            AND company_id = #{companyId}
+    </delete>
+
+    <!--  회원이 업체를 팔로우 했는지  -->
+    <select id="isFollowedCompany" resultType="java.lang.Boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM company_follow
+            WHERE company_id = #{companyId}
+                AND user_id = #{userId}
+        ) AS Followed
+    </select>
+
+    <!--  업체의 팔로워 수 구하기  -->
+    <select id="getFollowCompanyCount" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM company_follow
+        WHERE company_id = #{companyId}
+    </select>
+
+</mapper>

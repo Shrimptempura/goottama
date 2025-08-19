@@ -1,11 +1,32 @@
+<!-- leftNavigationBar.jsp -->
     <div id="admin-navigation-bar">
-        <button onclick="location.href='/admin/admin_index'">Dash Board</button>
-        <button onclick="location.href='/admin/users/user_manage'">Manage Users</button>
-        <button onclick="location.href='/admin/notices/notice_list'">Notices</button>
-        <button onclick="location.href='/admin/reports/reports_list'">Reports</button>
-        <button onclick="location.href='/admin/search/advanced_search'">Advanced Search</button>
-        <button onclick="location.href='/admin/log/log_viewer'">Log Viewer</button>
-        <button onclick="location.href='/admin/statistics/statistics'">Statistics</button>
-        <button onclick="location.href='/admin/access_control/access_control'">Access Control</button>
-        <button onclick="location.href='/admin/permission/permission_setting/'">Permission</button>
+        <button data-menu="dashboard">Dash Board</button>
+        <button data-menu="users">Manage Users</button>
+        <button data-menu="notices">Notices</button>
+        <button data-menu="reports">Reports</button>
+        <button data-menu="logs">User Log</button>
+        <button data-menu="comments">Comments</button>
+        <button data-menu="posts">Posts</button>
+        <button data-menu="sanctions">Sanctions</button>
+        <button data-menu="withdrawals">Withdrawal Reason</button>
     </div>
+    <style>
+            #admin-navigation-bar {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px; /* 버튼 사이의 간격 */
+                width: 100%;
+                max-width: 600px; /* 전체 너비 제한 */
+                margin: 0 auto; /* 중앙 정렬 */
+                padding: 20px;
+                box-sizing: border-box;
+            }
+
+            #admin-navigation-bar button {
+                width: 100%;
+                padding: 15px;
+                font-size: 16px;
+                border: none;
+                border-radius: 8px;
+            }
+    </style>

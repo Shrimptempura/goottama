@@ -1,0 +1,163 @@
+body {
+    font-family: Arial, sans-serif;
+    color: #333;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+}
+
+.main-content-container {
+    max-width: 60%;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.contents-container img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.info {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.notice-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    table-layout: fixed;
+    word-break: break-all;
+}
+
+.notice-table th, .notice-table td {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px;
+    text-align: left;
+}
+
+.notice-table th:first-child,
+.notice-table td:first-child {
+    width: 80%;
+}
+
+.notice-table th:last-child,
+.notice-table td:last-child {
+    width: 20%;
+}
+
+.notice-table tr:hover {
+    background-color: #fafafa;
+}
+
+.notice-table a {
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.notice-table a:hover {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.pagination-wrapper {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.pagination-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #555;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.page-btn:hover:not(.disabled) {
+    background-color: #007bff;
+    color: #ffffff;
+}
+
+.page-btn.disabled {
+    color: #ccc;
+    pointer-events: none;
+    cursor: default;
+}
+
+.current {
+    font-weight: bold;
+    color: #007bff;
+    padding: 8px 16px;
+}
+
+.contents-container {
+    padding: 20px 0;
+}
+
+hr {
+    border: 0;
+    border-top: 1px solid #e0e0e0;
+    margin: 20px 0;
+}
+
+fieldset {
+    border: 1px solid #e0e0e0;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+legend {
+    font-weight: bold;
+    color: #333;
+    padding: 0 10px;
+}
+
+button, .report-link {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-size: 16px;
+    text-decoration: none;
+    text-align: center;
+}
+
+button {
+    background-color: #fff;
+    color: #555;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+button:hover {
+    background-color: #f0f0f0;
+}
+
+.report-link {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    transition: background-color 0.3s;
+}
+
+.report-link:hover {
+    background-color: #c82333;
+}

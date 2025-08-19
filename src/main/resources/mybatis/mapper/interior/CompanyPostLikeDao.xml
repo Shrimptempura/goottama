@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ama.don.interior.dao.CompanyPostLikeDao">
+
+    <!-- 회원과 게시글 좋아요 여부 확인 -->
+    <select id="isLikedCompanyPost" resultType="java.lang.Boolean">
+        SELECT EXISTS (
+            SELECT 1
+            FROM company_post_like
+            WHERE company_post_id = #{companyPostId}
+                AND user_id = #{userId}
+        ) AS isLiked
+    </select>
+
+    <!-- 회원이 게시글 좋아요 -->
+    <insert id="insertLikeCompanyPost"
+            parameterType="com.ama.don.interior.dto.post.CompanyPostLikeDto"
+            useGeneratedKeys="true"
+            keyProperty="companyPostLikeId">
+        INSERT INTO company_post_like (
+            company_post_id,
+            user_id)
+        VALUES (
+            #{companyPostId},
+            #{userId}
+        )
+    </insert>
+
+    <!-- 회원이 게시글 좋아요 취소 -->
+    <delete id="deleteLikeCompanyPost">
+        DELETE from company_post_like
+        WHERE company_post_id = #{companyPostId}
+            AND user_id = #{userId}
+    </delete>
+
+    <!-- 게시글 좋아요 수 조회 -->
+    <select id="countLikeCompanyPost" resultType="java.lang.Integer">
+        SELECT company_post_like_count
+        FROM company_post
+        WHERE company_post_id = #{companyPostId}
+    </select>
+
+    <!-- 게시글 좋아요 수 증가 -->
+    <update id="incrementLikeCount">
+        UPDATE company_post
+        SET company_post_like_count = company_post_like_count + 1
+        WHERE company_post_id = #{companyPostId}
+    </update>
+
+    <!-- 게시글 좋아요 수 감소 -->
+    <update id="decrementLikeCount">
+        UPDATE company_post
+        SET company_post_like_count = company_post_like_count - 1
+        WHERE company_post_id = #{companyPostId}
+    </update>
+
+</mapper>

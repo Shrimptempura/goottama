@@ -1,0 +1,91 @@
+    body {
+        font-family: Arial, Helvetica, sans-serif;
+        background-color: #f9f9f9;
+        margin: 20px;
+    }
+    
+    .order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 20px;
+  margin: 0 20%;
+}
+
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 30px;
+    }
+
+    .order-card {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 20px;
+        margin-bottom: 30px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .order-header {
+        margin-bottom: 15px;
+    }
+
+    .order-header p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .product-item {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        border-top: 1px solid #eee;
+        padding: 15px 0;
+    }
+
+    .product-item img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+    }
+
+    .product-info p {
+        margin: 3px 0;
+        color: #444;
+    }
+
+    .order-total {
+        font-weight: bold;
+        margin-top: 15px;
+        text-align: right;
+        color: #222;
+    }
+
+    .no-orders {
+        text-align: center;
+        background-color: #fff0f0;
+        border: 1px solid #f5c2c2;
+        padding: 30px;
+        border-radius: 8px;
+        color: #a94442;
+        margin-top: 50px;
+    }
+
+    .back-to-shop {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+    .back-to-shop a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+        transition: color 0.2s;
+    }
+
+    .back-to-shop a:hover {
+        color: #0056b3;
+    }

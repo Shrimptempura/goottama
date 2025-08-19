@@ -1,0 +1,116 @@
+.home-wrap {
+    position: relative;
+}
+
+.top-actions {
+    position: absolute;
+    top: -6px;
+    right: 0;
+    display: flex;
+    gap: 8px;
+    z-index: 20;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: .15s ease;
+}
+
+.btn-primary {
+    background: #4f46e5;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    filter: brightness(.96);
+}
+
+.btn-outline {
+    background: #fff;
+    color: #374151;
+    border-color: #d1d5db;
+}
+
+.btn-outline:hover {
+    background: #f9fafb;
+}
+
+.my-page-btn:hover {
+    filter: brightness(.96);
+}
+
+/* 헤더와 너무 붙으면 살짝 내리기 */
+@media (max-width: 980px) {
+    .my-page-btn {
+        top: 6px;
+        right: 6px;
+    }
+}
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: none;
+    background-color: #eee;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-left {
+    left: -20px;
+}
+
+.nav-right {
+    right: -20px;
+}
+
+.nav-btn:hover {
+    background-color: #ddd;
+}
+
+.company-wrap:hover .nav-btn {
+    display: flex;
+}
+
+.card {
+    flex: 0 0 260px;
+    border: 1px solid #f3f3f3;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #f9f9f9;
+    text-align: left;
+}
+
+.img-box {
+    width: 100%;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    border-radius: 6px;
+    margin: 0 auto;
+}
+
+.img-box > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}

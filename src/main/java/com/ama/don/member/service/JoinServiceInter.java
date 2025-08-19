@@ -6,6 +6,6 @@ import com.ama.don.member.dto.JoinformDto;
 
 public interface JoinServiceInter {
 	
-	public void join(JoinformDto joinformDto,Model model); //
+	void join(JoinformDto joinformDto,Model model); 
 
 }
