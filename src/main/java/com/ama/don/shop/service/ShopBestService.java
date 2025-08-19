@@ -34,9 +34,6 @@ public class ShopBestService implements ShopServiceinter{
 			e.printStackTrace();
 		}	
 		
-//		ArrayList<ProductFlatDto> productFlatDtos=iDao.product_list();
-//		//상품을 가져오고 리뷰수가 많은 상품을 나타낸다.
-//		model.addAttribute("product_list",productFlatDtos);
 		
 			
 	}

@@ -72,12 +72,6 @@ public class ShopCartUpdateService implements ShopServiceinter{
         }
         
 
-		
-		
-		//카트아이디를 long으로바꾸고 
-		//cart_qunatity는 int로 바꾸고
-		//cartdeleteiDao;
-		
 		try {
 			
 			iDao.cart_update(cartid,cartquantity);

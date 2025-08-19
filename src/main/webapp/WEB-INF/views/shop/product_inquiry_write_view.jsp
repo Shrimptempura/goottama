@@ -273,17 +273,6 @@
             </div>
         </div>
     </div>
-   <%--  
-    <!-- 디버깅 정보 (개발용) - 사용자 정보 포함 -->
-    <div class="debug-info">
-        <strong>🔍 디버깅 정보:</strong><br>
-        유저 아이디: <span id="debug_session_raw">${loginMember.user_id}</span><br>
-        사용자 닉네임: <span style="color: #007bff;">${loginMember.user_nickname} </span><br>
-        사용자 이메일: <span style="color: #007bff;">${loginMember.user_email} </span><br>
-        사용자 연락처: <span style="color: #007bff;">${loginMember.user_tel} </span><br>
-        폼 제출 상태: <span id="debug_status">대기중</span><br>
-        <button type="button" onclick="testUserId()" style="margin-top: 5px; padding: 5px 10px; background: #17a2b8; color: white; border: none; border-radius: 3px;">user_id 테스트</button>
-    </div> --%>
     
     <!-- 문의 작성 폼 - 방법 1 적용 -->
     <form class="inquiry-form" 
@@ -338,16 +327,7 @@
                 <span id="current-count">0</span> / 1000자
             </div>
         </div>
-        
-        <!-- 공개여부 -->
-        <!-- <div class="form-group">
-            <label for="is_public" class="form-label">공개 설정</label>
-            <select id="is_public" name="is_public" class="form-control form-select">
-                <option value="0">비공개 (나만 볼 수 있음)</option>
-                <option value="1">공개 (다른 고객도 볼 수 있음)</option>
-            </select>
-        </div> -->
-        
+ 
         <!-- 버튼 그룹 -->
         <div class="btn-group">
             <button type="submit" class="btn btn-primary">💌 문의 등록</button>

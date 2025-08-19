@@ -56,11 +56,6 @@ public class ShopCategoryService implements ShopServiceinter{
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		//iDao.intocart(product_id);
-//		model.addAttribute("list",iDao.product_list());
-		
 
 	}
 

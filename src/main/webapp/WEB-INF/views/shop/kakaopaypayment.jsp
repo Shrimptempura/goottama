@@ -311,13 +311,7 @@
                 if (popup.closed) {
                     clearInterval(checkClosed);
                     console.log('카카오페이 팝업이 닫혔습니다.');
-                    
-                    // 팝업이 닫혔을 때 처리 (선택사항)
-                    // setTimeout(() => {
-                    //     if (confirm('결제창이 닫혔습니다. 결제를 다시 시도하시겠습니까?')) {
-                    //         startKakaoPayment();
-                    //     }
-                    // }, 1000);
+
                 }
             }, 1000);
             

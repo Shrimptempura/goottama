@@ -31,27 +31,6 @@ public class ShopWriteService implements ShopServiceinter{
 		MultipartHttpServletRequest mtfRequest=
 				(MultipartHttpServletRequest) map.get("request");
 		
-		
-		
-//		//String product_id=mtfRequest.getParameter("product_id");
-//		
-//		//iDao.product_list(product_id);
-//		String pcategoryid=mtfRequest.getParameter("pcategory");
-//		String pname=mtfRequest.getParameter("pname");
-//		String pprice=mtfRequest.getParameter("pprice");
-//		String pdiscountrate=mtfRequest.getParameter("pdiscountrate");
-//		String pmall_name=mtfRequest.getParameter("pmall_name");
-//		
-//		//
-//		//String pimg=mtfRequest.getParameter("file");
-//		//
-//		String pmadein=mtfRequest.getParameter("pmadein");
-//		String prelease=mtfRequest.getParameter("prelease");
-//		String pasmanager_phone=mtfRequest.getParameter("pasmanager_phone");
-//		String ptype=mtfRequest.getParameter("ptype");
-//		String pcolor=mtfRequest.getParameter("pcolor");
-//		String pistoday=mtfRequest.getParameter("pistoday");
-		
 		//map
 		Map<String, Object> paramMap = new HashMap<>();
 		paramMap.put("category_id", Integer.parseInt(mtfRequest.getParameter("pcategory")));
@@ -116,28 +95,6 @@ public class ShopWriteService implements ShopServiceinter{
 				e.printStackTrace();
 			}
 		}
-//		//product_img insert
-//		for(MultipartFile mf:fileList) {
-//			String originalFile=mf.getOriginalFilename();
-//			System.out.println("original files : "+originalFile);
-//			long longtime=System.currentTimeMillis();
-//			String changeFile=longtime+"_"+originalFile;
-//			System.out.println("change files :"+changeFile);
-//			
-//			String pathfile=root+"\\"+changeFile;
-//			try {
-//				if(!originalFile.equals("")) {
-//					mf.transferTo(new File(pathfile));
-//					System.out.println("upload success~~");
-//					
-//					//db기록
-//					iDao.imgwrite(changeFile);
-//					System.out.println("rebrdimgtb write sucess");
-//				}
-//			}catch(Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
 		
 	}
 	

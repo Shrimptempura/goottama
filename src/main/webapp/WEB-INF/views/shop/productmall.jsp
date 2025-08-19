@@ -501,23 +501,6 @@ body {
                 </c:otherwise>
             </c:choose>
         </div>
-
-        <%-- <!-- 정렬 바 -->
-        <div class="sort-bar">
-            <div class="sort-left">
-                <strong>${product_list != null ? product_list.size() : 0}</strong>개의 상품
-            </div>
-            <div class="sort-right">
-                <select class="sort-select" onchange="sortProducts(this.value)">
-                    <option value="latest">최신순</option>
-                    <option value="price-low">가격 낮은순</option>
-                    <option value="price-high">가격 높은순</option>
-                    <option value="discount">할인율 높은순</option>
-                    <option value="name">상품명순</option>
-                </select>
-            </div>
-        </div> --%>
-
         <!-- 상품 그리드 -->
 		<div class="product-grid" id="productGrid">
 		    <c:choose>
@@ -579,16 +562,6 @@ body {
 		                                </c:otherwise>
 		                            </c:choose>
 		                        </div>
-		
-		                        <%-- <!-- 🔧 수정2: 액션 버튼들의 이벤트 처리 개선 -->
-		                        <div class="product-actions">
-		                            <button class="action-btn cart-btn" data-product-id="${product.product_id}" data-action="cart">
-		                                🛒 장바구니
-		                            </button>
-		                            <button class="action-btn order-btn" data-product-id="${product.product_id}" data-action="order">
-		                                ⚡ 바로구매
-		                            </button>
-		                        </div> --%>
 		                    </div>
 		                </div>
 		            </c:forEach>
@@ -779,11 +752,8 @@ function debugProductClick() {
     const firstCard = document.querySelector('.product-card');
     if (firstCard) {
         console.log('- 첫 번째 상품 ID:', firstCard.getAttribute('data-product-id'));
-        // firstCard.click(); // 테스트용 (주석 처리)
     }
 }
-
-// 브라우저 콘솔에서 debugProductClick() 실행하여 디버깅 가능
 </script>
 
 </body>

@@ -43,9 +43,6 @@
 
 <!-- 사용자 정보 표시 -->
 <div class="user-info">
-
-	<!--   -->
-
 	<!-- 로그인된 경우 -->
     <c:choose>
         <c:when test="${not empty loginMember.user_id}">
@@ -110,9 +107,6 @@ function goToProductLikeDetail(){
     <a href="javascript:void(0)" onclick="goToReviewDetail()">review</a>
     <a href="javascript:void(0)" onclick="goToProductInquiryDetail()">product_inquiry</a>
 	<a href="javascript:void(0)" onclick="goToProductLikeDetail()">product_like</a>
-    <!--  -->
-    
-   
 </div>
 </body>
 </html>

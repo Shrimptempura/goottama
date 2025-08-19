@@ -135,10 +135,7 @@
         
         console.log("사용자 ID:", userId);
         
-        // 🔥 수정: 문법 오류 수정
-        // 기존: form_cart=="true" (잘못된 문법)
-        // 수정: form_cart=true (올바른 파라미터)
-        // 기존: product_id=${product_id} (불필요한 파라미터)
+        // 수정: form_cart=true
         
         const orderUrl = "order_view?user_id=" + userId + "&form_cart=true";
         console.log("이동할 URL:", orderUrl);
@@ -162,13 +159,7 @@
         location.href = "cart_write?user_id=" + userId + "&product_id=${product.product_id}&cart_quantity=" + count;
     }
 </script>
-	
-	<!-- 리스트버튼 삭제 -->	
-	<!-- 멀티삭제 -->
-	<!-- 데이터를 여러개의 id -->
-	<!-- 서비스로 보냄 -->
-	<!-- 여러개 -->
-	<!-- sql에서는 여러개로 처리 foreach sql에서 collection으로받아서로 (10) -->
+
 </head>
 <body>
 
