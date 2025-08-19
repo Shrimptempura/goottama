@@ -14,7 +14,9 @@
         <div class="header-navbar-auth">
                 <c:choose>
                     <c:when test="${pageContext.request.userPrincipal != null}">
-                        <a href="/mypage/myProfile" data-page="mypage">마이페이지</a>                  
+
+                        <a href="/mypage/myProfile" data-page="mypage">마이페이지</a>
+
                         <a href="/logout" data-page="logout">로그아웃</a>
                     </c:when>
                     <c:otherwise>

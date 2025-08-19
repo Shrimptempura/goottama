@@ -4,13 +4,11 @@ import com.ama.don.admin.dao.SearchCommentIDao;
 import com.ama.don.admin.dto.commentsForAdminDTO.CommentsForAdminDTO;
 import com.ama.don.admin.dto.commentsForAdminDTO.CommentsSearchForAdminDTO;
 import com.ama.don.admin.utils.SearchVO;
+import com.ama.don.common.enums.TargetType;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GetCommentsListService {
@@ -31,16 +29,16 @@ public class GetCommentsListService {
 
         // 검색 조건이 없거나 비어있는 경우
         if (commentsSearchForAdminDTO == null ||
-                (commentsSearchForAdminDTO.getCommentId() == null &&
+                commentsSearchForAdminDTO.getCommentId() == null &&
                         commentsSearchForAdminDTO.getUserId() == null &&
                         (commentsSearchForAdminDTO.getCommentContent() == null || commentsSearchForAdminDTO.getCommentContent().isEmpty()) &&
                         commentsSearchForAdminDTO.getTargetId() == null &&
                         (commentsSearchForAdminDTO.getTargetType() == null || commentsSearchForAdminDTO.getTargetType().isEmpty()) &&
                         commentsSearchForAdminDTO.getIsDeleted() == null &&
-                        (commentsSearchForAdminDTO.getCreatedAtStart() == null || commentsSearchForAdminDTO.getCreatedAtStart().isEmpty()) &&
-                        (commentsSearchForAdminDTO.getCreatedAtEnd() == null || commentsSearchForAdminDTO.getCreatedAtEnd().isEmpty()) &&
-                        (commentsSearchForAdminDTO.getModifiedAtStart() == null || commentsSearchForAdminDTO.getModifiedAtStart().isEmpty()) &&
-                        (commentsSearchForAdminDTO.getModifiedAtEnd() == null|| commentsSearchForAdminDTO.getModifiedAtEnd().isEmpty()))) {
+                        (commentsSearchForAdminDTO.getCreatedAtStart() == null) &&
+                        (commentsSearchForAdminDTO.getCreatedAtEnd() == null) &&
+                        (commentsSearchForAdminDTO.getModifiedAtStart() == null) &&
+                        (commentsSearchForAdminDTO.getModifiedAtEnd() == null)) {
             total = searchCommentIDao.countAllComment();
             commentsDtos = searchCommentIDao.getAllComment(searchVO);
         } else {

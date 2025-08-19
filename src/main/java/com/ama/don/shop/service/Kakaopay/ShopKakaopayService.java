@@ -1,10 +1,13 @@
 package com.ama.don.shop.service.Kakaopay;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import com.ama.don.admin.service.userActivityLog.SaveUserActivityLog;
+import com.ama.don.member.dto.MemberDto;
+import com.ama.don.member.service.LoginMemberService;
+import com.ama.don.shop.dao.ShopIDao;
+import com.ama.don.shop.dto.*;
+import com.ama.don.shop.service.ShopServiceinter;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -17,22 +20,15 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
-import com.ama.don.member.dto.MemberDto;
-import com.ama.don.member.service.LoginMemberService;
-import com.ama.don.shop.dao.ShopIDao;
-import com.ama.don.shop.dto.CartFlatDto;
-import com.ama.don.shop.dto.KakaoPayApprovalResponse;
-import com.ama.don.shop.dto.KakaoPayReadyResponse;
-import com.ama.don.shop.dto.OrderFlatDto;
-import com.ama.don.shop.dto.Orders_productsDto;
-import com.ama.don.shop.dto.ProductFlatDto;
-import com.ama.don.shop.service.ShopServiceinter;
-
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class ShopKakaopayService implements ShopServiceinter {
+
+	@Autowired
+	private SaveUserActivityLog userActivityLog;
 	
 	@Autowired
 	private RestTemplate restTemplate;
@@ -361,7 +357,8 @@ public class ShopKakaopayService implements ShopServiceinter {
 
 	// ✅ 카카오페이 승인 메서드 (공식 API 방식으로 수정)
 	public KakaoPayApprovalResponse kakaoPayApproveWithTid(String pgToken, String orderId, String userId, String tid) {
-
+		boolean isSuccess = false;
+		KakaoPayApprovalResponse response = null;
 	    System.out.println("=== 카카오페이 결제 승인 시작 (TID 직접 전달) ===");
 	    System.out.println("전달받은 TID: " + tid);
 	    
@@ -373,18 +370,47 @@ public class ShopKakaopayService implements ShopServiceinter {
 	    // 공식 API 방식으로 시도
 	    try {
 	        System.out.println("\n🔄 공식 카카오페이 승인 API 시도 (TID: " + tid + ")");
-	        return kakaoPayApproveOfficialWithTid(pgToken, orderId, userId, tid);
+			response = kakaoPayApproveOfficialWithTid(pgToken, orderId, userId, tid);
+			isSuccess = true;
 	    } catch (Exception e) {
 	        System.out.println("❌ 공식 승인 API 실패: " + e.getMessage());
+			userActivityLog.createAndSaveLog(
+					Long.valueOf(userId),
+					"PAYMENT_APPROVE_FAIL",
+					"SHOP_PAYMENT",
+					null,
+					"KakaoPay official API failed for orderId: " + orderId + ". Error: " + e.getMessage()
+			);
 	    }
 	    
 	    // 기존 방식으로 fallback
-	    try {
-	        System.out.println("\n🔄 기존 방식 승인 API 시도 (TID: " + tid + ")");
-	        return kakaoPayApproveLegacyWithTid(pgToken, orderId, userId, tid);
-	    } catch (Exception e) {
-	        System.out.println("❌ 기존 방식 승인도 실패: " + e.getMessage());
-	    }
+		if (!isSuccess) {
+			try {
+				System.out.println("\n🔄 기존 방식 승인 API 시도 (TID: " + tid + ")");
+				response = kakaoPayApproveLegacyWithTid(pgToken, orderId, userId, tid);
+				isSuccess = true;
+			} catch (Exception e) {
+				System.out.println("❌ 기존 방식 승인도 실패: " + e.getMessage());
+				userActivityLog.createAndSaveLog(
+						Long.valueOf(userId),
+						"PAYMENT_APPROVE_FAIL",
+						"SHOP_PAYMENT",
+						null,
+						"KakaoPay legacy API also failed for orderId: " + orderId + ". Error: " + e.getMessage()
+				);
+			}
+		}
+
+		if (isSuccess) {
+			userActivityLog.createAndSaveLog(
+					Long.valueOf(userId),
+					"PAYMENT_APPROVE_SUCCESS",
+					"SHOP_PAYMENT",
+					null,
+					"KakaoPay approval successful for orderId: " + orderId
+			);
+			return response;
+		}
 	    
 	    throw new RuntimeException("모든 카카오페이 승인 API 호출 방법이 실패했습니다.");
 	}

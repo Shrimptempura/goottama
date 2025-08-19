@@ -4,6 +4,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" src="/static/css/admin/simple.min.css">
     <title>ERROR</title>
 </head>
 <body>

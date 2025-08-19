@@ -4,13 +4,11 @@ import com.ama.don.admin.dao.PostForAdminIDao;
 import com.ama.don.admin.dto.postForAdminDTO.PostForAdminDTO;
 import com.ama.don.admin.dto.postForAdminDTO.PostSearchForAdminDTO;
 import com.ama.don.admin.utils.SearchVO;
+import com.ama.don.common.enums.TargetType;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class GetPostListService {
@@ -31,14 +29,14 @@ public class GetPostListService {
 
         // 검색 조건이 없거나 비어있는 경우
         if (postSearchForAdminDTO == null ||
-                (postSearchForAdminDTO.getPost_id() == null &&
+                postSearchForAdminDTO.getPost_id() == null &&
                         postSearchForAdminDTO.getUser_id() == null &&
                         (postSearchForAdminDTO.getPost_title() == null || postSearchForAdminDTO.getPost_title().isEmpty()) &&
                         (postSearchForAdminDTO.getPost_content() == null || postSearchForAdminDTO.getPost_content().isEmpty()) &&
                         (postSearchForAdminDTO.getPost_date_start() == null || postSearchForAdminDTO.getPost_date_start().isEmpty()) &&
                         (postSearchForAdminDTO.getPost_date_end() == null || postSearchForAdminDTO.getPost_date_end().isEmpty()) &&
                         postSearchForAdminDTO.getTargetId() == null &&
-                        (postSearchForAdminDTO.getTargetType() == null || postSearchForAdminDTO.getTargetType().isEmpty()))) {
+                        (postSearchForAdminDTO.getTargetType() == null || postSearchForAdminDTO.getTargetType().isEmpty())) {
             total = postForAdminIDao.countAllPost();
             postForAdminDTOS = postForAdminIDao.getAllPost(searchVO);
         } else {

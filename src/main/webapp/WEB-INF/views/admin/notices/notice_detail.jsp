@@ -5,7 +5,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
+<link rel="stylesheet" href="/static/css/admin/simple.min.css">
 <title>${notice.notices_title}</title>
 </head>
 <body>
@@ -29,8 +29,6 @@
     <button type="button" onclick="location.href='./notice_modify_view?notices_id=${notice.notices_id}'">공지 수정</button>
     <button type="button" onclick="location.href='/admin/admin_index?menu=notices'">목록 보기</button>
     <button type="button" onclick="if(confirm('정말 삭제하시겠습니까?')) location.href='./notice_delete?notices_id=${notice.notices_id}'">공지 삭제</button>
-    <button type="button" class="open-modal-btn" data-modal-target="/admin/notices/notice_data_modal"
-                                        data-param-name="notices_id" data-param-value="${notice.notices_id}"> 신고하기 </button>
     <a
         href="/admin/reports/reportForm?targetType=NOTICE&targetId=${notice.notices_id}"
         class="report-link"

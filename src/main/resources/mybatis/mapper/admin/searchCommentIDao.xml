@@ -54,17 +54,11 @@
             <if test="commentsSearchForAdminDTO.isDeleted != null">
                 AND IS_DELETED = #{commentsSearchForAdminDTO.isDeleted}
             </if>
-            <if test="commentsSearchForAdminDTO.createdAtStart != null and commentsSearchForAdminDTO.createdAtEnd != null">
-                AND CREATED_AT BETWEEN #{commentsSearchForAdminDTO.createdAtStart} AND #{commentsSearchForAdminDTO.createdAtEnd}
-            </if>
             <if test="commentsSearchForAdminDTO.createdAtStart != null and commentsSearchForAdminDTO.createdAtEnd == null">
                 AND CREATED_AT &gt;= #{commentsSearchForAdminDTO.createdAtStart}
             </if>
             <if test="commentsSearchForAdminDTO.createdAtStart == null and commentsSearchForAdminDTO.createdAtEnd != null">
                 AND CREATED_AT &lt;= #{commentsSearchForAdminDTO.createdAtEnd}
-            </if>
-            <if test="commentsSearchForAdminDTO.modifiedAtStart != null and commentsSearchForAdminDTO.modifiedAtEnd != null">
-                AND MODIFIED_AT BETWEEN #{commentsSearchForAdminDTO.modifiedAtStart} AND #{commentsSearchForAdminDTO.modifiedAtEnd}
             </if>
             <if test="commentsSearchForAdminDTO.modifiedAtStart != null and commentsSearchForAdminDTO.modifiedAtEnd == null">
                 AND MODIFIED_AT &gt;= #{commentsSearchForAdminDTO.modifiedAtStart}
@@ -102,17 +96,11 @@
             <if test="commentsSearchForAdminDTO.isDeleted != null">
                 AND IS_DELETED = #{commentsSearchForAdminDTO.isDeleted}
             </if>
-            <if test="commentsSearchForAdminDTO.createdAtStart != null and commentsSearchForAdminDTO.createdAtEnd != null">
-                AND CREATED_AT BETWEEN #{commentsSearchForAdminDTO.createdAtStart} AND #{commentsSearchForAdminDTO.createdAtEnd}
-            </if>
             <if test="commentsSearchForAdminDTO.createdAtStart != null and commentsSearchForAdminDTO.createdAtEnd == null">
                 AND CREATED_AT &gt;= #{commentsSearchForAdminDTO.createdAtStart}
             </if>
             <if test="commentsSearchForAdminDTO.createdAtStart == null and commentsSearchForAdminDTO.createdAtEnd != null">
                 AND CREATED_AT &lt;= #{commentsSearchForAdminDTO.createdAtEnd}
-            </if>
-            <if test="commentsSearchForAdminDTO.modifiedAtStart != null and commentsSearchForAdminDTO.modifiedAtEnd != null">
-                AND MODIFIED_AT BETWEEN #{commentsSearchForAdminDTO.modifiedAtStart} AND #{commentsSearchForAdminDTO.modifiedAtEnd}
             </if>
             <if test="commentsSearchForAdminDTO.modifiedAtStart != null and commentsSearchForAdminDTO.modifiedAtEnd == null">
                 AND MODIFIED_AT &gt;= #{commentsSearchForAdminDTO.modifiedAtStart}
