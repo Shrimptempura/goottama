@@ -14,5 +14,5 @@
 <h2>kakaopayfail</h2>
 
 </body>
-<%@ include file="../list.jsp" %>
+ <%@ include file="./shoplist.jsp" %>
 </html>
