@@ -40,7 +40,6 @@
 </head>
 <body>
 
-
 <!-- 사용자 정보 표시 -->
 <div class="user-info">
 
@@ -108,6 +107,7 @@ function goToProductLikeDetail(){
     <a href="javascript:void(0)" onclick="goToReviewDetail()">review</a>
     <a href="javascript:void(0)" onclick="goToProductInquiryDetail()">product_inquiry</a>
 	<a href="javascript:void(0)" onclick="goToProductLikeDetail()">product_like</a> -->
+
 </div>
 </body>
 </html>

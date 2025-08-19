@@ -118,5 +118,5 @@ function getuserid(){
 </div>
 
 </body>
-<%@ include file="../list.jsp" %>
+ <%@ include file="./shoplist.jsp" %>
 </html>
