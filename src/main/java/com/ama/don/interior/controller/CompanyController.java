@@ -42,7 +42,7 @@ public class CompanyController {
                                 Model model) {
         try {
             companyService.createCompany(detail, location, file);
-            return "redirect:/interior/home";
+            return "redirect:/interior/ihome";
         } catch (Exception e) {
             log.warn("CompanyController - 업체 등록 실패 - {}", e.getMessage());
             // check rebase substring
