@@ -34,7 +34,7 @@
             c.comment_content AS commentContent,
             c.created_at AS createdAt,
             c.modified_at AS modifiedAt,
-            c.is_deleted AS isDeleted,
+            c.is_deleted AS deleted,
             c.target_id AS targetId,
             c.target_type AS targetType
         FROM comments c
@@ -50,7 +50,7 @@
             c.comment_content AS commentContent,
             c.created_at AS createdAt,
             c.modified_at AS modifiedAt,
-            c.is_deleted AS isDeleted,
+            c.is_deleted AS deleted,
             c.target_id AS targetId,
             c.target_type AS targetType
         FROM comments c

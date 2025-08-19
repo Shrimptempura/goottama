@@ -1,0 +1,320 @@
+/* 공통 레이아웃 */
+.page-wrap {
+    margin-left: 20%;
+    margin-right: 20%;
+    width: 55%;
+}
+
+.hero {
+    width: 100%;
+    height: 420px;
+    border-radius: 16px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 16px 0 28px;
+    overflow: hidden;
+}
+
+.hero-img {
+    width: 100%;
+    height: 420px;
+    object-fit: cover;
+    border-radius: 16px;
+    margin: 16px 0;
+    display: block;
+}
+
+
+.title {
+    font-size: 32px;
+    font-weight: 800;
+    margin: 0 0 8px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 18px;
+}
+
+.meta-line {
+    display: flex;
+    gap: 16px;
+    color: #888;
+    font-size: 13px;
+    margin: 6px 0;
+}
+
+.chip-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin: 6px 0;
+}
+
+.chip {
+    font-size: 12px;
+    padding: 6px 10px;
+    border: 1px solid #e5e5e5;
+    border-radius: 999px;
+    background: #fafafa;
+}
+
+.divider {
+    height: 1px;
+    background: #eee;
+    margin: 20px 0;
+}
+
+.post-content {
+    line-height: 1.8;
+    font-size: 15px;
+    color: #222;
+}
+
+.thumb-grid {
+    display: grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap: 8px;
+}
+
+.thumb-grid img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.header-space {
+    height: 8px;
+}
+
+.head-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+}
+
+.right-meta {
+    color: #888;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.right-meta .dot {
+    margin: 0 6px;
+}
+
+.post-content {
+    line-height: 1.8;
+    font-size: 15px;
+    color: #222;
+    min-height: 100px;
+}
+
+/* 하단 작은 갤러리 */
+.gallery-small {
+    display: grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap: 8px;
+}
+
+.gallery-small img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+.bleed-hero {
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    width: 100vw;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 14px;
+    border-radius: 8px;
+    font-size: 14px;
+    border: 1px solid transparent;
+    background: #8b89ff;
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+    transition: .15s ease;
+}
+
+.btn:hover {
+    filter: brightness(0.95);
+}
+
+.btn-outline {
+    background: #f1f1f1;
+    color: #374151;
+    border-color: #d1d5db;
+}
+
+.btn-outline:hover {
+    background: #f9fafb;
+}
+
+.btn-danger {
+    background: #f6b5b5;
+    border-color: #ffb9b9;
+    color: #fff;
+}
+
+.btn-danger:hover {
+    filter: brightness(0.95);
+}
+
+/* 버튼 묶음 우측 정렬 */
+.action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.action-right {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+
+
+
+
+
+
+
+
+
+/* comments */
+/* 섹션 타이틀 */
+.comment-section { margin-top: 8px; }
+.comment-title   { font-size: 18px; font-weight: 700; margin: 8px 0 12px; }
+
+/* 작성 폼(루트/답글/수정 공통) */
+.comment-box{
+    border:1px solid #e5e7eb; border-radius:10px;
+    padding:10px; background:#fafafa; margin-bottom:12px;
+    box-sizing:border-box;
+}
+.comment-box textarea{
+    width:100%; box-sizing:border-box;
+    border:1px solid #d1d5db; border-radius:6px;
+    padding:8px 10px; font-size:14px; resize:vertical;
+    min-height:56px; outline:none; background:#fff;
+}
+.comment-actions{ display:flex; gap:8px; justify-content:flex-end; margin-top:10px; }
+
+/* 버튼 (작은 사이즈) */
+.btn-sm{
+    display:inline-flex; align-items:center; justify-content:center;
+    height:30px; padding:0 10px; border-radius:8px;
+    font-size:12px; border:1px solid transparent;
+    background:#4f46e5; color:#fff; cursor:pointer; transition:.15s ease;
+}
+.btn-sm:hover{ filter:brightness(0.95); }
+.btn-ghost{ background:#fff; color:#374151; border-color:#d1d5db; }
+.btn-ghost:hover{ background:#f9fafb; }
+
+/* 댓글 카드 공통 */
+.comment, .reply{
+    display:block;
+    border:1px solid #e5e7eb; border-radius:6px; background:#fff;
+    padding:6px 10px; margin-bottom:6px;
+    font-size:13px; line-height:1.35;
+}
+/* 대댓글(들여쓰기 + 얇은 컬러바) */
+.reply{
+    padding: 4px 8px !important;
+    margin: 4px 0 4px 12px !important;
+    background: #fbfbff;
+    border-left: 2px solid #c7d2fe;
+    min-height: 0 !important;
+    height: auto !important;
+}
+
+/* 상단 메타 (번호/날짜) */
+.comment .meta, .reply .meta{
+    margin:0 0 2px 0; font-size:11px; color:#666; line-height:1.2;
+}
+
+/* 본문 텍스트(아이디 패턴 대응) */
+[id^="cmt-body-"], .comment-body, .reply-body{
+    margin:0; padding:0; white-space:pre-line; line-height:1.45; font-size:13px; color:#333;
+}
+
+[id^="cmt-body-"], .reply-body {
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.4 !important;
+    white-space: pre-line;
+}
+
+/* 액션 링크(답글/수정/삭제) */
+.actions{ display:flex; gap:6px; flex-wrap:wrap; margin-top:2px; }
+.actions form{ display:inline; margin:0; padding:0; }
+.action-link{
+    font-size:12px; color:#4f46e5; background:transparent; border:0;
+    padding:2px 6px; border-radius:6px; cursor:pointer; transition:background .15s ease;
+}
+.action-link:hover{ background:#eef2ff; }
+
+/* 동적 삽입 폼 (답글/수정) */
+
+.inline-form{ margin-top:6px; }
+.inline-form .comment-actions{ justify-content:flex-start; }
+
+/* 중첩 대댓글도 동일한 간격 유지 */
+/*.reply .reply{
+    margin-left:12px; padding:6px 6px; border-left-width:2px;
+}*/
+
+.reply, .reply > * {
+    min-height: 0 !important;
+    height: auto !important;
+}
+
+/* 안내 메시지 */
+.alert{
+    padding:8px 10px; border-radius:8px; background:#f0fdf4;
+    color:#14532d; border:1px solid #86efac; font-size:13px; margin-bottom:10px;
+}
+.alert-error{
+    background:#fef2f2; color:#7f1d1d; border-color:#fecaca;
+}
+
+/* 폼/버튼이 너무 커지지 않도록 공통 최소화 */
+.comment *:not(textarea), .reply *:not(textarea){
+    min-height:0; height:auto;
+}
+
+/* 대댓글 컨테이너(삽입 슬롯) 간격 */
+[id^="children-"]{ display:block; margin:4px 0 0 12px; min-height:0; }
+
+/* 카드 내부 p 기본 마진 제거 */
+.comment p, .reply p{ margin:0; }
+
+/* 상단 메타/액션 여백 최소화 */
+.reply .meta { margin: 0 0 2px 0 !important; font-size: 11px !important; line-height: 1.2 !important; }
+.reply .actions { margin-top: 2px !important; gap: 6px !important; }
+
+/* 폼이 카드 안에서 과하게 벌어지지 않도록 */
+.reply .comment-box { padding: 8px !important; }
+.reply .comment-box textarea { min-height: 50px !important; }
+.reply form { margin: 0 !important; }

@@ -1,12 +1,7 @@
 package com.ama.don.interior.dao;
 
 import com.ama.don.common.dto.ReviewDto;
-import com.ama.don.interior.dto.review.CompanyReviewCreateDto;
-import com.ama.don.interior.dto.review.CompanyReviewUpdateDto;
-import com.ama.don.interior.dto.review.CompanyScoreAdjustDto;
-import com.ama.don.interior.dto.review.CompanyHomeReviewDto;
-import com.ama.don.interior.dto.review.CompanyReviewDto;
-import com.ama.don.interior.dto.review.CompanyScoreAvgDto;
+import com.ama.don.interior.dto.review.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

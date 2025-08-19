@@ -37,8 +37,8 @@
 //        // 이미 인증된 경우는 패스
 //        if (SecurityContextHolder.getContext().getAuthentication() == null) {
 //
-//            // test2, test4 사용중
-//            MemberDto member = loginDao.interiorFindByLoginId("dlfkja;l");
+//            // test2, test4 사용중, company11, 12, 13, 14, 15
+//            MemberDto member = loginDao.interiorFindByLoginId("company17");
 //
 //            if (member != null) {
 //                log.info("DevAutoLoginBaseMember - DB에서 테스트 유저 조회 성공: login_id {}", member.getLogin_id());
@@ -59,4 +59,3 @@
 //        chain.doFilter(request, response);
 //    }
 //}
-//

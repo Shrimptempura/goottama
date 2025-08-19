@@ -1,18 +1,17 @@
 package com.ama.don.common.config;
 
+import com.ama.don.admin.service.userActivityLog.memberPart.LoginSuccessHandler;
+import com.ama.don.admin.service.userManage.CustomUserDetailsService;
+import com.ama.don.member.dao.LoginDao;
+import jakarta.servlet.DispatcherType;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-
-import com.ama.don.admin.service.userActivityLog.memberPart.LoginSuccessHandler;
-import com.ama.don.admin.service.userManage.CustomUserDetailsService;
-import com.ama.don.member.dao.LoginDao;
-
-import jakarta.servlet.DispatcherType;
-import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Configuration

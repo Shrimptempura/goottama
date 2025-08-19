@@ -4,7 +4,6 @@ import com.ama.don.common.dao.PostDao;
 import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.enums.TargetType;
-import com.ama.don.community.service.CommentService;
 import com.ama.don.interior.dao.CompanyPostDao;
 import com.ama.don.interior.dto.post.*;
 import lombok.RequiredArgsConstructor;
@@ -265,7 +264,10 @@ public class CompanyPostServiceImpl implements CompanyPostService {
 
         // 파일 수정 (targetId = companyPostId)
         try {
-            savePostImages(companyPostId, files, true);
+            boolean hasNewFiles = files != null && files.stream().anyMatch(f -> f != null && !f.isEmpty());
+            if (hasNewFiles) {
+                savePostImages(companyPostId, files, true);
+            }
             log.info("CompanyPostService - 파일 수정 성공 - postId: {}, companyPostId: {}, companyId: {}", postId, companyPostId, companyId);
         } catch (Exception e) {
             safeDeleteAllFiles(TargetType.INTERIOR_POST, companyPostId);

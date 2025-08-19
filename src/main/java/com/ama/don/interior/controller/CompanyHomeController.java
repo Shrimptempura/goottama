@@ -3,6 +3,7 @@ package com.ama.don.interior.controller;
 import com.ama.don.interior.dto.company.CompanyHomeDto;
 import com.ama.don.interior.dto.post.CompanyHomePostDto;
 import com.ama.don.interior.dto.review.CompanyHomeReviewDto;
+import com.ama.don.interior.service.CompanyAuthService;
 import com.ama.don.interior.service.CompanyPostService;
 import com.ama.don.interior.service.CompanyReviewService;
 import com.ama.don.interior.service.CompanyService;
@@ -27,11 +28,7 @@ public class CompanyHomeController {
     private final CompanyService companyService;
     private final CompanyReviewService companyReviewService;
     private final CompanyPostService companyPostService;
-
-    @GetMapping("/interior/home")
-    public String interiorHome() {
-        return "interior/home";
-    }
+    private final CompanyAuthService companyAuthService;
 
     // 인테리어의 홈
     // 업체 랜덤 리스트, 업체에 대한 리뷰 최신 리스트
@@ -44,13 +41,26 @@ public class CompanyHomeController {
         List<CompanyHomePostDto> latestList = companyPostService.getHomePostsLatest();
         List<CompanyHomePostDto> randomtList = companyPostService.getHomePostsRandom();
 
+        boolean loginCheck = false;
+        Long myCompanyId = null;
+
+        try {
+            companyAuthService.getLoginUserId();
+            loginCheck = true;
+            myCompanyId = companyAuthService.findMyCompanyId().orElse(null);
+        } catch (Exception ignored) {
+            ;
+        }
+
+        model.addAttribute("loginCheck", loginCheck);
+        model.addAttribute("myCompanyId", myCompanyId);
+
         model.addAttribute("randomList", randomtList);
         model.addAttribute("latestList", latestList);
         model.addAttribute("companyList", companyList);
         model.addAttribute("reviewList", reviewList);
         return "interior/ihome";
     }
-
 
 
 

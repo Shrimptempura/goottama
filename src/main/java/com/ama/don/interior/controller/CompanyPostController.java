@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
@@ -65,6 +67,20 @@ public class CompanyPostController {
     public String getPostDetail(@PathVariable Long companyPostId, Model model) {
         CompanyPostDetailView detail = companyPostService.getPostDetail(companyPostId);
         model.addAttribute("detail", detail);
+
+        LocalDateTime created = detail.getPost().getPostDate();
+        LocalDateTime updated = detail.getPost().getUpdatedAt();
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyy년 M월 d일 HH시 mm분");
+
+        String createdFmt = (created != null) ? created.format(fmt) : "";
+        String updatedFmt = (updated != null) ? updated.format(fmt) : null;
+        boolean isUpdated = (updated != null) && (updated.isAfter(created));
+
+        model.addAttribute("createdFmt", createdFmt);
+        model.addAttribute("updatedFmt", updatedFmt);
+        model.addAttribute("isUpdated", isUpdated);
+
         
         // 본인 인증
         boolean isOwner = companyAuthService.isOwner(detail.getPost().getCompanyId());
