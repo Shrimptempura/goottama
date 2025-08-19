@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/successJoin_view.css" />
 </head>
 <body>
+<%@ include file="../common/header_navigation_bar.jsp" %>
+
   <div class="container">
     <div class="icon">🎉</div>
     <h1>환영합니다!</h1>
@@ -18,5 +20,7 @@
       <a href="/" class="btn-home">홈페이지</a>
     </div>
   </div>
-</body>>
+  
+  <%@ include file="../common/footer.jsp" %>
+</body>
 </html>

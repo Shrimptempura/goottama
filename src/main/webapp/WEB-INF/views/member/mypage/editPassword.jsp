@@ -9,7 +9,9 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/mypage/editPassword.css" />
 </head>
 <body>
+<%@ include file="../../common/header_navigation_bar.jsp" %>
 
+<div style="height: 20px;"></div>
 <div class="nav">
 <a href="/mypage/myProfile"> 프로필 </a> 
 <a href="/mypage/myOrderList">나의쇼핑</a> 
@@ -37,6 +39,6 @@
   </div>
 </form>
 
-
+<%@ include file="../../common/footer.jsp" %>
 </body>
 </html>

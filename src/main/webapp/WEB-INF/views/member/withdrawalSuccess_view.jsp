@@ -8,6 +8,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/withdrawalSuccess_view.css" />
 </head>
 <body>
+<%@ include file="../common/header_navigation_bar.jsp" %>
 
 <div class="withdrawal-success-container">
   <h2>회원 탈퇴 완료</h2>
@@ -17,5 +18,6 @@
   </form>
 </div>
 
+<%@ include file="../common/footer.jsp" %>
 </body>
 </html>
