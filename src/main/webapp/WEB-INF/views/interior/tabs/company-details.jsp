@@ -4,75 +4,8 @@
 <html>
 <head>
     <title>업체 상세 정보</title>
-    <style>
-        /* 레이아웃: 좌20 / 우20 / 본문 55 */
-        .page-wrap {
-            margin-left: 20%;
-            margin-right: 20%;
-            width: 55%;
-        }
-
-        .title {
-            font-size: 24px;
-            font-weight: 800;
-            margin: 20px 0 12px;
-        }
-
-        /* 카드 */
-        .card {
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            background: #fff;
-            padding: 32px;
-            min-height: 400px;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, .05);
-        }
-
-        /* 행(라벨/값) */
-        .row {
-            display: grid;
-            grid-template-columns: 140px 1fr;
-            gap: 12px;
-            align-items: start;
-            padding: 8px 0;
-        }
-
-        .row + .row {
-            border-top: 1px dashed #eee;
-        }
-
-        .label {
-            font-size: 13px;
-            color: #6b7280;
-            font-weight: 600;
-        }
-
-        .value {
-            font-size: 14px;
-            color: #111827;
-        }
-
-        .empty {
-            color: #9ca3af;
-        }
-
-        /* 반응형 */
-        @media (max-width: 980px) {
-            .page-wrap {
-                margin: 0 16px;
-                width: auto;
-            }
-
-            .row {
-                grid-template-columns: 1fr;
-                gap: 4px;
-            }
-
-            .label {
-                color: #374151;
-            }
-        }
-    </style>
+    <c:url var="cssUrl" value="/css/interior/interior-company-details.css"/>
+    <link rel="stylesheet" href="${cssUrl}">
 </head>
 <body>
 

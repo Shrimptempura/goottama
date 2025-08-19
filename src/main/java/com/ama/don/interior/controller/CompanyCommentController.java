@@ -1,6 +1,5 @@
 package com.ama.don.interior.controller;
 
-import com.ama.don.interior.dto.comment.CompanyCommentDto;
 import com.ama.don.interior.service.CompanyCommentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
