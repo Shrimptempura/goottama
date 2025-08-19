@@ -58,7 +58,7 @@
         where user_id = #{user_id} and product_id = #{product_id}
     </delete>
     
-      <!-- 5-1. 장바구니 단일 품목 지우기 -->
+      <!-- 장바구니 단일 품목 수정 -->
     <update id="cart_update" parameterType="map">
         update cart 
     	set cart_quantity = #{cart_quantity}

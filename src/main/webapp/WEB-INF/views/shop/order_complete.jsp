@@ -114,26 +114,9 @@ function getuserid(){
 <a href="/shop/cart?user_id=${loginMember.user_id}">장바구니</a> |
 <a href="/shop/order_details?user_id=${loginMember.user_id}">주문내역</a>
 </div>
-<%-- 
-<!-- 디버깅 정보 (개발용) -->
-<div style="margin-top: 50px; font-size: 12px; color: #666;">
-<h4>디버깅 정보</h4>
-<p>order_id: ${order_id}</p>
-<p>total_price: ${total_price}</p>
-<p>orderInfo: ${orderInfo}</p>
-<p>orderProducts 개수: ${orderProducts.size()}</p> --%>
 
-<%-- <!-- 첫 번째 상품 정보 확인 -->
-<c:if test="${not empty orderProducts and orderProducts.size() > 0}">
-<h5>첫 번째 상품 디버깅:</h5>
-<p>productId: ${orderProducts[0].product_id}</p>
-<p>product_name: ${orderProducts[0].product_name}</p>
-<p>op_quantity: ${orderProducts[0].op_quantity}</p>
-<p>op_price: ${orderProducts[0].op_price}</p>
-<p>op_totalprice: ${orderProducts[0].op_totalprice}</p>
-<p>product_imgurl: ${orderProducts[0].product_imgurl}</p>
-</c:if> --%>
 </div>
 
 </body>
+<%@ include file="../list.jsp" %>
 </html>

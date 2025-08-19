@@ -253,8 +253,6 @@ input[type="text"], input[type="email"], input[type="tel"], textarea {
     
 </form>
 
-	<!-- 내가 이해하는 바는 해당 메서드컨트롤러 가면 ㄱ메서드 처리하는것 -->
-
 <script>
 	
 //카카오페이 호출
@@ -487,4 +485,5 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 </body>
+<%@ include file="../list.jsp" %>
 </html>
