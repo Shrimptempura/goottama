@@ -62,6 +62,7 @@
 </div>
 
 <h2>subheader</h2>
+<p>만약 api키를 발급받지 않았다면 카카오페이 api를 발급받아 키를 com.ama.don.shop.service.Kakaopay.KakaoPayConfig.java에 키를 넣어주세요.</p>
 <script>
 
 // 장바구니로 이동
