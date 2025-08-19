@@ -43,6 +43,7 @@
 
 <!-- 사용자 정보 표시 -->
 <div class="user-info">
+
 	<!-- 로그인된 경우 -->
     <c:choose>
         <c:when test="${not empty loginMember.user_id}">
@@ -62,7 +63,6 @@
 </div>
 
 <h2>subheader</h2>
-<p>만약 api키를 발급받지 않았다면 카카오페이 api를 발급받아 키를 com.ama.don.shop.service.Kakaopay.KakaoPayConfig.java에 키를 넣어주세요.</p>
 <script>
 
 // 장바구니로 이동
@@ -104,10 +104,10 @@ function goToProductLikeDetail(){
     <a href="best">Best</a>
     <a href="javascript:void(0)" onclick="goToCart()">Cart</a>
     <a href="javascript:void(0)" onclick="goToOrderDetails()">Order Details</a>
-<!--    <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
+   <a href="javascript:void(0)" onclick="goToOrderDetail()">debug</a>
     <a href="javascript:void(0)" onclick="goToReviewDetail()">review</a>
     <a href="javascript:void(0)" onclick="goToProductInquiryDetail()">product_inquiry</a>
-	<a href="javascript:void(0)" onclick="goToProductLikeDetail()">product_like</a> -->
+	<a href="javascript:void(0)" onclick="goToProductLikeDetail()">product_like</a>
 </div>
 </body>
 </html>
