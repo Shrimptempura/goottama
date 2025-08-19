@@ -1,5 +1,5 @@
-		<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+         pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <header>
     <nav class="header-navbar-container">
@@ -12,17 +12,17 @@
             <li><a href="/community_home" data-page="community">커뮤니티</a></li>
         </ul>
         <div class="header-navbar-auth">
-                <c:choose>
-                    <c:when test="${pageContext.request.userPrincipal != null}">
-                        <a href="/mypage/myProfile" data-page="mypage">마이페이지</a>
-                        <a href="/logout" data-page="logout">로그아웃</a>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="/login_view" data-page="login">로그인</a>
-                        <a href="/join_view" data-page="join">회원가입</a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+            <c:choose>
+                <c:when test="${pageContext.request.userPrincipal != null}">
+                    <a href="/mypage/myProfile" data-page="mypage">마이페이지</a>
+                    <a href="/logout" data-page="logout">로그아웃</a>
+                </c:when>
+                <c:otherwise>
+                    <a href="/login_view" data-page="login">로그인</a>
+                    <a href="/join_view" data-page="join">회원가입</a>
+                </c:otherwise>
+            </c:choose>
+        </div>
     </nav>
 </header>
 

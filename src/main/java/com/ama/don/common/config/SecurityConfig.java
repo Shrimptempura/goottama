@@ -35,6 +35,12 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .dispatcherTypeMatchers(DispatcherType.FORWARD).permitAll()
                         .requestMatchers(
+//                                "/error",
+//                                "/favicon.ico",
+//                                "/upload/**",
+//                                "/upload/interior/**",
+//                                "/upload/interior_review/**",
+//                                "/upload/interior_post/**",
                                 "/",
                                 "/notice/**",
                                 "/login_view",
@@ -62,7 +68,9 @@ public class SecurityConfig {
                                 "/admin/reports/submit_report",
                                 "/admin/reports/close_window",
                                 "/static/**",
-                                "/css/**", "/js/**"
+                                "/css/**", "/js/**",
+                                "/images/**",
+                                "/webjars/**"
                         ).permitAll()
                         .requestMatchers("/admin/reports/reportForm").authenticated()
 //                        .requestMatchers("/seller/**").hasRole("SELLER") // 200(판매자) 이상 권한이 필요한 페이지

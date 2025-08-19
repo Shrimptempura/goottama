@@ -1,17 +1,16 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title>인테리어 홈</title>
-    <c:url var="cssUrl" value="/css/interior/interior-ihome.css"/>
-    <link rel="stylesheet" href="${cssUrl}">
+<%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/interior/interior-post.css">--%>
+    <link rel="stylesheet" href="<c:url value='/css/interior/interior-ihome.css'/>">
+</head>
 </head>
 <body>
-
-<%-- 헤더 --%>
-<jsp:include page="/WEB-INF/views/common/header_navigation_bar.jsp"/>
+<%@ include file="/WEB-INF/views/common/header_navigation_bar.jsp"%>
 
 <div class="home-wrap" style="margin-left: 20%; margin-right: 20%; width: 60%;">
 
@@ -19,7 +18,7 @@
     <div class="top-actions">
         <c:choose>
             <c:when test="${not empty myCompanyId}">
-                <c:url var="myPageUrl" value="/interior/myhome/${myCompanyId}">
+                <c:url var="myPageUrl" value="/css/interior/myhome/${myCompanyId}">
                     <c:param name="type" value="all"/>
                 </c:url>
                 <a href="${myPageUrl}" class="btn btn-primary">내 업체 페이지</a>
@@ -28,9 +27,7 @@
 
             <c:otherwise>
                 <c:if test="${loginCheck}">
-                    <a href="${pageContext.request.contextPath}/interior/new-company" class="btn btn-outline">
-                        업체 회원가입
-                    </a>
+                    <a href="<c:url value='/interior/new-company'/>" class="btn btn-outline">업체 회원가입</a>
                 </c:if>
             </c:otherwise>
         </c:choose>
@@ -98,8 +95,9 @@
                 <div class="card">
                     <a href="${reviewUrl}" style="display:block; text-decoration:none; color:inherit; cursor:pointer;">
                         <c:if test="${not empty r.thumbnail}">
+                            <c:url var="reviewThumbUrl" value="/upload/interior_review/${r.thumbnail.file_name}"/>
                             <div class="img-box">
-                                <img src="/upload/interior_review/${r.thumbnail.file_name}" alt="리뷰 썸네일">
+                                <img src="${reviewThumbUrl}" alt="리뷰 썸네일">
                             </div>
                         </c:if>
 
@@ -136,8 +134,9 @@
                 <div class="card">
                     <a href="${postUrl}" style="display:block; text-decoration:none; color:inherit;">
                         <c:if test="${not empty p.thumbnail}">
+                            <c:url var="postThumbUrl" value="/upload/interior_post/${p.thumbnail.file_name}"/>
                             <div class="img-box">
-                                <img src="/upload/interior_post/${p.thumbnail.file_name}" alt="포스트 썸네일">
+                                <img src="${postThumbUrl}" alt="포스트 썸네일">
                             </div>
                         </c:if>
 
@@ -168,8 +167,9 @@
                 <div class="card">
                     <a href="${postUrl2}" style="display:block; text-decoration:none; color:inherit;">
                         <c:if test="${not empty p.thumbnail}">
+                            <c:url var="postThumbUrl2" value="/upload/interior_post/${p.thumbnail.file_name}"/>
                             <div class="img-box">
-                                <img src="/upload/interior_post/${p.thumbnail.file_name}" alt="포스트 썸네일">
+                                <img src="${postThumbUrl2}" alt="포스트 썸네일">
                             </div>
                         </c:if>
 
@@ -209,7 +209,7 @@
 </div>
 
 <%-- 푸터 --%>
-<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 </body>
 </html>
