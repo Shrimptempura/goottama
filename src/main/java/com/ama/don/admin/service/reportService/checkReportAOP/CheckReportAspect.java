@@ -69,7 +69,6 @@ public class CheckReportAspect {
     private String getTargetTypeFromController(Class<?> controllerClass) {
         String name = controllerClass.getSimpleName();
         if (name.contains("ShopController")) {
-            // TODO: ShopController의 메서드명을 기반으로 더 세분화 가능 해 보임
             return "SHOP_PRODUCT"; // 상품에 대한 신고
         } else if (name.contains("CompanyReviewController")) {
             return "COMPANY_REVIEW"; // 회사 리뷰에 대한 신고
