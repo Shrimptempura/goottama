@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/checkPwcode_view.css" />
 </head>
 <body>
+<%@ include file="../common/header_navigation_bar.jsp" %>
+
 <div class="container">
     <h3>비밀번호 찾기</h3>
 
@@ -25,5 +27,7 @@
         </c:if>
     </form>
 </div>
+
+<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

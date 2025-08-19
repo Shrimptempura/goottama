@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/emailSent.css" />
 </head>
 <body>
+<%@ include file="../common/header_navigation_bar.jsp" %>
+
   <div class="container">
     <div class="icon">📧</div>
     <h1>이메일 인증 안내</h1>
@@ -21,5 +23,7 @@
       회원가입이 완료됩니다.
     </p>
   </div>
+  
+ <%@ include file="../common/footer.jsp" %>
 </body>
 </html>

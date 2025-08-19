@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/member/inquiryEmail.css" />
 </head>
 <body>
+<%@ include file="../common/header_navigation_bar.jsp" %>
 
 <div class="inquiry-container">
     <h3>이메일 문의하기</h3>
@@ -33,5 +34,6 @@
     </form>
 </div>
 
+<%@ include file="../common/footer.jsp" %>
 </body>
 </html>

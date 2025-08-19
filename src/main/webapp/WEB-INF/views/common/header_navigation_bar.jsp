@@ -18,8 +18,8 @@
                         <a href="/logout" data-page="logout">로그아웃</a>
                     </c:when>
                     <c:otherwise>
-                        <a href="login_view" data-page="login">로그인</a>
-                        <a href="join_view" data-page="join">회원가입</a>
+                        <a href="/login_view" data-page="login">로그인</a>
+                        <a href="/join_view" data-page="join">회원가입</a>
                     </c:otherwise>
                 </c:choose>
             </div>
