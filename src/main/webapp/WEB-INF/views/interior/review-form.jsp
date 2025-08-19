@@ -4,80 +4,8 @@
 <html>
 <head>
     <title>업체 리뷰 폼</title>
-    <style>
-        /* 레이아웃: 좌우 20%, 본문 55% */
-        .page-wrap { margin-left:20%; margin-right:20%; width:55%; }
-        .title { font-size:24px; font-weight:800; margin:20px 0 12px; }
-        .card {
-            border:1px solid #e5e7eb; border-radius:12px; background:#fff;
-            padding:20px; box-shadow:0 2px 10px rgba(0,0,0,.03);
-        }
-        .divider { height:1px; background:#eee; margin:18px 0; }
-
-        /* 폼 */
-        .form-grid { display:grid; grid-template-columns:1fr; gap:14px; }
-        .field { display:flex; flex-direction:column; gap:6px; }
-        .field label { font-size:14px; color:#374151; font-weight:600; }
-        .field input[type="text"],
-        .field textarea,
-        .field input[type="file"],
-        .field select{
-            border:1px solid #d1d5db; border-radius:8px; padding:10px;
-            font-size:14px; background:#fff; outline:none;
-        }
-        .field textarea{ resize:vertical; min-height:140px; }
-
-        /* 별점 묶음 */
-        .rate-grid{
-            display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px;
-        }
-        .rate-field{ display:flex; flex-direction:column; gap:6px; }
-        .rate-label { font-size:14px; font-weight:600; color:#374151; }
-
-        /* Star rating (5점) - 클릭 전용 */
-        .stars {
-            position: relative;
-            display: inline-block;
-            font-size: 28px; /* 별 크기 */
-            line-height: 1;
-            cursor: pointer;
-            user-select: none;
-        }
-        .stars .star {
-            display: inline-block;
-            width: 28px;
-            height: 28px;
-            margin-right: 4px;
-            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.401 8.164L12 18.896l-7.335 3.865 1.401-8.164L.132 9.21l8.2-1.192L12 .587z"/></svg>') no-repeat center / contain;
-            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.431 8.2 1.192-5.934 5.787 1.401 8.164L12 18.896l-7.335 3.865 1.401-8.164L.132 9.21l8.2-1.192L12 .587z"/></svg>') no-repeat center / contain;
-            background: #e5e7eb; /* 빈 별 */
-            transition: background .12s ease;
-        }
-        .stars .star.filled { background: #fbbf24; } /* 채운 별 */
-        .stars .star:hover ~ .star { background: #e5e7eb !important; } /* 호버 미리보기 */
-        .stars:focus { outline: 2px solid #c7d2fe; outline-offset: 2px; border-radius:6px; }
-        .rate-note { font-size:12px; color:#6b7280; margin-left:8px; }
-
-        /* 버튼 */
-        .actions{ display:flex; justify-content:flex-end; gap:8px; margin-top:12px; }
-        .btn{
-            display:inline-flex; align-items:center; justify-content:center;
-            height:38px; padding:0 16px; border-radius:10px;
-            border:1px solid transparent; background:#4f46e5; color:#fff;
-            font-size:14px; cursor:pointer; transition:.15s ease;
-            text-decoration:none;
-        }
-        .btn:hover{ filter:brightness(.96); }
-
-        /* 작은 안내 */
-        .note{ font-size:12px; color:#6b7280; }
-
-        /* 반응형 */
-        @media (max-width: 980px){
-            .page-wrap{ margin:0 16px; width:auto; }
-            .rate-grid{ grid-template-columns:1fr; }
-        }
-    </style>
+    <c:url var="cssUrl" value="/css/interior/interior-review-form.css"/>
+    <link rel="stylesheet" href="${cssUrl}">
 </head>
 <body>
 
@@ -91,11 +19,10 @@
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
             <input type="hidden" name="companyId" value="${form.companyId}">
 
-            <!-- ⭐ 별점(5점) 섹션 : 맨 위 -->
+            <!-- 별점 -->
             <div class="rate-grid">
-                <!-- 소통 점수 -->
                 <div class="rate-field">
-                    <label class="rate-label">소통 점수 (1~5)</label>
+                    <label class="rate-label">소통 점수</label>
                     <div class="stars" tabindex="0" role="slider"
                          aria-valuemin="1" aria-valuemax="5"
                          data-name="communicationRate"
@@ -110,9 +37,8 @@
                     </div>
                 </div>
 
-                <!-- 가격 점수 -->
                 <div class="rate-field">
-                    <label class="rate-label">가격 점수 (1~5)</label>
+                    <label class="rate-label">가격 점수</label>
                     <div class="stars" tabindex="0" role="slider"
                          aria-valuemin="1" aria-valuemax="5"
                          data-name="priceRate"
@@ -127,9 +53,8 @@
                     </div>
                 </div>
 
-                <!-- 결과 점수 -->
                 <div class="rate-field">
-                    <label class="rate-label">결과 점수 (1~5)</label>
+                    <label class="rate-label">결과 점수</label>
                     <div class="stars" tabindex="0" role="slider"
                          aria-valuemin="1" aria-valuemax="5"
                          data-name="resultRate"
@@ -144,9 +69,8 @@
                     </div>
                 </div>
 
-                <!-- 일정 점수 -->
                 <div class="rate-field">
-                    <label class="rate-label">일정 점수 (1~5)</label>
+                    <label class="rate-label">일정 점수</label>
                     <div class="stars" tabindex="0" role="slider"
                          aria-valuemin="1" aria-valuemax="5"
                          data-name="scheduleRate"
@@ -168,7 +92,7 @@
             <div class="form-grid">
                 <!-- 건물유형: 단일 선택 -->
                 <div class="field">
-                    <label for="structureType">건물유형 <span class="note">(필수)</span></label>
+                    <label for="structureType">건물유형 <span class="note"></span></label>
                     <select id="structureType" name="structureType" required>
                         <option value="" disabled ${empty form.structureType ? 'selected' : ''}>선택하세요</option>
                         <option value="아파트" <c:if test="${form.structureType eq '아파트'}">selected</c:if>>아파트</option>
@@ -180,9 +104,9 @@
                     </select>
                 </div>
 
-                <!-- 평수: 단일 선택(범위) -->
+                <!-- 평수 범위 -->
                 <div class="field">
-                    <label for="areaPyeong">평수 <span class="note">(필수)</span></label>
+                    <label for="areaPyeong">평수 <span class="note"></span></label>
                     <select id="areaPyeong" name="areaPyeong" required>
                         <option value="" disabled ${empty form.areaPyeong ? 'selected' : ''}>선택하세요</option>
                         <option value="10평 미만" <c:if test="${form.areaPyeong eq '10평 미만'}">selected</c:if>>10평 미만</option>
@@ -193,9 +117,9 @@
                     </select>
                 </div>
 
-                <!-- 시공분야: 단일 선택 -->
+                <!-- 시공 -->
                 <div class="field">
-                    <label for="constructionField">시공분야 <span class="note">(필수)</span></label>
+                    <label for="constructionField">시공분야 <span class="note"></span></label>
                     <select id="constructionField" name="constructionField" required>
                         <option value="" disabled ${empty form.constructionField ? 'selected' : ''}>선택하세요</option>
                         <option value="주방 리모델링" <c:if test="${form.constructionField eq '주방 리모델링'}">selected</c:if>>주방 리모델링</option>
@@ -209,9 +133,9 @@
 
                 <div class="divider"></div>
 
-                <!-- 내용 & 사진 -->
+                <!-- 내용, 사진 -->
                 <div class="field">
-                    <label>내용 <span class="note">(필수)</span></label>
+                    <label>내용 <span class="note"></span></label>
                     <textarea name="reviewContent" required>${form.reviewContent}</textarea>
                 </div>
 
@@ -254,16 +178,6 @@
                 const star = e.target.closest('.star');
                 if (!star) return;
                 commit(container, Number(star.dataset.value));
-            });
-
-            // 키보드 접근성
-            container.addEventListener('keydown', e=>{
-                const hidden = container.querySelector('input[type="hidden"]');
-                let val = Number(hidden.value || 0);
-                if (e.key === 'ArrowRight') { commit(container, Math.min(5, (val||0)+1)); e.preventDefault(); }
-                if (e.key === 'ArrowLeft')  { commit(container, Math.max(1, (val||1)-1)); e.preventDefault(); }
-                if (e.key === 'Home')       { commit(container, 1);  e.preventDefault(); }
-                if (e.key === 'End')        { commit(container, 5);  e.preventDefault(); }
             });
 
             // 호버 미리보기(클릭해야 확정)

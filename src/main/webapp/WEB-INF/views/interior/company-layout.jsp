@@ -26,12 +26,13 @@
             align-self: start;
             height: fit-content;
         }
+
         .sidebar-card {
             border: 1px solid #e5e7eb;
             border-radius: 12px;
             background: #f6fdff;
             padding: 16px;
-            box-shadow: 0 2px 10px rgba(0,0,0,.03);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .03);
         }
 
         /* 메인 */
@@ -40,7 +41,7 @@
             border-radius: 12px;
             background: #f8fbff;
             padding: 18px 18px 24px;
-            box-shadow: 0 2px 10px rgba(0,0,0,.03);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .03);
             min-height: 800px;
         }
 
@@ -53,6 +54,7 @@
             margin: 0 0 8px;
             border-bottom: 1px solid #eee;
         }
+
         .tabs a {
             display: inline-flex;
             align-items: center;
@@ -63,7 +65,11 @@
             font-size: 14px;
             border-bottom: 2px solid transparent;
         }
-        .tabs a:hover { color: #111827; }
+
+        .tabs a:hover {
+            color: #111827;
+        }
+
         .tabs a.active {
             color: #111827;
             border-bottom-color: #4f46e5;
@@ -78,6 +84,7 @@
             gap: 12px;
             margin-bottom: 8px;
         }
+
         .title {
             font-size: 20px;
             font-weight: 800;
@@ -100,20 +107,51 @@
             cursor: pointer;
             transition: .15s ease;
         }
-        .btn:hover { filter: brightness(.96); }
+
+        .btn:hover {
+            filter: brightness(.96);
+        }
 
         .btn-danger {
-            background: #ef4444;
+            background: #ff7d7d;
         }
-        .btn-danger:hover { filter: brightness(.95); }
+
+        .btn-danger:hover {
+            filter: brightness(.95);
+        }
 
         /* 반응형 */
-        @media (max-width: 1200px){
-            .page-wrap { margin: 0 24px; width: auto; }
+        @media (max-width: 1200px) {
+            .page-wrap {
+                margin: 0 24px;
+                width: auto;
+            }
         }
-        @media (max-width: 980px){
-            .layout { grid-template-columns: 1fr; }
-            .sidebar { position: static; }
+
+        @media (max-width: 980px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                position: static;
+            }
+        }
+
+        .action-right {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-outline {
+            background: #69bdff;
+            color: #374151;
+            border: 1px solid #d1d5db;
+        }
+
+        .btn-outline:hover {
+            background: #f9fafb;
         }
     </style>
 </head>
@@ -127,7 +165,7 @@
         <!-- 좌측 요약 상자 -->
         <aside class="sidebar">
             <div class="sidebar-card">
-                <jsp:include page="/WEB-INF/views/interior/fragments/company-summary.jsp" />
+                <jsp:include page="/WEB-INF/views/interior/fragments/company-summary.jsp"/>
             </div>
         </aside>
 
@@ -135,12 +173,20 @@
         <main class="main">
             <div class="main-head">
                 <h3 class="title">업체 상세 페이지</h3>
+
                 <c:if test="${isOwner}">
-                    <form action="${pageContext.request.contextPath}/interior/company/delete"
-                          method="post"
-                          onsubmit="return confirm('정말 탈퇴 하시겠습니까?')">
-                        <button type="submit" class="btn btn-danger">업체 탈퇴</button>
-                    </form>
+                    <div class="action-right">
+                        <!-- 업체 정보 수정 (GET) -->
+                        <a href="${pageContext.request.contextPath}/interior/update-company"
+                           class="btn btn-outline">업체 정보 수정</a>
+
+                        <!-- 업체 탈퇴 (POST) -->
+                        <form action="${pageContext.request.contextPath}/interior/company/delete"
+                              method="post"
+                              onsubmit="return confirm('정말 탈퇴 하시겠습니까?')">
+                            <button type="submit" class="btn btn-danger">업체 탈퇴</button>
+                        </form>
+                    </div>
                 </c:if>
             </div>
 

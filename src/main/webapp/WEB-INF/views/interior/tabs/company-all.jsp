@@ -13,6 +13,6 @@
     <title>업체 상세페이지 메인 화면</title>
 </head>
 <body>
-    <h3>company-all</h3>
+
 </body>
 </html>
