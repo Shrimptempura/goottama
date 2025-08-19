@@ -558,7 +558,7 @@ function goToEventPage(eventType) {
     
     switch(eventType) {
         case 'special-discount':
-            url = '/shop/events/special-discount';
+            url = 'best';
             break;
         case 'new-product':
             url = '/shop/products/new';
