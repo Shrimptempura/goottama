@@ -301,7 +301,7 @@ public class AbstractCompanyTestSupport {
         dto.setCompanyPostId(companyPostId);
         dto.setCommentContent(commentContent);
         dto.setTargetId(companyPostId);
-        dto.setTargetType(TargetType.INTERIOR);
+        dto.setTargetType(TargetType.INTERIOR_POST);
 
         companyCommentDao.insertCompanyComment(dto);
 

@@ -1,13 +1,11 @@
 package com.ama.don.interior.dao;
 
-import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dto.comment.CompanyCommentCreateDto;
-import com.ama.don.interior.dto.comment.CompanyCommentUpdateDto;
-import com.ama.don.interior.dto.post.CompanyPostCreateDto;
 import com.ama.don.interior.dto.comment.CompanyCommentDto;
 import com.ama.don.interior.dto.comment.CompanyCommentTreeDto;
-import com.ama.don.interior.dto.post.CompanyPostDto;
+import com.ama.don.interior.dto.comment.CompanyCommentUpdateDto;
+import com.ama.don.interior.dto.post.CompanyPostCreateDto;
 import com.ama.don.member.dto.JoinformDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -239,7 +237,7 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         replyComment.setCompanyPostId(companyPostId);
         replyComment.setCommentContent("여기는 대댓글 내용");
         replyComment.setTargetId(companyPostId);
-        replyComment.setTargetType(TargetType.INTERIOR);
+        replyComment.setTargetType(TargetType.INTERIOR_POST);
         replyComment.setParentCommentId(parentCommentId);
 
         companyCommentDao.insertCompanyComment(replyComment);
@@ -294,7 +292,7 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         List<CompanyCommentTreeDto> list = companyCommentDao.findCommentsByPostId(companyPostId, TargetType.INTERIOR_POST);
         assertThat(list.size()).isEqualTo(4);
 
-        int commentCount = companyCommentDao.countCommentsByTarget(companyPostId, TargetType.INTERIOR);
+        int commentCount = companyCommentDao.countCommentsByTarget(companyPostId, TargetType.INTERIOR_POST);
         assertThat(commentCount).isEqualTo(4);
     }
 
@@ -324,7 +322,7 @@ class CompanyCommentDaoTest extends AbstractCompanyTestSupport {
         assertThat(list).hasSize(3);
 
         // 게시글 삭제전 댓글 전체 삭제 경우
-        int allDeleted = companyCommentDao.softDeleteCommentsByPostId(companyPostId, TargetType.INTERIOR);
+        int allDeleted = companyCommentDao.softDeleteCommentsByPostId(companyPostId, TargetType.INTERIOR_POST);
         assertThat(allDeleted).isEqualTo(3);
 
         // 댓글 조회 및 확인

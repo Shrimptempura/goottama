@@ -192,18 +192,17 @@
 	<select id="interFindThumbnailList"
 		resultType="com.ama.don.common.dto.FileDto">
 		SELECT
-		file_id,
-		file_uploader,
-		file_name,
-		file_path,
-		target_type,
-		target_id,
-		is_thumbnail AS thumbnail
+			file_id,
+			file_uploader,
+			file_name,
+			file_path,
+			target_type,
+			target_id,
+			is_thumbnail AS thumbnail
 		FROM file
-		WHERE target_type =
-		#{targetType}
-		AND is_thumbnail = 1
-		AND target_id IN
+		WHERE target_type = #{targetType}
+			AND is_thumbnail = 1
+			AND target_id IN
 		<foreach collection="targetIds" item="id" open="("
 			separator="," close=")">
 			#{id}
