@@ -216,7 +216,6 @@ public class CompanyReviewServiceImpl implements CompanyReviewService {
                 }
             }
 
-
             // 점수 조정
             CompanyScoreAdjustDto adjust = recycleScoreOnEdit(companyId, updateReviewDto, origin);
             companyReviewDao.adjustScoreOnEdit(adjust);

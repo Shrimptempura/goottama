@@ -8,7 +8,6 @@
 <%--    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/interior/interior-post.css">--%>
     <link rel="stylesheet" href="<c:url value='/css/interior/interior-ihome.css'/>">
 </head>
-</head>
 <body>
 <%@ include file="/WEB-INF/views/common/header_navigation_bar.jsp"%>
 
