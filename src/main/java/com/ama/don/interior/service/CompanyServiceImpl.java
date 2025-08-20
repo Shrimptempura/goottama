@@ -15,6 +15,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
+    // 젠킨스 테스트 코드
+    // 젠킨스 테스트 코드
 
     private final CompanyDao companyDao;
     private final FileService fileService;
