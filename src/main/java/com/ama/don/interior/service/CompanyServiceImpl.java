@@ -26,7 +26,7 @@ public class CompanyServiceImpl implements CompanyService {
                               MultipartFile file) {
         Long userId = companyAuthService.getLoginUserId();
         Long companyId = null;
-        log.info("ComapnyService - 업체 등록 시작 - userId: {}", userId);
+        log.info("CompanyService - 업체 등록 시작 - userId: {}", userId);
 
         try {
             validateCompanyNameDuplication(createDto.getCompanyName());
