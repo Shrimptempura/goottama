@@ -1,6 +1,5 @@
 package com.ama.don.admin.controller;
 
-import com.ama.don.admin.dto.commentsForAdminDTO.CommentsSearchForAdminDTO;
 import com.ama.don.admin.dto.postForAdminDTO.PostSearchForAdminDTO;
 import com.ama.don.admin.service.postViewerForAdmin.GetPostDetailService;
 import com.ama.don.admin.service.postViewerForAdmin.GetPostListService;

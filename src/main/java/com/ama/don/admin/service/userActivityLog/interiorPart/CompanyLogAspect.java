@@ -5,7 +5,9 @@ import com.ama.don.interior.service.CompanyAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
@@ -67,22 +69,31 @@ public class CompanyLogAspect {
         }
     }
 
-    @AfterReturning("deleteCompanyMethod()")
-    public void logCompanyDeletion() {
+    @Around("deleteCompanyMethod()")
+    public Object logCompanyDeletion(ProceedingJoinPoint joinPoint) throws Throwable{
         Long companyId = companyAuthService.requireMyCompanyId();
         Long userId = companyAuthService.getLoginUserId();
 
-        if (userId != null && companyId != null) {
-            userActivityLog.createAndSaveLog(
-                    userId,
-                    "COMPANY_DELETE",
-                    "COMPANY",
-                    companyId,
-                    "User " + userId + " deleted company with ID: " + companyId
-            );
-            log.info("Successfully logged company deletion. User ID: {}, Company ID: {}", userId, companyId);
-        } else {
-            log.warn("Failed to log company deletion. User ID: {}, Company ID: {}", userId, companyId);
+        try {
+            Object result = joinPoint.proceed();
+
+            if (userId != null && companyId != null) {
+                userActivityLog.createAndSaveLog(
+                        userId,
+                        "COMPANY_DELETE",
+                        "COMPANY",
+                        companyId,
+                        "User " + userId + " deleted company with ID: " + companyId
+                );
+                log.info("Successfully logged company deletion. User ID: {}, Company ID: {}", userId, companyId);
+            } else {
+                log.warn("Failed to log company deletion. User ID: {}, Company ID: {}", userId, companyId);
+            }
+
+            return result;
+        } catch (Throwable e) {
+            log.error("Company deletion failed before logging. User ID: {}, Company ID: {}", userId, companyId, e);
+            throw e;
         }
     }
 }

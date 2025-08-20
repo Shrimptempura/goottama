@@ -5,8 +5,8 @@ import com.ama.don.admin.dao.SanctionsIDao;
 import com.ama.don.admin.dto.sanctionsDTO.MakeSanctionDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.transaction.annotation.Transactional; // Import the Transactional annotation
 
 import java.sql.Timestamp;
 import java.time.LocalDate;
