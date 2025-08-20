@@ -12,6 +12,7 @@
 <body>
 <%@ include file="../common/header_navigation_bar.jsp" %>
 
+<main>
 <div class="container">
     <h3>아이디 찾기</h3>
 
@@ -27,15 +28,16 @@
         <input type="submit" value="아이디 찾기" />
         
         <c:if test="${not empty loginId }">
-        <p>조회하신 아이디는 <strong>${loginId }</strong>입니다.</p>
+        <p class="p">조회하신 아이디는 <strong>${loginId }</strong>입니다.</p>
   	    </c:if>
 
    		<c:if test="${not empty id_error }">
-        <p>${id_error }</p>
+        <p class="p">${id_error }</p>
     	</c:if>
     </form:form>
     <a href="/login_view">로그인 하기</a>
 </div>
+</main>
 
 <%@ include file="../common/footer.jsp" %>
 </body>
