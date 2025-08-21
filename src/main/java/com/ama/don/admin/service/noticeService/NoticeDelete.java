@@ -2,9 +2,9 @@ package com.ama.don.admin.service.noticeService;
 
 import com.ama.don.admin.dao.NoticesIDao;
 import com.ama.don.admin.dto.noticeDTO.NoticesDto;
-import com.ama.don.common.dto.FileDto;
 import com.ama.don.admin.temp.FileIDao;
 import com.ama.don.admin.utils.FileUtil;
+import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.enums.TargetType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;

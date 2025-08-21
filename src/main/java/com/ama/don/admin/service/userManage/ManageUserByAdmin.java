@@ -1,8 +1,8 @@
 package com.ama.don.admin.service.userManage;
 
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import com.ama.don.admin.dto.userDTO.UserTotalDataDTO;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 import java.sql.Timestamp;

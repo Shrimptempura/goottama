@@ -6,7 +6,6 @@ import com.ama.don.interior.dto.review.CompanyReviewUpdateDto;
 import com.ama.don.interior.service.CompanyAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;

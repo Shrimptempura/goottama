@@ -4,7 +4,6 @@ import com.ama.don.admin.dao.NoticesIDao;
 import com.ama.don.admin.dto.noticeDTO.NoticesDto;
 import com.ama.don.admin.temp.FileIDao;
 import com.ama.don.common.enums.TargetType;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
