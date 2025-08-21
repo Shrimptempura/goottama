@@ -31,7 +31,7 @@
             <p class="error_mail">${email_error}</p>
         </c:if>
     </form:form>
-    <a href="/login_view">로그인 하기</a>
+    <a class="a" href="/login_view">로그인 하기</a>
 </div>
 </main>
 
