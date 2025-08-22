@@ -5,8 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
-
 /**
  * 제재내역 검색을 위한 전용 VO <br>
  * 날짜 범위 검색을 위해 searchStartDate과 searchEndDate을 받는다. <br>

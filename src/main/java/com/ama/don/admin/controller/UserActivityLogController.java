@@ -1,6 +1,5 @@
 package com.ama.don.admin.controller;
 
-import com.ama.don.admin.dto.userDTO.UserActivityDto;
 import com.ama.don.admin.dto.userDTO.UserActivitySearchDTO;
 import com.ama.don.admin.service.userActivityLog.GetUserActivityDetail;
 import com.ama.don.admin.service.userActivityLog.GetUserActivityList;

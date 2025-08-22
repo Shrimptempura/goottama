@@ -1,6 +1,5 @@
 package com.ama.don.admin.service.userActivityLog.communityPart;
 
-import com.ama.don.admin.dto.userDTO.UserActivityDto;
 import com.ama.don.admin.service.userActivityLog.SaveUserActivityLog;
 import com.ama.don.community.dao.CommunityCommentDao;
 import com.ama.don.community.dao.CommunityPostDao;
@@ -15,9 +14,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
-import java.sql.Timestamp;
-import java.time.Instant;
 
 @Aspect
 @Component

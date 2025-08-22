@@ -3,7 +3,8 @@ package com.ama.don.admin.dao;
 import com.ama.don.admin.dto.noticeDTO.NoticeSearchDTO;
 import com.ama.don.admin.dto.noticeDTO.NoticesDto;
 import com.ama.don.admin.utils.SearchVO;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

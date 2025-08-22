@@ -12,6 +12,7 @@
 <body>
 <%@ include file="../common/header_navigation_bar.jsp" %>
 
+<main>
 <div class="container">
     <h3>비밀번호 재설정</h3>
 
@@ -25,12 +26,13 @@
         <form:errors path="resetPw2" cssClass="error-msg"/> <br />
 
         <c:if test="${not empty pw_error}">
-            <p>${pw_error}</p>
+            <p class="p">${pw_error}</p>
         </c:if>
 
         <input type="submit" value="변경하기"/>
     </form:form>
 </div>
+</main>
 
 <%@ include file="../common/footer.jsp" %>
 </body>

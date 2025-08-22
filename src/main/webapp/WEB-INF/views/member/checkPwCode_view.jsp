@@ -11,6 +11,7 @@
 <body>
 <%@ include file="../common/header_navigation_bar.jsp" %>
 
+<main>
 <div class="container">
     <h3>비밀번호 찾기</h3>
 
@@ -27,6 +28,7 @@
         </c:if>
     </form>
 </div>
+</main>
 
 <%@ include file="../common/footer.jsp" %>
 </body>
