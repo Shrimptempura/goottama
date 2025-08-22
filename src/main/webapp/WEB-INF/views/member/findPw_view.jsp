@@ -12,6 +12,7 @@
 <body>
 <%@ include file="../common/header_navigation_bar.jsp" %>
 
+<main>
 <div class="container">
     <form:form modelAttribute="findPwDto" action="/findPw" method="post">
         <h3>비밀번호 찾기</h3>
@@ -27,11 +28,12 @@
         <input type="submit" value="인증 이메일 보내기"/>
 
         <c:if test="${not empty email_error}">
-            <p>${email_error}</p>
+            <p class="error_mail">${email_error}</p>
         </c:if>
     </form:form>
-    <a href="/login_view">로그인 하기</a>
+    <a class="a" href="/login_view">로그인 하기</a>
 </div>
+</main>
 
 <%@ include file="../common/footer.jsp" %>
 </body>

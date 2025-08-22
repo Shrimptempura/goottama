@@ -9,6 +9,14 @@ body {
     align-items: center;
     height: 100vh;
 }
+main {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f6f8;
+    margin: 60px 0;
+}
 
 /* 폼 컨테이너 */
 .container {
@@ -75,7 +83,7 @@ input[type="submit"]:hover {
 }
 
 /* pw_error 메시지 */
-p {
+.p {
     text-align: center;
     margin-top: 15px;
     font-size: 0.95em;
