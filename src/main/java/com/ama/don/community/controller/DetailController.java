@@ -42,7 +42,7 @@ public class DetailController {
 //
 //		// 처음 보는 글이면 조회수 증가
 //		if (hasViewed == null) {
-//			postDao.increaseViewCount(postId);
+//			communityDetailDao.increaseViewCount(postId);
 //			session.setAttribute(viewKey, true); // 본 글로 기록
 //		}
 

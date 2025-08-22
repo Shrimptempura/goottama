@@ -52,7 +52,6 @@ public class Write_viewController {
         dto.setReview_title(reviewTitle);
         dto.setReview_content(reviewContent);
         dto.setTargetType(TargetType.valueOf(targetTypeStr));
-        // dto.setUser_id(userId); // 서비스 시그니처가 userId를 별도 받으므로 생략 가능
 
         // 서비스 호출
         ReviewWriteDto savedDto = write_viewService.createReviewWithPost(userId, dto);
@@ -71,7 +70,7 @@ public class Write_viewController {
         if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getPrincipal())) {
             return null;
         }
-        String loginId = auth.getName();            // 어떤 Principal이든 username(login_id) 반환
+        String loginId = auth.getName();
         return loginDao.findUserIdByLoginId(loginId);
     }
 }
