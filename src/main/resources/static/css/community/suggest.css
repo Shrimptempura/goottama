@@ -1,0 +1,72 @@
+@charset "UTF-8";
+
+/* 카드 한 개의 구분선과 패딩 */
+.card {
+	border: none;
+	border-bottom: 1px solid #eee;
+	border-radius: 0;
+	margin-bottom: 0.75rem;
+	box-shadow: none;
+}
+
+.card-body {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+/* 제목 */
+h5.card-title {
+	font-weight: bold;
+	font-size: 18px;
+	margin: 4px 0 6px 0;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+h5.card-title a {
+	text-decoration: none;
+	color: inherit;
+}
+
+/* 본문 */
+.card-body>p.card-text:first-of-type {
+	color: #444;
+	font-size: 14px;
+	line-height: 1.4;
+	max-height: 2.8em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	margin-bottom: 6px;
+}
+
+/* 좋아요/댓글 */
+.card-body>p.card-text:last-of-type {
+	font-size: 12px;
+	color: #999;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-bottom: 0;
+}
+
+.card-body>p.card-text:last-of-type .badge {
+	font-weight: 600;
+	align-self: center;
+}
+
+/* 썸네일이 추후 들어올 경우를 대비  */
+.thumbnail img {
+	width: 100px;
+	height: 100px;
+	object-fit: cover;
+	border-radius: 6px;
+}
+
+/* 공통 헤더 */
+.container.mt-4>h3 {
+	margin-bottom: 1rem;
+}

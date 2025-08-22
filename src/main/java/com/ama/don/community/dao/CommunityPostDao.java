@@ -32,6 +32,10 @@ public interface CommunityPostDao {
 
 	// 게시글 찾기
 	ReviewPostDto findById(Long review_id);
+	
+	// 좋아요 10 이상 게시글 조회
+	 List<ReviewPostDto> findPopularReviews(@Param("minLikes") int minLikes);
+
 
 	// 조회수 좋아요수 최신화
 	List<Map<String, Object>> findReviewCounts();

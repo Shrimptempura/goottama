@@ -1,5 +1,7 @@
 package com.ama.don.community.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +10,9 @@ import com.ama.don.common.dao.FileDao;
 import com.ama.don.common.dao.PostDao;
 import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.enums.TargetType;
+import com.ama.don.community.dao.CommunityPostDao;
 import com.ama.don.community.dao.CommunityWriteDao;
+import com.ama.don.community.dto.Review.ReviewPostDto;
 import com.ama.don.community.dto.Review.ReviewWriteDto;
 
 @Service
@@ -22,6 +26,9 @@ public class Write_viewService {
 
 	@Autowired
 	private FileDao fileDao;
+
+	@Autowired
+	private CommunityPostDao communityPostDao;
 
 	@Transactional
 	public ReviewWriteDto createReviewWithPost(Long userId, ReviewWriteDto dto) {
@@ -42,7 +49,7 @@ public class Write_viewService {
 		System.out.println("연결된 target_id@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@): " + dto.getTargetId());
 		System.out.println("target_type@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@:" + dto.getTargetType());
 		System.out.println("------------------------------------------------");
-		
+
 		// file 테이블에서 target_id가 null인 항목들을 해당 postId로 변경
 		System.out.println("[파일 테이블 업데이트 시작]");
 		System.out.println("조건 - target_type: " + TargetType.COMMUNITY_REVIEW);
@@ -51,10 +58,14 @@ public class Write_viewService {
 		System.out.println("변경할 newTargetId: " + postId);
 		System.out.println("------------------------------------------------");
 		fileDao.updateTargetId(TargetType.COMMUNITY_REVIEW, userId.toString(), null, postId);
-		
+
 		System.out.println("[파일 테이블 업데이트 완료]");
 		System.out.println("------------------------------------------------");
 
 		return dto;
 	}
+	public List<ReviewPostDto> getPopularReviews(int minLikes) {
+		return communityPostDao.findPopularReviews(minLikes);
+	}
+
 }
