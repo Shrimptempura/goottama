@@ -1,13 +1,12 @@
 package com.ama.don.interior.service;
 
 import com.ama.don.common.dao.PostDao;
+import com.ama.don.common.dto.FileDto;
 import com.ama.don.common.dto.PostDto;
 import com.ama.don.common.enums.TargetType;
 import com.ama.don.interior.dao.CompanyCommentDao;
 import com.ama.don.interior.dao.CompanyPostDao;
-import com.ama.don.interior.dto.post.CompanyPostCreateDto;
-import com.ama.don.interior.dto.post.CompanyPostDetailSplitDto;
-import com.ama.don.interior.dto.post.CompanyPostUpdateDto;
+import com.ama.don.interior.dto.post.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,8 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -682,15 +680,91 @@ class CompanyPostServiceImplTest {
         Long result = postImpl.deletePost(companyPostId);
         assertEquals(result, companyId);
 
-        InOrder inOrder = inOrder(fileService, companyPostDao, companyCommentService);
+        InOrder inOrder = inOrder(fileService, companyPostDao, companyCommentService, companyAuthService);
         inOrder.verify(companyPostDao).getPostAndCompanyPostById(companyPostId);
         inOrder.verify(companyAuthService).isOwner(companyId);
         inOrder.verify(companyCommentService).deleteAllByPost(companyPostId);
         inOrder.verify(companyPostDao).deleteCompanyPostById(companyPostId);
         inOrder.verify(companyPostDao).deletePolyPostById(postId);
 
-        inOrder.verify(fileService).deleteAllByTargetId(TargetType.INTERIOR_POST, companyPostId);
-        inOrder.verify(fileService).deleteAllByTargetId(TargetType.INTERIOR_POST, companyPostId);
+        // try + 보상 삭제 정리
+        verify(fileService, times(2)).deleteAllByTargetId(any(), anyLong());
+    }
+
+    @DisplayName("상세조회 성공 - 조회수 + 이미지확인")
+    @Test
+    void shouldSucceed_whenGetPostDetail() {
+        Long companyPostId = 300L;
+        Long companyId = 200L;
+
+        CompanyPostDetailSplitDto post = new CompanyPostDetailSplitDto();
+        post.setCompanyPostId(companyPostId);
+        post.setCompanyId(companyId);
+
+        CompanyPostBasicInfoDto company = new CompanyPostBasicInfoDto();
+        company.setCompanyId(companyId);
+
+        // multipart x
+        FileDto image1 = new FileDto();
+        FileDto image2 = new FileDto();
+        List<FileDto> images = List.of(image1, image2);
+
+        when(companyPostDao.getPostAndCompanyPostById(companyPostId)).thenReturn(post);
+        when(companyPostDao.getCompanyBasicInfoById(companyId)).thenReturn(company);
+//        when(companyPostDao.increaseHit(companyPostId)).thenReturn(1);
+        when(fileService.getFileList(TargetType.INTERIOR_POST, companyPostId)).thenReturn(images);
+
+        CompanyPostDetailView view = postImpl.getPostDetail(companyPostId);
+
+        assertSame(post, view.getPost());
+        assertSame(company, view.getCompany());
+        assertSame(images, view.getImages());
+
+        InOrder inOrder = inOrder(companyPostDao, fileService);
+        inOrder.verify(companyPostDao).getPostAndCompanyPostById(companyPostId);
+        inOrder.verify(companyPostDao).getCompanyBasicInfoById(companyId);
+        inOrder.verify(companyPostDao).increaseHit(companyPostId);
+        inOrder.verify(fileService).getFileList(TargetType.INTERIOR_POST, companyPostId);
+    }
+
+    @DisplayName("상세조회 실패 - 게시글 없음")
+    @Test
+    void shouldThrowException_whenGetPostDetail_postIsNull() {
+        Long companyPostId = 300L;
+
+        when(companyPostDao.getPostAndCompanyPostById(companyPostId)).thenReturn(null);
+
+        assertThrows(IllegalStateException.class, () ->
+                postImpl.getPostDetail(companyPostId)
+                );
+
+        verify(companyPostDao).getPostAndCompanyPostById(companyPostId);
+        verify(companyPostDao, never()).getCompanyBasicInfoById(anyLong());
+        verify(companyPostDao, never()).increaseHit(anyLong());
+        verifyNoInteractions(fileService);
+    }
+
+    @DisplayName("상세조회 실패 - 회사정보 없음")
+    @Test
+    void shouldThrowException_whenGetPostDetail_companyIsNull() {
+        Long companyPostId = 300L;
+        Long companyId = 200L;
+
+        CompanyPostDetailSplitDto post = new CompanyPostDetailSplitDto();
+        post.setCompanyPostId(companyPostId);
+        post.setCompanyId(companyId);
+
+        when(companyPostDao.getPostAndCompanyPostById(companyPostId)).thenReturn(post);
+        when(companyPostDao.getCompanyBasicInfoById(companyId)).thenReturn(null);
+
+        assertThrows(IllegalStateException.class, () ->
+                postImpl.getPostDetail(companyPostId)
+                );
+
+        verify(companyPostDao).getPostAndCompanyPostById(companyPostId);
+        verify(companyPostDao).getCompanyBasicInfoById(companyId);
+        verify(companyPostDao, never()).increaseHit(anyLong());
+        verifyNoInteractions(fileService);
     }
 
 
