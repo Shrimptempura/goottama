@@ -163,12 +163,25 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- MariaDB 컨테이너 -->
+		<!-- MariaDB container -->
 		<dependency>
 			<groupId>org.testcontainers</groupId>
 			<artifactId>mariadb</artifactId>
 			<version>1.20.3</version>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- migration flyway -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>11.7.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
+			<version>11.7.2</version>
 		</dependency>
 
 

@@ -1,13 +1,19 @@
 package com.ama.don.interior.controller;
 
+import com.ama.don.common.service.ReviewService;
 import com.ama.don.interior.service.CompanyAuthService;
+import com.ama.don.interior.service.CompanyPostService;
+import com.ama.don.interior.service.CompanyReviewService;
 import com.ama.don.interior.service.FileService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -30,9 +36,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @Testcontainers
 @ActiveProfiles("test")
-@AutoConfigureMockMvc
-@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
+@SpringBootTest(classes = CompanyControllerIntegrationTest.TestExcludeAdmin.class)
 class CompanyControllerIntegrationTest {
+
+    @SpringBootConfiguration
+    @EnableAutoConfiguration
+    @ComponentScan(
+            basePackages = {
+                    "com.ama.don.interior"
+            },
+            excludeFilters = {
+                    @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.ama\\.don\\.admin\\..*"),
+                    @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.ama\\.don\\.common\\.config\\..*")
+            }
+    )
+    @org.mybatis.spring.annotation.MapperScan({
+            "com.ama.don.interior.**.dao"
+//            "com.ama.don.member.**.dao"
+    })
+    static class TestExcludeAdmin {
+    }
 
     @Autowired
     MockMvc mvc;
@@ -42,6 +66,15 @@ class CompanyControllerIntegrationTest {
 
     @MockitoBean
     FileService fileService;
+
+    @MockitoBean
+    ReviewService reviewService;
+
+    @MockitoBean
+    CompanyPostService companyPostService;
+
+    @MockitoBean
+    CompanyReviewService companyReviewService;
 
     @Container
     static MariaDBContainer<?> mariaDBContainer = new MariaDBContainer<>("mariadb:11.4");
@@ -55,7 +88,7 @@ class CompanyControllerIntegrationTest {
     }
 
     @DisplayName("업체 등록 성공 -> redirect:/interior/ihome")
-    @Sql(scripts = {"/sql/schema.sql", "/sql/seed_user_901.sql"})
+    @Sql(scripts = "/sql/seed_user_901.sql")
     @Test
     void create_success() throws Exception {
         when(companyAuthService.getLoginUserId()).thenReturn(901L);
@@ -64,17 +97,21 @@ class CompanyControllerIntegrationTest {
         MockMultipartFile file = new MockMultipartFile("file", "test.png", "image/png", "test".getBytes());
 
         mvc.perform(multipart("/interior/new-company")
-                .file(file)
-                .param("detail.companyName", "테스트업체")
-                .param("location.address", "서울시 구로구")
-                .with(user("companyIT002").roles("MEMBER"))
-                .with(csrf())
-                .contentType(MediaType.MULTIPART_FORM_DATA))
+                        .file(file)
+                        .param("companyName", "테스트업체")
+                        .param("companyAddr", "테스트주소")
+                        .param("companyField", "테스트필드")
+                        .param("companyLicense", "테스트라이센스")
+                        .param("companyAs", "테스트AS")
+                        .param("companyCareer", "테스트경력")
+                        .param("companyIntro", "테스트소개")
+                        .param("locationAddr", "서울시 구로구")
+                        .characterEncoding("UTF-8")
+                        .with(user("companyIT002").roles("MEMBER"))
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/interior/ihome"));
     }
-
-
 
 
 }
