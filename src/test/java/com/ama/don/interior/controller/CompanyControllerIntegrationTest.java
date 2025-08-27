@@ -55,7 +55,7 @@ class CompanyControllerIntegrationTest {
     }
 
     @DisplayName("업체 등록 성공 -> redirect:/interior/ihome")
-    @Sql(scripts = "/sql/seed_user_901.sql")
+    @Sql(scripts = {"/sql/schema.sql", "/sql/seed_user_901.sql"})
     @Test
     void create_success() throws Exception {
         when(companyAuthService.getLoginUserId()).thenReturn(901L);
