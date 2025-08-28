@@ -69,10 +69,6 @@
 		</dependency>
 
 		<!-- /actuator !security risks -->
-<!--		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
-		</dependency>-->
 
 		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
 		<dependency>
@@ -124,6 +120,12 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 		<!--
 		https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client -->
 		<dependency>
@@ -151,6 +153,35 @@
 			<artifactId>mockito-core</artifactId>
 			<version>5.14.2</version>
 			<scope>test</scope>
+		</dependency>
+
+		<!-- JUnit5 -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>1.20.3</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- MariaDB container -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>mariadb</artifactId>
+			<version>1.20.3</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- migration flyway -->
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+			<version>11.7.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
+			<version>11.7.2</version>
 		</dependency>
 
 
