@@ -7,6 +7,7 @@ import com.ama.don.interior.service.CompanyReviewService;
 import com.ama.don.interior.service.FileService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
+import org.springframework.context.annotation.Profile;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
@@ -35,11 +37,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @Testcontainers
-@ActiveProfiles("test")
+@ActiveProfiles({"test", "it"})
 @AutoConfigureMockMvc(addFilters = false)
 @SpringBootTest(classes = CompanyControllerIntegrationTest.TestExcludeAdmin.class)
 class CompanyControllerIntegrationTest {
 
+    @Profile("it")
     @SpringBootConfiguration
     @EnableAutoConfiguration
     @ComponentScan(
@@ -51,7 +54,7 @@ class CompanyControllerIntegrationTest {
                     @ComponentScan.Filter(type = FilterType.REGEX, pattern = "com\\.ama\\.don\\.common\\.config\\..*")
             }
     )
-    @org.mybatis.spring.annotation.MapperScan({
+    @MapperScan({
             "com.ama.don.interior.**.dao"
 //            "com.ama.don.member.**.dao"
     })
