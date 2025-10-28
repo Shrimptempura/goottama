@@ -155,7 +155,7 @@ CompanyReviewServiceImpl ..> CompanyReviewDao : persistence
 ---
 
 ## ERD
-> 인테리어 도메인 + 공통 테이블만 올린 사진
+> 인테리어 도메인(업체·게시글·리뷰 등)을 중심으로, 공통 테이블(`post`, `review`, `comment`, `file`, `report`)과의 관계만 발췌한 ERD
 <img width="1850" height="1322" alt="proj_1_readMe (1)" src="https://github.com/user-attachments/assets/1fe500e1-74ea-4b1a-b48e-b79fc5a153f1" />
 
 
