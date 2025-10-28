@@ -1,5 +1,5 @@
 # 인테리어 커머스 통합 플랫폼
-> 다형성 기반 공통 테이블(post, review, comment, file, report)을 중심으로  
+> 다형성 기반 공통 테이블(`post`, `review`, `comment`, `file`, `report`)을 중심으로  
 > 도메인 간 경계를 재정의하고 구조적 일관성을 확보한 인테리어 커뮤니티 웹 서비스
 
 
@@ -39,7 +39,7 @@
 
 ## 프로젝트 요약
 인테리어 업체와 사용자가 연결되는 커뮤니티형 웹 서비스입니다.
-공통 테이블(post, review, comment, file, report)에 다형성 구조(target_type + target_id)를 적용하여
+공통 테이블(`post`, `review`, `comment`, `file`, `report`)에 다형성 구조(`target_type` + `target_id`)를 적용하여
 게시글·리뷰·댓글 등 다양한 도메인을 통합 관리하고, 도메인 간 책임 경계를 명확히 함
 
 ## 핵심 구현
