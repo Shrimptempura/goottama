@@ -79,7 +79,8 @@ Mapper·Service 중심으로 테스트를 작성해 주요 로직의 안정성�
 |**게시글**| 상위 post + 하위 company_post 구조 / 썸네일 자동 지정 / 수정·삭제 권한 검증(실삭제) | 
 |**리뷰/평점**| 상하위 review 구조 / 평균·합계 자동 갱신 / 삭제 시 점수 재계산 및 평균 보정 | 
 |**댓글**| 단일 테이블 계층형 구조 / `soft delete`(작성자만 수정·삭제 가능) |
-
+<br>
+<br>
 
 ---
 
@@ -151,57 +152,20 @@ CompanyReviewServiceImpl ..> CompanyReviewDao : persistence
 ```
 > 두 다이어그램은 `target_type` / `target_id` 다형성 키로 연결됨
 
+---
+
+## ERD
+> 인테리어 도메인 + 공통 테이블만 올린 사진
+<img width="1850" height="1322" alt="proj_1_readMe (1)" src="https://github.com/user-attachments/assets/1fe500e1-74ea-4b1a-b48e-b79fc5a153f1" />
+
+
+
 
 ---
 
 
 ## 시퀀스 다이어그램
-### 업체 등록
-```mermaid
-sequenceDiagram
-autonumber
-actor User
-participant Ctrl as CompanyController
-participant S as CompanyServiceImpl
-participant Auth as CompanyAuthService
-participant DAO as CompanyDao
-participant FS as FileService
-
-User->>Ctrl: POST /companies(createDto, locationDto, file)
-Ctrl->>S: createCompany(createDto, locationDto, file)
-
-S->>Auth: getLoginUserId()
-Auth-->>S: userId
-
-S->>S: validateCompanyNameDuplication(name)
-S->>DAO: isDuplicateCompanyName(name)
-DAO-->>S: exists?
-alt 이름 중복
-  S-->>Ctrl: throw IllegalArgumentException("이미 등록된 이름")
-end
-
-S->>DAO: insertCompanyDetail(createDto)
-DAO-->>S: companyDetailId
-S->>DAO: insertLocation(locationDto)
-DAO-->>S: locationId
-
-S->>S: insertCompany(userId, companyDetailId, locationId)
-S->>DAO: insertCompany(dto)
-DAO-->>S: companyId
-
-note over S,FS: 이미지 1장 필수(썸네일)
-S->>FS: saveFile(INTERIOR, companyId, file, isThumbnail=true)
-
-S-->>Ctrl: return (success)
-
-opt [any error]
-  note over S: best-effort 정리
-  S->>FS: deleteThumbnail(INTERIOR, companyId)
-  S-->>Ctrl: throw IllegalStateException("업체 등록 실패")
-end
-
-```
-### 업체생성222
+### 업체 등록(미들)
 ```mermaid
 sequenceDiagram
 autonumber
@@ -223,53 +187,30 @@ S->>DAO: isDuplicateCompanyName(name)
 DAO-->>S: exists?
 alt 이름 중복
   S-->>Ctrl: IllegalArgumentException("이미 등록된 이름")
-  note over Ctrl: 요청 중단
+else 계속 진행
+  Note over S: 중복 아님 → 계속
 end
 
 S->>DAO: insertCompanyDetail(createDto)
 DAO-->>S: companyDetailId
-alt companyDetailId == null
-  S-->>Ctrl: IllegalStateException("companyDetailId null")
-  note over Ctrl: 요청 중단
-end
-
 S->>DAO: insertLocation(locationDto)
 DAO-->>S: locationId
-alt locationId == null
-  S-->>Ctrl: IllegalStateException("locationId null")
-  note over Ctrl: 요청 중단
-end
-
-S->>S: insertCompany(userId, companyDetailId, locationId)
-S->>DAO: insertCompany(dto)
+S->>DAO: insertCompany({userId, companyDetailId, locationId})
 DAO-->>S: companyId
-alt companyId == null
-  S-->>Ctrl: IllegalStateException("companyId null")
-  note over Ctrl: 요청 중단
-end
 
-%% 파일 1장 필수 검증을 분기로 명시
-alt file == null or file.empty
-  S-->>Ctrl: IllegalArgumentException("이미지 1장 필수")
-  note over Ctrl: 요청 중단
-else 유효한 파일 존재
-  S->>FS: saveFile(INTERIOR, companyId, file, isThumbnail=true)
-end
+note over S,FS: 이미지 1장 필수(썸네일)
+S->>FS: saveFile(INTERIOR, companyId, file, true)
 
-S-->>Ctrl: return (success)
+S-->>Ctrl: success
 
-opt [any error]
-  note over S: best-effort 정리
-  opt companyId != null
-    S->>FS: deleteThumbnail(INTERIOR, companyId)
-  end
+opt any error
+  note right of S: best-effort 정리
+  S->>FS: deleteThumbnail(INTERIOR, companyId)
   S-->>Ctrl: IllegalStateException("업체 등록 실패")
 end
-
-
 ```
 
-### 리뷰 생성
+### 리뷰 생성(미들)
 ```mermaid
 sequenceDiagram
 autonumber
@@ -287,133 +228,73 @@ C->>S: createReview(createDto, files)
 S->>A: getLoginUserId()
 A-->>S: userId
 
-note over S: companyId null 검증
-S->>S: validate(companyId)
-alt companyId == null
-  S-->>C: throw IllegalArgumentException("companyId 없음")
-  note over C: 요청 중단 및 에러 반환
-end
-
-S->>S: makePolyReview(createDto)
-S->>RS: insertPolyReview(ReviewDto[target=INTERIOR_REVIEW, targetId=companyId])
-RS-->>S: reviewId
-
-S->>S: createDto.setReviewId(reviewId)
-S->>D: insertCompanyReview(createDto)
-D-->>S: inserted(1)
-
-note over F,S: 이미지 저장(최소 1장, 첫 장 썸네일)
-S->>F: saveFile(INTERIOR_REVIEW, reviewId, files[0], isThumbnail=true)
-opt files[1..n-1]
-  loop 나머지 이미지
-    S->>F: saveFile(INTERIOR_REVIEW, reviewId, file[i], isThumbnail=false)
-  end
-end
-
-S->>D: isExistScoreTable(companyId)
-alt 첫 리뷰(존재 X)
-  S->>D: createScoreTable(createDto)
-else 기존 리뷰 있음(존재 O)
-  S->>D: addScoreOnCreate(createDto)
-  S->>D: averageOnCreate(createDto)
-end
-
-S-->>C: return reviewId
-
-opt 예외 발생(any error)
-  note right of S: best-effort 파일 정리
-  S->>F: deleteAllByTargetId(INTERIOR_REVIEW, reviewId)
-  S-->>C: throw IllegalStateException("리뷰 생성 실패")
-end
-
-
-```
-
-### 리뷰 생성22
-```mermaid
-sequenceDiagram
-autonumber
-actor User
-participant C as CompanyReviewController
-participant S as CompanyReviewServiceImpl
-participant A as CompanyAuthService
-participant RS as ReviewService
-participant D as CompanyReviewDao
-participant F as FileService
-
-User->>C: POST /reviews(createDto, files)
-C->>S: createReview(createDto, files)
-
-S->>A: getLoginUserId()
-A-->>S: userId
-
-note over S: companyId null 검증
 S->>S: validate(companyId)
 alt companyId == null
   S-->>C: IllegalArgumentException("companyId 없음")
-  note over C: 요청 중단
+else 계속 진행
+  Note over S: companyId OK
 end
 
 S->>S: makePolyReview(createDto)
 S->>RS: insertPolyReview(ReviewDto[target=INTERIOR_REVIEW, targetId=companyId])
 RS-->>S: reviewId
-alt reviewId == null
-  S-->>C: IllegalStateException("상위 리뷰 생성 실패")
-  note over C: 요청 중단
-end
-
 S->>S: createDto.setReviewId(reviewId)
+
 S->>D: insertCompanyReview(createDto)
 D-->>S: inserted(1)
-alt inserted != 1
-  S-->>C: IllegalStateException("하위 리뷰 생성 실패")
-  note over C: 요청 중단
-end
 
-%% 최소 1장 + 첫 장 썸네일을 분기로 명시
-alt files == null or 모든파일 empty
-  S-->>C: IllegalArgumentException("이미지 최소 1장 필요")
-  note over C: 요청 중단
-else 유효한 파일 존재
-  note over F,S: 이미지 저장(첫 장 썸네일)
-  S->>F: saveFile(INTERIOR_REVIEW, reviewId, files[0], isThumbnail=true)
-  opt files[1..n-1]
-    loop 나머지 이미지
-      S->>F: saveFile(INTERIOR_REVIEW, reviewId, file[i], isThumbnail=false)
-    end
+note over S,F: 이미지 저장(최소 1장, 첫 장 썸네일)
+S->>F: saveFile(INTERIOR_REVIEW, reviewId, files[0], true)
+opt files[1..n-1]
+  loop 나머지 이미지
+    S->>F: saveFile(INTERIOR_REVIEW, reviewId, file[i], false)
   end
 end
 
 S->>D: isExistScoreTable(companyId)
-alt 첫 리뷰(존재 X)
+alt 첫 리뷰 없음
   S->>D: createScoreTable(createDto)
-else 기존 리뷰 있음(존재 O)
+else 기존 리뷰 있음
   S->>D: addScoreOnCreate(createDto)
   S->>D: averageOnCreate(createDto)
 end
 
-S-->>C: return reviewId
+S-->>C: reviewId
 
-opt 예외 발생(any error)
+opt any error
   note right of S: best-effort 파일 정리
-  opt reviewId != null
-    S->>F: deleteAllByTargetId(INTERIOR_REVIEW, reviewId)
-  end
+  S->>F: deleteAllByTargetId(INTERIOR_REVIEW, reviewId)
   S-->>C: IllegalStateException("리뷰 생성 실패")
 end
 
-
 ```
 
-
-## 개선 제안 및 향후 계획
-- 파일 업로드를 temp -> linked -> final 단계로 분리하여 트랜잭션 병목 완화 구조 구상 중
-- rootId 기반 생성/삭제 단일 트랜잭션 구조로 상·하위 도메인 연결 단순화 계획
-- 리뷰 과다 작성 방지를 위한 24시간 제한 로직 추가 예정
+---
 
 ## 주요 화면
+[업체페이지]  
+<img width="1868" height="907" alt="업체상세_게시글" src="https://github.com/user-attachments/assets/9e60fb1d-61ac-42d1-a5f9-a677853b9762" />  
+[업체게시글]  
+<img width="1899" height="936" alt="업체게시글" src="https://github.com/user-attachments/assets/201181bb-e33c-4063-9516-af6a937417d3" />  
+[리뷰작성중]  
+<img width="1874" height="941" alt="리뷰작성중" src="https://github.com/user-attachments/assets/8842c714-93dc-4b6e-8121-8fa19f6c3488" />  
+[리뷰페이지]  
+<img width="1875" height="935" alt="업체페이지_리뷰" src="https://github.com/user-attachments/assets/3c8292b7-f4c7-4562-a767-67ab26e8e8ec" />  
+
+<br><br>
+
+---
+
+## 개선 제안 및 향후 계획
+- **파일 업로드 3단계화:** `temp -> linked -> final` 단계로 분리하여 트랜잭션 병목/롤백 리스크 완화 
+- **rootId 기반 단일 트랜잭션:** `rootId`(UUID/상위 PK)로, 상·하위을 한 트랜잭션에서 일괄 처리, 삭제는 `ON DELETE CASCADE` 또는 일괄 플래그로 단순화
+- **리뷰 남용 방지:** 동일 사용자·업체 기준 24시간 작성 제한(최대 24시간 3회)
+- **에러 응답 표준화:** `@ControllerAdvice`로 예외·HTTP 상태/에러코드 매핑, `code/message/traceId`를 포함한 공통 에러 스키마 적용
+
+---
 
 ## Links
+**팀 ERD:** https://www.erdcloud.com/d/Rnc9wsvt2D2jJnKGg
 
 
 
